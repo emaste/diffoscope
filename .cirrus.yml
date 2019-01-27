@@ -1,0 +1,12 @@
+freebsd_13_task:
+  freebsd_instance:
+    image: freebsd-13-2-release-amd64
+
+
+  install_script:
+  - sed -i.bak -e 's?pkg+http://pkg.FreeBSD.org/\${ABI}/quarterly?pkg+http://pkg.FreeBSD.org/\${ABI}/latest?' /etc/pkg/FreeBSD.conf
+  - pkg install -y archivers/py-libarchive-c devel/py-magic devel/py-pytest
+  install_tools_script:
+  - pkg install -y $(bin/diffoscope --list-missing-tools FreeBSD | sed -n 's/Available-in-FreeBSD-packages: //p' | sed 's/, / /g')
+  check_script:
+    - PATH=/usr/local/bin:$PATH /usr/bin/time pytest-3.9
