@@ -63,3 +63,7 @@ Once the tracker.debian.org entry appears, consider tweeting the release on
 
   %twitter diffoscope $VERSION has been released. Check out the changelog here: $URL
 
+Once the new version lands in the Debian archive, please update the Docker image using::
+
+    docker build -t registry.salsa.debian.org/reproducible-builds/diffoscope .
+    docker push registry.salsa.debian.org/reproducible-builds/diffoscope
