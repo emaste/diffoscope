@@ -4,7 +4,7 @@
 #   $ mv debian/tests/control.tmp debian/tests/control
 
 Tests: pytest-with-recommends
-Depends: diffoscope, python3-pytest, file, linux-image-amd64 [amd64] | linux-image-generic [amd64], %RECOMMENDS%, %PYRECOMMENDS%
+Depends: diffoscope, black, python3-pytest, file, linux-image-amd64 [amd64] | linux-image-generic [amd64], %RECOMMENDS%, %PYRECOMMENDS%
 
 Tests: pytest
 Depends: diffoscope, python3-pytest, file
