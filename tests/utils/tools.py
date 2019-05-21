@@ -73,7 +73,8 @@ def skipif(*args, **kwargs):
     # executed.
     def outer(*args1, **kwargs1):
         def inner(*args2, **kwargs2):
-            return pytest.fail(msg)
+            if args[0]:  # i.e. the condition of the skipif() is True
+                return pytest.fail(msg)
 
         return inner
 
