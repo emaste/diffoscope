@@ -10,7 +10,7 @@ fi
 export LIBGUESTFS_MEMSIZE=128
 if [ "$(basename "$0")" = "pytest-with-recommends" ]; then
     export DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS=1
-    export DIFFOSCOPE_TESTS_MISSING_TOOLS="cbfstool procyon otool lipo oggDump wasm2wat"
+    export DIFFOSCOPE_TESTS_MISSING_TOOLS="cbfstool otool lipo wasm2wat"
 fi
 
 cp -r tests "$ADTTMP"
