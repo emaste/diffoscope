@@ -1,8 +1,26 @@
-diffoscope (115) UNRELEASED; urgency=medium
+diffoscope (115) experimental; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Fix execution of symbolic links that point to the "bin/diffoscope" entry
+    point by fully resolving the location.
+  * Add a Dockerfile.
+  * Update contributing messages with instructions regarding the Docker image.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 28 Apr 2019 17:23:54 +0100
+  [ Mattia Rizzolo ]
+  * tests:
+    + Allow specifying which tools are known missing using
+    DIFFOSCOPE_TESTS_MISSING_TOOLS, to override a _FAIL_ON_MISSING_TOOLS.
+    + With DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS=1, actually fail only tests
+      that are missing the required tools.
+  * debian:
+    + Add black to the test dependencies.
+    + Enforce the "fail on missing tools" only when testing with all the
+      recommended packages.
+    + Ack some missing tools during autopkgtest.
+    + Reinstate oggvideotools and procyon-decompiler test dependencies,
+      now that are not buggy anymore.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 21 May 2019 16:02:02 +0200
 
 diffoscope (114) experimental; urgency=medium
 
