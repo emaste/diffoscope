@@ -71,7 +71,7 @@ def test_diff_meta(differences_meta):
 
 @skip_unless_tools_exist('img2txt', 'identify')
 @skip_unless_tool_is_at_least('identify', identify_version, '6.9.8-4')
-def test_diff_meta(differences_meta):
+def test_diff_meta2(differences_meta):
     expected_diff = get_data('ico_image_meta_expected_diff_v2')
     assert differences_meta[-1].unified_diff == expected_diff
 
