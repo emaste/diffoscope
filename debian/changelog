@@ -1,3 +1,9 @@
+diffoscope (116) UNRELEASED; urgency=medium
+
+  * WIP.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Wed, 22 May 2019 19:43:00 +0200
+
 diffoscope (115) experimental; urgency=medium
 
   [ Chris Lamb ]
