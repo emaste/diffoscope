@@ -25,6 +25,7 @@ Build-Depends:
  dpkg-dev (>= 1.17.14),
  e2fsprogs <!nocheck>,
  enjarify <!nocheck>,
+ ffmpeg <!nocheck>,
  flake8 <!nocheck>,
  fontforge-extras <!nocheck>,
  fp-utils [!ppc64el !s390x] <!nocheck>,
@@ -49,11 +50,11 @@ Build-Depends:
  mplayer <!nocheck>,
  ocaml-nox <!nocheck>,
  odt2txt <!nocheck>,
-# oggvideotools [!s390x] <!nocheck>,
+ oggvideotools [!s390x] <!nocheck>,
  openssh-client <!nocheck>,
  pgpdump <!nocheck>,
  poppler-utils <!nocheck>,
-# procyon-decompiler <!nocheck>,
+ procyon-decompiler <!nocheck>,
  python-argcomplete,
  python3-all,
  python3-binwalk <!nocheck>,
@@ -81,7 +82,8 @@ Build-Depends:
  unzip <!nocheck>,
  xmlbeans <!nocheck>,
  xxd <!nocheck> | vim-common <!nocheck>,
-Build-Conflicts: graphicsmagick-imagemagick-compat
+Build-Conflicts:
+ graphicsmagick-imagemagick-compat,
 Standards-Version: 4.3.0
 Rules-Requires-Root: no
 Homepage: https://diffoscope.org
