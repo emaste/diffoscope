@@ -38,7 +38,12 @@ find_executable = functools.lru_cache()(find_executable)
 # The output of --help and --list-tools will use the order of this dict.
 # Please keep it alphabetized.
 OS_NAMES = collections.OrderedDict(
-    [('arch', 'Arch Linux'), ('debian', 'Debian'), ('FreeBSD', 'FreeBSD')]
+    [
+        ('arch', 'Arch Linux'),
+        ('debian', 'Debian'),
+        ('FreeBSD', 'FreeBSD'),
+        ('guix', 'GNU Guix'),
+    ]
 )
 
 
