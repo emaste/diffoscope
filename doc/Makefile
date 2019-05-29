@@ -5,6 +5,10 @@
 PACKAGE = diffoscope
 VERSION = $$(cd .. && python3 setup.py -V)
 SED_fix_package_quirks = -e 's,bin/diffoscope,diffoscope,g'
+SED_fix_README_quirks = \
+  -e '/^\.\. raw:: /d' \
+  -e '/^\.\. image:: /d' \
+  -e '/ :target: /d'
 
 SED_rm_python_usage_msg = -e '/end_of_description_header/,/positional arguments/{d}'
 SED_fix_rst2man_quirks = \
@@ -23,6 +27,7 @@ $(PACKAGE).1: $(PACKAGE).h2m ../$(PACKAGE)/__init__.py
 
 $(PACKAGE).h2m: $(PACKAGE).h2m.0 ../README.rst Makefile
 	{ cat $(PACKAGE).h2m.0; cat ../README.rst | \
+	  sed $(SED_fix_README_quirks) | tee out.txt | \
 	  rst2man -q --no-doc-title | \
 	  sed $(SED_fix_rst2man_quirks) \
 	      $(SED_fix_package_quirks) \
