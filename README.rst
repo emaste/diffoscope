@@ -29,10 +29,8 @@ started, as well as more detailed explanations of all the command-line
 options. The same information is also available in
 ``/usr/share/doc/diffoscope/README.rst`` or similar.
 
-.. raw:: manpage
-
-   .\" the below hack gets rid of the python "usage" message in favour of the
-   .\" the synopsis we manually defined in doc/$(PACKAGE).h2m.0
+.. the below hack gets rid of the python "usage" message in favour of the the
+   synopsis we manually defined in doc/$(PACKAGE).h2m.0
    .SS positional arguments:
    .\" end_of_description_header
 
