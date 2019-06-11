@@ -2,9 +2,13 @@ FROM debian:sid
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN echo deb http://deb.debian.org/debian experimental main >> /etc/apt/sources.list
+RUN apt update && apt dist-upgrade --yes
+RUN apt install --yes --no-install-recommends devscripts equivs
 
-RUN apt-get update && apt-get dist-upgrade --yes
-RUN apt-get install --yes --install-recommends --target-release=experimental diffoscope || apt-get install --yes --install-recommends diffoscope
+ADD [".", "/srv/diffoscope"]
+RUN mk-build-deps --install --tool 'apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' /srv/diffoscope/debian/control
 
-ENTRYPOINT ["/usr/bin/diffoscope"]
+RUN apt remove --purge --yes devscripts equivs
+RUN apt autoremove --purge --yes
+
+ENTRYPOINT ["/srv/diffoscope/bin/diffoscope"]
