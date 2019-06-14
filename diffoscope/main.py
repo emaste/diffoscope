@@ -598,6 +598,12 @@ def maybe_set_limit(config, parsed_args, key):
 
 
 def run_diffoscope(parsed_args):
+    """
+    (This should not be considered a stable API suitable for external
+    consumption, and the lack of configuration of globals may result in
+    unpredictable behaviour.)
+    """
+
     ProfileManager().setup(parsed_args)
     PresenterManager().configure(parsed_args)
     logger.debug("Starting diffoscope %s", VERSION)
