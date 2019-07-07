@@ -1,8 +1,28 @@
-diffoscope (116) UNRELEASED; urgency=medium
+diffoscope (116) unstable; urgency=medium
 
-  * WIP.
+  [ Chris Lamb ]
+  * Upload to unstable after the release of Debian "buster".
+  * README.rst & manual page generation:
+    - Strip out manpage-only parts of the README rather than using "only"
+      reStructuredText directives in order to support the demands of the latest
+      PyPI website.
+    - Use "real" reStructuredText comments instead of using the "raw" directive.
+  * Dockerfile:
+    - Build the Docker image from the current Git checkout, not the Debian
+      archive. (reproducible-builds/diffoscope#56)
+    - Use the ENTRYPOINT directive with the JSON syntax instead so we pass all
+      arguments to the underlying diffoscope executable.
+  * Document that run_diffoscope should not be considered a stable API.
 
- -- Mattia Rizzolo <mattia@debian.org>  Wed, 22 May 2019 19:43:00 +0200
+  [ Mattia Rizzolo ]
+  * Rename a test function to prevent shadowing a previous one with the
+    same name.
+  * Add ffmpeg to the list of Debian build-dependencies for the testsuite.
+
+  [ Vagrant Cascadian ]
+  * Add support for known external tools in GNU Guix.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 07 Jul 2019 11:54:29 -0300
 
 diffoscope (115) experimental; urgency=medium
 
