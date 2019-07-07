@@ -84,7 +84,7 @@ Build-Depends:
  xxd <!nocheck> | vim-common <!nocheck>,
 Build-Conflicts:
  graphicsmagick-imagemagick-compat,
-Standards-Version: 4.3.0
+Standards-Version: 4.4.0
 Rules-Requires-Root: no
 Homepage: https://diffoscope.org
 Vcs-Git: https://salsa.debian.org/reproducible-builds/diffoscope.git
