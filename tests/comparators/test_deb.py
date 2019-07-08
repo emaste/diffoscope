@@ -27,7 +27,10 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_file_version_is_at_least,
+)
 from ..utils.data import load_fixture, get_data
 
 
@@ -146,13 +149,14 @@ bug903565_deb2 = load_fixture('bug903565_2.deb')
 
 
 @skip_unless_tools_exist('xz')
+@skip_unless_file_version_is_at_least('5.37')
 def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
     difference = bug881937_deb1.compare(bug881937_deb2)
-    assert difference.details[1].source1 == 'control.tar.gz'
-    assert difference.details[1].source2 == 'control.tar.xz'
+    assert difference.details[2].source1 == 'control.tar.gz'
+    assert difference.details[2].source2 == 'control.tar.xz'
     expected_diff = get_data('bug881937_control_expected_diff')
     assert (
-        difference.details[1].details[2].details[1].unified_diff
+        difference.details[2].details[2].details[1].unified_diff
         == expected_diff
     )
 

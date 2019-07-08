@@ -45,7 +45,7 @@ def differences(ipk1, ipk2):
     return ipk1.compare(ipk2).details
 
 
-@skip_unless_file_version_is_at_least('5.33')
+@skip_unless_file_version_is_at_least('5.37')
 def test_metadata(differences):
     assert differences[0].source1.startswith('filetype')
     expected_diff = get_data('ipk_metadata_expected_diff')

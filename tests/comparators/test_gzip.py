@@ -61,7 +61,7 @@ def differences(gzip1, gzip2):
     return gzip1.compare(gzip2).details
 
 
-@skip_unless_file_version_is_at_least('5.33')
+@skip_unless_file_version_is_at_least('5.37')
 def test_metadata(differences):
     assert differences[0].source1.startswith('filetype')
     assert differences[0].source2.startswith('filetype')

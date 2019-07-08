@@ -66,7 +66,7 @@ def expected_type_diff(ext1, ext2):
 
 
 @skip_unless_tools_exist('xz')
-@skip_unless_file_version_is_at_least('5.33')
+@skip_unless_file_version_is_at_least('5.37')
 def test_equal(set1):
     for x, y in itertools.product(TYPES, TYPES):
         diff = set1[x].compare(set1[y])
@@ -84,7 +84,7 @@ def test_equal(set1):
 
 
 @skip_unless_tools_exist('xz')
-@skip_unless_file_version_is_at_least('5.33')
+@skip_unless_file_version_is_at_least('5.37')
 def test_different(set1, set2):
     for x, y in itertools.product(TYPES, TYPES):
         expected_diff = get_data('containers/different_files_expected_diff')
