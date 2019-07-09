@@ -1,8 +1,15 @@
-diffoscope (117) UNRELEASED; urgency=medium
+diffoscope (117) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Add support for file 5.37. Thanks again to Christoph Biedl for the heads-up
+    in advance. (Closes: reproducible-builds/diffoscope/#57)
+  * Apply patch from Gianfranco Costamagna to fix autopkgtest failures in
+    Debian. (Closes: #931709)
 
- -- Chris Lamb <lamby@debian.org>  Sun, 07 Jul 2019 12:00:30 -0300
+  [ Holger Levsen ]
+  * debian/control: Bump Standards-Version to 4.4.0.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 09 Jul 2019 10:24:54 -0300
 
 diffoscope (116) unstable; urgency=medium
 
