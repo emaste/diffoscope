@@ -45,12 +45,16 @@ def skipif(*args, **kwargs):
     """
     Call `pytest.mark.skipif` with the specified arguments.
 
-    If the DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS environment variable is
-    exported this alters the behaviour such that a tool listed within this
-    variable is treated as a failed test instead of being skipped.
+    If `check_env_for_missing_tools=True` is passed and the
+    `DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS` environment variable is exported,
+    this alters the behaviour such that a tool listed within this variable is
+    treated as a failed test instead of being skipped.
 
     For more information on the rationale here, see issue #35.
     """
+
+    if not kwargs.get('check_env_for_missing_tools', False):
+        return pytest.mark.skipif(*args, **kwargs)
 
     key = 'DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS'
     val = os.environ.get(key)
@@ -87,6 +91,7 @@ def skip_unless_tools_exist(*required):
         tools_missing(*required),
         reason="requires {}".format(" and ".join(required)),
         tools=required,
+        check_env_for_missing_tools=True,
     )
 
 
