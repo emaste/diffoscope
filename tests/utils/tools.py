@@ -66,7 +66,7 @@ def skipif(*args, **kwargs):
     ):
         return pytest.mark.skipif(*args, **kwargs)
 
-    msg = "{} ({}={})".format(kwargs['reason'], key, val)
+    msg = "{} ({}={!r})".format(kwargs['reason'], key, val)
 
     # We cannot simply call pytest.fail here as that would result in a failure
     # during the test collection phase instead when the test is actually
