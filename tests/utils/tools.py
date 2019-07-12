@@ -45,28 +45,28 @@ def skipif(*args, **kwargs):
     """
     Call `pytest.mark.skipif` with the specified arguments.
 
-    As a special-case, if the DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS
-    environment variable is exported, this alters the behaviour such that a
-    missing tool is treated as a failed test. For more information on the
-    rationale here, please see issue #35.
+    If the DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS environment variable is
+    exported this alters the behaviour such that a tool listed within this
+    variable is treated as a failed test instead of being skipped.
+
+    For more information on the rationale here, see issue #35.
     """
 
-    if os.environ.get('DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS', None) != '1':
+    key = 'DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS'
+    val = os.environ.get(key)
+
+    if val is None:
         return pytest.mark.skipif(*args, **kwargs)
 
-    missing_tools = os.environ.get(
-        'DIFFOSCOPE_TESTS_MISSING_TOOLS', ''
-    ).split()
-    missing_tools.append('/missing')  # special value used in tests
     tools_required = kwargs.get('tools', ())
+    missing_tools = val.split() + ['/missing']  # special value used in tests
+
     if not tools_required or any(
         x for x in tools_required if x in missing_tools
     ):
         return pytest.mark.skipif(*args, **kwargs)
 
-    msg = "{} (DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS=1)".format(
-        kwargs['reason']
-    )
+    msg = "{} ({}={})".format(kwargs['reason'], key, val)
 
     # We cannot simply call pytest.fail here as that would result in a failure
     # during the test collection phase instead when the test is actually
