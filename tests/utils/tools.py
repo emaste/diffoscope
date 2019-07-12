@@ -75,6 +75,7 @@ def skipif(*args, **kwargs):
         def inner(*args2, **kwargs2):
             if args[0]:  # i.e. the condition of the skipif() is True
                 return pytest.fail(msg)
+            return None
 
         return inner
 
@@ -181,6 +182,8 @@ def module_is_not_importable(x):
         # Probing for submodules (eg. ``debian.deb822``) will attempt to
         # import ``debian`` so we must handle that failing.
         return True
+
+    return False
 
 
 def skip_unless_module_exists(name):
