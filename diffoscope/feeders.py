@@ -92,8 +92,17 @@ def from_command(command):
             end_nl = feeder(out_file)
             returncode = command.returncode
         if returncode not in (0, -signal.SIGTERM):
+            # On error, default to displaying all lines of standard output.
+            output = command.stderr
+            if not output and command.stdout:
+                # ... but if we don't have, return the first line of the
+                # standard output.
+                output = '{}{}'.format(
+                    command.stdout[0].decode('utf-8', 'ignore').strip(),
+                    '\n[…]' if len(command.stdout) > 1 else '',
+                )
             raise subprocess.CalledProcessError(
-                returncode, command.cmdline(), output=command.stderr
+                returncode, command.cmdline(), output=output
             )
         return end_nl
 
