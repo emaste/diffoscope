@@ -437,16 +437,18 @@ class File(object, metaclass=abc.ABCMeta):
                     )
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
-                if e.output:
-                    output = re.sub(r'^', '    ', e.output, flags=re.MULTILINE)
-                else:
-                    output = '<none>'
                 cmd = ' '.join(e.cmd)
                 if difference is None:
                     return None
+                output = '<none>'
+                if e.output:
+                    output = '\n{}'.format(
+                        re.sub(r'^', '    ', e.output, flags=re.MULTILINE)
+                    )
                 difference.add_comment(
-                    "Command `%s` exited with %d. Output:\n%s"
-                    % (cmd, e.returncode, output)
+                    "Command `{}` exited with {}. Output: {}".format(
+                        cmd, e.returncode, output
+                    )
                 )
             except RequiredToolNotFound as e:
                 difference = self.compare_bytes(other, source=source)
