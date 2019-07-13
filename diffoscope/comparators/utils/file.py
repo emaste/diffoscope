@@ -446,7 +446,7 @@ class File(object, metaclass=abc.ABCMeta):
                         re.sub(r'^', '    ', e.output, flags=re.MULTILINE)
                     )
                 difference.add_comment(
-                    "Command `{}` exited with {}. Output: {}".format(
+                    "Command `{}` exited with return code {}. Output: {}".format(
                         cmd, e.returncode, output
                     )
                 )
