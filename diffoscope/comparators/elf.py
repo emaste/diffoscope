@@ -339,25 +339,37 @@ class ElfSection(File):
 
 class ElfCodeSection(ElfSection):
     def compare(self, other, source=None):
-        # Normally disassemble with line numbers, but if the command is
-        # excluded, fallback to disassembly, and if that is also excluded,
-        # fallback to a hexdump.
-        diff, excluded = Difference.from_command_exc(
-            ObjdumpDisassembleSection,
-            self.path,
-            other.path,
-            command_args=[self._name],
-        )
-        if not excluded:
+        # Disassemble with line numbers, but if the command is excluded or
+        # fails, fallback to disassembly. If that is also excluded or failing,
+        # only then fallback to a hexdump.
+        diff = None
+        try:
+            diff, excluded = Difference.from_command_exc(
+                ObjdumpDisassembleSection,
+                self.path,
+                other.path,
+                command_args=[self._name],
+            )
+        # eg. When failing to disassemble a different architecture.
+        except subprocess.CalledProcessError as e:
+            logger.error(e)
+
+        if diff and not excluded:
             return diff
-        diff, excluded = Difference.from_command_exc(
-            ObjdumpDisassembleSectionNoLineNumbers,
-            self.path,
-            other.path,
-            command_args=[self._name],
-        )
-        if not excluded:
+
+        try:
+            diff, excluded = Difference.from_command_exc(
+                ObjdumpDisassembleSectionNoLineNumbers,
+                self.path,
+                other.path,
+                command_args=[self._name],
+            )
+        except subprocess.CalledProcessError as e:
+            logger.error(e)
+
+        if diff and not excluded:
             return diff
+
         return super().compare(other, source)
 
 
