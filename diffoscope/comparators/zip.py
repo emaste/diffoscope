@@ -165,14 +165,17 @@ class ZipFile(File):
         r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
     )
 
+    ZIPINFO = Zipinfo
+    ZIPINFO_VERBOSE= ZipinfoVerbose
+
     def compare_details(self, other, source=None):
         differences = []
         zipinfo_difference = None
         if Config().exclude_directory_metadata != 'recursive':
             zipinfo_difference = (
-                Difference.from_command(Zipinfo, self.path, other.path)
+                Difference.from_command(self.ZIPINFO, self.path, other.path)
                 or Difference.from_command(
-                    ZipinfoVerbose, self.path, other.path
+                    self.ZIPINFO_VERBOSE, self.path, other.path
                 )
                 or Difference.from_command(
                     BsdtarVerbose, self.path, other.path
@@ -187,19 +190,20 @@ class ZipFile(File):
         return differences
 
 
-class MozillaZipCommandMixin(object):
+class IgnoreReturncodeMixin(object):
     @property
     def returncode(self):
-        # zipinfo emits an error when reading Mozilla-optimized ZIPs,
-        # which is fine to ignore.
+        # zipinfo returns with an exit code of 1 when reading Mozilla-optimized
+        # or Java "jmod" ZIPs as they have non-standard headers which are fine
+        # to ignore.
         return 0
 
 
-class MozillaZipinfo(MozillaZipCommandMixin, Zipinfo):
+class IgnoreReturncodeZipinfo(IgnoreReturncodeMixin, Zipinfo):
     pass
 
 
-class MozillaZipinfoVerbose(MozillaZipCommandMixin, ZipinfoVerbose):
+class IgnoreReturncodeZipinfoVerbose(IgnoreReturncodeMixin, ZipinfoVerbose):
     pass
 
 
@@ -223,8 +227,11 @@ class MozillaZipContainer(ZipContainer):
         return result
 
 
-class MozillaZipFile(File):
+class MozillaZipFile(ZipFile):
     CONTAINER_CLASS = MozillaZipContainer
+
+    ZIPINFO = IgnoreReturncodeZipinfo
+    ZIPINFO_VERBOSE = IgnoreReturncodeZipinfoVerbose
 
     @classmethod
     def recognizes(cls, file):
@@ -233,14 +240,3 @@ class MozillaZipFile(File):
         # central directory (with a PK\x01\x02 signature)
         return file.file_header[4:8] == b'PK\x01\x02'
 
-    def compare_details(self, other, source=None):
-        if Config().exclude_directory_metadata == 'recursive':
-            return []
-        zipinfo_difference = (
-            Difference.from_command(MozillaZipinfo, self.path, other.path)
-            or Difference.from_command(
-                MozillaZipinfoVerbose, self.path, other.path
-            )
-            or Difference.from_command(BsdtarVerbose, self.path, other.path)
-        )
-        return [zipinfo_difference]
