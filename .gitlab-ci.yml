@@ -19,7 +19,6 @@ testing:
 stable-bpo:
   <<: *test
   image: debian:stable-backports
-  allow_failure: true
 
 ubuntu-devel:
   <<: *test
