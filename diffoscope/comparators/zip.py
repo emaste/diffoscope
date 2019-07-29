@@ -167,7 +167,7 @@ class ZipFile(File):
     )
 
     ZIPINFO = Zipinfo
-    ZIPINFO_VERBOSE= ZipinfoVerbose
+    ZIPINFO_VERBOSE = ZipinfoVerbose
 
     def compare_details(self, other, source=None):
         differences = []
@@ -247,3 +247,10 @@ class MozillaZipFile(ZipFile):
         # central directory (with a PK\x01\x02 signature)
         return file.file_header[4:8] == b'PK\x01\x02'
 
+
+class JmodJavaModule(ZipFile):
+    DESCRIPTION = 'Java .jmod modules'
+    FILE_TYPE_RE = re.compile(r'^Java jmod module\b')
+
+    ZIPINFO = IgnoreReturncodeZipinfo
+    ZIPINFO_VERBOSE = IgnoreReturncodeZipinfoVerbose

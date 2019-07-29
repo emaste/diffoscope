@@ -19,7 +19,7 @@
 
 import pytest
 
-from diffoscope.comparators.zip import ZipFile, MozillaZipFile
+from diffoscope.comparators.zip import ZipFile, MozillaZipFile, JmodJavaModule
 
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
@@ -33,6 +33,8 @@ encrypted_zip1 = load_fixture('encrypted1.zip')
 encrypted_zip2 = load_fixture('encrypted2.zip')
 mozzip1 = load_fixture('test1.mozzip')
 mozzip2 = load_fixture('test2.mozzip')
+jmod1 = load_fixture('test1.jmod')
+jmod2 = load_fixture('test2.jmod')
 test_comment1 = load_fixture('test_comment1.zip')
 test_comment2 = load_fixture('test_comment2.zip')
 
@@ -117,6 +119,27 @@ def test_mozzip_compressed_files(mozzip_differences):
 @skip_unless_tools_exist('zipinfo')
 def test_mozzip_compare_non_existing(monkeypatch, mozzip1):
     assert_non_existing(monkeypatch, mozzip1)
+
+
+def test_jmod_identification(jmod1):
+    assert isinstance(jmod1, JmodJavaModule)
+
+
+def test_jmod_no_differences(jmod1):
+    difference = jmod1.compare(jmod1)
+    assert difference is None
+
+
+@pytest.fixture
+def jmod_differences(jmod1, jmod2):
+    return jmod1.compare(jmod2).details
+
+
+@skip_unless_tools_exist('zipinfo')
+def test_jmod_metadata(jmod_differences, jmod1, jmod2):
+    expected_diff = get_data('jmod_zipinfo_expected_diff')
+    diff = jmod_differences[0].unified_diff
+    assert jmod_differences[0].unified_diff == expected_diff
 
 
 def test_encrypted(encrypted_zip1, encrypted_zip2):

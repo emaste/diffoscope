@@ -89,6 +89,7 @@ class ComparatorManager(object):
         ('docx.DocxFile',),
         ('zip.MozillaZipFile',),
         ('zip.ZipFile',),
+        ('zip.JmodJavaModule',),
         ('image.JPEGImageFile',),
         ('image.ICOImageFile',),
         ('cbfs.CbfsFile',),
