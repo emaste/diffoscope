@@ -193,10 +193,15 @@ class ZipFile(File):
 class IgnoreReturncodeMixin(object):
     @property
     def returncode(self):
-        # zipinfo returns with an exit code of 1 when reading Mozilla-optimized
-        # or Java "jmod" ZIPs as they have non-standard headers which are fine
-        # to ignore.
-        return 0
+        returncode = super().returncode
+
+        # zipinfo returns with an exit code of 1 or 2 when reading
+        # Mozilla-optimized or Java "jmod" ZIPs as they have non-standard
+        # headers which are safe to ignore.
+        if returncode in (1, 2):
+            returncode = 0
+
+        return returncode
 
 
 class IgnoreReturncodeZipinfo(IgnoreReturncodeMixin, Zipinfo):
