@@ -1,3 +1,9 @@
+diffoscope (121) UNRELEASED; urgency=medium
+
+  * WIP\n\nGbp-Dch: ignore
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 29 Jul 2019 17:20:27 -0300
+
 diffoscope (120) unstable; urgency=medium
 
   * No-change sourceful after accidentally uploading binaries in order to
