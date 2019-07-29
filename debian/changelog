@@ -1,8 +1,29 @@
-diffoscope (119) UNRELEASED; urgency=medium
+diffoscope (119) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * If a command fails to execute but does not print anything to standard
+    error, try and include the first line of standard output in the message we
+    include in the diff. This was motivated by readelf(1) returning its error
+    messages on stdout. (Closes: #931963)
+  * Add support for Java ".jmod" modules. Not all versions of file(1) support
+    detection of Jmod files yet, so we perform a manual comparison instead.
+    (Closes: #933308)
+  * Re-add "return code" noun to "Command `foo` exited with X" error messages.
+  * Factor out the ability to ignore the exit codes of "zipinfo" and
+    "zipinfo -v" in the presence of non-standard headers.
+  * Only override the exit code from our special-cased calls to zipinfo(1) if
+    they are 1 or 2 to avoid potentially masking real errors.
+  * Also add missing textual description entries for ZipFile and
+    MozillaZipFile file types.
+  * Skip extra newline in "Output:\n<none>".
+  * Cease ignoring test failures in stable-backports.
+  * Bump debhelper compat level to 12.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 13 Jul 2019 10:43:23 -0300
+  [ Marc Herbert ]
+  * Catch failures to disassemble and rescue all other differences.
+    (Closes: reproducible-builds/diffoscope!29)
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 29 Jul 2019 15:22:24 -0300
 
 diffoscope (118) unstable; urgency=medium
 
