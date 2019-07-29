@@ -1,9 +1,9 @@
-diffoscope (120) UNRELEASED; urgency=medium
+diffoscope (120) unstable; urgency=medium
 
-  * WIP
-  * WIP
+  * No-change sourceful after accidentally uploading binaries in order to
+    migration to testing.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 29 Jul 2019 15:27:19 -0300
+ -- Chris Lamb <lamby@debian.org>  Mon, 29 Jul 2019 17:17:46 -0300
 
 diffoscope (119) unstable; urgency=medium
 
