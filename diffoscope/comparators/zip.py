@@ -250,7 +250,13 @@ class MozillaZipFile(ZipFile):
 
 class JmodJavaModule(ZipFile):
     DESCRIPTION = 'Java .jmod modules'
-    FILE_TYPE_RE = re.compile(r'^Java jmod module\b')
 
+    FILE_TYPE_RE = re.compile(r'^(Zip archive data|Java jmod module)')
     ZIPINFO = IgnoreReturncodeZipinfo
     ZIPINFO_VERBOSE = IgnoreReturncodeZipinfoVerbose
+
+    @classmethod
+    def recognizes(cls, file):
+        # Not all versions of file(1) support the detection of these
+        # modules yet so we perform our own manual check for a "JM" prefix.
+        return file.file_header[:2] == b'JM'
