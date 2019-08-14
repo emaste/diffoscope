@@ -328,6 +328,18 @@ class File(object, metaclass=abc.ABCMeta):
 
         return compare_binary_files(self, other, source)
 
+    @classmethod
+    def _mangle_file_type(self, val):
+        # Strip off trailing "original size modulo 2^32 671" from
+        # gzip compressed data as this is just a symptom of the contents itself
+        # changing that will be reflected elsewhere.
+        if val.startswith("gzip compressed data"):
+            val = re.compile(r", original size modulo 2\^\d+ \d+$").sub(
+                '', val
+            )
+
+        return val
+
     def _compare_using_details(self, other, source):
         details = []
         difference = Difference(None, self.name, other.name, source=source)
@@ -339,8 +351,8 @@ class File(object, metaclass=abc.ABCMeta):
                 details.extend(
                     [
                         Difference.from_text(
-                            self.magic_file_type,
-                            other.magic_file_type,
+                            self._mangle_file_type(self.magic_file_type),
+                            self._mangle_file_type(other.magic_file_type),
                             self,
                             other,
                             source='filetype from file(1)',
