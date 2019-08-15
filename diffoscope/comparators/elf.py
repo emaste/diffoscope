@@ -350,8 +350,8 @@ class ElfCodeSection(ElfSection):
                 other.path,
                 command_args=[self._name],
             )
-        # eg. When failing to disassemble a different architecture.
         except subprocess.CalledProcessError as e:
+            # eg. When failing to disassemble a different architecture.
             logger.error(e)
 
         if diff and not excluded:
