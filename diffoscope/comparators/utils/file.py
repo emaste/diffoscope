@@ -330,7 +330,7 @@ class File(object, metaclass=abc.ABCMeta):
 
     @classmethod
     def _mangle_file_type(self, val):
-        # Strip off trailing "original size modulo 2^32 671" from
+        # Strip off trailing (eg.) "original size modulo 2^32 671" from
         # gzip compressed data as this is just a symptom of the contents itself
         # changing that will be reflected elsewhere.
         if val.startswith("gzip compressed data"):
