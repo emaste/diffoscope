@@ -147,23 +147,16 @@ class RedaelfVersionInfo(Readelf):
 
 
 class ReadelfDebugDump(Readelf):
-    def __new__(cls, *args, **kwargs):
-        # Find the section group from the class name
-        debug_section_group = cls.__name__[len('ReadelfDebugDump_') :]
-        if debug_section_group:
-            return ReadelfDebugDump(debug_section_group, *args, **kwargs)
-        return super(Readelf, cls).__new__(cls)
-
-    def __init__(self, debug_section_group, *args, **kwargs):
-        self._debug_section_group = debug_section_group
-        super().__init__(*args, **kwargs)
-
     def readelf_options(self):
         return ['--debug-dump=%s' % self._debug_section_group]
 
 
 READELF_DEBUG_DUMP_COMMANDS = [
-    type('ReadelfDebugDump_{}'.format(x), (ReadelfDebugDump,), {})
+    type(
+        'ReadelfDebugDump_{}'.format(x),
+        (ReadelfDebugDump,),
+        {'_debug_section_group': x},
+    )
     for x in DEBUG_SECTION_GROUPS
 ]
 
