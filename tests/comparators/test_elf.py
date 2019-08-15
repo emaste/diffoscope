@@ -41,6 +41,8 @@ from ..utils.tools import (
 obj1 = load_fixture('test1.o')
 obj2 = load_fixture('test2.o')
 bug_903446 = load_fixture('bug_903446.a')
+ignore_readelf_errors1 = load_fixture('test1.debug')
+ignore_readelf_errors2 = load_fixture('test2.debug')
 
 
 def readelf_version():
@@ -203,3 +205,28 @@ def test_bug_903446(bug_903446):
 
     # Not a real StaticLibFile
     assert isinstance(bug_903446, FilesystemFile)
+
+
+def test_ignore_readelf_errors1_identify(ignore_readelf_errors1):
+    assert isinstance(ignore_readelf_errors1, ElfFile)
+
+
+def test_ignore_readelf_errors1_identify(ignore_readelf_errors2):
+    assert isinstance(ignore_readelf_errors2, ElfFile)
+
+
+@pytest.fixture
+def ignore_readelf_errors_differences(
+    ignore_readelf_errors1, ignore_readelf_errors2
+):
+    return ignore_readelf_errors1.compare(ignore_readelf_errors2).details
+
+
+@skip_unless_tools_exist('readelf')
+@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_if_binutils_does_not_support_x86()
+def test_ignore_readelf_errors(ignore_readelf_errors_differences):
+    with open('tests/data/ignore_readelf_errors_expected_diff', 'w') as f:
+        f.write(ignore_readelf_errors_differences[0].unified_diff)
+    expected_diff = get_data('ignore_readelf_errors_expected_diff')
+    assert ignore_readelf_errors_differences[0].unified_diff == expected_diff

@@ -263,7 +263,7 @@ READELF_COMMANDS = (
 
 def _compare_elf_data(path1, path2):
     return [
-        Difference.from_command(x, path1, path2)
+        Difference.from_command(x, path1, path2, ignore_returncodes={1})
         for x in list(READELF_COMMANDS) + READELF_DEBUG_DUMP_COMMANDS
     ]
 
