@@ -19,6 +19,7 @@
 
 import heapq
 import logging
+import subprocess
 
 from . import feeders
 from .exc import RequiredToolNotFound
@@ -257,6 +258,7 @@ class Difference(object):
     @staticmethod
     def from_command_exc(klass, path1, path2, *args, **kwargs):
         command_args = kwargs.pop('command_args', [])
+        ignore_returncodes = kwargs.pop('ignore_returncodes', ())
 
         def command_and_feeder(path):
             command = None
@@ -280,9 +282,15 @@ class Difference(object):
             source_cmd = command1 or command2
             kwargs['source'] = source_cmd.shell_cmdline()
 
-        difference = Difference.from_feeder(
-            feeder1, feeder2, path1, path2, *args, **kwargs
-        )
+        try:
+            difference = Difference.from_feeder(
+                feeder1, feeder2, path1, path2, *args, **kwargs
+            )
+        except subprocess.CalledProcessError as exc:
+            if exc.returncode in ignore_returncodes:
+                return None, False
+            assert False, exc.__dict__
+
         if not difference:
             return None, False
 
