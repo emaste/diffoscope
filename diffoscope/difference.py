@@ -256,10 +256,7 @@ class Difference(object):
 
     @staticmethod
     def from_command_exc(klass, path1, path2, *args, **kwargs):
-        command_args = []
-        if 'command_args' in kwargs:
-            command_args = kwargs['command_args']
-            del kwargs['command_args']
+        command_args = kwargs.pop('command_args', [])
 
         def command_and_feeder(path):
             command = None
