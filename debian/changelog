@@ -1,3 +1,9 @@
+diffoscope (122) UNRELEASED; urgency=medium
+
+  * WIP
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 16 Aug 2019 10:08:27 -0700
+
 diffoscope (121) unstable; urgency=medium
 
   * Don't fallback to a (useless) raw hexdump when readelf(1) reports an minor
