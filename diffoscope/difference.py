@@ -289,7 +289,7 @@ class Difference(object):
         except subprocess.CalledProcessError as exc:
             if exc.returncode in ignore_returncodes:
                 return None, False
-            assert False, exc.__dict__
+            raise
 
         if not difference:
             return None, False
