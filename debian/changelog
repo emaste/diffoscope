@@ -1,8 +1,16 @@
-diffoscope (121) UNRELEASED; urgency=medium
+diffoscope (121) unstable; urgency=medium
 
-  * WIP
+  * Don't fallback to a (useless) raw hexdump when readelf(1) reports an minor
+    issue in a section in an ELF binary. For example, when the "frames" section
+    is of the "NOBITS" type, its contents are apparently "unreliable" and thus
+    readelf(1) exits with a returncode of 1. (Closes: #849407, #931962)
+  * Add support to Difference.from_command_exc and friends to optionally ignore
+    specified returncodes from the called program and treat them as "no"
+    difference.
+  * Simplify the parsing of the optional "command_args" argument to the
+    from_command and from_command_exc methods in the Difference class.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 29 Jul 2019 17:20:27 -0300
+ -- Chris Lamb <lamby@debian.org>  Fri, 16 Aug 2019 09:49:07 -0700
 
 diffoscope (120) unstable; urgency=medium
 
