@@ -9,7 +9,7 @@ fi
 
 export LIBGUESTFS_MEMSIZE=128
 if [ "$(basename "$0")" = "pytest-with-recommends" ]; then
-    export DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS="apktool zipinfo pedump oggDump ppudump cbfstool otool lipo wasm2wat"
+    export DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS="apktool zipinfo pedump oggDump ppudump cbfstool otool lipo"
 fi
 
 cp -r tests "$ADTTMP"
