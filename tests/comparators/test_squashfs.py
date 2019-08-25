@@ -29,7 +29,7 @@ from ..utils.nonexisting import assert_non_existing
 
 def unsquashfs_version():
     # first line of 'unsquashfs -version' looks like:
-    #   unsquashfs version 4.2-git (2013/03/13)
+    #   unsquashfs version 4.4pre-git (2019/08/15)
     try:
         out = subprocess.check_output(['unsquashfs', '-version'])
     except subprocess.CalledProcessError as e:
@@ -62,7 +62,7 @@ def differences(squashfs1, squashfs2):
 
 
 @skip_unless_tool_is_at_least(
-    'unsquashfs', unsquashfs_version, '4.3+git190823'
+    'unsquashfs', unsquashfs_version, '4.4'
 )
 def test_superblock(differences):
     expected_diff = get_data('squashfs_superblock_expected_diff')
