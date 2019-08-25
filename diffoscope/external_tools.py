@@ -178,7 +178,7 @@ EXTERNAL_TOOLS = {
         'FreeBSD': 'sqlite3',
         'guix': 'sqlite',
     },
-    'wasm2wat': {'arch': 'wabt'},
+    'wasm2wat': {'debian': 'wabt', 'arch': 'wabt'},
     'tar': {'debian': 'tar', 'arch': 'tar', 'guix': 'tar'},
     'tcpdump': {'debian': 'tcpdump', 'arch': 'tcpdump', 'guix': 'tcpdump'},
     'unsquashfs': {

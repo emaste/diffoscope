@@ -80,6 +80,7 @@ Build-Depends:
  squashfs-tools <!nocheck>,
  tcpdump <!nocheck>,
  unzip <!nocheck>,
+ wabt <!nocheck>,
  xmlbeans <!nocheck>,
  xxd <!nocheck> | vim-common <!nocheck>,
 Build-Conflicts:
