@@ -61,7 +61,9 @@ def differences(squashfs1, squashfs2):
     return squashfs1.compare(squashfs2).details
 
 
-@skip_unless_tool_is_at_least('unsquashfs', unsquashfs_version, '4.3+git190823')
+@skip_unless_tool_is_at_least(
+    'unsquashfs', unsquashfs_version, '4.3+git190823'
+)
 def test_superblock(differences):
     expected_diff = get_data('squashfs_superblock_expected_diff')
     assert differences[0].unified_diff == expected_diff
