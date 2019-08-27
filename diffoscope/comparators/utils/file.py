@@ -452,19 +452,34 @@ class File(object, metaclass=abc.ABCMeta):
                 cmd = ' '.join(e.cmd)
                 if difference is None:
                     return None
-                output = '<none>'
-                if e.output:
-                    output = '\n{}'.format(
+
+                # Include either stderr (prefered) or stdout in the hexdump
+                # difference
+                suffix = None
+                for prefix, val in (
+                    ("Standard output", e.stdout),
+                    ("Standard error", e.stderr),
+                ):
+                    if not val:
+                        continue
+                    suffix = ' {}:\n{}'.format(
+                        prefix,
                         re.sub(
                             r'^',
                             '    ',
-                            e.output.decode('utf-8'),
+                            val.decode('utf-8'),
                             flags=re.MULTILINE,
-                        )
-                    )
+                        ),
+                    ).strip()
+
+                    # Truncate output
+                    max_len = 250
+                    if len(suffix) > max_len:
+                        suffix = '{}  [...]'.format(suffix[:max_len])
+
                 difference.add_comment(
-                    "Command `{}` exited with return code {}. Output: {}".format(
-                        cmd, e.returncode, output
+                    "Command `{}` exited with return code {}.{}".format(
+                        cmd, e.returncode, suffix or " (No output)"
                     )
                 )
             except RequiredToolNotFound as e:
