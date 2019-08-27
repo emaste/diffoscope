@@ -201,3 +201,8 @@ def skip_unless_module_exists(name):
 
 def skip_unless_file_version_is_at_least(version):
     return skip_unless_tool_is_at_least('file', file_version, version)
+
+
+skip_unless_root = pytest.mark.skipif(
+    os.geteuid() != 0, reason="requires root/fakeroot"
+)
