@@ -455,7 +455,12 @@ class File(object, metaclass=abc.ABCMeta):
                 output = '<none>'
                 if e.output:
                     output = '\n{}'.format(
-                        re.sub(r'^', '    ', e.output, flags=re.MULTILINE)
+                        re.sub(
+                            r'^',
+                            '    ',
+                            e.output.decode('utf-8'),
+                            flags=re.MULTILINE,
+                        )
                     )
                 difference.add_comment(
                     "Command `{}` exited with return code {}. Output: {}".format(
