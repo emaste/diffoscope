@@ -234,9 +234,15 @@ class File(object, metaclass=abc.ABCMeta):
             if hasattr(self, '_other_file'):
                 return self._other_file.__class__.CONTAINER_CLASS(self)
             return None
+
+        def type_name(klass):
+            return "{}.{}".format(klass.__module__, klass.__name__)
+
         if not hasattr(self, '_as_container'):
             logger.debug(
-                'instantiating %s for %s', self.__class__.CONTAINER_CLASS, self
+                'Instantiating a %s for %s',
+                type_name(self.__class__.CONTAINER_CLASS),
+                self.name,
             )
             try:
                 self._as_container = self.__class__.CONTAINER_CLASS(self)
@@ -244,8 +250,8 @@ class File(object, metaclass=abc.ABCMeta):
                 return None
         logger.debug(
             "Returning a %s for %s",
-            self._as_container.__class__.__name__,
-            self,
+            type_name(self._as_container.__class__),
+            self.name,
         )
         return self._as_container
 
