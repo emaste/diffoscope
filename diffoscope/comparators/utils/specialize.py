@@ -37,7 +37,7 @@ def try_recognize(file, cls, recognizes):
             return False
 
     # Found a match; perform type magic
-    logger.debug("Using %s for %s", cls.__name__, file.name)
+    logger.debug("Using %s.%s for %s", cls.__module__, cls.__name__, file.name)
     new_cls = type(cls.__name__, (cls, type(file)), {})
     file.__class__ = new_cls
 
