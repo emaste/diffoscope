@@ -102,7 +102,7 @@ def from_command(command):
                     '\n[…]' if len(command.stdout) > 1 else '',
                 )
             raise subprocess.CalledProcessError(
-                returncode, command.cmdline(), output=output
+                returncode, command.cmdline(), output=output.encode('utf-8')
             )
         return end_nl
 

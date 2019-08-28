@@ -191,7 +191,7 @@ def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
 
     if not parser.success and p.returncode not in (0, 1):
         raise subprocess.CalledProcessError(
-            p.returncode, cmd, output=parser.diff
+            p.returncode, cmd, output=parser.diff.encode('utf-8')
         )
 
     if p.returncode == 0:
