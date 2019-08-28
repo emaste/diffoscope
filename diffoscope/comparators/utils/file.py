@@ -473,10 +473,10 @@ class File(object, metaclass=abc.ABCMeta):
                         re.sub(
                             r'^',
                             '    ',
-                            val.decode('utf-8'),
+                            val.decode('utf-8').strip(),
                             flags=re.MULTILINE,
                         ),
-                    ).strip()
+                    )
 
                     # Truncate output
                     max_len = 250
