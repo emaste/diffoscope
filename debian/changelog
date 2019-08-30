@@ -1,8 +1,30 @@
-diffoscope (122) UNRELEASED; urgency=medium
+diffoscope (122) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Apply patch from László Böszörményi to update the squashfs test output and
+    bump the required version for the test itself. (Closes: #935684)
+  * Skip calls to unsquashfs when we are not root or fakeroot.
+    (Re: reproducible-builds/diffoscope#63)
+  * Include either standard error or standard output (and not just the latter)
+    if/when an external command fails.
+  * Fix a few unicode/bytes issues:
+    - Avoid a possible traceback caused by a str/bytes confusion when handling
+      the output of failing external commands.
+    - Ensure that all of our artificially-created subprocess.CalledProcessError
+      instances have `output` instances that are bytes objects, not str.
+  * Improve debugging output:
+    * Add the containing module name to the (eg.) "Using StaticLibFile for ..."
+    * Improve and condense output when creating our Comparator object types.
+  * Correct a reference to `parser.diff` as `diff` in this context is a Python
+    function in the module, not the actual output returned from diff(1).
+  * Add the "wabt" Debian package to the test dependencies so that we run the
+    wasm tests.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 16 Aug 2019 10:08:27 -0700
+  [ Mattia Rizzolo ]
+  * Now that we test-require wabt, expect that its tools to be available during
+    autopkgtests.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 30 Aug 2019 08:52:25 +0100
 
 diffoscope (121) unstable; urgency=medium
 
