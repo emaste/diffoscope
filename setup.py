@@ -36,6 +36,7 @@ setup(
     version=diffoscope.VERSION,
     description='in-depth comparison of files, archives, and directories',
     long_description=open('README.rst', encoding='utf-8').read(),
+    long_description_content_type='text/x-rst',
     author='Lunar',
     author_email='lunar@debian.org',
     license='GPL-3+',
