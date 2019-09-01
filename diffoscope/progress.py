@@ -80,7 +80,11 @@ class ProgressManager(object):
             except ImportError:
                 # User asked for bar, so show them the error
                 if parsed_args.progress:
-                    raise
+                    logging.error(
+                        "Progress bar requested, but the 'progressbar' "
+                        "python module is missing."
+                    )
+                    logging.error("Continuing without progress bar.")
 
         if parsed_args.status_fd:
             self.register(StatusFD(os.fdopen(parsed_args.status_fd, 'w')))
