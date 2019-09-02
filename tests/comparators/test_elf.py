@@ -226,7 +226,5 @@ def ignore_readelf_errors_differences(
 @skip_if_tool_version_is('readelf', readelf_version, '2.29')
 @skip_if_binutils_does_not_support_x86()
 def test_ignore_readelf_errors(ignore_readelf_errors_differences):
-    with open('tests/data/ignore_readelf_errors_expected_diff', 'w') as f:
-        f.write(ignore_readelf_errors_differences[0].unified_diff)
     expected_diff = get_data('ignore_readelf_errors_expected_diff')
     assert ignore_readelf_errors_differences[0].unified_diff == expected_diff
