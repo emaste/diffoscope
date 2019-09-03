@@ -55,7 +55,11 @@ EXTERNAL_TOOLS = {
     'file': {'debian': 'file', 'arch': 'file', 'guix': 'file'},
     'find': {'debian': 'findutils', 'arch': 'findutils', 'guix': 'findutils'},
     'getfacl': {'debian': 'acl', 'arch': 'acl', 'guix': 'acl'},
-    'gifbuild': {'debian': 'giflib-tools', 'arch': 'giflib'},
+    'gifbuild': {
+        'debian': 'giflib-tools',
+        'arch': 'giflib',
+        'guix': 'giflib:bin',
+    },
     'ghc': {'debian': 'ghc', 'arch': 'ghc', 'FreeBSD': 'ghc', 'guix': 'ghc'},
     'gpg': {
         'debian': 'gnupg',
@@ -84,9 +88,10 @@ EXTERNAL_TOOLS = {
     'javap': {
         'debian': 'default-jdk-headless | default-jdk | java-sdk',
         'arch': 'java-environment',
+        'guix': 'openjdk:jdk',
     },
     'js-beautify': {'debian': 'jsbeautifier', 'arch': 'python-jsbeautifier'},
-    'kbxutil': {'debian': 'gnupg-utils'},
+    'kbxutil': {'debian': 'gnupg-utils', 'guix': 'gnupg'},
     'llvm-bcanalyzer': {'debian': 'llvm', 'arch': 'llvm', 'guix': 'llvm'},
     'llvm-config': {'debian': 'llvm', 'arch': 'llvm'},
     'llvm-dis': {'debian': 'llvm', 'arch': 'llvm', 'guix': 'llvm'},
