@@ -128,6 +128,7 @@ def test_listing(differences):
     assert differences[0].unified_diff in (
         get_data('cbfs_listing_expected_diff'),
         get_data('cbfs_listing_no_legacy_header_expected_diff'),
+        get_data('cbfs_listing_comp_column_expected.diff'),
     )
 
 
