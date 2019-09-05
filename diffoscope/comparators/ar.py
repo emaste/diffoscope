@@ -31,10 +31,9 @@ from .utils.libarchive import LibarchiveContainer, list_libarchive
 logger = logging.getLogger(__name__)
 
 
-# TODO: this would also be useful for Go archives. Currently those are handled
-# by StaticLibFile, but then readelf complains with "Error: Not an ELF file".
-# ArFile gives slightly more reasonable output, e.g. a readable plain diff of
-# the __.PKGDEF member which is just a text file containing the Go interface.
+# For Go archives this gives a readable plain diff of the __.PKGDEF
+# member which is just a text file containing the Go interface.
+# TODO: add Go tests and more recursion.
 
 
 class ArContainer(LibarchiveContainer):

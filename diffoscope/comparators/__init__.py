@@ -55,7 +55,6 @@ class ComparatorManager(object):
         ('elf.ElfFile',),
         ('macho.MachoFile',),
         ('fsimage.FsImageFile',),
-        ('elf.StaticLibFile',),
         ('llvm.LlvmBitCodeFile',),
         ('sqlite.Sqlite3Database',),
         ('wasm.WasmFile',),

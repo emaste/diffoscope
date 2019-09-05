@@ -23,7 +23,8 @@ import os.path
 import subprocess
 
 from diffoscope.config import Config
-from diffoscope.comparators.elf import ElfFile, StaticLibFile
+from diffoscope.comparators.ar import ArFile
+from diffoscope.comparators.elf import ElfFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.directory import FilesystemDirectory
 from diffoscope.comparators.missing_file import MissingFile
@@ -108,7 +109,7 @@ def lib2():
 
 
 def test_lib_identification(lib1):
-    assert isinstance(lib1, StaticLibFile)
+    assert isinstance(lib1, ArFile)
 
 
 def test_lib_no_differences(lib1):
@@ -129,9 +130,9 @@ def test_lib_differences(lib_differences):
     assert lib_differences[0].source1 == 'file list'
     expected_metadata_diff = get_data('elf_lib_metadata_expected_diff')
     assert lib_differences[0].unified_diff == expected_metadata_diff
-    assert 'objdump' in lib_differences[1].source1
+    assert 'objdump' in lib_differences[1].details[0].source1
     expected_objdump_diff = get_data('elf_lib_objdump_expected_diff')
-    assert lib_differences[1].unified_diff == expected_objdump_diff
+    assert lib_differences[1].details[0].unified_diff == expected_objdump_diff
 
 
 @skip_unless_tools_exist('readelf', 'objdump')

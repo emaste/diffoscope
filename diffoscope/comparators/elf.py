@@ -623,23 +623,3 @@ class ElfFile(File):
 
     def compare_details(self, other, source=None):
         return _compare_elf_data(self.path, other.path)
-
-
-class StaticLibFile(File):
-    DESCRIPTION = "statically-linked binaries"
-    CONTAINER_CLASS = ElfContainer
-    FILE_TYPE_RE = re.compile(r'\bar archive\b')
-    FILE_EXTENSION_SUFFIX = '.a'
-
-    def compare_details(self, other, source=None):
-        differences = [
-            Difference.from_text_readers(
-                list_libarchive(self.path),
-                list_libarchive(other.path),
-                self.path,
-                other.path,
-                source="file list",
-            )
-        ]
-        differences.extend(_compare_elf_data(self.path, other.path))
-        return differences
