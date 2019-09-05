@@ -124,10 +124,12 @@ def differences(rom1, rom2):
 def test_listing(differences):
     # Newer versions of cbfstool do not create the "legacy" header by default
     # and thus is missing from the diff.
+    # Even newer versions added a "compression" column.
 
     assert differences[0].unified_diff in (
         get_data('cbfs_listing_expected_diff'),
         get_data('cbfs_listing_no_legacy_header_expected_diff'),
+        get_data('cbfs_listing_comp_column_expected.diff'),  # cbfs >= 4.6
     )
 
 
