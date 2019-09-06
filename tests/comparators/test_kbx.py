@@ -45,8 +45,6 @@ def differences(kbx1, kbx2):
 
 @skip_unless_tools_exist('kbxutil')
 def test_diff(differences):
-    with open('tests/data/kbx_expected_diff', 'w') as f:
-        f.write(differences[0].unified_diff)
     expected_diff = get_data('kbx_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
