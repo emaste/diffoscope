@@ -145,6 +145,49 @@ def test_lib_compare_non_existing(monkeypatch, lib1):
     assert len(difference.details) > 0
 
 
+TEST_LIBMIX1_PATH = data('elfmix1.not_a')
+TEST_LIBMIX2_PATH = data('elfmix2.a')
+
+
+@pytest.fixture
+def libmix1():
+    return specialize(FilesystemFile(TEST_LIBMIX1_PATH))
+
+
+@pytest.fixture
+def libmix2():
+    return specialize(FilesystemFile(TEST_LIBMIX2_PATH))
+
+
+@pytest.fixture
+def libmix_differences(libmix1, libmix2):
+    return libmix1.compare(libmix2).details
+
+
+@skip_unless_tools_exist('readelf', 'objdump')
+@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_if_binutils_does_not_support_x86()
+def test_libmix_differences(libmix_differences):
+    assert len(libmix_differences) == 5
+    file_list, mach_o, x86_o, src_c, x_obj = libmix_differences
+
+    # Check order and basic identification
+    assert file_list.source1 == 'file list'
+    assert "Falling back to binary" in mach_o.comments[0]
+    x86_o = x86_o.details[0]
+    assert x86_o.source1.startswith('objdump ')
+    assert src_c.source1.endswith('.c')
+    x_obj = x_obj.details[0]
+    assert x_obj.source1.startswith('readelf ')
+
+    # Content
+    assert 'return42_or_3' in file_list.unified_diff
+    assert mach_o.unified_diff == get_data('elfmix_mach_o_expected_diff')
+    assert x86_o.unified_diff == get_data('elfmix_disassembly_expected_diff')
+    assert src_c.unified_diff == get_data('elfmix_src_c_expected_diff')
+    assert x_obj.unified_diff == get_data('elfmix_x_obj_expected_diff')
+
+
 TEST_DBGSYM_DEB1_PATH = data('dbgsym/add/test-dbgsym_1_amd64.deb')
 TEST_DBGSYM_DEB2_PATH = data('dbgsym/mult/test-dbgsym_1_amd64.deb')
 
