@@ -1,8 +1,32 @@
-diffoscope (123) UNRELEASED; urgency=medium
+diffoscope (123) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Build OCaml test input files on-demand rather than shipping them with the
+    package in order to prevent test failures with OCaml 4.08.
+    (Closes: #939386)
+  * Update test skipping messages:
+    - When skipping tests due to the lack of installed tool, print the package
+      that may provide it.
+    - Update "requires foo module" messages to clarify that they are regarding
+      Python modules, not packages.
+  * Rebuild the test squashfs images to exclude the character device as they
+    requires root or fakeroot to extract. (reproducible-builds/diffoscope#65)
+  * Remove accidentally-committed test fixture generation code from tests.
+  * Set long_description_content_type to 'text/x-rst' in setup.py to appease
+    the PyPI.org linter.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 30 Aug 2019 09:10:02 +0100
+  [ Mattia Rizzolo ]
+  * Don't crash when the progress is requested but the Python module is
+    missing. (Closes: #939085)
+
+  [ Vagrant Cascadian ]
+  * Add external tools for gifbuild, javap and kbxutil in GNU Guix.
+
+  [ Marc Herbert ]
+  * In the cbfs tests, add a "Comp" column test to support Coreboot
+    utils > 4.6.
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 07 Sep 2019 14:16:31 +0100
 
 diffoscope (122) unstable; urgency=medium
 
