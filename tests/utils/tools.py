@@ -27,6 +27,8 @@ import subprocess
 from distutils.spawn import find_executable
 from distutils.version import LooseVersion
 
+from diffoscope.tools import get_package_provider
+
 
 def file_version():
     return (
@@ -89,7 +91,7 @@ def skipif(*args, **kwargs):
 def skip_unless_tools_exist(*required):
     return skipif(
         tools_missing(*required),
-        reason="requires {}".format(" and ".join(required)),
+        reason=reason(*required),
         tools=required,
         check_env_for_missing_tools=True,
     )
@@ -97,7 +99,7 @@ def skip_unless_tools_exist(*required):
 
 def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
     if tools_missing(tool):
-        return skipif(True, reason="requires {}".format(tool), tools=(tool,))
+        return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
         actual_ver = actual_ver()
     return skipif(
@@ -111,13 +113,13 @@ def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
 
 def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
     if tools_missing(tool) and module_is_not_importable(tool):
-        return skipif(True, reason="requires {}".format(tool), tools=(tool,))
+        return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
         actual_ver = actual_ver()
     return skipif(
         vcls(str(actual_ver)) < vcls(str(min_ver)),
-        reason="requires {} >= {} ({} detected)".format(
-            tool, min_ver, actual_ver
+        reason="{} >= {} ({} detected)".format(
+            reason(tool), min_ver, actual_ver
         ),
         tools=(tool,),
     )
@@ -125,13 +127,13 @@ def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
 
 def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
     if tools_missing(tool) and module_is_not_importable(tool):
-        return skipif(True, reason="requires {}".format(tool), tools=(tool,))
+        return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
         actual_ver = actual_ver()
     return skipif(
         vcls(str(actual_ver)) > vcls(str(max_ver)),
-        reason="requires {} <= {} ({} detected)".format(
-            tool, max_ver, actual_ver
+        reason="{} <= {} ({} detected)".format(
+            reason(tool), max_ver, actual_ver
         ),
         tools=(tool,),
     )
@@ -141,14 +143,14 @@ def skip_unless_tool_is_between(
     tool, actual_ver, min_ver, max_ver, vcls=LooseVersion
 ):
     if tools_missing(tool):
-        return skipif(True, reason="requires {}".format(tool), tools=(tool,))
+        return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
         actual_ver = actual_ver()
     return skipif(
         (vcls(str(actual_ver)) < vcls(str(min_ver)))
         or (vcls(str(actual_ver)) > vcls(str(max_ver))),
-        reason="requires {} >= {} >= {} ({} detected)".format(
-            min_ver, tool, max_ver, actual_ver
+        reason="{} min {} >= {} ({} detected)".format(
+            reason(tool), min_ver, max_ver, actual_ver
         ),
         tools=(tool,),
     )
@@ -201,3 +203,17 @@ def skip_unless_module_exists(name):
 
 def skip_unless_file_version_is_at_least(version):
     return skip_unless_tool_is_at_least('file', file_version, version)
+
+
+def reason(*tools):
+    xs = []
+
+    for x in tools:
+        provider = get_package_provider(x)
+        if provider is None:
+            xs.append(x)
+            continue
+
+        xs.append('{} (try installing {})'.format(x, provider))
+
+    return "requires {}".format(" and ".join(xs))
