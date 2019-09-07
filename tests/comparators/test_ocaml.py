@@ -21,13 +21,32 @@ import pytest
 import subprocess
 
 from diffoscope.comparators.ocaml import OcamlInterfaceFile
+from diffoscope.comparators.binary import FilesystemFile
+from diffoscope.comparators.utils.specialize import specialize
 
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
-cmi1 = load_fixture('test1.cmi')
-cmi2 = load_fixture('test2.cmi')
+
+def ocaml_fixture(prefix):
+    @pytest.fixture
+    def cmi(tmpdir):
+        input_ = str(tmpdir.join('{}.mli'.format(prefix)))
+        output = str(tmpdir.join('{}.cmi'.format(prefix)))
+
+        with open(input_, 'w') as f:
+            pass
+
+        subprocess.check_call(('ocamlc', '-c', input_))
+
+        return specialize(FilesystemFile(output))
+
+    return cmi
+
+
+cmi1 = ocaml_fixture('test1')
+cmi2 = ocaml_fixture('test2')
 
 
 def ocaml_version():
