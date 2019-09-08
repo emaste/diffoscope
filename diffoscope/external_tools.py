@@ -132,7 +132,7 @@ EXTERNAL_TOOLS = {
     'ocamlobjinfo': {'debian': 'ocaml-nox', 'guix': 'ocaml'},
     'odt2txt': {'debian': 'odt2txt', 'arch': 'odt2txt', 'guix': 'odt2txt'},
     'oggDump': {'debian': 'oggvideotools'},
-    'pgpdump': {'debian': 'pgpdump', 'arch': 'pgpdump'},
+    'pgpdump': {'debian': 'pgpdump', 'arch': 'pgpdump', 'guix': 'pgpdump'},
     'pdftotext': {
         'debian': 'poppler-utils',
         'arch': 'poppler',
