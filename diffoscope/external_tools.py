@@ -130,7 +130,7 @@ EXTERNAL_TOOLS = {
         'guix': 'binutils',
     },
     'ocamlobjinfo': {'debian': 'ocaml-nox', 'guix': 'ocaml'},
-    'odt2txt': {'debian': 'odt2txt', 'arch': 'odt2txt'},
+    'odt2txt': {'debian': 'odt2txt', 'arch': 'odt2txt', 'guix': 'odt2txt'},
     'oggDump': {'debian': 'oggvideotools'},
     'pgpdump': {'debian': 'pgpdump', 'arch': 'pgpdump'},
     'pdftotext': {
@@ -165,7 +165,7 @@ EXTERNAL_TOOLS = {
     },
     'Rscript': {'debian': 'r-base-core', 'arch': 'r', 'guix': 'r-minimal'},
     'showttf': {'debian': 'fontforge-extras'},
-    'sng': {'debian': 'sng'},
+    'sng': {'debian': 'sng', 'guix': 'sng'},
     'ssconvert': {
         'debian': 'gnumeric',
         'arch': 'gnumeric',
