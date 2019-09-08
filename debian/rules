@@ -2,18 +2,17 @@
 
 include /usr/share/dpkg/pkg-info.mk
 
+SHELL := /bin/bash  # for the <(echo …) below, this was easiest way.
 PY_VERSION := $(shell awk '/^VERSION = / {gsub(/"/, "", $$3); print $$3}' diffoscope/__init__.py )
+CHECK_VERSION := $(shell grep '^$(PY_VERSION)[^0-9].*$$' <(echo $(DEB_VERSION)))
 
 ifneq ($(DEB_VERSION),$(PY_VERSION))
  ifneq ($(DEB_DISTRIBUTION),UNRELEASED)
-  ifneq (,$(filter %-backports,$(DEB_DISTRIBUTION)))
-    ifeq ($(DEB_VERSION:~bpo10+1=),$(PY_VERSION))
-     $(info Building a Debian backport, accepting version mismatch $(PY_VERSION) <-> $(DEB_VERSION))
-    else
-     $(error Version in debian/changelog does not match diffoscope version or backport policy)
-    endif
+  $(info $(CHECK_VERSION))
+  ifneq (,$(CHECK_VERSION))
+   $(info Accepting version mismatch $(PY_VERSION) <-> $(DEB_VERSION))
   else
-   $(error Version in debian/changelog does not match diffoscope version)
+   $(error Version in debian/changelog ($(DEB_VERSION)) does not match diffoscope version ($(PY_VERSION)))
   endif
  endif
 endif
