@@ -22,7 +22,7 @@ diffoscope (124) unstable; urgency=medium
     version matches setup.py, not just for backports. (Closes: #939387)
 
   [ Vagrant Cascadian ]
-  * Add external tools on GNU Guix for odt2txt, sng and pppdump
+  * Add external tools on GNU Guix for odt2txt, sng and pgpdump
 
   [ Marc Herbert ]
   * Remove StaticLibFile in the ELF comparator -- ArFile.compare_details() is
