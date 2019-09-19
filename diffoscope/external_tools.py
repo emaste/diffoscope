@@ -90,7 +90,11 @@ EXTERNAL_TOOLS = {
         'arch': 'java-environment',
         'guix': 'openjdk:jdk',
     },
-    'js-beautify': {'debian': 'jsbeautifier', 'arch': 'python-jsbeautifier'},
+    'js-beautify': {
+        'debian': 'jsbeautifier',
+        'arch': 'python-jsbeautifier',
+        'guix': 'python-jsbeautifier',
+    },
     'kbxutil': {'debian': 'gnupg-utils', 'guix': 'gnupg'},
     'llvm-bcanalyzer': {'debian': 'llvm', 'arch': 'llvm', 'guix': 'llvm'},
     'llvm-config': {'debian': 'llvm', 'arch': 'llvm'},
