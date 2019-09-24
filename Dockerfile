@@ -11,4 +11,6 @@ RUN mk-build-deps --install --tool 'apt-get -o Debug::pkgProblemResolver=yes --n
 RUN apt remove --purge --yes devscripts equivs
 RUN apt autoremove --purge --yes
 
+ENV PATH="/srv/diffoscope/bin:${PATH}"
+
 ENTRYPOINT ["/srv/diffoscope/bin/diffoscope"]
