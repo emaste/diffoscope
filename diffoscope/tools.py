@@ -122,10 +122,9 @@ def get_current_os():
 
 
 def get_current_distro_like():
-    if distro:
-        return distro.like().split()
-    else:
+    if not distro:
         return []
+    return distro.like().split()
 
 
 def get_package_provider(tool, os=None):

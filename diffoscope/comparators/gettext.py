@@ -60,10 +60,11 @@ class Msgunfmt(Command):
                     .encode('utf-8')
                 )
             return b''
-        if self._encoding != 'utf-8':
-            return line.decode(self._encoding).encode('utf-8')
-        else:
+
+        if self._encoding == 'utf-8':
             return line
+
+        return line.decode(self._encoding).encode('utf-8')
 
 
 class MoFile(File):

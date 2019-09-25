@@ -48,7 +48,7 @@ class Ffprobe(Command):
     def filter(self, line):
         if self.flag:
             return line
-        elif line == b'  Metadata:\n':
+        if line == b'  Metadata:\n':
             self.flag = True
         return b''
 

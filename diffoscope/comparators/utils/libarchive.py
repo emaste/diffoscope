@@ -278,9 +278,9 @@ class LibarchiveContainer(Archive):
     def get_subclass(self, entry):
         if entry.isdir:
             return LibarchiveDirectory(self, entry)
-        elif entry.issym:
+        if entry.issym:
             return LibarchiveSymlink(self, entry)
-        elif entry.isblk or entry.ischr:
+        if entry.isblk or entry.ischr:
             return LibarchiveDevice(self, entry)
 
         return LibarchiveMember(self, entry)

@@ -224,8 +224,8 @@ class Changes:
         """
         if '/' in section:
             return section.split('/')
-        else:
-            return ['main', section]
+
+        return ['main', section]
 
     def set_directory(self, directory):
         if directory:

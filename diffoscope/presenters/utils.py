@@ -404,8 +404,7 @@ class PartialString:
         def cont(t, fmtstr, *holes):
             if isinstance(fmtstr, cls):
                 return t.pformat({cont: fmtstr})
-            else:
-                return t.pformat({cont: cls(fmtstr, *(holes + (cont,)))})
+            return t.pformat({cont: cls(fmtstr, *(holes + (cont,)))})
 
         return cls("{0}", cont), cont
 

@@ -467,34 +467,32 @@ class HTMLSideBySidePresenter:
             if self.spl_rows >= self.max_lines_parent:
                 raise DiffBlockLimitReached()
             return False
-        else:
-            # html-dir output, perhaps need to rotate
-            if self.spl_rows >= self.max_lines:
-                raise DiffBlockLimitReached()
 
-            if self.spl_current_page == 0:  # on parent page
-                if self.spl_rows < self.max_lines_parent:
-                    return False
-                logger.debug(
-                    "new unified-diff subpage, parent page went over %s lines",
-                    self.max_lines_parent,
-                )
-            else:  # on child page
-                if (
-                    self.bytes_max_total
-                    and self.bytes_written > self.bytes_max_total
-                ):
-                    raise PrintLimitReached()
-                if (
-                    self.spl_print_func.bytes_written
-                    < self.max_page_size_child
-                ):
-                    return False
-                logger.debug(
-                    "new unified-diff subpage, previous subpage went over %s bytes",
-                    self.max_page_size_child,
-                )
-            return True
+        # html-dir output, perhaps need to rotate
+        if self.spl_rows >= self.max_lines:
+            raise DiffBlockLimitReached()
+
+        if self.spl_current_page == 0:  # on parent page
+            if self.spl_rows < self.max_lines_parent:
+                return False
+            logger.debug(
+                "new unified-diff subpage, parent page went over %s lines",
+                self.max_lines_parent,
+            )
+        else:  # on child page
+            if (
+                self.bytes_max_total
+                and self.bytes_written > self.bytes_max_total
+            ):
+                raise PrintLimitReached()
+            if self.spl_print_func.bytes_written < self.max_page_size_child:
+                return False
+            logger.debug(
+                "new unified-diff subpage, previous subpage went over %s bytes",
+                self.max_page_size_child,
+            )
+
+        return True
 
     def new_child_page(self):
         _, rotation_params = self.spl_print_ctrl
@@ -689,14 +687,14 @@ class HTMLPresenter(Presenter):
         del continuations[node]
 
     def output_node_placeholder(self, pagename, lazy_load, size=0):
-        if lazy_load:
-            return templates.DIFFNODE_LAZY_LOAD % {
-                "pagename": pagename,
-                "pagesize": sizeof_fmt(Config().max_page_size_child),
-                "size": sizeof_fmt(size),
-            }
-        else:
+        if not lazy_load:
             return templates.DIFFNODE_LIMIT
+
+        return templates.DIFFNODE_LAZY_LOAD % {
+            "pagename": pagename,
+            "pagesize": sizeof_fmt(Config().max_page_size_child),
+            "size": sizeof_fmt(size),
+        }
 
     def output_difference(self, ctx, root_difference):
         outputs = {}  # nodes to their partial output

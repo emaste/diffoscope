@@ -36,8 +36,7 @@ class Archive(Container, metaclass=abc.ABCMeta):
     def __new__(cls, source, *args, **kwargs):
         if isinstance(source, MissingFile):
             return super(Container, MissingArchive).__new__(MissingArchive)
-        else:
-            return super(Container, cls).__new__(cls)
+        return super(Container, cls).__new__(cls)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
