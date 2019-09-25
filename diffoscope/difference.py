@@ -29,7 +29,7 @@ from .excludes import command_excluded
 logger = logging.getLogger(__name__)
 
 
-class Difference(object):
+class Difference:
     def __init__(
         self,
         unified_diff,
@@ -357,7 +357,7 @@ class Difference(object):
         self._size_cache = None
 
 
-class VisualDifference(object):
+class VisualDifference:
     def __init__(self, data_type, content, source):
         self._data_type = data_type
         self._content = content

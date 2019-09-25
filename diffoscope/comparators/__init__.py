@@ -30,7 +30,7 @@ from ..logging import line_eraser
 logger = logging.getLogger(__name__)
 
 
-class ComparatorManager(object):
+class ComparatorManager:
     COMPARATORS = (
         ('directory.Directory',),
         ('missing_file.MissingFile',),

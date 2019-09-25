@@ -64,7 +64,7 @@ def _run_tests(fold, tests):
     return fold(t(y, x) for x, t, y in tests)
 
 
-class File(object, metaclass=abc.ABCMeta):
+class File(metaclass=abc.ABCMeta):
     if hasattr(magic, 'open'):  # use Magic-file-extensions from file
 
         @classmethod

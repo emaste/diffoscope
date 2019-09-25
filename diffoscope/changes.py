@@ -57,7 +57,7 @@ class ChangesFileException(Exception):
     pass
 
 
-class Changes(object):
+class Changes:
     """
     Changes object to help process and store information regarding Debian
     .changes files, used in the upload process.

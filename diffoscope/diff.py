@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 re_diff_change = re.compile(r'^([+-@]).*', re.MULTILINE)
 
 
-class DiffParser(object):
+class DiffParser:
     RANGE_RE = re.compile(
         # example: '@@ -26814,9 +26814,8 @@'
         rb'''
@@ -507,7 +507,7 @@ def linediff_simplify(g):
         yield current
 
 
-class SideBySideDiff(object):
+class SideBySideDiff:
     """Calculates a side-by-side diff from a unified diff."""
 
     def __init__(self, unified_diff, diffon=DIFFON, diffoff=DIFFOFF):

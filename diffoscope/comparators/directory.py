@@ -191,7 +191,7 @@ def compare_directories(path1, path2, source=None):
     return FilesystemDirectory(path1).compare(FilesystemDirectory(path2))
 
 
-class Directory(object):
+class Directory:
     DESCRIPTION = "directories"
 
     @classmethod

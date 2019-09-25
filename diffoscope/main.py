@@ -499,7 +499,7 @@ class HelpFormatter(argparse.HelpFormatter):
         return val
 
 
-class RangeCompleter(object):
+class RangeCompleter:
     def __init__(self, start, end=0, divisions=16):
         if end < start:
             tmp = end

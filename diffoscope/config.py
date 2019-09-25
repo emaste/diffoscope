@@ -31,7 +31,7 @@ class defaultint(int):
 
 # Avoid setting values on this anywhere other than main.run_diffoscope(),
 # otherwise tests may fail unpredictably depending on order-of-execution.
-class Config(object):
+class Config:
     _singleton = {}
 
     def __init__(self):

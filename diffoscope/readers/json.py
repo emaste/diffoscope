@@ -25,7 +25,7 @@ from ..presenters.json import JSON_FORMAT_MAGIC
 from .utils import UnrecognizedFormatError
 
 
-class JSONReaderV1(object):
+class JSONReaderV1:
     def load(self, fp, fn):
         # fp should be a str-stream not a bytes-stream. If you need to pass in
         # a bytes-stream, wrap it in codecs.getreader('utf-8')(fp)

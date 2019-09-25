@@ -44,7 +44,7 @@ def sizeof_fmt(num, suffix='B', sigfig=3):
     return "%s %s%s" % (round_sigfig(num, sigfig), unit, suffix)
 
 
-class Presenter(object):
+class Presenter:
     supports_visual_diffs = False
 
     def __init__(self):
@@ -146,7 +146,7 @@ class PartialFormatter(string.Formatter):
     parse_no_escape = string.Formatter.parse
 
 
-class FormatPlaceholder(object):
+class FormatPlaceholder:
     def __init__(self, ident):
         self.ident = str(ident)
 
@@ -166,7 +166,7 @@ class FormatPlaceholder(object):
         return FormatPlaceholder(self.ident + "." + str(attr))
 
 
-class PartialString(object):
+class PartialString:
     r"""A format string where the "holes" are indexed by arbitrary python
     objects instead of string names or integer indexes. This is useful when you
     need to compose these objects together, but don't want users of the partial

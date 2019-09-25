@@ -46,7 +46,7 @@ class ProgressLoggingHandler(logging.StreamHandler):
             self.handleError(record)
 
 
-class ProgressManager(object):
+class ProgressManager:
     _singleton = {}
 
     def __init__(self):
@@ -120,7 +120,7 @@ class ProgressManager(object):
             x.finish()
 
 
-class Progress(object):
+class Progress:
     def __init__(self, total=None):
         self.done = []
         self.current_steps = None
@@ -196,7 +196,7 @@ class Progress(object):
         self.current_child_steps_done += total
 
 
-class ProgressBar(object):
+class ProgressBar:
     def __init__(self):
         import progressbar
 
@@ -269,7 +269,7 @@ class ProgressBar(object):
         self.bar.finish()
 
 
-class StatusFD(object):
+class StatusFD:
     def __init__(self, fileobj):
         self.fileobj = fileobj
 

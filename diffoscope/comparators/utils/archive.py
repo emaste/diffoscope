@@ -122,7 +122,7 @@ class ArchiveMember(File):
         return False
 
 
-class MissingArchiveLikeObject(object):
+class MissingArchiveLikeObject:
     def getnames(self):
         return []
 

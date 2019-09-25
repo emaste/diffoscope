@@ -34,7 +34,7 @@ def profile(namespace, key):
         ProfileManager().increment(start, namespace, key)
 
 
-class ProfileManager(object):
+class ProfileManager:
     _singleton = {}
 
     def __init__(self):

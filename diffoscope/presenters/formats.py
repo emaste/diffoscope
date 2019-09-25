@@ -30,7 +30,7 @@ from .restructuredtext import RestructuredTextPresenter
 logger = logging.getLogger(__name__)
 
 
-class PresenterManager(object):
+class PresenterManager:
     _singleton = {}
 
     def __init__(self):

@@ -25,7 +25,7 @@ import subprocess
 logger = logging.getLogger(__name__)
 
 
-class Command(object, metaclass=abc.ABCMeta):
+class Command(metaclass=abc.ABCMeta):
     MAX_STDERR_LINES = 50
 
     def __init__(self, path):

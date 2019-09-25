@@ -191,7 +191,7 @@ class ZipFile(File):
         return differences
 
 
-class IgnoreReturncodeMixin(object):
+class IgnoreReturncodeMixin:
     @property
     def returncode(self):
         returncode = super().returncode

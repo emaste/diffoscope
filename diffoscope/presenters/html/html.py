@@ -369,7 +369,7 @@ class HTMLPrintContext(
         return None if self.single_page else self.target
 
 
-class HTMLSideBySidePresenter(object):
+class HTMLSideBySidePresenter:
     supports_visual_diffs = True
 
     def __init__(self):
