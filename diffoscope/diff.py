@@ -265,8 +265,6 @@ class _Feeder:
     (currently?) instances of any particular class.
     """
 
-    pass
-
 
 def empty_file_feeder():
     """
