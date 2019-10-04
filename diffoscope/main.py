@@ -734,7 +734,7 @@ def main(args=None):
         if e.errno != errno.ENOSPC:
             raise
         logger.error('No space left on device. Diffoscope exiting.')
-        sys.exit(1)
+        sys.exit(2)
     except KeyboardInterrupt:
         logger.error('Keyboard Interrupt')
         sys.exit(2)
