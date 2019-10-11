@@ -144,3 +144,10 @@ def get_package_provider(tool, os=None):
                 pass
 
     return None
+
+
+def python_module_missing(name):
+    python_module_missing.modules.add(name)
+
+
+python_module_missing.modules = set()

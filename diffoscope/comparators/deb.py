@@ -23,6 +23,7 @@ import logging
 
 from diffoscope.config import Config
 from diffoscope.difference import Difference
+from diffoscope.tools import python_module_missing
 
 from .tar import TarContainer
 from .utils.compare import compare_files
@@ -34,6 +35,7 @@ from .utils.specialize import specialize
 try:
     from debian import deb822
 except ImportError:
+    python_module_missing('debian')
     deb822 = None
 
 logger = logging.getLogger(__name__)

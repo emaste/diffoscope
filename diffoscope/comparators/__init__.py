@@ -24,6 +24,7 @@ import logging
 import importlib
 import traceback
 
+from ..tools import python_module_missing
 from ..logging import line_eraser
 
 
@@ -126,6 +127,10 @@ class ComparatorManager:
                     mod = importlib.import_module(
                         'diffoscope.comparators.{}'.format(package)
                     )
+                except ModuleNotFoundError as e:
+                    python_module_missing(e.name)
+                    errors.append((x, e))
+                    continue
                 except ImportError as e:
                     errors.append((x, e))
                     continue

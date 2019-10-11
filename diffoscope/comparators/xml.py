@@ -17,15 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-
 from xml.parsers.expat import ExpatError
-from diffoscope.difference import Difference
+
 from diffoscope.comparators.utils.file import File
+from diffoscope.difference import Difference
+from diffoscope.tools import python_module_missing
+
 from .missing_file import MissingFile
 
 try:
     from defusedxml import minidom
 except ImportError:
+    python_module_missing('defusedxml')
     from xml.dom import minidom
 
 

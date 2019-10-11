@@ -22,6 +22,7 @@ import re
 import glob
 import logging
 
+from diffoscope.tools import python_module_missing
 from diffoscope.tempfiles import get_temporary_directory
 
 from .utils.file import File
@@ -35,6 +36,7 @@ except ImportError:
 try:
     import binwalk
 except ImportError:
+    python_module_missing('rpm')
     binwalk = None
 else:
     # Disable binwalk's own user configuration for predictable results and to

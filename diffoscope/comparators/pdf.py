@@ -19,7 +19,7 @@
 
 import re
 
-from diffoscope.tools import tool_required
+from diffoscope.tools import python_module_missing, tool_required
 from diffoscope.difference import Difference
 
 from .utils.file import File
@@ -28,6 +28,7 @@ from .utils.command import Command
 try:
     import PyPDF2
 except ImportError:  # noqa
+    python_module_missing('PyPDF2')
     PyPDF2 = None
 
 

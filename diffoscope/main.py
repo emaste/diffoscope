@@ -35,6 +35,7 @@ from .path import set_path
 from .tools import (
     tool_check_installed,
     tool_prepend_prefix,
+    python_module_missing,
     tool_required,
     OS_NAMES,
     get_current_os,
@@ -59,11 +60,13 @@ logger = logging.getLogger(__name__)
 try:
     import tlsh
 except ImportError:
+    python_module_missing('tlsh')
     tlsh = None
 
 try:
     import argcomplete
 except ImportError:
+    python_module_missing('argcomplete')
     argcomplete = None
 
 
@@ -549,6 +552,9 @@ class ListToolsAction(argparse.Action):
                     pass
             print(', '.join(sorted(tools)))
 
+        print("Missing-Python-Modules: ", end='')
+        print(', '.join(sorted(python_module_missing.modules)))
+
         sys.exit(0)
 
 
@@ -707,6 +713,7 @@ def main(args=None):
         import libarchive
     except (ImportError, AttributeError):
         traceback.print_exc()
+        python_module_missing('libarchive')
         print(
             "\nMissing or incomplete libarchive module. Try installing your "
             "system's 'libarchive' package.",

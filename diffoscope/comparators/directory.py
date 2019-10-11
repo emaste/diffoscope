@@ -25,7 +25,7 @@ import collections
 import itertools
 
 from diffoscope.exc import RequiredToolNotFound
-from diffoscope.tools import tool_required
+from diffoscope.tools import python_module_missing, tool_required
 from diffoscope.config import Config
 from diffoscope.progress import Progress
 from diffoscope.difference import Difference
@@ -120,6 +120,7 @@ def xattr(path1, path2):
     try:
         import xattr as xattr_
     except ImportError:
+        python_module_required('xattr')
         return None
 
     # Support the case where the python3-xattr package is installed but

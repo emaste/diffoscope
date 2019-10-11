@@ -23,6 +23,7 @@ import os.path
 
 from diffoscope.difference import Difference
 from diffoscope.exc import ContainerExtractionError
+from diffoscope.tools import python_module_missing
 
 from .utils.file import File
 from .utils.archive import Archive
@@ -30,6 +31,7 @@ from .utils.archive import Archive
 try:
     import guestfs
 except ImportError:
+    python_module_missing('guestfs')
     guestfs = None
 
 logger = logging.getLogger(__name__)

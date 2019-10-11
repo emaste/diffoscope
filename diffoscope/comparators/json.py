@@ -21,12 +21,14 @@ import json
 import collections
 
 from diffoscope.difference import Difference
+from diffoscope.tools import python_module_missing
 
 from .utils.file import File
 
 try:
     import jsondiff
 except ImportError:  # noqa
+    python_module_missing('jsondiff')
     jsondiff = None
 
 

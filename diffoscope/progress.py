@@ -25,9 +25,16 @@ import signal
 import logging
 
 from .logging import line_eraser
+from .tools import python_module_missing
 
 
 logger = logging.getLogger(__name__)
+
+try:
+    import progressbar
+except ImportError:
+    python_module_missing('progressbar')
+    progressbar = None
 
 
 class ProgressLoggingHandler(logging.StreamHandler):
@@ -73,12 +80,13 @@ class ProgressManager:
 
         log_handler = None
         if show_progressbar():
-            try:
+            if progressbar is not None:
                 bar = ProgressBar()
                 self.register(bar)
                 log_handler = ProgressLoggingHandler(bar)
-            except ImportError:
+            else:
                 # User asked for bar, so show them an error
+
                 if parsed_args.progress:
                     logging.warning(
                         'Progress bar was requested but the "progressbar" module is unavailable.'
@@ -198,8 +206,6 @@ class Progress:
 
 class ProgressBar:
     def __init__(self):
-        import progressbar
-
         try:
             from progressbar.widgets import WidgetBase
         except ImportError:
