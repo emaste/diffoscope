@@ -1,8 +1,16 @@
-diffoscope (126) UNRELEASED; urgency=medium
+diffoscope (126) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Track and report on missing Python modules.
+    (Closes: reproducible-builds/diffoscope#72)
+  * Drop some unnecessary control flow.
+  * Drop explicit inheriting from 'object' class; unnecessary in Python 3.
+  * Bump Standards-Version to 4.4.1.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 18 Sep 2019 11:48:35 +0200
+  [ Mattia Rizzolo ]
+  * Exit with 2 instead of 1 in case of no disk space.
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 14 Oct 2019 12:29:47 -0700
 
 diffoscope (125) unstable; urgency=medium
 
