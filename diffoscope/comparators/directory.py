@@ -120,7 +120,7 @@ def xattr(path1, path2):
     try:
         import xattr as xattr_
     except ImportError:
-        python_module_required('xattr')
+        python_module_missing('xattr')
         return None
 
     # Support the case where the python3-xattr package is installed but
