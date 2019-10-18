@@ -2,9 +2,9 @@
 
 set -e
 
-if ! [ -d "$ADTTMP" ]; then
-	echo "ADTTMP not set." >&2
-	exit 1
+if ! [ -d "$AUTOPKGTEST_TMP" ]; then
+    echo "AUTOPKGTEST_TMP not set." >&2
+    exit 1
 fi
 
 export LIBGUESTFS_MEMSIZE=128
@@ -12,5 +12,9 @@ if [ "$(basename "$0")" = "pytest-with-recommends" ]; then
     export DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS="apktool zipinfo pedump oggDump ppudump cbfstool otool lipo"
 fi
 
-cp -r tests "$ADTTMP"
-(cd "$ADTTMP"; py.test-3 -vv -l -r a)
+for py in $(py3versions -s); do
+    echo "@@@@@@@@ Running against $py"
+    cp -r tests "$AUTOPKGTEST_TMP"
+    (cd "$AUTOPKGTEST_TMP"; "$py" -m pytest -vv -l -r a)
+    rm -rf "${AUTOPKGTEST_TMP:?}"/*
+done
