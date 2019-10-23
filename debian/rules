@@ -37,7 +37,7 @@ doc/%.1:
 	$(MAKE) -C doc $*.1
 
 debian/diffoscope.bash-completion:
-	register-python-argcomplete diffoscope > $@
+	register-python-argcomplete3 diffoscope > $@
 
 override_dh_auto_build: debian/diffoscope.bash-completion
 	dh_auto_build -O--buildsystem=pybuild
