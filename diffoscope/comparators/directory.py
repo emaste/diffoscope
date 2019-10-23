@@ -266,9 +266,11 @@ class DirectoryContainer(Container):
         if not os.path.islink(member_path) and os.path.isdir(member_path):
             return FilesystemDirectory(member_path)
 
-        return FilesystemFile(
-            os.path.join(self.source.path, member_name), container=self
-        )
+        path = os.path.join(self.source.path, member_name)
+        if not os.path.exists(path):
+            raise KeyError("%s not found in directory" % member_name)
+
+        return FilesystemFile(path, container=self)
 
     def comparisons(self, other):
         my_members = collections.OrderedDict(self.get_adjusted_members_sizes())
