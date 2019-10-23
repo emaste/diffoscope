@@ -83,6 +83,7 @@ Build-Depends:
  wabt <!nocheck>,
  xmlbeans <!nocheck>,
  xxd <!nocheck> | vim-common <!nocheck>,
+ zstd <!nocheck>,
 Build-Conflicts:
  graphicsmagick-imagemagick-compat,
 Standards-Version: 4.4.1

@@ -105,6 +105,7 @@ class ComparatorManager:
         ('ogg.OggFile',),
         ('xsb.XsbFile',),
         ('berkeley_db.BerkeleyDBFile',),
+        ('zst.ZstFile',),
     )
 
     _singleton = {}
