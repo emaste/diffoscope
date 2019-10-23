@@ -259,7 +259,7 @@ class LibarchiveContainer(Archive):
             for entry in archive:
                 if entry.pathname == member_name:
                     return self.get_subclass(entry)
-        raise KeyError('%s not found in archive', member_name)
+        raise KeyError('%s not found in archive' % member_name)
 
     def get_filtered_members(self):
         try:
