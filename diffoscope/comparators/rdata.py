@@ -36,7 +36,9 @@ DUMP_RDB = r"""
 hideOutput = lazyLoad(commandArgs(TRUE));
 
 for (obj in ls(all.names = TRUE, sorted = TRUE)) {
-    print(obj);
+    cat("\n")
+    cat(obj, "= ");
+
     for (line in deparse(get(obj)))
         cat(line,"\n");
 }"""
