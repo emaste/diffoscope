@@ -67,12 +67,15 @@ class Command(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     def shell_cmdline(self):
-        return ' '.join(
-            map(
-                lambda x: '{}' if x == self.path else shlex.quote(x),
-                self.cmdline(),
-            )
-        )
+        def fn(x):
+            if x == self.path:
+                return '{}'
+            x = repr(x)
+            if ' ' not in x:
+                x = x[1:-1]
+            return x
+
+        return ' '.join(fn(x) for x in self.cmdline())
 
     def env(self):
         return None  # inherit parent environment by default
