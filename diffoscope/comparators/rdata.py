@@ -35,10 +35,11 @@ HEADER = binascii.a2b_hex("580a000000020003")
 DUMP_RDB = r"""
 hideOutput = lazyLoad(commandArgs(TRUE));
 
-for (obj in ls(all.names = TRUE, sorted = TRUE)) {
-    cat("\n", obj, " (", typeof(get(obj)), ") = ", sep = "");
+for (x in ls(all.names = TRUE, sorted = TRUE)) {
+    obj = get(x)
+    cat("\n", x, " (", typeof(obj), ") = ", sep = "");
 
-    for (line in deparse(get(obj)))
+    for (line in deparse(obj))
         cat(line,"\n");
 }"""
 
