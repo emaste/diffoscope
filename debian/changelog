@@ -1,8 +1,44 @@
-diffoscope (127) UNRELEASED; urgency=medium
+diffoscope (127) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Move build-dependency on python-argcomplete to the Python 3.x version to
+    facilitate Python 2.x removal. (Closes: #942967)
+  * Overhaul the handling of GNU R .rdb files:
+    - Rework and refactor the handling of .rdb files specifically with respect
+      to locating the parallel .rdx file prior to inspecting the file to ensure
+      that we do not add files to the user's filesystem in the case of directly
+      comparing two .rdb files or, worse, overwriting a file in is place.
+    - Use a ("""-formatted) docstring for our internal R script to dump
+      variables.
+    - Mask/hide standard errors; R will often produce noisy output that is not
+      useful to us.
+    - Don't include a useless and misleading "NULL".
+    - Include all R object names are displayed, including ones beginning with a
+      fullstop (".").
+    - Sort package fields when dumping data for output stability.
+    - Format package contents as "foo = bar" rather than using ugly and
+      misleading brackets.
+    - Include the object's type when dumping package contents.
+    - Never read the site or user's R location environment configuration to
+      ensure output stability.
+    - Expose absolute paths in the semantic/human-readable output, preventing
+      falling back to a useless hexdump.
+  * Improve the formatting of command lines:
+    - Ensure newlines and other metacharacters appear escaped as "\n", etc.
+    - Use the newline (etc.) escaped version of the commandline being executed in
+      logging/debug output.
+    - When displaying standard error, ensure use the escaped version too.
+  * Add support for easily masking the standard error of commands and use this
+    in the ffprobe comparator.
+  * To match the libarchive container, raise a KeyError exception if we request
+    an invalid member from a directory container.
+  * Correct string representation output in the traceback when we cannot locate
+    a specific item in a container.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 14 Oct 2019 12:52:57 -0700
+  [ Mattia Rizzolo ]
+  * Run Debian autopkgtests against all Python versions.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 24 Oct 2019 15:59:34 +0100
 
 diffoscope (126) unstable; urgency=medium
 
