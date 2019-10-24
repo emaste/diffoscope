@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(metaclass=abc.ABCMeta):
+    MASK_STDERR = False
     MAX_STDERR_LINES = 50
 
     def __init__(self, path):
@@ -91,6 +92,9 @@ class Command(metaclass=abc.ABCMeta):
         pass
 
     def _read_stderr(self):
+        if self.MASK_STDERR:
+            return ""
+
         buf = ""
         lines = self._process.stderr.splitlines(True)
 
