@@ -27,15 +27,12 @@ from .utils.command import Command
 
 
 class Ffprobe(Command):
+    MASK_STDERR = True
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.flag = False
-
-    def start(self):
-        super().start()
-
-        self.stderr = ''
 
     @property
     def stdout(self):
