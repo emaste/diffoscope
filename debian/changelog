@@ -1,3 +1,9 @@
+diffoscope (128) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 24 Oct 2019 16:12:22 +0100
+
 diffoscope (127) unstable; urgency=medium
 
   [ Chris Lamb ]
