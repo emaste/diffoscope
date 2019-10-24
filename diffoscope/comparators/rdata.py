@@ -115,6 +115,8 @@ class RdsFile(File):
 
 
 class RdbReader(Command):
+    MASK_STDERR = True
+
     @tool_required('Rscript')
     def cmdline(self):
         return ['Rscript', '--no-environ', '-e', DUMP_RDB, self.path]
