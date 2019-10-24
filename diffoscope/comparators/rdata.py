@@ -37,11 +37,21 @@ hideOutput = lazyLoad(commandArgs(TRUE));
 
 for (x in ls(all.names = TRUE, sorted = TRUE)) {
     obj = get(x)
-    cat("\n", x, " (", typeof(obj), ") = ", sep = "");
 
-    for (line in deparse(obj))
-        cat(line,"\n");
-}"""
+    cat(sprintf("%s (%s) = ", x, typeof(obj)), sep = "");
+
+    if (typeof(obj) == "environment") {
+        cat("\n{\n", sep = "");
+        for (y in ls(obj, all.names = TRUE, sorted = TRUE))
+            cat(sprintf("    \"%s\" = \"%s\"\n", y, get(y, envir = obj)), sep = "");
+        cat("}\n");
+    } else {
+        for (line in deparse(obj))
+            cat(line, "\n", sep = "");
+    }
+    cat("\n");
+}
+"""
 
 logger = logging.getLogger(__name__)
 
