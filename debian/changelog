@@ -1,3 +1,9 @@
+diffoscope (129) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 25 Oct 2019 09:42:10 +0100
+
 diffoscope (128) unstable; urgency=medium
 
   * Query the container for the full path of the parallel R .rdx file for a
