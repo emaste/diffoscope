@@ -79,13 +79,19 @@ def get_module_path_for_rdb(rdb):
         return
 
     # Calculate location of parallel .rdx file
-    rdx_name = "{}.rdx".format(os.path.basename(os.path.splitext(rdb.name)[0]))
+    rdx_name = "{}.rdx".format(os.path.splitext(rdb.name)[0])
 
     try:
+        # Query the container for the full path (eg. `./path/to/foo.rdx`)...
         rdx = rdb.container.get_member(rdx_name)
     except KeyError:
-        # Corresponding .rdx does not exist
-        return
+        try:
+            # ... falling back to looking in the same directory for when
+            # comparing two .rdb files directly
+            rdx = rdb.container.get_member(os.path.basename(rdx_name))
+        except KeyError:
+            # Corresponding .rdx does not exist
+            return
 
     temp_dir = get_temporary_directory().name
     prefix = os.path.join(temp_dir, "temp")
