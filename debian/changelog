@@ -1,8 +1,11 @@
-diffoscope (128) UNRELEASED; urgency=medium
+diffoscope (128) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Query the container for the full path of the parallel R .rdx file for a
+    .rdb file as well as looking in the same directory. This ensures that
+    comparing two .deb/.changes files shows a varying path introduced in
+    version 127.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 24 Oct 2019 16:12:22 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 25 Oct 2019 09:21:40 +0100
 
 diffoscope (127) unstable; urgency=medium
 
