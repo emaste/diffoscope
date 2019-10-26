@@ -280,7 +280,7 @@ class Difference:
 
         if 'source' not in kwargs:
             source_cmd = command1 or command2
-            kwargs['source'] = source_cmd.shell_cmdline()
+            kwargs['source'] = source_cmd.shell_cmdline(truncate=120)
 
         try:
             difference = Difference.from_feeder(

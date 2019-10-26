@@ -18,7 +18,7 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 
-def format_cmdline(cmd, replace=()):
+def format_cmdline(cmd, replace=(), truncate=None):
     def fn(x):
         if x in replace:
             return '{}'
@@ -27,4 +27,9 @@ def format_cmdline(cmd, replace=()):
             x = x[1:-1]
         return x
 
-    return ' '.join(fn(x) for x in cmd)
+    result = ' '.join(fn(x) for x in cmd)
+
+    if truncate is not None and len(result) > truncate:
+        result = result[: truncate + 4] + " […]"
+
+    return result
