@@ -22,6 +22,8 @@ import logging
 import shlex
 import subprocess
 
+from ...utils import format_cmdline
+
 logger = logging.getLogger(__name__)
 
 
@@ -65,16 +67,9 @@ class Command(metaclass=abc.ABCMeta):
     def cmdline(self):
         raise NotImplementedError()
 
-    def shell_cmdline(self):
-        def fn(x):
-            if x == self.path:
-                return '{}'
-            x = repr(x)
-            if ' ' not in x:
-                x = x[1:-1]
-            return x
-
-        return ' '.join(fn(x) for x in self.cmdline())
+    def shell_cmdline(self, *args, **kwargs):
+        kwargs.setdefault('replace', (self.path,))
+        return format_cmdline(self.cmdline(), *args, **kwargs)
 
     def env(self):
         return None  # inherit parent environment by default
