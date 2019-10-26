@@ -30,6 +30,7 @@ from diffoscope.exc import (
     ContainerExtractionError,
 )
 from diffoscope.tools import tool_required
+from diffoscope.utils import format_cmdline
 from diffoscope.config import Config
 from diffoscope.profiling import profile
 from diffoscope.difference import Difference
@@ -451,7 +452,6 @@ class File(metaclass=abc.ABCMeta):
                     )
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
-                cmd = ' '.join(e.cmd)
                 if difference is None:
                     return None
 
@@ -481,7 +481,9 @@ class File(metaclass=abc.ABCMeta):
 
                 difference.add_comment(
                     "Command `{}` exited with return code {}.{}".format(
-                        cmd, e.returncode, suffix or " (No output)"
+                        format_cmdline(e.cmd),
+                        e.returncode,
+                        suffix or " (No output)",
                     )
                 )
             except RequiredToolNotFound as e:
