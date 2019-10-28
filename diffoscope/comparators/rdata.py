@@ -44,7 +44,7 @@ for (x in ls(all.names = TRUE, sorted = TRUE)) {
         cat("\n{\n", sep = "");
         for (y in ls(obj, all.names = TRUE, sorted = TRUE)) {
             obj2 = get(y, envir = obj);
-            cat(sprintf("    \"%s\" = \"%s\"\n", y, obj2), sep = "");
+            cat(sprintf("    \"%s\" = \"%s\"\n", y, deparse(obj2)), sep = "");
         }
         cat("}\n");
     } else {
