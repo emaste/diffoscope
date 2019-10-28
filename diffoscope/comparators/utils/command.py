@@ -49,6 +49,7 @@ class Command(metaclass=abc.ABCMeta):
             shell=False,
             close_fds=True,
             env=self.env(),
+            input=self.input(),
             stdin=self._stdin,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -82,6 +83,9 @@ class Command(metaclass=abc.ABCMeta):
         pass
 
     def terminate(self):
+        pass
+
+    def input(self):
         pass
 
     def _read_stderr(self):
