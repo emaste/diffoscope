@@ -1,8 +1,22 @@
-diffoscope (129) UNRELEASED; urgency=medium
+diffoscope (129) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Call R's "deparse" function to ensure that we do not error out and revert
+    to a binary diff when processing .rdb files with internal "vector" types as
+    they do not automatically coerce to strings.
+  * Add the ability to pass Python bytestrings to external commands and
+    pass our long script to parse R .rdb files using this new method over a
+    long command-line argument
+  * Use Rscript's --vanilla option over --no-environ as this also enables
+    --no-save, --no-restore, --no-site-file and --no-init-file.
+  * Improve command-line error messages:
+    - Split out formatting into a separate utility function.
+    - Truncate very long lines when displaying them as an external source
+      of data.
+    - When printing an error from a command, format the command for the user.
+  * Use "exit code" over "return code" when referring to UNIX error codes in
+    displayed differences.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 25 Oct 2019 09:42:10 +0100
+ -- Chris Lamb <lamby@debian.org>  Mon, 28 Oct 2019 11:15:18 +0000
 
 diffoscope (128) unstable; urgency=medium
 
