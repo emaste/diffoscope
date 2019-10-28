@@ -5,31 +5,31 @@
 # to have diffoscope able to output stuff in utf-8
 export LC_ALL=C.UTF-8
 
-if ! [ -d "$ADTTMP" ]; then
-	ADTTMP=`mktemp -d`
+if ! [ -d "$AUTOPKGTEST_TMP" ]; then
+	AUTOPKGTEST_TMP=`mktemp -d`
 	TEMP=true
 fi
 
-echo "a" > $ADTTMP/a
-echo "a" > $ADTTMP/a_
-echo "b" > $ADTTMP/b
+echo "a" > $AUTOPKGTEST_TMP/a
+echo "a" > $AUTOPKGTEST_TMP/a_
+echo "b" > $AUTOPKGTEST_TMP/b
 
 echo "Testing identical files..."
-diffoscope $ADTTMP/a $ADTTMP/a_
+diffoscope $AUTOPKGTEST_TMP/a $AUTOPKGTEST_TMP/a_
 if [ $? -ne 0 ]; then
 	echo "Exit code was different from 0 when comparing files with identical content." >&2
 	exit 1
 fi
 
 echo "Testing different files..."
-diffoscope $ADTTMP/a $ADTTMP/b
+diffoscope $AUTOPKGTEST_TMP/a $AUTOPKGTEST_TMP/b
 if [ $? -ne 1 ]; then
 	echo "Exit code was different from 1 when comparing files with different content." >&2
 	exit 1
 fi
 
 echo "Testing LC_ALL=C works..."
-LC_ALL=C diffoscope --debug $ADTTMP/a $ADTTMP/a_ 2>/dev/null
+LC_ALL=C diffoscope --debug $AUTOPKGTEST_TMP/a $AUTOPKGTEST_TMP/a_ 2>/dev/null
 if [ $? -ne 0 ]; then
 	echo "diffoscope could not handle LC_ALL=C; make sure you're not unconditionally outputting non-ascii chars anywhere." >&2
 	exit 1
@@ -50,7 +50,7 @@ if [ $? -ne 2 ]; then
 fi
 
 if [ -n "${TEMP:-}" ]; then
-	rm -rf "$ADTTMP"
+	rm -rf "$AUTOPKGTEST_TMP"
 fi
 
 echo "All good!"
