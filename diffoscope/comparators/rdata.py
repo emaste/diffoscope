@@ -32,7 +32,7 @@ import binascii
 
 HEADER = binascii.a2b_hex("580a000000020003")
 
-DUMP_RDB = r"""
+DUMP_RDB = rb"""
 hideOutput = lazyLoad(commandArgs(TRUE));
 
 for (x in ls(all.names = TRUE, sorted = TRUE)) {
@@ -138,7 +138,10 @@ class RdbReader(Command):
 
     @tool_required('Rscript')
     def cmdline(self):
-        return ['Rscript', '--no-environ', '-e', DUMP_RDB, self.path]
+        return ['Rscript', '--no-environ', '-', self.path]
+
+    def input(self):
+        return DUMP_RDB
 
 
 class RdbFile(File):
