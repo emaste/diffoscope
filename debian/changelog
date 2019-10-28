@@ -1,3 +1,9 @@
+diffoscope (130) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 28 Oct 2019 11:28:49 +0000
+
 diffoscope (129) unstable; urgency=medium
 
   * Call R's "deparse" function to ensure that we do not error out and revert
