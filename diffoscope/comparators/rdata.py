@@ -109,7 +109,7 @@ class RdsReader(Command):
     def cmdline(self):
         return [
             'Rscript',
-            '--no-environ',
+            '--vanilla',
             '-e',
             'args <- commandArgs(TRUE); readRDS(args[1])',
             self.path,
@@ -138,7 +138,7 @@ class RdbReader(Command):
 
     @tool_required('Rscript')
     def cmdline(self):
-        return ['Rscript', '--no-environ', '-', self.path]
+        return ['Rscript', '--vanilla', '-', self.path]
 
     def input(self):
         return DUMP_RDB
