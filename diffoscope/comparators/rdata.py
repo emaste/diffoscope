@@ -42,8 +42,10 @@ for (x in ls(all.names = TRUE, sorted = TRUE)) {
 
     if (typeof(obj) == "environment") {
         cat("\n{\n", sep = "");
-        for (y in ls(obj, all.names = TRUE, sorted = TRUE))
-            cat(sprintf("    \"%s\" = \"%s\"\n", y, get(y, envir = obj)), sep = "");
+        for (y in ls(obj, all.names = TRUE, sorted = TRUE)) {
+            obj2 = get(y, envir = obj);
+            cat(sprintf("    \"%s\" = \"%s\"\n", y, obj2), sep = "");
+        }
         cat("}\n");
     } else {
         for (line in deparse(obj))
