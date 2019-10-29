@@ -30,7 +30,10 @@ import logging
 import binascii
 
 
-HEADER = binascii.a2b_hex("580a000000020003")
+RDS_HEADERS = {
+    binascii.a2b_hex("580a000000020003"),
+    binascii.a2b_hex("580a000000030003"),
+}
 
 DUMP_RDB = rb"""
 hideOutput = lazyLoad(commandArgs(TRUE));
@@ -128,7 +131,7 @@ class RdsFile(File):
             or file.container
             and check_rds_extension(file.container.source)
         ):
-            return file.file_header.startswith(HEADER)
+            return file.file_header[:8] in RDS_HEADERS
         return False
 
     def compare_details(self, other, source=None):
