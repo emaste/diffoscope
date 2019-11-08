@@ -23,8 +23,6 @@ import subprocess
 
 from .utils.tools import skip_unless_tools_exist
 
-BASE_DIR = os.path.dirname(os.path.abspath(diffoscope.__file__))
-
 
 @skip_unless_tools_exist('black')
 def test_code_is_black_clean():
