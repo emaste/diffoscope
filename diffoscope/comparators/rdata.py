@@ -70,7 +70,7 @@ def get_module_path_for_rdb(rdb):
     R's lazyLoad method does not take a filename directly to an .rdb file (eg.
     `/path/to/foo.rdb`) but rather the path without any extension (eg.
     `/path/to/foo`). It also requires that the .rdx file exists at
-    `/path/to/foo.fdx`.
+    `/path/to/foo.rdx`.
 
     We thus locate the corresponding .rdx file in the surrounding container and
     copy that to `foo.rdx`. We use a temporary directory to ensure we do not
