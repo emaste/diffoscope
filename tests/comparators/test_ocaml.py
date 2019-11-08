@@ -57,7 +57,7 @@ def ocaml_version():
     return out.decode('utf-8').split()[-1]
 
 
-@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.05.0')
+@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.08.1')
 def test_identification(cmi1):
     assert isinstance(cmi1, OcamlInterfaceFile)
 
@@ -67,18 +67,18 @@ def differences(cmi1, cmi2):
     return cmi1.compare(cmi2).details
 
 
-@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.05.0')
+@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.08.1')
 def test_no_differences(cmi1):
     difference = cmi1.compare(cmi1)
     assert difference is None
 
 
-@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.05.0')
+@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.08.1')
 def test_diff(differences):
     expected_diff = get_data('ocaml_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.05.0')
+@skip_unless_tool_is_at_least('ocamlobjinfo', ocaml_version, '4.08.1')
 def test_compare_non_existing(monkeypatch, cmi1):
     assert_non_existing(monkeypatch, cmi1, has_null_source=False)
