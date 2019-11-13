@@ -47,7 +47,9 @@ def differences(xml_a, xml_b):
     return xml_a.compare(xml_b).details
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="requires python3.8 or higher")
+@pytest.mark.skipif(
+    sys.version_info < (3, 8), reason="requires Python 3.8 or higher"
+)
 def test_diff(differences):
     expected_diff = get_data('test_xml_expected_diff')
     assert differences[0].unified_diff == expected_diff
