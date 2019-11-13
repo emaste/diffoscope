@@ -175,9 +175,7 @@ def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
 
     logger.debug("Running %s", ' '.join(cmd))
 
-    p = subprocess.run(
-        cmd, bufsize=1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
+    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     parser = DiffParser(p.stdout, end_nl_q1, end_nl_q2)
     parser.parse()
