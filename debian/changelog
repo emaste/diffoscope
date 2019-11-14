@@ -1,8 +1,25 @@
-diffoscope (130) UNRELEASED; urgency=medium
+diffoscope (130) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * debian/tests/basic-command-line:
+    Move from deprecated ADTTMP to AUTOPKGTEST_TMP.
+  * Correct the matching of R .rds files by also detecting newer versions
+    of this file format.
+  * Drop unused BASE_DIR global in the tests.
+  * Try and ensure that new test data files are generated dynamically, ie.
+    at least no new ones are added without "good" reasons.
+  * Truncate the tcpdump expected diff to 8KB (from ~600KB).
+  * Refresh OCaml test fixtures to support OCaml >= 4.08.1.  Closes: #944709
+  * Correct reference to the ".rdx" extension in a comment.
+  * Update XML test for Python 3.8+.
+  * Don't use line-base dbuffering when communucating with subprocesses
+    in binary mode. (Closes: reproducible-builds/diffoscope#75)
 
- -- Chris Lamb <lamby@debian.org>  Mon, 28 Oct 2019 11:28:49 +0000
+  [ Jelle van der Waa ]
+  * Add support for comparing .zst files are created by zstd.
+    (Closes: reproducible-builds/diffoscope!34)
+
+ -- Mattia Rizzolo <mattia@debian.org>  Thu, 14 Nov 2019 11:22:20 +0100
 
 diffoscope (129) unstable; urgency=medium
 
