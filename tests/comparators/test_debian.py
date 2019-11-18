@@ -162,7 +162,7 @@ def test_dot_changes_no_differences_exclude_buildinfo(
 
 @skip_unless_module_exists('debian.deb822')
 def test_dot_changes_identical_contents_and_different_files(
-    dot_changes_differences_identical_contents_and_different_files
+    dot_changes_differences_identical_contents_and_different_files,
 ):
     assert dot_changes_differences_identical_contents_and_different_files[0]
     expected_diff = get_data(
@@ -178,7 +178,7 @@ def test_dot_changes_identical_contents_and_different_files(
 
 @skip_unless_module_exists('debian.deb822')
 def test_dot_changes_different_contents_and_identical_files(
-    dot_changes_differences_different_contents_and_identical_files
+    dot_changes_differences_different_contents_and_identical_files,
 ):
     assert dot_changes_differences_different_contents_and_identical_files[0]
     assert dot_changes_differences_different_contents_and_identical_files[1]

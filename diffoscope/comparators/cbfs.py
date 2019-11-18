@@ -103,9 +103,16 @@ CBFS_MAXIMUM_FILE_SIZE = 24 * 2 ** 20  # 24 MiB
 
 
 def is_header_valid(buf, size, offset=0):
-    magic, version, romsize, bootblocksize, align, cbfs_offset, architecture, pad = struct.unpack_from(
-        '!IIIIIIII', buf, offset
-    )
+    (
+        magic,
+        version,
+        romsize,
+        bootblocksize,
+        align,
+        cbfs_offset,
+        architecture,
+        pad,
+    ) = struct.unpack_from('!IIIIIIII', buf, offset)
     return (
         magic == CBFS_HEADER_MAGIC
         and (
