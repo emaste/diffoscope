@@ -222,7 +222,7 @@ only the top %(pagesize)s of the HTML are loaded at a time">... <a
 href="%(pagename)s.html">load details (total %(size)s)</a> ...</div>
 """
 
-DIFFNODE_LIMIT = """<div class="error">Max report size reached</div>
+DIFFNODE_LIMIT = """<div class="error">Max HTML report size reached</div>
 """
 
 UD_TABLE_HEADER = """<table class="diff">

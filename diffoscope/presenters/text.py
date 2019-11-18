@@ -70,7 +70,7 @@ class TextPresenter(Presenter):
         try:
             super().start(difference)
         except PrintLimitReached:
-            self.print_func("Max output size reached.", force=True)
+            self.print_func("Max text output size reached.", force=True)
 
     def visit_difference(self, difference):
         if self.depth == 0:
