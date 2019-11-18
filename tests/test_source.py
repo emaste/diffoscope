@@ -22,7 +22,7 @@ import glob
 import diffoscope
 import subprocess
 
-from .utils.tools import skip_unless_tools_exist
+from .utils.tools import skip_unless_tool_is_at_least
 
 ALLOWED_TEST_FILES = {
     # Data files we would prefer to generate dynamically
@@ -238,7 +238,15 @@ ALLOWED_TEST_FILES = {
 }
 
 
-@skip_unless_tools_exist('black')
+def black_version():
+    try:
+        out = subprocess.check_output(('black', '--version'))
+    except subprocess.CalledProcessError as e:
+        out = e.output
+    return out.decode('utf-8').rsplit(' ', 1)[-1]
+
+
+@skip_unless_tool_is_at_least('black', black_version, '19.10b0')
 def test_code_is_black_clean():
     output = subprocess.check_output(
         ('black', '--diff', '.'), stderr=subprocess.PIPE
