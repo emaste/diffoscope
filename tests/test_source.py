@@ -218,6 +218,8 @@ ALLOWED_TEST_FILES = {
     'test_openssh_pub_key2.pub',
     'test_weird_non_unicode_chars1.pdf',
     'test_weird_non_unicode_chars2.pdf',
+    'text_ascii1',
+    'text_ascii2',
     'text_iso8859',
     'text_order1',
     'text_order2',
