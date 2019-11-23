@@ -1,3 +1,9 @@
+diffoscope (132) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 23 Nov 2019 15:36:28 -0500
+
 diffoscope (131) unstable; urgency=medium
 
   * Clarify in the HTML and text outputs that the limits are per output format,
