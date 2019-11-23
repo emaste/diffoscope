@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
 import pytest
 
 from diffoscope.comparators.apk import ApkFile
@@ -63,6 +64,9 @@ def test_zipinfo(differences):
 
 
 @skip_unless_tools_exist('apktool', 'zipinfo')
+@pytest.mark.skipif(
+    sys.version_info < (3, 8), reason="requires Python 3.8 or higher"
+)
 def test_android_manifest(differences):
     assert differences[1].source1 == 'AndroidManifest.xml (decoded)'
     assert differences[1].source2 == 'AndroidManifest.xml (decoded)'
