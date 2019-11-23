@@ -1,8 +1,19 @@
-diffoscope (131) UNRELEASED; urgency=medium
+diffoscope (131) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Clarify in the HTML and text outputs that the limits are per output format,
+    not global. (Closes: #944882, reproducible-builds/diffoscope#76)
+    - Bump the previous "max_page_size" limit from 400 kB to 4 MB.
+  * Update an Android manifest test to reflect that parsed XML attributes are
+    returned in a sorted or otherwise novel manner under Python 3.8.
+  * Update code to reflect version 19.10b0 of the black source code
+    reformatter and don't run our self-test for versions earlier than this as
+    it will generate different results and thus fail.
+  * Limit .dsc and .buildinfo matching; don't attempt to compare them as
+    ELF sections or similar. (Closes: reproducible-builds/diffoscope#77)
+  * Add a comment that the text_ascii{1,2} test fixture files are used in
+    multiple places so are not trivial to generate on the fly.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 17 Nov 2019 19:57:52 -0500
+ -- Chris Lamb <lamby@debian.org>  Sat, 23 Nov 2019 15:22:51 -0500
 
 diffoscope (130) unstable; urgency=medium
 
