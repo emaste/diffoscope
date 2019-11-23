@@ -26,11 +26,28 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.directory import compare_directories
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, get_data
+from ..utils.data import get_data
 
+ASCII1 = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.
+"""
 
-TEST_FILE1_PATH = data('text_ascii1')
-TEST_FILE2_PATH = data('text_ascii2')
+ASCII2 = """A common form of lorem ipsum reads:
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.
+
+"Lorem ipsum" text is derived from sections 1.10.32--3 of Cicero's De finibus
+bonorum et malorum (On the Ends of Goods and Evils, or alternatively [About]
+The Purposes of Good and Evil)."""
 
 
 def test_no_differences():
@@ -53,8 +70,10 @@ def differences(tmpdir):
     tmpdir.mkdir('a/dir')
     tmpdir.mkdir('b')
     tmpdir.mkdir('b/dir')
-    shutil.copy(TEST_FILE1_PATH, str(tmpdir.join('a/dir/text')))
-    shutil.copy(TEST_FILE2_PATH, str(tmpdir.join('b/dir/text')))
+    with open(str(tmpdir.join('a/dir/text')), 'w') as f:
+        f.write(ASCII1)
+    with open(str(tmpdir.join('b/dir/text')), 'w') as f:
+        f.write(ASCII2)
     os.utime(str(tmpdir.join('a/dir/text')), (0, 0))
     os.utime(str(tmpdir.join('b/dir/text')), (0, 0))
     os.utime(str(tmpdir.join('a/dir')), (0, 0))
