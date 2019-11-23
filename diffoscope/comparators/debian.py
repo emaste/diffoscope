@@ -166,6 +166,7 @@ class DebControlFile(File):
 class DotChangesFile(DebControlFile):
     DESCRIPTION = "Debian .changes files"
     FILE_EXTENSION_SUFFIX = '.changes'
+    FILE_TYPE_RE = re.compile(r'^ASCII text')
 
     @classmethod
     def recognizes(cls, file):
@@ -262,6 +263,7 @@ class DotBuildinfoFile(DebControlFile):
     DESCRIPTION = "Debian .buildinfo files"
     CONTAINER_CLASS = DotBuildinfoContainer
     FILE_EXTENSION_SUFFIX = '.buildinfo'
+    FILE_TYPE_RE = re.compile(r'^ASCII text')
 
     @classmethod
     def recognizes(cls, file):
