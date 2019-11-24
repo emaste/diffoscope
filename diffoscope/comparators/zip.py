@@ -173,15 +173,12 @@ class ZipFile(File):
         differences = []
         zipinfo_difference = None
         if Config().exclude_directory_metadata != 'recursive':
-            zipinfo_difference = (
-                Difference.from_command(self.ZIPINFO, self.path, other.path)
-                or Difference.from_command(
-                    self.ZIPINFO_VERBOSE, self.path, other.path
+            for x in (self.ZIPINFO, self.ZIPINFO_VERBOSE, BsdtarVerbose):
+                zipinfo_difference = Difference.from_command(
+                    klass, self.path, other.path
                 )
-                or Difference.from_command(
-                    BsdtarVerbose, self.path, other.path
-                )
-            )
+                if zipinfo_difference:
+                    break
         zipnote_difference = Difference.from_command(
             Zipnote, self.path, other.path
         )
