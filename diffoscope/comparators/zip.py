@@ -42,6 +42,18 @@ class Zipinfo(Command):
         # to work around it, we run it on /dev/stdin instead, seems to work ok.
         return ['zipinfo', '/dev/stdin']
 
+    @property
+    def returncode(self):
+        returncode = super().returncode
+
+        # zipinfo returns with an exit code of 1 or 2 when reading
+        # Mozilla-optimized or Java "jmod" ZIPs as they have non-standard
+        # headers which are safe to ignore.
+        if returncode in (1, 2):
+            returncode = 0
+
+        return returncode
+
     def stdin(self):
         return open(self.path, 'rb')
 
@@ -67,6 +79,13 @@ class Zipnote(Command):
     @tool_required('zipnote')
     def cmdline(self):
         return ['zipnote', self.path]
+
+    @property
+    def returncode(self):
+        returncode = super().returncode
+
+        # zipnote returns with an exit code of 3 for invalid archives
+        return 0 if returncode is 3 else returncode
 
     def filter(self, line):
         """
@@ -166,16 +185,13 @@ class ZipFile(File):
         r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
     )
 
-    ZIPINFO = Zipinfo
-    ZIPINFO_VERBOSE = ZipinfoVerbose
-
     def compare_details(self, other, source=None):
         differences = []
         zipinfo_difference = None
         if Config().exclude_directory_metadata != 'recursive':
-            for x in (self.ZIPINFO, self.ZIPINFO_VERBOSE, BsdtarVerbose):
+            for x in (Zipinfo, ZipinfoVerbose, BsdtarVerbose):
                 zipinfo_difference = Difference.from_command(
-                    klass, self.path, other.path
+                    x, self.path, other.path
                 )
                 if zipinfo_difference:
                     break
@@ -186,28 +202,6 @@ class ZipFile(File):
             if x is not None:
                 differences.append(x)
         return differences
-
-
-class IgnoreReturncodeMixin:
-    @property
-    def returncode(self):
-        returncode = super().returncode
-
-        # zipinfo returns with an exit code of 1 or 2 when reading
-        # Mozilla-optimized or Java "jmod" ZIPs as they have non-standard
-        # headers which are safe to ignore.
-        if returncode in (1, 2):
-            returncode = 0
-
-        return returncode
-
-
-class IgnoreReturncodeZipinfo(IgnoreReturncodeMixin, Zipinfo):
-    pass
-
-
-class IgnoreReturncodeZipinfoVerbose(IgnoreReturncodeMixin, ZipinfoVerbose):
-    pass
 
 
 class MozillaZipContainer(ZipContainer):
@@ -234,9 +228,6 @@ class MozillaZipFile(ZipFile):
     DESCRIPTION = 'Mozilla-optimized .ZIP archives'
     CONTAINER_CLASS = MozillaZipContainer
 
-    ZIPINFO = IgnoreReturncodeZipinfo
-    ZIPINFO_VERBOSE = IgnoreReturncodeZipinfoVerbose
-
     @classmethod
     def recognizes(cls, file):
         # Mozilla-optimized ZIPs start with a 32-bit little endian integer
@@ -247,10 +238,7 @@ class MozillaZipFile(ZipFile):
 
 class JmodJavaModule(ZipFile):
     DESCRIPTION = 'Java .jmod modules'
-
     FILE_TYPE_RE = re.compile(r'^(Zip archive data|Java jmod module)')
-    ZIPINFO = IgnoreReturncodeZipinfo
-    ZIPINFO_VERBOSE = IgnoreReturncodeZipinfoVerbose
 
     @classmethod
     def recognizes(cls, file):
