@@ -1,3 +1,9 @@
+diffoscope (133) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 26 Nov 2019 10:55:05 +0000
+
 diffoscope (132) unstable; urgency=medium
 
   * Allow all possible .zip variations to return with non-zero exit codes, not
