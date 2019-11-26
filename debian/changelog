@@ -1,8 +1,13 @@
-diffoscope (132) UNRELEASED; urgency=medium
+diffoscope (132) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Allow all possible .zip variations to return with non-zero exit codes, not
+    just known types we can explicitly identify (eg. Java .jmod and .jar
+    files). (Closes: reproducible-builds/diffoscope#78)
+  * Also permit UTF-8 encoded .dsc and .changes files.
+    (Re: reproducible-builds/diffoscope#78)
+  * Rework a long string of "or" statements into a loop with a "break".
 
- -- Chris Lamb <lamby@debian.org>  Sat, 23 Nov 2019 15:36:28 -0500
+ -- Chris Lamb <lamby@debian.org>  Tue, 26 Nov 2019 10:31:44 +0000
 
 diffoscope (131) unstable; urgency=medium
 
