@@ -85,7 +85,7 @@ class Zipnote(Command):
         returncode = super().returncode
 
         # zipnote returns with an exit code of 3 for invalid archives
-        return 0 if returncode is 3 else returncode
+        return 0 if returncode == 3 else returncode
 
     def filter(self, line):
         """
