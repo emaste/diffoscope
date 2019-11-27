@@ -59,6 +59,9 @@ class Readelf(Command):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # we don't care about the name of the archive
+        self._path_re = re.compile(
+            r'\b%s/\b' % re.escape(os.path.dirname(self.path))
+        )
         self._archive_re = re.compile(r'^File: %s\(' % re.escape(self.path))
 
     @tool_required('readelf')
@@ -77,7 +80,7 @@ class Readelf(Command):
             # we don't care about the name of the archive
             line = self._archive_re.sub('File: lib.a(', line.decode('utf-8'))
             # the full path can appear in the output, we need to remove it
-            return line.replace(self.path, '<elf>').encode('utf-8')
+            return self._path_re.sub('/', line).encode('utf-8')
         except UnicodeDecodeError:
             return line
 
