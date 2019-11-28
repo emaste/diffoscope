@@ -1,8 +1,12 @@
-diffoscope (133) UNRELEASED; urgency=medium
+diffoscope (133) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Correct the substitution/filtering of paths in ELF output to avoid
+    unnecessary differences depending on the path name provided on the
+    commandline. (Closes: #945572)
+  * Silence/correct a SyntaxWarning message due to incorrectly comparing an
+    integer by identity (is) over equality (==). (Closes: #945531)
 
- -- Chris Lamb <lamby@debian.org>  Tue, 26 Nov 2019 10:55:05 +0000
+ -- Chris Lamb <lamby@debian.org>  Thu, 28 Nov 2019 10:03:33 +0000
 
 diffoscope (132) unstable; urgency=medium
 
