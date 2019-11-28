@@ -1,3 +1,9 @@
+diffoscope (134) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 28 Nov 2019 10:18:07 +0000
+
 diffoscope (133) unstable; urgency=medium
 
   * Correct the substitution/filtering of paths in ELF output to avoid
