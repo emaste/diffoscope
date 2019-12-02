@@ -14,7 +14,7 @@ fi
 
 for py in $(py3versions -s); do
     echo "@@@@@@@@ Running against $py"
-    cp -r tests "$AUTOPKGTEST_TMP"
+    cp -r tests pyproject.toml "$AUTOPKGTEST_TMP"
     (cd "$AUTOPKGTEST_TMP"; "$py" -m pytest -vv -l -r a)
     rm -rf "${AUTOPKGTEST_TMP:?}"/*
 done
