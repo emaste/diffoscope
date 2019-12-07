@@ -29,6 +29,7 @@ from diffoscope.exc import ContainerExtractionError
 from diffoscope.config import Config
 from diffoscope.excludes import any_excluded
 from diffoscope.tempfiles import get_temporary_directory
+from diffoscope.difference import Difference
 
 from ..device import Device
 from ..symlink import Symlink
@@ -340,3 +341,24 @@ class LibarchiveContainer(Archive):
             )
 
         return filter(hide_trivial_dirs, super().comparisons(other))
+
+
+class LibarchiveContainerWithFilelist(LibarchiveContainer):
+    def compare(self, other, **kwargs):
+        differences = []
+
+        # Always include the filelist
+        if other.source:
+            differences = [
+                Difference.from_text_readers(
+                    list_libarchive(self.source.path),
+                    list_libarchive(other.source.path),
+                    self.source.path,
+                    other.source.path,
+                    source="file list",
+                )
+            ]
+
+        differences.extend(super().compare(other, **kwargs))
+
+        return differences

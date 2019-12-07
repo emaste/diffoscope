@@ -70,17 +70,17 @@ def test_iso9660_rockridge(differences):
 
 @skip_unless_tools_exist('isoinfo')
 def test_symlink(differences):
-    assert differences[3].comment == 'symlink'
+    assert differences[4].comment == 'symlink'
     expected_diff = get_data('symlink_expected_diff')
-    assert differences[3].unified_diff == expected_diff
+    assert differences[4].unified_diff == expected_diff
 
 
 @skip_unless_tools_exist('isoinfo')
 def test_compressed_files(differences):
-    assert differences[2].source1 == 'text'
-    assert differences[2].source2 == 'text'
+    assert differences[3].source1 == 'text'
+    assert differences[3].source2 == 'text'
     expected_diff = get_data('text_ascii_expected_diff')
-    assert differences[2].unified_diff == expected_diff
+    assert differences[3].unified_diff == expected_diff
 
 
 @skip_unless_tools_exist('isoinfo')

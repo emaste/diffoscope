@@ -25,7 +25,7 @@ from diffoscope.difference import Difference
 
 from .utils.file import File
 from .utils.command import Command
-from .utils.libarchive import LibarchiveContainer
+from .utils.libarchive import LibarchiveContainerWithFilelist
 
 
 @tool_required('isoinfo')
@@ -76,7 +76,7 @@ class ISO9660Listing(Command):
 
 class Iso9660File(File):
     DESCRIPTION = "ISO 9660 CD images"
-    CONTAINER_CLASS = LibarchiveContainer
+    CONTAINER_CLASS = LibarchiveContainerWithFilelist
     FILE_TYPE_RE = re.compile(r'\bISO 9660\b')
 
     @classmethod
