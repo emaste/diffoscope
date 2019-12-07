@@ -200,9 +200,9 @@ class Container(metaclass=abc.ABCMeta):
                 difference.add_comment(comment)
             return difference
 
-        return filter(
-            None, itertools.starmap(compare_pair, self.comparisons(other))
-        )
+        differences = itertools.starmap(compare_pair, self.comparisons(other))
+
+        return [x for x in differences if x]
 
 
 class MissingContainer(Container):
