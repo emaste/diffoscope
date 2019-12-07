@@ -33,10 +33,7 @@ iso2 = load_fixture('test2.iso')
 
 
 def is_cdrtools():
-    if b"Schilling" in subprocess.check_output(['isoinfo', '--version']):
-        return True
-    else:
-        return False
+    return b"Schilling" in subprocess.check_output(['isoinfo', '--version'])
 
 
 def test_identification(iso1):
