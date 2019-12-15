@@ -212,7 +212,7 @@ EXTERNAL_TOOLS = {
     'zipnote': {'debian': 'zip', 'guix': 'zip'},
     'procyon': {'debian': 'procyon-decompiler'},
     'dumpxsb': {'debian': 'xmlbeans'},
-    'zstd': {'debian': 'zstd'},
+    'zstd': {'debian': 'zstd', 'guix': 'zstd'},
 }
 
 # May be populated at runtime by remapped names like
