@@ -45,7 +45,7 @@ class ProgressLoggingHandler(logging.StreamHandler):
     def emit(self, record):
         try:
             super().emit(record)
-            if not self.progressbar.bar.finished:
+            if not getattr(self.progressbar.bar, 'finished', False):
                 self.progressbar.bar.update()
         except Exception:
             # Wrap otherwise tests fail due to test_progress.py call main()
