@@ -110,7 +110,7 @@ def test_text_option_with_file(tmpdir, capsys):
         assert f.read() == get_data('output.txt')
 
 
-def test_text_option_with_stdiout(capsys):
+def test_text_option_with_stdout(capsys):
     out = run(capsys, '--text', '-')
 
     assert out == get_data('output.txt')
