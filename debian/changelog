@@ -1,8 +1,21 @@
-diffoscope (134) UNRELEASED; urgency=medium
+diffoscope (134) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Ensure that autopkgtests are run with our pyproject.toml present for the
+    correct "black" source code formatter settings. (Closes: #945993)
+  * Tidy some unnecessary boolean logic in the ISO9660 tests.
+  * Rename the "text_option_with_stdiout" to "text_option_with_stdout".
+  * Include the libarchive file listing for ISO images to ensure that
+    timestamps (not just dates) are visible in any difference.
+    (Closes: reproducible-builds/diffoscope#81)
 
- -- Chris Lamb <lamby@debian.org>  Thu, 28 Nov 2019 10:18:07 +0000
+  [ Eli Schwartz ]
+  * Fix an exception in the progressbar handler.
+
+  [ Vagrant Cascadian ]
+  * Add an external tool reference for zstd on GNU Guix.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 27 Dec 2019 19:17:16 +0000
 
 diffoscope (133) unstable; urgency=medium
 
