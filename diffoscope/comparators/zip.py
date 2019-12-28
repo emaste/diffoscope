@@ -27,6 +27,7 @@ from diffoscope.config import Config
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 from diffoscope.exc import ContainerExtractionError
+from diffoscope.tempfiles import get_named_temporary_file
 
 from .utils.file import File
 from .directory import Directory
@@ -78,7 +79,11 @@ class Zipnote(Command):
 
     @tool_required('zipnote')
     def cmdline(self):
-        return ['zipnote', self.path]
+        path = self.path
+        if not path.endswith('.zip'):
+            path = get_named_temporary_file(suffix='.zip').name
+            shutil.copy(self.path, path)
+        return ['zipnote', path]
 
     @property
     def returncode(self):
