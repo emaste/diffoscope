@@ -17,6 +17,16 @@ changes and submit a *merge request* via Salsa.  See `Gitlab documentation
 
 You can also submit bugs about Debian specific issues to the Debian bug tracker. 
 
+Testing
+=======
+
+diffoscope's test suite relies on `pytest <https://docs.pytest.org/>`__;
+to run all tests use ``pytest[-3]``. For faster interactive development
+here's an example of how to run a (much) smaller subset of tests:
+
+    pytest  -v --exitfirst -k lib tests/comparators/test_elf.pyc [ --pdb ]
+
+More options in `pytest -h`.
 
 Add a comparator
 ================
