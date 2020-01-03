@@ -19,6 +19,7 @@
 
 import struct
 import pytest
+import re
 import subprocess
 
 from diffoscope.comparators.cbfs import CbfsFile
@@ -122,15 +123,14 @@ def differences(rom1, rom2):
 
 @skip_unless_tools_exist('cbfstool')
 def test_listing(differences):
-    # Newer versions of cbfstool do not create the "legacy" header by default
-    # and thus is missing from the diff.
-    # Even newer versions added a "compression" column.
+    # Compares outputs of: "cbfstool $tmpdir/coreboot*.rom print"
+    #
+    # As the output of this command keeps changing slightly (see
+    # https://salsa.debian.org/reproducible-builds/diffoscope/merge_requests/38/
+    # and the git log of this file), perform only these basic sanity checks.
 
-    assert differences[0].unified_diff in (
-        get_data('cbfs_listing_expected_diff'),
-        get_data('cbfs_listing_no_legacy_header_expected_diff'),
-        get_data('cbfs_listing_comp_column_expected.diff'),  # cbfs >= 4.6
-    )
+    assert differences[0].source1.startswith("cbfstool")
+    assert re.search(r'\+text\s.*\sraw\s', differences[0].unified_diff)
 
 
 @skip_unless_tools_exist('cbfstool')
