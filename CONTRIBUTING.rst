@@ -21,8 +21,9 @@ Testing
 =======
 
 diffoscope's test suite relies on `pytest <https://docs.pytest.org/>`__;
-to run all tests use ``pytest[-3]``. For faster interactive development
-here's an example of how to run a (much) smaller subset of tests:
+to run all tests use ``pytest[-3]``, appending ``-n 4`` or similar to enable
+running tests concurrently. For faster interactive development here's an
+example of how to run a (much) smaller subset of tests:
 
     pytest  -v --exitfirst -k lib tests/comparators/test_elf.pyc [ --pdb ]
 
