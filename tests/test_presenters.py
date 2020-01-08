@@ -184,10 +184,11 @@ def test_html_option_with_stdout(capsys):
 
 
 def test_html_regression_875281(tmpdir, capsys):
-    # this test fails when you `git revert -Xtheirs ccd926f`
     diff_path = expand_collapsed_json(tmpdir, 'debian-bug-875281')
     report_path = str(tmpdir.join('report.html'))
-    out = run(capsys, '--html', report_path, pair=(diff_path,))
+    out = run(
+        capsys, '--html', report_path, '--max-page-size=5000', pair=(diff_path,)
+    )
     assert out == ''
 
 
