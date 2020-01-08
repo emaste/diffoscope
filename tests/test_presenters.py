@@ -187,7 +187,11 @@ def test_html_regression_875281(tmpdir, capsys):
     diff_path = expand_collapsed_json(tmpdir, 'debian-bug-875281')
     report_path = str(tmpdir.join('report.html'))
     out = run(
-        capsys, '--html', report_path, '--max-page-size=5000', pair=(diff_path,)
+        capsys,
+        '--html',
+        report_path,
+        '--max-page-size=5000',
+        pair=(diff_path,),
     )
     assert out == ''
 
