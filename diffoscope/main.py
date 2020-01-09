@@ -663,10 +663,11 @@ def run_diffoscope(parsed_args):
     set_locale()
     path1, path2 = parsed_args.path1, parsed_args.path2
     if path2 is None:
-        logger.debug("Loading diff from stdin")
         if path1 == '-':
+            logger.debug("Loading diff from stdin")
             difference = load_diff(sys.stdin, "stdin")
         else:
+            logger.debug("Loading diff from %s", path1)
             try:
                 difference = load_diff_from_path(path1)
             except json.JSONDecodeError:
