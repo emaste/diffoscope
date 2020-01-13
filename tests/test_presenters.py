@@ -195,6 +195,11 @@ def test_html_regression_875281(tmpdir, capsys):
     )
     assert out == ''
 
+    with open(report_path, 'r', encoding='utf-8') as f:
+        assert extract_body(f.read()) == get_data(
+            'output_regression_875281.html'
+        )
+
 
 def test_limited_print():
     def fake(x):
