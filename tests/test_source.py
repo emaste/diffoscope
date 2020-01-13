@@ -230,11 +230,6 @@ ALLOWED_TEST_FILES = {
     'debian-bug-875281.collapsed-diff.json',
     'order1a.json',
     'order1b.json',
-    'output.colored.txt',
-    'output.json',
-    'output.md',
-    'output.rst',
-    'output.txt',
 }
 
 
@@ -287,6 +282,7 @@ def test_does_not_add_new_test_files():
             or x.endswith('.diff')
             or '_diff_' in x
             or 'diff.' in x
+            or x.startswith('output')
         ):
             continue
 
