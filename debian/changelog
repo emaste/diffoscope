@@ -1,8 +1,28 @@
-diffoscope (135) UNRELEASED; urgency=medium
+diffoscope (135) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Extract resources.arsc files (as well as classes.dex) from Android .apk
+    files to ensure that we at least show differences there. (Closes: #916359)
+  * Always pass a filename with a ".zip" extension to zipnote otherwise it
+    will return with an exit code of 9 and revert to a binary diff for the
+    entire file.
+  * Don't exhaustively output the entire HTML report when testing the
+    regression for #875281; parsing the JSON and pruning the tree should be
+    enough.
+  * Factor out running all of our zipinfo variants into a new method and use
+    this routine when comparing .apk files, thus now also displaying any
+    differences exposed by bsdtar.
+  * Testsuite improvements:
+    - Always allow fixtures called "output*".
+    - Actually test the output of the test_html_regression_875281 test.
+  * Add a note to the "Contributing" page to suggest enable concurrency when
+    running the tests locally.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 27 Dec 2019 22:23:25 +0000
+  [ Marc Herbert ]
+  * Fix a misplaced debug "Loading diff from stdin" logging message.
+  * Add new "Testing" section to CONTRIBUTING.rst.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 14 Jan 2020 14:26:07 +0000
 
 diffoscope (134) unstable; urgency=medium
 
