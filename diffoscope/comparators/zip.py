@@ -125,6 +125,20 @@ class BsdtarVerbose(Command):
         return ['bsdtar', '-tvf', self.path]
 
 
+def zipinfo_differences(file, other):
+    """
+    Run all our zipinfo variants.
+    """
+
+    for x in (Zipinfo, ZipinfoVerbose, BsdtarVerbose):
+        result = Difference.from_command(x, file.path, other.path)
+        # We only return the 'best' one
+        if result is not None:
+            return [result]
+
+    return []
+
+
 class ZipDirectory(Directory, ArchiveMember):
     def __init__(self, archive, member_name):
         ArchiveMember.__init__(self, archive, member_name)
@@ -192,20 +206,11 @@ class ZipFile(File):
 
     def compare_details(self, other, source=None):
         differences = []
-        zipinfo_difference = None
         if Config().exclude_directory_metadata != 'recursive':
-            for x in (Zipinfo, ZipinfoVerbose, BsdtarVerbose):
-                zipinfo_difference = Difference.from_command(
-                    x, self.path, other.path
-                )
-                if zipinfo_difference:
-                    break
-        zipnote_difference = Difference.from_command(
-            Zipnote, self.path, other.path
+            differences.extend(zipinfo_differences(self, other))
+        differences.append(
+            Difference.from_command(Zipnote, self.path, other.path)
         )
-        for x in (zipinfo_difference, zipnote_difference):
-            if x is not None:
-                differences.append(x)
         return differences
 
 
