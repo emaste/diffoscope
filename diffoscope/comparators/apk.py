@@ -29,7 +29,7 @@ from diffoscope.difference import Difference
 from .utils.file import File
 from .utils.archive import Archive
 from .utils.compare import compare_files
-from .zip import Zipinfo, ZipinfoVerbose
+from .zip import zipinfo_differences
 from .missing_file import MissingFile
 
 logger = logging.getLogger(__name__)
@@ -175,10 +175,7 @@ class ApkFile(File):
     CONTAINER_CLASS = ApkContainer
 
     def compare_details(self, other, source=None):
-        zipinfo_difference = Difference.from_command(
-            Zipinfo, self.path, other.path
-        ) or Difference.from_command(ZipinfoVerbose, self.path, other.path)
-        return [zipinfo_difference]
+        return zipinfo_differences(self, other)
 
 
 def filter_apk_metadata(filepath, archive_name):
