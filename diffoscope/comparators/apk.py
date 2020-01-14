@@ -67,12 +67,13 @@ class ApkContainer(Archive):
             stdout=subprocess.PIPE,
         )
 
-        # Optionally extract the classes.dex file; apktool does not do this.
-        subprocess.call(
-            ('unzip', '-d', self._unpacked, self.source.path, 'classes.dex'),
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-        )
+        # Optionally extract a few files that apktool does not
+        for x in ('classes.dex', 'resources.arsc'):
+            subprocess.call(
+                ('unzip', '-d', self._unpacked, self.source.path, x),
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+            )
 
         for root, _, files in os.walk(self._unpacked):
             current_dir = []
