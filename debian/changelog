@@ -859,7 +859,7 @@ diffoscope (92) unstable; urgency=medium
 
   * New features:
     - Show the list of supported file types in the manual and --help output. We
-      can copy-paste this into the website, etc.. Thanks to Jonathan Dowland
+      can copy-paste this into the website, etc. Thanks to Jonathan Dowland
       for the suggestion. (Closes: #893443)
     - Add support for comparing Gnumeric spreadsheets. (Closes: #893311)
 
