@@ -22,13 +22,13 @@ import os.path
 import logging
 import subprocess
 
-from diffoscope.tools import tool_required, find_executable
+from diffoscope.tools import tool_required
 from diffoscope.tempfiles import get_temporary_directory
 
 from .utils.file import File
 from .utils.archive import Archive
 from .utils.compare import compare_files
-from .zip import zipinfo_differences
+from .zip import ZipContainer, zipinfo_differences
 from .missing_file import MissingFile
 
 logger = logging.getLogger(__name__)
@@ -172,9 +172,7 @@ class ApkFile(File):
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
     FILE_TYPE_RE = re.compile(r'^(Java|Zip) archive data.*\b')
     FILE_EXTENSION_SUFFIX = '.apk'
-    CONTAINER_CLASSES = [
-        ApkContainer if find_executable('apktool') else ZipContainer
-    ]
+    CONTAINER_CLASSES = [ApkContainer, ZipContainer]
 
     def compare_details(self, other, source=None):
         return zipinfo_differences(self, other)
