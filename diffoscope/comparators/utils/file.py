@@ -99,6 +99,7 @@ class File(metaclass=abc.ABCMeta):
             return maybe_decode(self._mimedb_encoding.from_file(path))
 
     def __init__(self, container=None):
+        self._comments = []
         self._container = container
 
     def __repr__(self):
@@ -262,6 +263,14 @@ class File(metaclass=abc.ABCMeta):
                     type_name(klass),
                     exc.command,
                 )
+                try:
+                    infix = type(self).DESCRIPTION
+                except AttributeError:
+                    infix = 'this file format'
+                msg = "Format-specific differences are supported for {}.".format(
+                    infix
+                )
+                self._comments.append(exc.get_comment(msg))
 
     @property
     def progress_name(self):
@@ -522,6 +531,11 @@ class File(metaclass=abc.ABCMeta):
                         e.pathname, e.wrapped_exc
                     )
                 )
+
+            # Append any miscellaneous comments for this file.
+            for x in getattr(self, '_comments', []):
+                difference.add_comment(x)
+
             return difference
         return self.compare_bytes(other, source)
 
