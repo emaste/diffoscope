@@ -310,7 +310,7 @@ class SquashfsContainer(Archive):
 
 class SquashfsFile(File):
     DESCRIPTION = "SquashFS filesystems"
-    CONTAINER_CLASS = SquashfsContainer
+    CONTAINER_CLASSES = [SquashfsContainer]
     FILE_TYPE_RE = re.compile(r'^Squashfs filesystem\b')
 
     def compare_details(self, other, source=None):

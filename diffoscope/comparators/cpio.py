@@ -28,7 +28,7 @@ from .utils.libarchive import LibarchiveContainer, list_libarchive
 
 class CpioFile(File):
     DESCRIPTION = "cpio archives"
-    CONTAINER_CLASS = LibarchiveContainer
+    CONTAINER_CLASSES = [LibarchiveContainer]
     FILE_TYPE_RE = re.compile(r'\bcpio archive\b')
 
     def compare_details(self, other, source=None):

@@ -56,7 +56,7 @@ class Lz4Container(Archive):
 
 class Lz4File(File):
     DESCRIPTION = "LZ4 compressed files"
-    CONTAINER_CLASS = Lz4Container
+    CONTAINER_CLASSES = [Lz4Container]
     FILE_TYPE_RE = re.compile(r'^LZ4 compressed data \([^\)]+\)$')
 
     # Work around file(1) Debian bug #876316

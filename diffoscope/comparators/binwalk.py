@@ -67,7 +67,7 @@ class BinwalkFileContainer(Archive):
 
 class BinwalkFile(File):
     FILE_TYPE_RE = re.compile(r'\bcpio archive\b')
-    CONTAINER_CLASS = BinwalkFileContainer
+    CONTAINER_CLASSES = [BinwalkFileContainer]
 
     @classmethod
     def recognizes(cls, file):

@@ -56,7 +56,7 @@ class GzipContainer(Archive):
 
 class GzipFile(File):
     DESCRIPTION = "Gzipped files"
-    CONTAINER_CLASS = GzipContainer
+    CONTAINER_CLASSES = [GzipContainer]
     FILE_TYPE_RE = re.compile(r'^gzip compressed data\b')
 
     # Work around file(1) Debian bug #876316

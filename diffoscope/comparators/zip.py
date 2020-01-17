@@ -199,7 +199,7 @@ class ZipContainer(Archive):
 
 class ZipFile(File):
     DESCRIPTION = 'ZIP archives'
-    CONTAINER_CLASS = ZipContainer
+    CONTAINER_CLASSES = [ZipContainer]
     FILE_TYPE_RE = re.compile(
         r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
     )
@@ -236,7 +236,7 @@ class MozillaZipContainer(ZipContainer):
 
 class MozillaZipFile(ZipFile):
     DESCRIPTION = 'Mozilla-optimized .ZIP archives'
-    CONTAINER_CLASS = MozillaZipContainer
+    CONTAINER_CLASSES = [MozillaZipContainer]
 
     @classmethod
     def recognizes(cls, file):

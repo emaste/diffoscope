@@ -111,7 +111,7 @@ class DebContainer(LibarchiveContainer):
 
 
 class DebFile(File):
-    CONTAINER_CLASS = DebContainer
+    CONTAINER_CLASSES = [DebContainer]
     FILE_TYPE_RE = re.compile(r'^Debian binary package')
 
     @property
@@ -233,7 +233,7 @@ class DebTarContainer(TarContainer):
 
 
 class DebDataTarFile(File):
-    CONTAINER_CLASS = DebTarContainer
+    CONTAINER_CLASSES = [DebTarContainer]
 
     @classmethod
     def recognizes(cls, file):

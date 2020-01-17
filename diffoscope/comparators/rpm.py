@@ -109,7 +109,7 @@ class RpmContainer(Archive):
 
 class RpmFile(AbstractRpmFile):
     DESCRIPTION = "RPM archives"
-    CONTAINER_CLASS = RpmContainer
+    CONTAINER_CLASSES = [RpmContainer]
 
     def compare_details(self, other, source=None):
         return [compare_rpm_headers(self.path, other.path)]

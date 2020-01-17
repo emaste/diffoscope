@@ -60,4 +60,4 @@ class DexContainer(Archive):
 class DexFile(File):
     DESCRIPTION = "Dalvik .dex files"
     FILE_TYPE_RE = re.compile(r'^Dalvik dex file .*\b')
-    CONTAINER_CLASS = DexContainer
+    CONTAINER_CLASSES = [DexContainer]

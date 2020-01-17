@@ -109,7 +109,7 @@ class DebControlContainer(Container):
 
 
 class DebControlFile(File):
-    CONTAINER_CLASS = DebControlContainer
+    CONTAINER_CLASSES = [DebControlContainer]
 
     @property
     def deb822(self):
@@ -261,7 +261,7 @@ class DotBuildinfoContainer(DebControlContainer):
 
 class DotBuildinfoFile(DebControlFile):
     DESCRIPTION = "Debian .buildinfo files"
-    CONTAINER_CLASS = DotBuildinfoContainer
+    CONTAINER_CLASSES = [DotBuildinfoContainer]
     FILE_EXTENSION_SUFFIX = '.buildinfo'
     FILE_TYPE_RE = re.compile(r'^(ASCII text|UTF-8 Unicode text)')
 

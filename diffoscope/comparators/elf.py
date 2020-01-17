@@ -621,7 +621,7 @@ class ElfContainer(Container):
 
 class ElfFile(File):
     DESCRIPTION = "ELF binaries"
-    CONTAINER_CLASS = ElfContainer
+    CONTAINER_CLASSES = [ElfContainer]
     FILE_TYPE_RE = re.compile(r'^ELF ')
 
     def compare_details(self, other, source=None):

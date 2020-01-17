@@ -56,5 +56,5 @@ class ZstContainer(Archive):
 
 class ZstFile(File):
     DESCRIPTION = "Zstandard compressed files"
-    CONTAINER_CLASS = ZstContainer
+    CONTAINER_CLASSES = [ZstContainer]
     FILE_TYPE_RE = re.compile(r'^Zstandard compressed data')

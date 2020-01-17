@@ -225,37 +225,43 @@ class File(metaclass=abc.ABCMeta):
     def container(self):
         return self._container
 
+    CONTAINER_CLASSES = []
+
     @property
     def as_container(self):
-        if not hasattr(self.__class__, 'CONTAINER_CLASS'):
+        klasses = self.__class__.CONTAINER_CLASSES
+
+        if not klasses:
             if hasattr(self, '_other_file'):
-                return self._other_file.__class__.CONTAINER_CLASS(self)
+                return self._other_file.__class__.CONTAINER_CLASSES[0](self)
             return None
 
         def type_name(klass):
             return "{}.{}".format(klass.__module__, klass.__name__)
 
-        if not hasattr(self, '_as_container'):
+        if hasattr(self, '_as_container'):
+            return self._as_container
+
+        self._as_container = None
+
+        # Try each container class in turn, returning the first one that
+        # instantiates without error.
+        for klass in klasses:
             logger.debug(
-                'Instantiating a %s for %s',
-                type_name(self.__class__.CONTAINER_CLASS),
-                self.name,
+                'Instantiating a %s for %s', type_name(klass), self.name,
             )
             try:
-                self._as_container = self.__class__.CONTAINER_CLASS(self)
+                self._as_container = klass(self)
+                logger.debug(
+                    "Returning a %s for %s", type_name(klass), self.name,
+                )
+                return self._as_container
             except RequiredToolNotFound as exc:
                 logger.debug(
                     "Cannot instantiate a %s; missing tool %s",
-                    type_name(self.__class__.CONTAINER_CLASS),
+                    type_name(klass),
                     exc.command,
                 )
-                return None
-        logger.debug(
-            "Returning a %s for %s",
-            type_name(self._as_container.__class__),
-            self.name,
-        )
-        return self._as_container
 
     @property
     def progress_name(self):
