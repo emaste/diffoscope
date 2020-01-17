@@ -718,7 +718,8 @@ class HTMLPresenter(Presenter):
             path = score[3]
             diff_path = output_diff_path(path)
             pagename = md5(diff_path)
-            logger.debug('html output for %s', diff_path)
+            if diff_path:
+                logger.debug('html output for %s', diff_path)
 
             ancestor = ancestors.pop(node, None)
             assert ancestor in path or (
