@@ -243,7 +243,12 @@ class File(metaclass=abc.ABCMeta):
             )
             try:
                 self._as_container = self.__class__.CONTAINER_CLASS(self)
-            except RequiredToolNotFound:
+            except RequiredToolNotFound as exc:
+                logger.debug(
+                    "Cannot instantiate a %s; missing tool %s",
+                    type_name(self.__class__.CONTAINER_CLASS),
+                    exc.command,
+                )
                 return None
         logger.debug(
             "Returning a %s for %s",
