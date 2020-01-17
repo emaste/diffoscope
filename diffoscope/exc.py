@@ -34,6 +34,18 @@ class RequiredToolNotFound(Exception):
     def get_package(self):
         return get_package_provider(self.command)
 
+    def get_comment(self, infix=''):
+        xs = [
+            "'{}' not available in path.".format(self.command),
+            infix,
+        ]
+
+        x = self.get_package()
+        if x:
+            xs.append("Install '{}' to get a better output.".format(x))
+
+        return " ".join(x for x in xs if x)
+
 
 class ContainerExtractionError(Exception):
     def __init__(self, pathname, wrapped_exc):

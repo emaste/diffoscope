@@ -496,14 +496,8 @@ class File(metaclass=abc.ABCMeta):
                 if difference is None:
                     return None
                 difference.add_comment(
-                    "'%s' not available in path. Falling back to binary comparison."
-                    % e.command
+                    e.get_comment("Falling back to binary comparison.")
                 )
-                package = e.get_package()
-                if package:
-                    difference.add_comment(
-                        "Install '%s' to get a better output." % package
-                    )
             except OutputParsingError as e:
                 difference = self.compare_bytes(other, source=source)
                 if difference is None:
