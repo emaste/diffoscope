@@ -42,7 +42,9 @@ class RequiredToolNotFound(Exception):
 
         x = self.get_package()
         if x:
-            xs.append("Install '{}' to get a better output.".format(x))
+            xs.append(
+                "Install the '{}' package to get a better output.".format(x)
+            )
 
         return " ".join(x for x in xs if x)
 
