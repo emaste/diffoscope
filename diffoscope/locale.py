@@ -30,7 +30,10 @@ def set_locale():
     output.
     """
 
-    logger.debug("Normalising locale, timezone, etc.")
+    logger.debug(
+        "Normalising locale, timezone, etc. Inheriting PATH of %s",
+        os.environ.get('PATH', '(none)'),
+    )
 
     for x in ('LANGUAGE', 'LC_ALL'):
         os.environ.pop(x, None)
