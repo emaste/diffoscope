@@ -610,9 +610,10 @@ def run_diffoscope(parsed_args):
     unpredictable behaviour.)
     """
 
+    logger.debug("Starting diffoscope %s", VERSION)
+
     ProfileManager().setup(parsed_args)
     PresenterManager().configure(parsed_args)
-    logger.debug("Starting diffoscope %s", VERSION)
     if not tlsh:
         logger.warning(
             'Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.'
