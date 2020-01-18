@@ -63,14 +63,14 @@ def differences_meta(image1_meta, image2_meta):
 
 
 @skip_unless_tools_exist('img2txt', 'identify')
-@skip_unless_tool_is_between('identify', identify_version, '6.9.6', '6.9.8-3')
+@skip_unless_tool_is_at_least('identify', identify_version, '6.9.10-23')
 def test_diff_meta(differences_meta):
     expected_diff = get_data('ico_image_meta_expected_diff')
     assert differences_meta[-1].unified_diff == expected_diff
 
 
 @skip_unless_tools_exist('img2txt', 'identify')
-@skip_unless_tool_is_at_least('identify', identify_version, '6.9.8-4')
+@skip_unless_tool_is_at_least('identify', identify_version, '6.9.10-23')
 def test_diff_meta2(differences_meta):
     expected_diff = get_data('ico_image_meta_expected_diff_v2')
     assert differences_meta[-1].unified_diff == expected_diff
