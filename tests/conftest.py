@@ -21,7 +21,7 @@
 import pytest
 
 from diffoscope.path import set_path
-from diffoscope.locale import set_locale
+from diffoscope.environ import normalize_environment
 from diffoscope.progress import ProgressManager
 from diffoscope.comparators import ComparatorManager
 
@@ -32,9 +32,9 @@ def pytest_configure(config):
 
 
 @pytest.fixture(autouse=True, scope='session')
-def locale():
-    # Ensure set_locale fixture runs before each test.
-    set_locale()
+def environ():
+    # Ensure normalize_environment fixture runs before each test.
+    normalize_environment()
 
 
 @pytest.fixture(autouse=True)

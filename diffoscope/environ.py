@@ -24,10 +24,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def set_locale():
+def normalize_environment():
     """
-    Normalise locale so external tool gives us stable and properly encoded
-    output.
+    Normalise locale, etc. so external tools give us stable and properly
+    encoded output.
     """
 
     logger.debug(

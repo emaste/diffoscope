@@ -41,7 +41,7 @@ from .tools import (
     get_current_os,
 )
 from .config import Config
-from .locale import set_locale
+from .environ import normalize_environment
 from .logging import line_eraser, setup_logging
 from .progress import ProgressManager, Progress
 from .profiling import ProfileManager, profile
@@ -660,7 +660,7 @@ def run_diffoscope(parsed_args):
         *"ar as ld ld.bfd nm objcopy objdump ranlib readelf strip".split(),
     )
     set_path()
-    set_locale()
+    normalize_environment()
     path1, path2 = parsed_args.path1, parsed_args.path2
     if path2 is None:
         if path1 == '-':
