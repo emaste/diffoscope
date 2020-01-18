@@ -84,7 +84,7 @@ class BinwalkFile(File):
             return False
 
         # Don't recurse; binwalk has already found everything
-        if isinstance(file.container, cls.CONTAINER_CLASS):
+        if isinstance(file.container, cls.CONTAINER_CLASSES[0]):
             return False
 
         unpacked = get_temporary_directory(prefix='binwalk')
