@@ -60,7 +60,7 @@ diffoscope/presenters/icon.py: favicon.png
 	 echo '""".replace("\\n", "")'; \
 	) > $@
 
-favicon.png: logo.svg
+favicon.png: doc/logo.svg
 	inkscape -w 32 -h 32 -e $@ $<
 
 override_dh_auto_clean:
