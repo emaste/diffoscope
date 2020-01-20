@@ -107,7 +107,6 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         if diff_content_only:
             return None
     elif diff_content_only:
-        assert not has_same_content
         return Difference(None, file1.name, file2.name, comment="Files differ")
 
     specialize(file1)
