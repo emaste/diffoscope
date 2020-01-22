@@ -20,8 +20,10 @@
 import io
 import os
 import sys
+import shlex
 import logging
 import binascii
+import subprocess
 
 from diffoscope.tools import tool_required
 from diffoscope.exc import RequiredToolNotFound
@@ -111,6 +113,9 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
 
     specialize(file1)
     specialize(file2)
+
+    call_difftool(file1, file2)
+
     if isinstance(file1, MissingFile):
         file1.other_file = file2
     elif isinstance(file2, MissingFile):
@@ -121,6 +126,25 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         return file1.compare_bytes(file2, source)
     with profile('compare_files (cumulative)', file1):
         return file1.compare(file2, source)
+
+
+def call_difftool(file1, file2):
+    """
+    Call an external difftool one-by-one, similar to git-difftool(1).
+    """
+
+    if Config().difftool is None:
+        return
+
+    a = '/dev/null' if isinstance(file1, MissingFile) else file1.path
+    b = '/dev/null' if isinstance(file2, MissingFile) else file2.path
+
+    if os.path.isdir(a) or os.path.isdir(b):
+        return
+
+    cmd = " ".join((Config().difftool, shlex.quote(a), shlex.quote(b)))
+    logger.debug("Calling external command %r", cmd)
+    subprocess.call(cmd, shell=True)
 
 
 def bail_if_non_existing(*paths):

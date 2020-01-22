@@ -203,6 +203,13 @@ def create_parser():
         help='Write RsT text output to given file (use - for stdout)',
     )
     group1.add_argument(
+        '--difftool',
+        metavar='TOOL',
+        dest='difftool',
+        help='Compare differences one-by-one using the specified external '
+        'command similar to git-difftool(1)',
+    )
+    group1.add_argument(
         '--profile',
         metavar='OUTPUT_FILE',
         dest='profile_output',
@@ -598,6 +605,7 @@ def configure(parsed_args):
     Config().max_page_size_child = parsed_args.max_page_size_child
     Config().max_page_diff_block_lines = parsed_args.max_page_diff_block_lines
 
+    Config().difftool = parsed_args.difftool
     Config().new_file = parsed_args.new_file
     Config().use_dbgsym = parsed_args.use_dbgsym
     Config().force_details = parsed_args.force_details
