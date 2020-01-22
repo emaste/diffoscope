@@ -594,19 +594,19 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         sys.exit(0)
 
 
-def maybe_set_limit(config, parsed_args, key):
+def maybe_set_limit(parsed_args, key):
     # apply limits affected by "no-default-limits"
     v = getattr(parsed_args, key)
     if v is not None:
-        setattr(config, key, float("inf") if v == 0 else v)
+        setattr(Config(), key, float("inf") if v == 0 else v)
     elif parsed_args.no_default_limits:
-        setattr(config, key, float("inf"))
+        setattr(Config(), key, float("inf"))
 
 
 def configure(parsed_args):
-    maybe_set_limit(Config(), parsed_args, "max_report_size")
-    maybe_set_limit(Config(), parsed_args, "max_text_report_size")
-    maybe_set_limit(Config(), parsed_args, "max_diff_block_lines")
+    maybe_set_limit(parsed_args, "max_report_size")
+    maybe_set_limit(parsed_args, "max_text_report_size")
+    maybe_set_limit(parsed_args, "max_diff_block_lines")
     Config().max_page_size = parsed_args.max_page_size
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     if parsed_args.max_report_size_child is not None:
@@ -628,8 +628,8 @@ def configure(parsed_args):
         )
     Config().max_page_diff_block_lines = parsed_args.max_page_diff_block_lines
 
-    maybe_set_limit(Config(), parsed_args, "max_diff_block_lines_saved")
-    maybe_set_limit(Config(), parsed_args, "max_diff_input_lines")
+    maybe_set_limit(parsed_args, "max_diff_block_lines_saved")
+    maybe_set_limit(parsed_args, "max_diff_input_lines")
     Config().max_container_depth = parsed_args.max_container_depth
     Config().use_dbgsym = parsed_args.use_dbgsym
     Config().force_details = parsed_args.force_details
