@@ -603,21 +603,7 @@ def maybe_set_limit(config, parsed_args, key):
         setattr(config, key, float("inf"))
 
 
-def run_diffoscope(parsed_args):
-    """
-    (This should not be considered a stable API suitable for external
-    consumption, and the lack of configuration of globals may result in
-    unpredictable behaviour.)
-    """
-
-    logger.debug("Starting diffoscope %s", VERSION)
-
-    ProfileManager().setup(parsed_args)
-    PresenterManager().configure(parsed_args)
-    if not tlsh:
-        logger.warning(
-            'Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.'
-        )
+def configure(parsed_args):
     maybe_set_limit(Config(), parsed_args, "max_report_size")
     maybe_set_limit(Config(), parsed_args, "max_text_report_size")
     maybe_set_limit(Config(), parsed_args, "max_diff_block_lines")
@@ -660,6 +646,25 @@ def run_diffoscope(parsed_args):
         parsed_args.tool_prefix_binutils,
         *"ar as ld ld.bfd nm objcopy objdump ranlib readelf strip".split(),
     )
+
+
+def run_diffoscope(parsed_args):
+    """
+    (This should not be considered a stable API suitable for external
+    consumption, and the lack of configuration of globals may result in
+    unpredictable behaviour.)
+    """
+
+    logger.debug("Starting diffoscope %s", VERSION)
+
+    ProfileManager().setup(parsed_args)
+    PresenterManager().configure(parsed_args)
+    if not tlsh:
+        logger.warning(
+            'Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.'
+        )
+
+    configure(parsed_args)
     set_path()
     normalize_environment()
     path1, path2 = parsed_args.path1, parsed_args.path2
