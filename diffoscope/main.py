@@ -706,7 +706,7 @@ def main(args=None):
     signal.signal(signal.SIGTERM, sigterm_handler)
 
     try:
-        import libarchive
+        import libarchive  # noqa
     except (ImportError, AttributeError):
         traceback.print_exc()
         python_module_missing('libarchive')
