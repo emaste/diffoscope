@@ -602,10 +602,11 @@ def configure(parsed_args):
         "max_diff_block_lines_saved",
         "max_diff_input_lines",
     ):
-        # apply limits affected by "no-default-limits"
+        # Apply limits affected by "no-default-limits"
         v = getattr(parsed_args, x)
         if v is not None:
             setattr(Config(), x, float("inf") if v == 0 else v)
+
         elif parsed_args.no_default_limits:
             setattr(Config(), x, float("inf"))
 
@@ -616,6 +617,7 @@ def configure(parsed_args):
             "Detected deprecated flag --max-report-size-child; use --max-page-size-child instead."
         )
         Config().max_page_size_child = parsed_args.max_report_size_child
+
     Config().max_page_size_child = parsed_args.max_page_size_child
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     if parsed_args.max_diff_block_lines_parent is not None:
@@ -628,24 +630,38 @@ def configure(parsed_args):
         Config().max_page_diff_block_lines = (
             parsed_args.max_diff_block_lines_parent
         )
+
     Config().max_page_diff_block_lines = parsed_args.max_page_diff_block_lines
 
-    Config().max_container_depth = parsed_args.max_container_depth
+    Config().new_file = parsed_args.new_file
     Config().use_dbgsym = parsed_args.use_dbgsym
     Config().force_details = parsed_args.force_details
     Config().fuzzy_threshold = parsed_args.fuzzy_threshold
-    Config().new_file = parsed_args.new_file
+    Config().max_container_depth = parsed_args.max_container_depth
+
     Config().excludes = parsed_args.excludes
     Config().exclude_commands = parsed_args.exclude_commands
     Config().exclude_directory_metadata = (
         parsed_args.exclude_directory_metadata
     )
+
     Config().compute_visual_diffs = PresenterManager().compute_visual_diffs()
-    Config().check_constraints()
+
     tool_prepend_prefix(
         parsed_args.tool_prefix_binutils,
-        *"ar as ld ld.bfd nm objcopy objdump ranlib readelf strip".split(),
+        'ar',
+        'as',
+        'ld',
+        'ld.bfd',
+        'nm',
+        'objcopy',
+        'objdump',
+        'ranlib',
+        'readelf',
+        'strip',
     )
+
+    Config().check_constraints()
 
 
 def run_diffoscope(parsed_args):
