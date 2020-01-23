@@ -18,6 +18,17 @@ about *Merge Requests*.
 You can also submit bugs about Debian specific issues to the Debian bug
 tracker.
 
+## Git setup
+
+diffoscope's codebase adheres to the output
+[Black](https://black.readthedocs.io/) source code reformatter. Since this was
+not always the case, the default output of `git-blame(1)` is not useful due to
+large changes made when it was adopted.
+
+As an optional step, you can ignore these commits using:
+
+    $ git config blame.ignoreRevsFile .git-blame-ignore-revs
+
 ## Testing
 
 diffoscope's test suite relies on [pytest](https://docs.pytest.org/);
