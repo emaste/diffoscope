@@ -1,8 +1,69 @@
-diffoscope (136) UNRELEASED; urgency=medium
+diffoscope (136) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Improvements:
+    - Support external build tools. (Closes: reproducible-builds/diffoscope#87)
+    - Fallback to the regular .zip container format for .apk files if apktool
+      is not available.
+    - Clarify that "install X" in difference comment messages actually refer to
+      a system/distribution package.
+    - Drop the --max-report-size-child and --max-diff-block-lines-parent
+      options; both deprecated and scheduled for removal in January 2018.
 
- -- Chris Lamb <lamby@debian.org>  Tue, 14 Jan 2020 14:48:23 +0000
+  * Bug fixes:
+    - No longer raise a KeyError exception if we request an invalid member from a
+      directory container.
+
+  * Logging improvements:
+    - Log a debug-level message if we cannot open a file as container due to a
+      missing tool in order to assist diagnosing issues.
+    - If we don't know the HTML output name, don't emit an enigmatic "html
+      output for" message.
+    - Add the current PATH environment variable to the "Normalising locale..."
+      debug-level message.
+    - Print the "Starting diffoscope $VERSION" line as the first line.
+    - Correct a debug-level message for compare_meta calls to quote the
+      arguments correctly.
+
+  * Refactoring:
+    - Add support for alternative container types for a file, allowing for
+      runtime (vs import time) control of fallbacks such as adding comments.
+      and append a comment to a difference if we fallback to an inferior
+      container format due to missing a tool.
+    - Factor-out the generation of "foo not available in path" difference
+      comment messages as a helper method in the exception that represents
+      them.
+
+  * Code improvements:
+    - Tidy diffoscope.main's configure method, factoring out the set of the
+      Config() global out of the run_diffoscope method and inlining the
+      functionality of maybe_set_limit, etc.
+    - Rename diffoscope.locale module to diffoscope.environ as we are modifying
+      things beyond just the locale (eg. calling tzset(), etc.)
+    - Drop unused "Difference" import from the APK comparator.
+    - Drop an assertion that is guaranteed by parallel "if" conditional.
+    - Add a "noqa" line to avoid a false-positive flake8 "unused import" warning.
+    - Turn down the "volume" for a recommendation in a comment.
+
+  * Release/source-code management:
+    - Add a .git-blame-ignore-revs file to improve the output of git-blame(1) by
+      ignoring large changes when introducing the Black source code reformatter
+      and update the CONTRIBUTING.md guide on how to optionally use it locally.
+    - Convert CONTRIBUTING.rst to CONTRIBUTING.md and include it in the
+      PyPI.org release.
+
+  * Test improvements
+    - Refresh and update the fixtures for the .ico tests to match the latest
+      version of Imagemagick in Debian unstable.
+
+  [ Holger Levsen ]
+  * Bump Standards Version to 4.5.0, no changes needed.
+
+  [ Marc Herbert ]
+  * Search for expected keywords in the output of cbfstool tests and not a
+    specific output. (Closes: reproducible-builds/diffoscope!42)
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 24 Jan 2020 15:38:57 +0000
 
 diffoscope (135) unstable; urgency=medium
 
