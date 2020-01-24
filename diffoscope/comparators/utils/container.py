@@ -75,7 +75,7 @@ class Container(metaclass=abc.ABCMeta):
 
     def get_filtered_members(self):
         # If your get_member implementation is O(n) then this will be O(n^2)
-        # cost. In such cases it is HIGHLY RECOMMENDED to override this as well
+        # cost. In such cases it is recommended to override this as well
         for name in filter_excludes(self.get_member_names()):
             yield name, self.get_member(name)
 
