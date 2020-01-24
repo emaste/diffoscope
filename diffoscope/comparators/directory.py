@@ -153,7 +153,7 @@ def compare_meta(path1, path2):
         )
         return []
 
-    logger.debug('compare_meta(%s, %s)', path1, path2)
+    logger.debug('compare_meta(%r, %r)', path1, path2)
     differences = []
 
     # Don't run any commands if any of the paths do not exist
