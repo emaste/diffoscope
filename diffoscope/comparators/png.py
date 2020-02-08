@@ -33,6 +33,9 @@ logger = logging.getLogger(__name__)
 
 
 class Sng(Command):
+    # sng will return 1 if there are even minor errors in the file
+    VALID_RETURNCODES = {0, 1}
+
     @tool_required('sng')
     def cmdline(self):
         return ['sng']
