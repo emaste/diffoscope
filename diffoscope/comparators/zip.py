@@ -36,24 +36,17 @@ from .utils.command import Command
 
 
 class Zipinfo(Command):
+    # zipinfo returns with an exit code of 1 or 2 when reading
+    # Mozilla-optimized or Java "jmod" ZIPs as they have non-standard headers
+    # which are safe to ignore.
+    VALID_RETURNCODES = {0, 1, 2}
+
     @tool_required('zipinfo')
     def cmdline(self):
         # zipinfo (without -v) puts warning messages (some of which contain
         # $path) into stdin when stderr is not a tty, see #879011 for details.
         # to work around it, we run it on /dev/stdin instead, seems to work ok.
         return ['zipinfo', '/dev/stdin']
-
-    @property
-    def returncode(self):
-        returncode = super().returncode
-
-        # zipinfo returns with an exit code of 1 or 2 when reading
-        # Mozilla-optimized or Java "jmod" ZIPs as they have non-standard
-        # headers which are safe to ignore.
-        if returncode in (1, 2):
-            returncode = 0
-
-        return returncode
 
     def stdin(self):
         return open(self.path, 'rb')
@@ -72,6 +65,9 @@ class ZipinfoVerbose(Zipinfo):
 
 
 class Zipnote(Command):
+    # zipnote returns with an exit code of 3 for invalid archives
+    VALID_RETURNCODES = {0, 3}
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -84,13 +80,6 @@ class Zipnote(Command):
             path = get_named_temporary_file(suffix='.zip').name
             shutil.copy(self.path, path)
         return ['zipnote', path]
-
-    @property
-    def returncode(self):
-        returncode = super().returncode
-
-        # zipnote returns with an exit code of 3 for invalid archives
-        return 0 if returncode == 3 else returncode
 
     def filter(self, line):
         """
