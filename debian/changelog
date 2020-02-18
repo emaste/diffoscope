@@ -1,8 +1,13 @@
-diffoscope (137) UNRELEASED; urgency=medium
+diffoscope (137) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Also extract classes2.dex, classes3.dex etc. from .apk files.
+    (Closes: reproducible-builds/diffoscope#88)
+  * Add generalised support for "ignoring" returncodes and move special-casing
+    of returncodes in the zip comparator to this.
+  * Accommodate sng returning with a UNIX exit code of 1 even if there minor
+    errors in the file (discovered via #950806).
 
- -- Chris Lamb <lamby@debian.org>  Fri, 24 Jan 2020 15:53:13 +0000
+ -- Chris Lamb <lamby@debian.org>  Tue, 18 Feb 2020 17:15:59 +0000
 
 diffoscope (136) unstable; urgency=medium
 
