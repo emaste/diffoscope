@@ -20,6 +20,7 @@
 import re
 import os.path
 import logging
+import itertools
 import subprocess
 
 from diffoscope.tools import tool_required
@@ -73,6 +74,23 @@ class ApkContainer(Archive):
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
+
+        # ... including "classes2.dex", "classes3.dex", etc.
+        for x in itertools.count(2):
+            try:
+                subprocess.check_call(
+                    (
+                        'unzip',
+                        '-d',
+                        self._unpacked,
+                        self.source.path,
+                        'classes{}.dex'.format(x),
+                    ),
+                    stderr=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                )
+            except subprocess.CalledProcessError:
+                break
 
         for root, _, files in os.walk(self._unpacked):
             current_dir = []
