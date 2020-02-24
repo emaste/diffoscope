@@ -31,7 +31,7 @@ from ..utils.tools import skip_unless_tools_exist
 def zst_fixture(prefix):
     @pytest.fixture
     def zstd(tmpdir):
-        input_ = str(tmpdir.join('{}'.format(prefix)))
+        input_ = str(tmpdir.join(prefix))
         output = str(tmpdir.join('{}.zst'.format(prefix)))
 
         with open(input_, 'w') as f:
