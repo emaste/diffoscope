@@ -38,6 +38,12 @@ class Pdftotext(Command):
         return ['pdftotext', self.path, '-']
 
 
+class Dumppdf(Command):
+    @tool_required('dumppdf')
+    def cmdline(self):
+        return ['dumppdf', '-adt', self.path]
+
+
 class PdfFile(File):
     DESCRIPTION = "PDF documents"
     FILE_TYPE_RE = re.compile(r'^PDF document\b')
@@ -61,6 +67,11 @@ class PdfFile(File):
             xs.append(difference)
 
         xs.append(Difference.from_command(Pdftotext, self.path, other.path))
+
+        # Don't include verbose dumppdf output unless we won't see any any
+        # differences without it.
+        if not any(xs):
+            xs.append(Difference.from_command(Dumppdf, self.path, other.path))
 
         return xs
 
