@@ -45,7 +45,11 @@ class PdfFile(File):
     def compare_details(self, other, source=None):
         xs = []
 
-        if PyPDF2 is not None:
+        if PyPDF2 is None:
+            self._comments.append(
+                "Installing the 'PyPDF2' package may produce a better output."
+            )
+        else:
             difference = Difference.from_text(
                 self.dump_pypdf2_metadata(self),
                 self.dump_pypdf2_metadata(other),
