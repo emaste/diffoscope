@@ -28,8 +28,8 @@ diffoscope (136) unstable; urgency=medium
       options; both deprecated and scheduled for removal in January 2018.
 
   * Bug fixes:
-    - No longer raise a KeyError exception if we request an invalid member from a
-      directory container.
+    - No longer raise a KeyError exception if we request an invalid member from
+      a directory container.
 
   * Logging improvements:
     - Log a debug-level message if we cannot open a file as container due to a
@@ -59,7 +59,8 @@ diffoscope (136) unstable; urgency=medium
       things beyond just the locale (eg. calling tzset(), etc.)
     - Drop unused "Difference" import from the APK comparator.
     - Drop an assertion that is guaranteed by parallel "if" conditional.
-    - Add a "noqa" line to avoid a false-positive flake8 "unused import" warning.
+    - Add a "noqa" line to avoid a false-positive flake8 "unused import"
+      warning.
     - Turn down the "volume" for a recommendation in a comment.
 
   * Release/source-code management:
@@ -244,8 +245,8 @@ diffoscope (127) unstable; urgency=medium
       falling back to a useless hexdump.
   * Improve the formatting of command lines:
     - Ensure newlines and other metacharacters appear escaped as "\n", etc.
-    - Use the newline (etc.) escaped version of the commandline being executed in
-      logging/debug output.
+    - Use the newline (etc.) escaped version of the commandline being executed
+      in logging/debug output.
     - When displaying standard error, ensure use the escaped version too.
   * Add support for easily masking the standard error of commands and use this
     in the ffprobe comparator.
