@@ -38,6 +38,14 @@ RDS_HEADERS = {
 DUMP_RDB = rb"""
 hideOutput = lazyLoad(commandArgs(TRUE));
 
+safeDeparse <- function(obj) {
+    tryCatch({
+        deparse(obj)
+    }, error = function (e) {
+        (deparse(e))
+    });
+}
+
 for (x in ls(all.names = TRUE, sorted = TRUE)) {
     obj = get(x)
 
@@ -47,11 +55,11 @@ for (x in ls(all.names = TRUE, sorted = TRUE)) {
         cat("\n{\n", sep = "");
         for (y in ls(obj, all.names = TRUE, sorted = TRUE)) {
             obj2 = get(y, envir = obj);
-            cat(sprintf("    \"%s\" = \"%s\"\n", y, deparse(obj2)), sep = "");
+            cat(sprintf("    \"%s\" = \"%s\"\n", y, safeDeparse(obj2)), sep = "");
         }
         cat("}\n");
     } else {
-        for (line in deparse(obj))
+        for (line in safeDeparse(obj))
             cat(line, "\n", sep = "");
     }
     cat("\n");
