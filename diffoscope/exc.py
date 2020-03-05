@@ -31,16 +31,13 @@ class RequiredToolNotFound(Exception):
     def __init__(self, command):
         self.command = get_tool_name(command)
 
-    def get_package(self):
-        return get_package_provider(self.command)
-
     def get_comment(self, infix=''):
         xs = [
             "'{}' not available in path.".format(self.command),
             infix,
         ]
 
-        x = self.get_package()
+        x = get_package_provider(self.command)
         if x:
             xs.append(
                 "Install the '{}' package to get a better output.".format(x)
