@@ -474,12 +474,9 @@ class HelpFormatter(argparse.HelpFormatter):
                 title, textwrap.indent(wrapped, ' ' * indent)
             )
 
-        descriptions = list(sorted(ComparatorManager().get_descriptions()))
         append(
             'file formats supported',
-            '{} and {}.\n'.format(
-                ', '.join(descriptions[:-1]), descriptions[-1]
-            ),
+            ComparatorManager().format_descriptions(),
         )
 
         append('diffoscope homepage', '<https://diffoscope.org/>')

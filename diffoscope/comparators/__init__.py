@@ -152,9 +152,14 @@ class ComparatorManager:
 
         logger.debug("Loaded %d comparator classes", len(self.classes))
 
-    def get_descriptions(self):
-        for x in self.classes:
-            try:
-                yield x.DESCRIPTION
-            except AttributeError:
-                pass
+    def format_descriptions(self):
+        def gen_descriptions():
+            for x in self.classes:
+                try:
+                    yield x.DESCRIPTION
+                except AttributeError:
+                    pass
+
+        xs = list(sorted(gen_descriptions()))
+
+        return '{} and {}.\n'.format(', '.join(xs[:-1]), xs[-1])
