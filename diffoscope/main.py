@@ -578,6 +578,13 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         for x in ('gzip', 'tar', 'coreutils', 'diffutils', 'findutils'):
             packages.discard(x)
 
+        description = 'File formats supported include: {}'.format(
+            ComparatorManager().format_descriptions(),
+        )
+        wrapped = '${Newline}'.join(textwrap.wrap(description, 79))
+        wrapped = wrapped.replace('${Newline}.', '${Newline}')
+        print('diffoscope:Description={}'.format(wrapped))
+
         print('diffoscope:Recommends={}'.format(', '.join(sorted(packages))))
         sys.exit(0)
 

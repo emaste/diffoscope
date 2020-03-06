@@ -112,4 +112,6 @@ Description: in-depth comparison of files, archives, and directories
  compare two tarballs, ISO images, or PDF just as easily. The differences can
  be shown in a text or HTML report.
  .
+ ${diffoscope:Description}
+ .
  diffoscope is developed as part of the “reproducible builds” project.
