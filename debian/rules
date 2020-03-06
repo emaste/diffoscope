@@ -69,7 +69,7 @@ override_dh_auto_clean:
 	@echo "# EDIT debian/tests/control.in INSTEAD!" >> debian/tests/control.tmp
 	@echo "#" >> debian/tests/control.tmp
 	@cat debian/tests/control.in >> debian/tests/control.tmp
-	@sed -i "s#%RECOMMENDS%#$(shell bin/diffoscope --list-debian-substvars | cut -d= -f2)#" debian/tests/control.tmp
+	@sed -i "s#%RECOMMENDS%#$(shell bin/diffoscope --list-debian-substvars | awk -F= '/diffoscope:Recommends/ { print $$2 }')#" debian/tests/control.tmp
 	@sed -i "s#%PYRECOMMENDS%#$(shell python3 -c "import distutils.core; \
 		setup = distutils.core.run_setup('setup.py'); \
 		print(', '.join(sorted(['python3-{}'.format(x) for y in setup.extras_require.values() for x in y])))" \
