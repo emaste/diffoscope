@@ -4,3 +4,6 @@ debian-watch-file-in-native-package
 
 # We like to share our own keys for others to check the released signature.
 public-upstream-key-in-native-package
+
+# We are upstream but also quite integrated in Debian.
+upstream-metadata-in-native-source
