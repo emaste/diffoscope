@@ -1,8 +1,31 @@
-diffoscope (138) UNRELEASED; urgency=medium
+diffoscope (138) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * New features & bug fixes:
+    - Use dumppdf from python3-pdfminer if we do not see any other differences
+      from pdftext, etc. (reproducible-builds/diffoscope#92)
+    - Prevent a traceback when comparing two .rdx files directly as get_member
+      will return a file even if the file is missing and not raise a KeyError
+      exception; we therefore explicitly test for the existence of the file.
+    * Don't allow errors within "Rscript" deserialisation to cause the entire
+      operation to fail (for example if an external library cannot be loaded).
+      (reproducible-builds/diffoscope#91)
 
- -- Chris Lamb <lamby@debian.org>  Tue, 18 Feb 2020 17:30:47 +0000
+  * Reporting improvements:
+    - Inject the supported file formats into the package long description and
+      remove any duplicate comparator descriptions when formatting.
+      (#reproducible-builds/diffoscope#90)
+    - Print a potentially-helpful message if the PyPDF2 module is not installed
+      (#reproducible-builds/diffoscope#92)
+    - Weaken "Install the X package to get a better output" claim to "... may
+      produce a better output" as this is not guaranteed.
+
+  * Code improvements:
+    - Inline the RequiredToolNotFound.get_package method; only used once.
+    - Drop deprecated "py36 = [..]" argument in pyproject.toml.
+    - Factor out generation of comparator descriptions.
+    - Add an upstream metadata file.
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 30 Mar 2020 16:16:28 +0100
 
 diffoscope (137) unstable; urgency=medium
 
