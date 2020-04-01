@@ -61,7 +61,7 @@ Build-Depends:
  python3-debian <!nocheck>,
  python3-distro <!nocheck>,
  python3-docutils,
- python3-dumppdf <!nocheck>,
+ python3-pdfminer <!nocheck>,
  python3-guestfs <!nocheck>,
  python3-jsondiff <!nocheck>,
  python3-libarchive-c,
