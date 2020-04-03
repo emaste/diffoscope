@@ -1,8 +1,9 @@
-diffoscope (139) UNRELEASED; urgency=medium
+diffoscope (139) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Mattia Rizzolo ]
+  * Fix Build-Depends on python3-pdfminer. (Closes: #955645)
 
- -- Chris Lamb <lamby@debian.org>  Mon, 30 Mar 2020 16:24:31 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 03 Apr 2020 21:29:22 +0100
 
 diffoscope (138) unstable; urgency=medium
 
