@@ -69,6 +69,7 @@ EXTERNAL_TOOLS = {
         'guix': 'gnupg',
     },
     'gzip': {'debian': 'gzip', 'arch': 'gzip', 'guix': 'gzip'},
+    'h5dump': {'debian': 'hdf5-tools'},
     'identify': {
         'debian': 'imagemagick',
         'arch': 'imagemagick',

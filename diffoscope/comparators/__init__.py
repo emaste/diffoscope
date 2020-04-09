@@ -52,6 +52,7 @@ class ComparatorManager:
         ('bzip2.Bzip2File',),
         ('cpio.CpioFile',),
         ('deb.DebFile',),
+        ('hdf.Hdf5File',),
         ('dex.DexFile',),
         ('elf.ElfFile',),
         ('macho.MachoFile',),
