@@ -19,16 +19,25 @@
 
 import sys
 import pytest
+import subprocess
 
 from diffoscope.comparators.apk import ApkFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
 apk1 = load_fixture('test1.apk')
 apk2 = load_fixture('test2.apk')
 apk3 = load_fixture('test3.apk')
+
+
+def apktool_version():
+    return (
+        subprocess.check_output(['apktool', '-version'])
+        .decode("utf-8")
+        .strip()
+    )
 
 
 def test_identification(apk1):
@@ -63,7 +72,8 @@ def test_zipinfo(differences):
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('apktool', 'zipinfo')
+@skip_unless_tools_exist('zipinfo')
+@skip_unless_tool_is_at_least('apktool', apktool_version, '2.5.0')
 @pytest.mark.skipif(
     sys.version_info < (3, 8), reason="requires Python 3.8 or higher"
 )
