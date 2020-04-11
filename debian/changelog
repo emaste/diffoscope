@@ -1,3 +1,9 @@
+diffoscope (141) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 11 Apr 2020 19:12:20 +0100
+
 diffoscope (140) unstable; urgency=medium
 
   * apktool 2.5.0 changed the handling of output of XML schemas, so update and
