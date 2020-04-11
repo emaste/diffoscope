@@ -1,8 +1,12 @@
-diffoscope (140) UNRELEASED; urgency=medium
+diffoscope (140) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * apktool 2.5.0 changed the handling of output of XML schemas, so update and
+    restrict the corresponding test to match.
+    (Closes: reproducible-builds/diffoscope#96)
+  * Add support for Hierarchical Data Format (HD5) files.
+    (Closes: reproducible-builds/diffoscope#95)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 03 Apr 2020 21:40:37 +0100
+ -- Chris Lamb <lamby@debian.org>  Sat, 11 Apr 2020 19:10:57 +0100
 
 diffoscope (139) unstable; urgency=medium
 
