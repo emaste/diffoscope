@@ -1,10 +1,10 @@
 @@ -1,8 +1,8 @@
 -Zip file size: 409 bytes, number of entries: 1
--warning [/dev/stdin]:  329 extra bytes at beginning or within zipfile
+-warning: 329 extra bytes at beginning or within zipfile
 +Zip file size: 552 bytes, number of entries: 1
-+warning [/dev/stdin]:  472 extra bytes at beginning or within zipfile
++warning: 472 extra bytes at beginning or within zipfile
    (attempting to process anyway)
- error [/dev/stdin]:  reported length of central directory is
+ error: reported length of central directory is
 -  -329 bytes too long (Atari STZip zipfile?  J.H.Holm ZIPSPLIT 1.1
 +  -472 bytes too long (Atari STZip zipfile?  J.H.Holm ZIPSPLIT 1.1
    zipfile?).  Compensating...

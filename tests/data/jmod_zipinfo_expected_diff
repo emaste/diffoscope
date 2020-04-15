@@ -1,7 +1,7 @@
 @@ -1,8 +1,11 @@
 -Zip file size: 9857 bytes, number of entries: 4
 +Zip file size: 11672 bytes, number of entries: 7
- warning [/dev/stdin]:  4 extra bytes at beginning or within zipfile
+ warning: 4 extra bytes at beginning or within zipfile
    (attempting to process anyway)
 --rw----     2.0 fat      680 bl defN 19-Jul-17 04:54 classes/module-info.class
 +-rw----     2.0 fat      263 bl defN 19-Jul-17 04:54 classes/module-info.class

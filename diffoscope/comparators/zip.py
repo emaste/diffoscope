@@ -41,6 +41,8 @@ class Zipinfo(Command):
     # which are safe to ignore.
     VALID_RETURNCODES = {0, 1, 2}
 
+    re_strip_path = re.compile(r'^(warning|error) \[[^\]]+\]:\s+(.*)$')
+
     @tool_required('zipinfo')
     def cmdline(self):
         return ['zipinfo', self.path]
@@ -49,6 +51,13 @@ class Zipinfo(Command):
         # we don't care about the archive file path
         if line.startswith(b'Archive:'):
             return b''
+
+        # Strip paths from errors and warnings
+        # eg: "warning [/full/path]: 472 extra bytes at beginning or within zipfile"
+        m = self.re_strip_path.match(line.decode('utf-8'))
+        if m is not None:
+            return '{}: {}\n'.format(m.group(1), m.group(2)).encode('utf-8')
+
         return line
 
 
