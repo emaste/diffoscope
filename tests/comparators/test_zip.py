@@ -138,7 +138,6 @@ def jmod_differences(jmod1, jmod2):
 @skip_unless_tools_exist('zipinfo')
 def test_jmod_metadata(jmod_differences, jmod1, jmod2):
     expected_diff = get_data('jmod_zipinfo_expected_diff')
-    diff = jmod_differences[0].unified_diff
     assert jmod_differences[0].unified_diff == expected_diff
 
 
