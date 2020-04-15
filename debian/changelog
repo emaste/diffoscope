@@ -1,8 +1,26 @@
-diffoscope (141) UNRELEASED; urgency=medium
+diffoscope (141) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Dalvik .dex files can also serve as APK containers. Restrict the narrower
+    identification of .dex files to files ending with this extension, and widen
+    the identification of APK files to when file(1) discovers a Dalvik file.
+    (Closes: #884095, reproducible-builds/diffoscope#28)
+  * Explicitly list python3-h5py in debian/tests/control.in to ensure that we
+    have this module installed during an autopkgtest run to generate the test
+    fixture & regenerate debian/tests/control from debian/tests/control.in
+    to match.
+  * Drop unnecessary and unused assignment to "diff" variable.
+  * Strip paths from the output of zipinfo(1) warnings.
+    (re. reproducible-builds/diffoscope#97)
 
- -- Chris Lamb <lamby@debian.org>  Sat, 11 Apr 2020 19:12:20 +0100
+  [ Michael Osipov ]
+  * Revert to using zipinfo(1) directly instead of piping input via /dev/stdin
+    for BSD portability. (Closes: reproducible-builds/diffoscope#97)
+
+  [ Jelle van der Waa ]
+  * Add an external tool for h5dump on Arch.
+
+ -- Chris Lamb <lamby@debian.org>  Wed, 15 Apr 2020 19:15:42 +0100
 
 diffoscope (140) unstable; urgency=medium
 
