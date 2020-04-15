@@ -3,12 +3,12 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
-#           ©      2015 Reiner Herrmann <reiner@reiner-h.de>
-#           © 2012-2013 Olivier Matz <zer0@droids-corp.org>
-#           ©      2012 Alan De Smet <adesmet@cs.wisc.edu>
-#           ©      2012 Sergey Satskiy <sergey.satskiy@gmail.com>
-#           ©      2012 scito <info@scito.ch>
-#
+# Copyright ©      2015 Reiner Herrmann <reiner@reiner-h.de>
+# Copyright © 2012-2013 Olivier Matz <zer0@droids-corp.org>
+# Copyright ©      2012 Alan De Smet <adesmet@cs.wisc.edu>
+# Copyright ©      2012 Sergey Satskiy <sergey.satskiy@gmail.com>
+# Copyright ©      2012 scito <info@scito.ch>
+# Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
