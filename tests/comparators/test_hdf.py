@@ -39,6 +39,7 @@ def hdf5_fixture(prefix):
     def hdf5d(tmpdir):
         filename = str(tmpdir.join('{}.db'.format(prefix)))
 
+        # Listed in debian/tests/control.in
         import h5py
 
         with h5py.File(filename, 'w'):
