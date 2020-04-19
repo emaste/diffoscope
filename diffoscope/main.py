@@ -287,8 +287,9 @@ def create_parser():
         metavar='GLOB_PATTERN',
         action='append',
         default=[],
-        help='Exclude files that match %(metavar)s. Use this '
-        'option to ignore files based on their names.',
+        help='Exclude files whose names (including any directory part) '
+        'match %(metavar)s. Use this option to ignore files based on '
+        'their names.',
     )
     group3.add_argument(
         '--exclude-command',
