@@ -23,6 +23,8 @@ class PyTest(TestCommand):
 
     def finalize_options(self):
         super().finalize_options()
+        if self.pytest_args:
+            self.pytest_args = [self.pytest_args]
 
     def run_tests(self):
         # Inline import, otherwise the eggs aren't loaded
