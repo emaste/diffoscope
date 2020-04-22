@@ -95,5 +95,5 @@ text_order2 = load_fixture('text_order2')
 
 def test_ordering_differences(text_order1, text_order2):
     difference = text_order1.compare(text_order2)
-    assert difference.comments == ['ordering differences only']
+    assert difference.comments == ['Ordering differences only']
     assert difference.unified_diff == get_data('text_order_expected_diff')
