@@ -1,8 +1,19 @@
-diffoscope (142) UNRELEASED; urgency=medium
+diffoscope (142) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Render multiline difference comments in a way to show indentation.
+    (Closes: reproducible-builds/diffoscope#101)
+  * Correct parsing of "./setup.py test --pytest-args ...".
+  * Capitalise "Ordering differences only" in text comparison comments.
+  * Don't include the JSON similarity percentage if it is 0.0%.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 15 Apr 2020 19:36:15 +0100
+  [ Ben Hutchings ]
+  * Document how --exclude arguments are matched against filenames.
+
+  [ Vagrant Cascadian ]
+  * Add external tool reference for h5dump on Guix.
+
+ -- Chris Lamb <lamby@debian.org>  Wed, 22 Apr 2020 16:35:14 +0100
 
 diffoscope (141) unstable; urgency=medium
 
