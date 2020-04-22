@@ -242,10 +242,11 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 
     comments = u""
     if difference.comments:
-        comments = u'{0[1]}<div class="comment">\n{1}{0[1]}</div>\n'.format(
+        comments = u'{1[1]}<div class="comment {0}">{2}{1[1]}</div>\n'.format(
+            "multiline" if len(difference.comments) > 1 else "",
             indent,
-            "".join(
-                u"{0[2]}{1}<br/>\n".format(indent, html.escape(x))
+            "\n".join(
+                u"{1}".format(indent, html.escape(x))
                 for x in difference.comments
             ),
         )

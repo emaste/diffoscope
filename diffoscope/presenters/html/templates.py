@@ -103,6 +103,11 @@ STYLES = """body.diffoscope {
 .diffoscope .comment {
   font-style: italic;
 }
+.diffoscope .comment.multiline {
+  font-style: normal;
+  font-family: monospace;
+  white-space: pre;
+}
 .diffoscope .source {
   font-weight: bold;
 }
