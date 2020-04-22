@@ -65,7 +65,7 @@ class TextFile(File):
                 if difference and order_only_difference(
                     difference.unified_diff
                 ):
-                    difference.add_comment("ordering differences only")
+                    difference.add_comment("Ordering differences only")
                 if my_encoding != other_encoding:
                     if difference is None:
                         difference = Difference(
