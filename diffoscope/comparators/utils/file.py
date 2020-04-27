@@ -122,7 +122,7 @@ class File(metaclass=abc.ABCMeta):
 
     FILE_EXTENSION_SUFFIX = None
     FILE_TYPE_RE = None
-    FILE_TYPE_HEADER_PREFIX = None
+    FILE_TYPE_HEADER_PREFIX = None  # max 16 bytes
 
     @classmethod
     def recognizes(cls, file):
@@ -175,7 +175,7 @@ class File(metaclass=abc.ABCMeta):
         return _run_tests(all, all_tests) if all_tests else False
 
     FALLBACK_FILE_EXTENSION_SUFFIX = None
-    FALLBACK_FILE_TYPE_HEADER_PREFIX = None
+    FALLBACK_FILE_TYPE_HEADER_PREFIX = None  # max 16 bytes
 
     @classmethod
     def fallback_recognizes(cls, file):
