@@ -48,6 +48,7 @@ class ComparatorManager:
         ('javascript.JavaScriptFile',),
         ('json.JSONFile',),
         ('xml.XMLFile',),
+        ('openssl.Pkcs7File',),
         ('text.TextFile',),
         ('bzip2.Bzip2File',),
         ('cpio.CpioFile',),

@@ -53,6 +53,7 @@ Build-Depends:
  odt2txt <!nocheck>,
  oggvideotools [!s390x] <!nocheck>,
  openssh-client <!nocheck>,
+ openssl <!nocheck>,
  pgpdump <!nocheck>,
  poppler-utils <!nocheck>,
  procyon-decompiler <!nocheck>,
