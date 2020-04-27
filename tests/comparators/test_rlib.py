@@ -74,6 +74,9 @@ def rlib_dis_expected_diff():
     if LooseVersion(str(actual_ver)) >= LooseVersion("7.0"):
         diff_file = 'rlib_llvm_dis_expected_diff_7'
 
+    if LooseVersion(str(actual_ver)) >= LooseVersion("10.0"):
+        diff_file = 'rlib_llvm_dis_expected_diff_10'
+
     return get_data(diff_file)
 
 
