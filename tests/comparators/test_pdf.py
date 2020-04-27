@@ -69,6 +69,7 @@ def differences_metadata(pdf1, pdf1a):
     return pdf1.compare(pdf1a).details
 
 
+@skip_unless_tools_exist('pdftotext')
 @skip_unless_module_exists('PyPDF2')
 def test_metadata(differences_metadata):
     expected_diff = get_data('pdf_metadata_expected_diff')
