@@ -1,3 +1,9 @@
+diffoscope (144) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 27 Apr 2020 13:23:10 +0100
+
 diffoscope (143) unstable; urgency=medium
 
   * Add support for .p7c and .p7b certificates.
