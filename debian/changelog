@@ -1,8 +1,14 @@
-diffoscope (143) UNRELEASED; urgency=medium
+diffoscope (143) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Add support for .p7c and .p7b certificates.
+    (Closes: reproducible-builds/diffoscope#94)
+  * Add "pdftotext" as a requirement to run the PDF test_metadata text. Special
+    thanks to Chocimier/Piotr for the debugging work.
+    (Closes: reproducible-builds/diffoscope#99)
+  * Improve the documentation of FALLBACK_FILE_TYPE_HEADER_PREFIX and
+    FILE_TYPE_HEADER_PREFIX to note that only the first 16 bytes are used.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 22 Apr 2020 16:49:59 +0100
+ -- Chris Lamb <lamby@debian.org>  Mon, 27 Apr 2020 13:14:07 +0100
 
 diffoscope (142) unstable; urgency=medium
 
