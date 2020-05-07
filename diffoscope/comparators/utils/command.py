@@ -19,7 +19,6 @@
 
 import abc
 import logging
-import shlex
 import subprocess
 
 from ...utils import format_cmdline
