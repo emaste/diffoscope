@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2019-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,3 +33,14 @@ def format_cmdline(cmd, replace=(), truncate=None):
         result = result[: truncate + 4] + " […]"
 
     return result
+
+
+def format_bytes(size, decimal_places=2):
+    # https://stackoverflow.com/a/43690506
+
+    for unit in ('B', 'KiB', 'MiB', 'GiB', 'TiB'):
+        if size < 1024.0:
+            break
+        size /= 1024.0
+
+    return f"{size:.{decimal_places}f} {unit}"

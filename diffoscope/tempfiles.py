@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 # Copyright © 2018 Mattia Rizzolo <mattia@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
@@ -90,3 +90,16 @@ def _get_base_temporary_directory():
         _DIRS.append(d)
 
     return _DIRS[0].name
+
+
+def get_tempdir_free_space():
+    """
+    unsigned long f_frsize   Fundamental file system block size.
+    fsblkcnt_t    f_blocks   Total number of blocks on file system in units of f_frsize.
+    fsblkcnt_t    f_bfree    Total number of free blocks.
+    fsblkcnt_t    f_bavail   Number of free blocks available to
+                             non-privileged process.
+    """
+    statvfs = os.statvfs(tempfile.gettempdir())
+
+    return statvfs.f_frsize * statvfs.f_bavail
