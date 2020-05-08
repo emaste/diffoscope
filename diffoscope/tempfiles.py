@@ -53,7 +53,7 @@ def clean_all_temp_files():
             os.unlink(x)
         except FileNotFoundError:
             pass
-        except:
+        except:  # noqa
             logger.exception("Unable to delete %s", x)
     _FILES.clear()
 
@@ -74,7 +74,7 @@ def clean_all_temp_files():
             x.cleanup()
         except FileNotFoundError:
             pass
-        except:
+        except:  # noqa
             logger.exception("Unable to delete %s", x)
     _DIRS.clear()
 
