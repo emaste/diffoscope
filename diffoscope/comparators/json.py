@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,14 +34,10 @@ except ImportError:  # noqa
 
 class JSONFile(File):
     DESCRIPTION = "JSON files"
+    FILE_TYPE_RE = re.compile(r'JSON data')  # Requires file 5.35+
 
     @classmethod
     def recognizes(cls, file):
-        # Try fuzzy matching for files not called .json
-        if not file.name.endswith('.json'):
-            if b'{' not in file.file_header or b'[' not in file.file_header:
-                return False
-
         with open(file.path, 'rb') as f:
             try:
                 file.parsed = json.loads(
