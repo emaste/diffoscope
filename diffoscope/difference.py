@@ -297,12 +297,12 @@ class Difference:
 
         if command1 and command1.stderr:
             difference.add_comment(
-                "stderr from `{}`:".format(command1.shell_cmdline())
+                "stderr from `{}` (a):".format(command1.shell_cmdline())
             )
             difference.add_comment(command1.stderr)
         if command2 and command2.stderr:
             difference.add_comment(
-                "stderr from `{}`:".format(command2.shell_cmdline())
+                "stderr from `{}` (b):".format(command2.shell_cmdline())
             )
             difference.add_comment(command2.stderr)
 
