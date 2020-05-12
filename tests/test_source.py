@@ -250,7 +250,7 @@ def test_code_is_black_clean():
     # Display diff in "captured stdout call"
     print(output)
 
-    assert len(output) == 0, output
+    assert not output, output
 
 
 def test_does_not_add_new_test_files():
