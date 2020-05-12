@@ -3,7 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -131,4 +131,9 @@ def test_trim_stderr_in_command():
             return r
 
     difference = Difference.from_command(FillStderr, 'dummy1', 'dummy2')
-    assert '[ 1 lines ignored ]' in difference.comment
+    assert (
+        '[ truncated after {} lines; 1 ignored ]'.format(
+            Command.MAX_STDERR_LINES
+        )
+        in difference.comment
+    )

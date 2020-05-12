@@ -101,7 +101,8 @@ class Command(metaclass=abc.ABCMeta):
             buf += line.decode('utf-8', errors='replace')
 
         if len(lines) > Command.MAX_STDERR_LINES:
-            buf += '[ {} lines ignored ]\n'.format(
+            buf += '[ truncated after {} lines; {} ignored ]\n'.format(
+                Command.MAX_STDERR_LINES,
                 len(lines) - Command.MAX_STDERR_LINES
             )
 
