@@ -102,8 +102,7 @@ class Command(metaclass=abc.ABCMeta):
 
         if len(lines) > Command.MAX_STDERR_LINES:
             buf += '[ truncated after {} lines; {} ignored ]\n'.format(
-                Command.MAX_STDERR_LINES,
-                len(lines) - Command.MAX_STDERR_LINES
+                Command.MAX_STDERR_LINES, len(lines) - Command.MAX_STDERR_LINES
             )
 
         return buf
