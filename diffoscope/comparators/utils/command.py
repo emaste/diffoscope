@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 class Command(metaclass=abc.ABCMeta):
     MASK_STDERR = False
-    MAX_STDERR_LINES = 50
+    MAX_STDERR_LINES = 25
     VALID_RETURNCODES = {0}
 
     def __init__(self, path):
