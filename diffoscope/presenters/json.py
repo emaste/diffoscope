@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017, 2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2019-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class JSONPresenter(Presenter):
 
         root[0][JSON_FORMAT_MAGIC] = JSON_FORMAT_VERSION
         root[0].move_to_end(JSON_FORMAT_MAGIC, last=False)
-        self.print_func(json.dumps(root[0], indent=2))
+        self.print_func(json.dumps(root[0]))
 
     def visit_difference(self, difference):
         while self.depth + 1 < len(self.stack):
