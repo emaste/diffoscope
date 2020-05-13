@@ -19,7 +19,6 @@
 
 import io
 import os
-import sys
 import shlex
 import logging
 import binascii
@@ -27,6 +26,7 @@ import subprocess
 
 from diffoscope.tools import tool_required
 from diffoscope.exc import RequiredToolNotFound
+from diffoscope.utils import bail_if_non_existing
 from diffoscope.config import Config
 from diffoscope.excludes import any_excluded
 from diffoscope.profiling import profile
@@ -145,16 +145,6 @@ def call_difftool(file1, file2):
     cmd = " ".join((Config().difftool, shlex.quote(a), shlex.quote(b)))
     logger.debug("Calling external command %r", cmd)
     subprocess.call(cmd, shell=True)
-
-
-def bail_if_non_existing(*paths):
-    if not all(map(os.path.lexists, paths)):
-        for path in paths:
-            if not os.path.lexists(path):
-                sys.stderr.write(
-                    '%s: %s: No such file or directory\n' % (sys.argv[0], path)
-                )
-        sys.exit(2)
 
 
 def compare_binary_files(file1, file2, source=None):

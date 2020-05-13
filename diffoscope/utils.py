@@ -17,6 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
+import sys
+
 
 def format_cmdline(cmd, replace=(), truncate=None):
     def fn(x):
@@ -44,3 +47,13 @@ def format_bytes(size, decimal_places=2):
         size /= 1024.0
 
     return f"{size:.{decimal_places}f} {unit}"
+
+
+def bail_if_non_existing(*paths):
+    if not all(map(os.path.lexists, paths)):
+        for path in paths:
+            if not os.path.lexists(path):
+                sys.stderr.write(
+                    '%s: %s: No such file or directory\n' % (sys.argv[0], path)
+                )
+        sys.exit(2)

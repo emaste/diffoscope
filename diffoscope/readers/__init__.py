@@ -3,7 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2017 Ximin Luo <infinity0@debian.org>
-# Copyright © 2017 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,10 +20,13 @@
 
 import codecs
 
+from diffoscope.utils import bail_if_non_existing
+
 from .json import JSONReaderV1
 
 
 def load_diff_from_path(path):
+    bail_if_non_existing(path)
     with open(path, 'rb') as fp:
         return load_diff(codecs.getreader('utf-8')(fp), path)
 
