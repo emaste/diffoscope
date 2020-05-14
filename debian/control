@@ -6,8 +6,6 @@ Uploaders:
  Chris Lamb <lamby@debian.org>,
  Holger Levsen <holger@debian.org>,
  Mattia Rizzolo <mattia@debian.org>,
- Reiner Herrmann <reiner@reiner-h.de>,
- Ximin Luo <infinity0@debian.org>,
 Build-Depends:
  abootimg <!nocheck>,
  apktool [!ppc64el !s390x] <!nocheck>,
