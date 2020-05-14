@@ -9,8 +9,8 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 
-if sys.version_info < (3, 5):
-    print("diffoscope requires at least python 3.5", file=sys.stderr)
+if sys.version_info < (3, 6):
+    print("diffoscope requires at least python 3.6", file=sys.stderr)
     sys.exit(1)
 
 
@@ -70,7 +70,7 @@ setup(
             'tlsh',
         ],
     },
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -78,7 +78,6 @@ setup(
         'Operating System :: POSIX',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Topic :: Utilities',
