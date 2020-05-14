@@ -1,8 +1,69 @@
-diffoscope (144) UNRELEASED; urgency=medium
+diffoscope (144) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
 
- -- Chris Lamb <lamby@debian.org>  Mon, 27 Apr 2020 13:23:10 +0100
+  * Improvements:
+
+    - Print the amount of free space that we have available in our temporary
+      directory as a debugging message.
+    - Remove (broken) fuzzy matching of JSON files as file 5.35 (in buster,
+      released 2018-10-18) supports recognising JSON data.
+      (Closes: reproducible-builds/diffoscope#106)
+    - Don't pretty-print the JSON output by default as it will usually be so
+      complicated to be unreadable by the human eye and it can be easily
+      replaced by piping to "| jq".
+    - Don't print a traceback if we pass a single, missing argument to
+      diffoscope (eg. a JSON diff to re-load).
+
+  * Reporting/output improvements:
+
+    - Reduce the default number of maximum standard error lines printed from 50
+      to 25; usually the error is obvious by that point.
+    - Clarify the message when we truncate the number of lines to standard error.
+    - Clarify when an external command emits for both files, otherwise it can
+      look like diffoscope is repeating itself when it is actually being run
+      twice.
+    - Don't repeat "stderr from {}" if both commands emit the same thing.
+
+  * Dockerfile improvements:
+
+    - Use ARG instead of ENV for DEBIAN_FRONTEND so we do not set this
+      environment variable at runtime.
+      (Closes: reproducible-builds/diffoscope#103)
+    - Run diffoscope as a non-root user in the runtime container.
+      (Closes: reproducible-builds/diffoscope#102)
+    - Add a .dockerignore file to whitelist files we need in our container.
+      Thanks to Emanuel Bronshtein for the original idea.
+      (Closes: reproducible-builds/diffoscope#105)
+    - Install/remove the build-essential package during build so we can install
+      the recommended packages from Git.
+
+  * Testsuite improvements:
+
+    - Include the Black output in the assertion failure too.
+    - Update the Black self-test; we don't care about the length of the black
+      output, rather whether it has some or, preferably, not.
+
+  * Codebase improvements:
+
+    - Bump the officially required version of Python from 3.5 to 3.6.
+      (Closes: reproducible-builds/diffoscope#117)
+    - Drop an unused shlex import.
+    - Instruct linters to pass over a bare try-except when cleaning up
+      temporary files used to extract archives.
+    - Format diffoscope/comparators/utils/command.py according to Black 19.10b0-3.
+    - Drop entries from Uploaders that have not uploaded in over three years
+      with esteemed thanks for their previous work.
+    - Drop .travis.yml; we are using Salsa now and likely would not give
+      support for running on Travis CI at this point.
+
+  [ Jelle van der Waa ]
+  * Update LLVM diff for LLVM version 10.
+
+  [ Vagrant Cascadian ]
+  * Add external tool reference on openssl for GNU Guix.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 14 May 2020 16:16:06 +0100
 
 diffoscope (143) unstable; urgency=medium
 
