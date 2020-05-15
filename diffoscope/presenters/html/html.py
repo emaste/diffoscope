@@ -77,8 +77,10 @@ re_anchor_suffix = re.compile(r'[^A-Za-z-_:\.]')
 
 
 def send_and_exhaust(iterator, arg, default):
-    """Send a single value to a coroutine, exhaust it, and return the final
-    element or a default value if it was empty."""
+    """
+    Send a single value to a coroutine, exhaust it, and return the final
+    element or a default value if it was empty.
+    """
     # Python's coroutine syntax is still a bit rough when you want to do
     # slightly more complex stuff. Watch this logic closely.
     output = default
