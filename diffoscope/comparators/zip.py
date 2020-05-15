@@ -194,7 +194,7 @@ class ZipFile(File):
     DESCRIPTION = 'ZIP archives'
     CONTAINER_CLASSES = [ZipContainer]
     FILE_TYPE_RE = re.compile(
-        r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
+        r'^((?:iOS App )?Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
     )
 
     def compare_details(self, other, source=None):
