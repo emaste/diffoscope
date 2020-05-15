@@ -115,7 +115,7 @@ def output_diff_path(path):
 
 
 def output_anchor(path):
-    return escape_anchor(output_diff_path(path))
+    return escape_anchor(output_diff_path(path)) or "top"
 
 
 def convert(s, ponct=0, tag=''):
