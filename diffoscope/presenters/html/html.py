@@ -38,6 +38,7 @@ import contextlib
 import hashlib
 import html
 import io
+import itertools
 import logging
 import os
 import pprint
@@ -115,8 +116,22 @@ def output_diff_path(path):
     return ' / '.join(n.source1 for n in path[1:])
 
 
-def output_anchor(path):
-    return escape_anchor(output_diff_path(path)) or "top"
+def output_anchor(ctx, path):
+    val = escape_anchor(output_diff_path(path)) or "top"
+
+    # Never emit the same id="foo" anchor reference twice, otherwise
+    # identically-named parts will not be able to linked to via "#foo".
+    if val in ctx.used_anchors:
+        for x in itertools.count(1):
+            candidate = "{}-{}".format(val, x)
+
+            if candidate not in ctx.used_anchors:
+                val = candidate
+                break
+
+    ctx.used_anchors.add(val)
+
+    return val
 
 
 def convert(s, ponct=0, tag=''):
@@ -157,10 +172,10 @@ def convert(s, ponct=0, tag=''):
     return normalize('NFC', t.getvalue())
 
 
-def output_visual(visual, path, indentstr, indentnum):
+def output_visual(ctx, visual, path, indentstr, indentnum):
     logger.debug('including image for %s', visual.source)
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
-    anchor = output_anchor(path)
+    anchor = output_anchor(ctx, path)
     id = 'id="{}"'.format(anchor) if anchor else ''
     return u"""{0[0]}<div class="difference">
 {0[1]}<div class="diffheader">
@@ -180,9 +195,9 @@ def output_visual(visual, path, indentstr, indentnum):
     )
 
 
-def output_node_frame(difference, path, indentstr, indentnum, body):
+def output_node_frame(ctx, difference, path, indentstr, indentnum, body):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
-    anchor = output_anchor(path)
+    anchor = output_anchor(ctx, path)
     id = 'id="{}"'.format(anchor) if anchor else ''
     dctrl_class, dctrl = (
         ("diffcontrol", u'⊟')
@@ -256,7 +271,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 
     visuals = u""
     for visual in difference.visuals:
-        visuals += output_visual(visual, path, indentstr, indentnum + 1)
+        visuals += output_visual(ctx, visual, path, indentstr, indentnum + 1)
 
     udiff = u""
     ud_cont = None
@@ -279,13 +294,15 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     )
     if len(path) == 1:
         # root node, frame it
-        body = output_node_frame(difference, path, indentstr, indentnum, body)
+        body = output_node_frame(
+            ctx, difference, path, indentstr, indentnum, body
+        )
     t = cont(t, body)
 
     # Add holes for child nodes
     for d in difference.details:
         child = output_node_frame(
-            d, path + [d], indentstr, indentnum + 1, PartialString.of(d)
+            ctx, d, path + [d], indentstr, indentnum + 1, PartialString.of(d)
         )
         child = PartialString.numl(
             u"""{0[1]}<div class="difference">
@@ -365,7 +382,7 @@ def spl_file_printer(directory, filename, accum):
 class HTMLPrintContext(
     collections.namedtuple(
         "HTMLPrintContext",
-        "target single_page jquery_url css_url our_css_url icon_url",
+        "target single_page jquery_url css_url our_css_url icon_url used_anchors",
     )
 ):
     @property
@@ -903,7 +920,13 @@ class HTMLPresenter(Presenter):
         with open(os.path.join(directory, "icon.png"), "wb") as fp:
             fp.write(base64.b64decode(FAVICON_BASE64))
         ctx = HTMLPrintContext(
-            directory, False, jquery_url, css_url, "common.css", "icon.png"
+            directory,
+            False,
+            jquery_url,
+            css_url,
+            "common.css",
+            "icon.png",
+            set(),
         )
         self.output_difference(ctx, difference)
 
@@ -912,7 +935,9 @@ class HTMLPresenter(Presenter):
         Default presenter, all in one HTML file
         """
         jquery_url = self.ensure_jquery(jquery_url, os.getcwd(), None)
-        ctx = HTMLPrintContext(target, True, jquery_url, css_url, None, None)
+        ctx = HTMLPrintContext(
+            target, True, jquery_url, css_url, None, None, set()
+        )
         self.output_difference(ctx, difference)
 
     @classmethod
