@@ -24,10 +24,27 @@ from .utils.file import File
 from .utils.command import Command
 
 
-class Openssl(Command):
+class OpenSSLPKCS7(Command):
     @tool_required('openssl')
     def cmdline(self):
         return ('openssl', 'pkcs7', '-print', '-noout', '-in', self.path)
+
+
+class OpenSSLSMIME(Command):
+    MASK_STDERR = True
+
+    @tool_required('openssl')
+    def cmdline(self):
+        return (
+            'openssl',
+            'smime',
+            '-inform',
+            'der',
+            '-verify',
+            '-noverify',
+            '-in',
+            self.path,
+        )
 
 
 class Pkcs7File(File):
@@ -37,6 +54,13 @@ class Pkcs7File(File):
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Openssl, self.path, other.path, source='openssl pkcs7 -print'
+                OpenSSLPKCS7,
+                self.path,
+                other.path,
+                source='openssl pkcs7 -print',
+            )
+        ]
+
+
             )
         ]
