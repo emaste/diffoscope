@@ -40,6 +40,7 @@ import html
 import io
 import logging
 import os
+import pprint
 import re
 import sys
 from unicodedata import normalize
@@ -833,9 +834,8 @@ class HTMLPresenter(Presenter):
                 break
 
         if outputs:
-            import pprint
-
             pprint.pprint(outputs, indent=4)
+
         assert not outputs
 
     def ensure_jquery(self, jquery_url, basedir, default_override):
