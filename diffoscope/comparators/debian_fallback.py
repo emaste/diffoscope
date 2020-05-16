@@ -3,7 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ class DotChangesFile(TextFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to find Python debian module. Falling back to text comparison.'
+            'Unable to find the "debian" Python module. Falling back to text comparison.'
         )
         return difference
 
@@ -42,7 +42,7 @@ class DotDscFile(TextFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to find Python debian module. Falling back to text comparison.'
+            'Unable to find the "debian" Python module. Falling back to text comparison.'
         )
         return difference
 
@@ -55,6 +55,6 @@ class DotBuildinfoFile(TextFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to find Python debian module. Falling back to text comparison.'
+            'Unable to find the "debian" Python module. Falling back to text comparison.'
         )
         return difference
