@@ -25,7 +25,7 @@ import itertools
 import subprocess
 
 from diffoscope.difference import Difference
-from diffoscope.tools import tool_required
+from diffoscope.tools import tool_required, find_executable
 from diffoscope.tempfiles import get_temporary_directory
 
 from .utils.file import File
