@@ -22,6 +22,7 @@ from .text import TextFile
 
 
 class DotChangesFile(TextFile):
+    DESCRIPTION = "Debian .changes files"
     FILE_EXTENSION_SUFFIX = '.changes'
 
     def compare(self, other, *args, **kwargs):
@@ -35,6 +36,7 @@ class DotChangesFile(TextFile):
 
 
 class DotDscFile(TextFile):
+    DESCRIPTION = "Debian .dsc files"
     FILE_EXTENSION_SUFFIX = '.dsc'
 
     def compare(self, other, *args, **kwargs):
@@ -48,6 +50,7 @@ class DotDscFile(TextFile):
 
 
 class DotBuildinfoFile(TextFile):
+    DESCRIPTION = "Debian .buildinfo files"
     FILE_EXTENSION_SUFFIX = '.buildinfo'
 
     def compare(self, other, *args, **kwargs):
