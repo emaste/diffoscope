@@ -20,6 +20,7 @@
 EXTERNAL_TOOLS = {
     'abootimg': {'debian': 'abootimg', 'guix': 'abootimg'},
     'apktool': {'debian': 'apktool'},
+    'apksigner': {'debian': 'apksigner'},
     'db_dump': {'debian': 'db-util', 'guix': 'bdb'},
     'bsdtar': {
         'debian': 'libarchive-tools',

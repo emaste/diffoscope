@@ -9,6 +9,7 @@ Uploaders:
 Build-Depends:
  abootimg <!nocheck>,
  apktool [!ppc64el !s390x] <!nocheck>,
+ apksigner <!nocheck>,
  bash-completion,
  binutils-multiarch <!nocheck>,
  black <!nocheck>,

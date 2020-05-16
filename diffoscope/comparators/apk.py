@@ -24,11 +24,13 @@ import logging
 import itertools
 import subprocess
 
+from diffoscope.difference import Difference
 from diffoscope.tools import tool_required
 from diffoscope.tempfiles import get_temporary_directory
 
 from .utils.file import File
 from .utils.archive import Archive
+from .utils.command import Command
 from .utils.compare import compare_files
 from .zip import ZipContainer, zipinfo_differences
 from .missing_file import MissingFile
@@ -186,6 +188,14 @@ class ApkContainer(Archive):
         return differences
 
 
+class Apksigner(Command):
+    VALID_RETURNCODES = {0, 1}
+
+    @tool_required('apksigner')
+    def cmdline(self):
+        return ["apksigner", "verify", "--verbose", "--print-certs", self.path]
+
+
 class ApkFile(File):
     DESCRIPTION = "Android APK files"
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
@@ -194,7 +204,13 @@ class ApkFile(File):
     CONTAINER_CLASSES = [ApkContainer, ZipContainer]
 
     def compare_details(self, other, source=None):
-        return zipinfo_differences(self, other)
+        differences = zipinfo_differences(self, other)
+
+        x = Difference.from_command(Apksigner, self.path, other.path)
+        if x is not None:
+            difference.insert(0, x)
+
+        return differences
 
 
 def filter_apk_metadata(filepath, archive_name):
