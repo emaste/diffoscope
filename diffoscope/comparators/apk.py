@@ -193,7 +193,20 @@ class Apksigner(Command):
 
     @tool_required('apksigner')
     def cmdline(self):
-        return ["apksigner", "verify", "--verbose", "--print-certs", self.path]
+        # In Debian, the `apksigner` binary is a symbolic link to the .jar file
+        # itself, requiring binfmt_misc support to execute directly. We
+        # therefore resolve its location and pass that to `java -jar`.
+        apksigner_jar = find_executable("apksigner")
+
+        return [
+            "java",
+            "-jar",
+            apksigner_jar,
+            "verify",
+            "--verbose",
+            "--print-certs",
+            self.path,
+        ]
 
 
 class ApkFile(File):
