@@ -21,43 +21,27 @@
 from .text import TextFile
 
 
-class DotChangesFile(TextFile):
+class AbstractDebianFallbackFile(TextFile):
+    def compare(self, other, *args, **kwargs):
+        difference = super().compare(other, *args, **kwargs)
+        if not difference:
+            return None
+        difference.add_comment(
+            'Unable to find the "debian" Python module. Falling back to text comparison.'
+        )
+        return difference
+
+
+class DotChangesFile(AbstractDebianFallbackFile):
     DESCRIPTION = "Debian .changes files"
     FILE_EXTENSION_SUFFIX = '.changes'
 
-    def compare(self, other, *args, **kwargs):
-        difference = super().compare(other, *args, **kwargs)
-        if not difference:
-            return None
-        difference.add_comment(
-            'Unable to find the "debian" Python module. Falling back to text comparison.'
-        )
-        return difference
 
-
-class DotDscFile(TextFile):
-    DESCRIPTION = "Debian .dsc files"
+class DotDscFile(AbstractDebianFallbackFile):
+    DESCRIPTION = "Debian source packages (.dsc)"
     FILE_EXTENSION_SUFFIX = '.dsc'
 
-    def compare(self, other, *args, **kwargs):
-        difference = super().compare(other, *args, **kwargs)
-        if not difference:
-            return None
-        difference.add_comment(
-            'Unable to find the "debian" Python module. Falling back to text comparison.'
-        )
-        return difference
 
-
-class DotBuildinfoFile(TextFile):
+class DotBuildinfoFile(AbstractDebianFallbackFile):
     DESCRIPTION = "Debian .buildinfo files"
     FILE_EXTENSION_SUFFIX = '.buildinfo'
-
-    def compare(self, other, *args, **kwargs):
-        difference = super().compare(other, *args, **kwargs)
-        if not difference:
-            return None
-        difference.add_comment(
-            'Unable to find the "debian" Python module. Falling back to text comparison.'
-        )
-        return difference
