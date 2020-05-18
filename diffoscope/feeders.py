@@ -41,7 +41,7 @@ def from_raw_reader(in_file, filter=None):
         # display a nicer message.
         h = None
         if max_lines < float('inf'):
-            h = hashlib.sha1()
+            h = hashlib.sha256()
 
         for buf in in_file:
             line_count += 1
@@ -61,7 +61,7 @@ def from_raw_reader(in_file, filter=None):
 
         if h is not None and line_count >= max_lines:
             out_file.write(
-                "[ Too much input for diff (SHA1: {}) ]\n".format(
+                "[ Too much input for diff (SHA256: {}) ]\n".format(
                     h.hexdigest()
                 ).encode('utf-8')
             )

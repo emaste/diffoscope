@@ -295,7 +295,7 @@ def make_feeder_from_raw_reader(in_file, filter=None):
         line_count = 0
 
         if max_lines < float("inf"):
-            h = hashlib.sha1()
+            h = hashlib.sha256()
 
         for buf in in_file:
             line_count += 1
@@ -308,7 +308,7 @@ def make_feeder_from_raw_reader(in_file, filter=None):
 
         if h and line_count >= max_lines:
             out_file.write(
-                "[ Too much input for diff (SHA1: {}) ]\n".format(
+                "[ Too much input for diff (SHA: {}) ]\n".format(
                     h.hexdigest()
                 ).encode('utf-8')
             )
@@ -397,8 +397,8 @@ def diffinput_truncate(s, sz):
     if len(s) > sz:
         s = s[
             :sz
-        ] + "[ ... truncated by diffoscope; len: {}, SHA1: {} ... ]".format(
-            len(s[sz:]), hashlib.sha1(s[sz:].encode('utf-8')).hexdigest()
+        ] + "[ ... truncated by diffoscope; len: {}, SHA: {} ... ]".format(
+            len(s[sz:]), hashlib.sha256(s[sz:].encode('utf-8')).hexdigest()
         )
     return s
 
