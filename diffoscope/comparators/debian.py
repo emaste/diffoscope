@@ -177,7 +177,7 @@ class DotChangesFile(DebControlFile):
         changes = Changes(filename=file.path)
 
         try:
-            changes.validate(check_signature=False)
+            changes.validate("sha256", check_signature=False)
         except FileNotFoundError:
             return False
 
