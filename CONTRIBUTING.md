@@ -89,5 +89,5 @@ on `#reproducible-builds` with:
 
 Finally, update the Docker image using:
 
-    $ docker build -t registry.salsa.debian.org/reproducible-builds/diffoscope .
+    $ docker build --force-rm --no-cache --pull -t registry.salsa.debian.org/reproducible-builds/diffoscope .
     $ docker push registry.salsa.debian.org/reproducible-builds/diffoscope
