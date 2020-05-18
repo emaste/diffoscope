@@ -3,7 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ def test_too_much_input_for_diff(monkeypatch):
         too_long_text_a, too_long_text_b, 'a', 'b'
     )
     assert '[ Too much input for diff ' in difference.unified_diff
-    assert_algebraic_properties(difference, 290)
+    assert_algebraic_properties(difference, 342)
 
 
 def test_too_long_diff_block_lines(monkeypatch):
