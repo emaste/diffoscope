@@ -221,7 +221,7 @@ class ApkFile(File):
 
         x = Difference.from_command(Apksigner, self.path, other.path)
         if x is not None:
-            difference.insert(0, x)
+            differences.insert(0, x)
 
         return differences
 
