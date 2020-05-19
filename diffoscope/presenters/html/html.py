@@ -96,8 +96,8 @@ def send_and_exhaust(iterator, arg, default):
     return output
 
 
-def md5(s):
-    return hashlib.md5(s.encode('utf-8')).hexdigest()
+def sha256(s):
+    return hashlib.sha256(s.encode('utf-8')).hexdigest()
 
 
 def escape_anchor(val):
@@ -601,7 +601,7 @@ class HTMLSideBySidePresenter:
         self.new_unified_diff()
         rotation_params = None
         if ctx.directory:
-            mainname = md5(unified_diff)
+            mainname = sha256(unified_diff)
             rotation_params = ctx, mainname
 
         try:
@@ -743,7 +743,7 @@ class HTMLPresenter(Presenter):
         def process_node(node, score):
             path = score[3]
             diff_path = output_diff_path(path)
-            pagename = md5(diff_path)
+            pagename = sha256(diff_path)
             if diff_path:
                 logger.debug('html output for %s', diff_path)
 
