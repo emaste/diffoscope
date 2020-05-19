@@ -19,12 +19,18 @@
 
 import os
 import sys
+import tempfile
 
 
 def format_cmdline(cmd, replace=(), truncate=None):
+    prefix = tempfile.gettempdir()
+
     def fn(x):
         if x in replace:
             return '{}'
+        # Don't expose the full path name of the temporary directory
+        if x.startswith(prefix):
+            x = os.path.join('«TEMP»', x[len(prefix) + 1 :])
         x = repr(x)
         if ' ' not in x:
             x = x[1:-1]
