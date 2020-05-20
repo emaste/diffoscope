@@ -1,11 +1,17 @@
-before_script:
-  - apt-get -q update
-  - mount -o remount,rw /dev
-  - env DEBIAN_FRONTEND=noninteractive apt-get -q -y install --no-install-recommends aspcud apt-cudf
-  - env DEBIAN_FRONTEND=noninteractive apt-get -q -y --solver aspcud -o APT::Solver::Strict-Pinning=0 -o Debug::pkgProblemResolver=yes build-dep .
+stages:
+  - test
+  - deploy
 
 .test_template: &test
+  stage: test
+  variables:
+    DEBIAN_FRONTEND: noninteractive
   script:
+    - apt-get -q update
+    - mount -o remount,rw /dev
+    - apt-get -q -y install --no-install-recommends aspcud apt-cudf
+    - apt-get -q -y --solver aspcud -o APT::Solver::Strict-Pinning=0
+        -o Debug::pkgProblemResolver=yes build-dep .
     - py.test-3 -vv -l -r a --cov=diffoscope --cov-report=term-missing
 
 unstable:
@@ -24,3 +30,31 @@ ubuntu-devel:
   <<: *test
   image: ubuntu:devel
   allow_failure: true
+
+.deploy:
+  image: docker:latest
+  stage: deploy
+  only:
+    - master
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+deploy-devel:
+  extends: .deploy
+  only:
+    - master
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE:devel" .
+    - docker push "$CI_REGISTRY_IMAGE:devel"
+
+deploy-tag:
+  extends: .deploy
+  only:
+    - /^[0-9]+$/
+
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" .
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" "$CI_REGISTRY_IMAGE:latest"
+    - docker push "$CI_REGISTRY_IMAGE"
