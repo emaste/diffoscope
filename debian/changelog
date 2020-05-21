@@ -25,7 +25,8 @@ diffoscope (144) unstable; urgency=medium
 
     - Reduce the default number of maximum standard error lines printed from 50
       to 25; usually the error is obvious by that point.
-    - Clarify the message when we truncate the number of lines to standard error.
+    - Clarify the message when we truncate the number of lines to standard
+      error.
     - Clarify when an external command emits for both files, otherwise it can
       look like diffoscope is repeating itself when it is actually being run
       twice.
@@ -57,7 +58,8 @@ diffoscope (144) unstable; urgency=medium
     - Drop an unused shlex import.
     - Instruct linters to pass over a bare try-except when cleaning up
       temporary files used to extract archives.
-    - Format diffoscope/comparators/utils/command.py according to Black 19.10b0-3.
+    - Format diffoscope/comparators/utils/command.py according to Black
+      19.10b0-3.
     - Drop entries from Uploaders that have not uploaded in over three years
       with esteemed thanks for their previous work.
     - Drop .travis.yml; we are using Salsa now and likely would not give
