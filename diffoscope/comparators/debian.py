@@ -114,6 +114,8 @@ class DebControlFile(File):
 
     @property
     def deb822(self):
+        # Be nicer to .changes and .dsc comparisons; see
+        # diffoscope.comparators.missing_file.MissingFile.deb822
         return self._deb822
 
     def compare_details(self, other, source=None):

@@ -104,7 +104,8 @@ class MissingFile(File):
     def magic_file_type(self):
         return self._other_file.magic_file_type
 
-    # Be nice to .changes and .dsc comparisons
+    # Be nice to .changes and .dsc comparisons; see
+    # diffoscope.comparators.debian.DebControlFile.deb822
     @property
     def deb822(self):
         class DummyChanges(dict):
