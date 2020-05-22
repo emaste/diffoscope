@@ -109,9 +109,9 @@ def create_parser():
         help='Display debug messages',
     )
     parser.add_argument(
-        '--debugger',
+        '--pdb',
         action='store_true',
-        help='Open the Python debugger in case of crashes',
+        help='Open the Python pdb debugger in case of crashes',
     )
     parser.add_argument(
         '--status-fd',
@@ -756,7 +756,7 @@ def main(args=None):
     except Exception:
         sys.stderr.buffer.write(line_eraser())
         traceback.print_exc()
-        if parsed_args and parsed_args.debugger:
+        if parsed_args and parsed_args.pdb:
             import pdb
 
             pdb.post_mortem()
