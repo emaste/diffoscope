@@ -72,7 +72,7 @@ class DebControlContainer(Container):
 
     @staticmethod
     def get_version_trimming_re(dcc):
-        version = dcc.source.deb822.get('Version')
+        version = dcc.source._deb822.get('Version')
 
         # Remove the epoch as it's not in the filename
         version = re.sub(r'^\d+:', '', version)
@@ -90,7 +90,7 @@ class DebControlContainer(Container):
             yield self._trim_version_number(name), self.get_member(name)
 
     def get_member_names(self):
-        field = self.source.deb822.get('Files') or self.source.deb822.get(
+        field = self.source._deb822.get('Files') or self.source._deb822.get(
             'Checksums-Sha256'
         )
 
@@ -112,28 +112,37 @@ class DebControlContainer(Container):
 class DebControlFile(File):
     CONTAINER_CLASSES = [DebControlContainer]
 
-    @property
-    def deb822(self):
-        # Be nicer to .changes and .dsc comparisons; see
-        # diffoscope.comparators.missing_file.MissingFile.deb822
-        return self._deb822
+    @staticmethod
+    def _get_deb822(file):
+        # Be nice to .changes and .dsc comparison in the MissingFile case
+
+        if isinstance(file, DebControlFile):
+            return file._deb822
+
+        class DummyChanges(dict):
+            def get_as_string(self, _):
+                return ""
+
+        return DummyChanges(Files=[], Version='')
 
     def compare_details(self, other, source=None):
         differences = []
 
+        other_deb822 = self._get_deb822(other)
+
         for field in sorted(
-            set(self.deb822.keys()).union(set(other.deb822.keys()))
+            set(self._deb822.keys()).union(set(other_deb822.keys()))
         ):
             if field.startswith('Checksums-') or field == 'Files':
                 continue
 
             my_value = ""
-            if field in self.deb822:
-                my_value = self.deb822.get_as_string(field).lstrip()
+            if field in self._deb822:
+                my_value = self._deb822.get_as_string(field).lstrip()
 
             other_value = ""
-            if field in other.deb822:
-                other_value = other.deb822.get_as_string(field).lstrip()
+            if field in other_deb822:
+                other_value = other_deb822.get_as_string(field).lstrip()
 
             differences.append(
                 Difference.from_text(
@@ -142,11 +151,11 @@ class DebControlFile(File):
             )
 
         # Compare Files as string
-        if self.deb822.get('Files'):
+        if self._deb822.get('Files'):
             differences.append(
                 Difference.from_text(
-                    self.deb822.get_as_string('Files'),
-                    other.deb822.get_as_string('Files'),
+                    self._deb822.get_as_string('Files'),
+                    other_deb822.get_as_string('Files'),
                     self.path,
                     other.path,
                     source='Files',
@@ -155,8 +164,8 @@ class DebControlFile(File):
         else:
             differences.append(
                 Difference.from_text(
-                    self.deb822.get_as_string('Checksums-Sha256'),
-                    other.deb822.get_as_string('Checksums-Sha256'),
+                    self._deb822.get_as_string('Checksums-Sha256'),
+                    other_deb822.get_as_string('Checksums-Sha256'),
                     self.path,
                     other.path,
                     source='Checksums-Sha256',
@@ -193,7 +202,9 @@ class DotChangesFile(DebControlFile):
         if differences is None:
             return None
 
-        files = zip(self.deb822.get('Files'), other.deb822.get('Files'))
+        other_deb822 = self._get_deb822(other)
+
+        files = zip(self._deb822.get('Files'), other_deb822.get('Files'))
 
         files_identical = all(
             x == y for x, y in files if not x['name'].endswith('.buildinfo')

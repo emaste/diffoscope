@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2017, 2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2017, 2019-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -103,13 +103,3 @@ class MissingFile(File):
     @property
     def magic_file_type(self):
         return self._other_file.magic_file_type
-
-    # Be nice to .changes and .dsc comparisons; see
-    # diffoscope.comparators.debian.DebControlFile.deb822
-    @property
-    def deb822(self):
-        class DummyChanges(dict):
-            def get_as_string(self, _):
-                return ''
-
-        return DummyChanges(Files=[], Version='')
