@@ -224,13 +224,13 @@ class DotDscFile(DebControlFile):
                 md5 = hashlib.md5()
 
                 # XXX: this will not work for containers
-                in_dsc_path = os.path.join(
+                dsc_in_same_dir = os.path.join(
                     os.path.dirname(file.path), d['Name']
                 )
-                if not os.path.exists(in_dsc_path):
+                if not os.path.exists(dsc_in_same_dir):
                     return False
 
-                with open(in_dsc_path, 'rb') as f:
+                with open(dsc_in_same_dir, 'rb') as f:
                     for buf in iter(functools.partial(f.read, 32768), b''):
                         md5.update(buf)
                 if md5.hexdigest() != d['md5sum']:
@@ -282,13 +282,13 @@ class DotBuildinfoFile(DebControlFile):
             sha256 = hashlib.sha256()
 
             # XXX: this will not work for containers
-            in_buildinfo_path = os.path.join(
+            dsc_in_same_dir = os.path.join(
                 os.path.dirname(file.path), d['Name']
             )
-            if not os.path.exists(in_buildinfo_path):
+            if not os.path.exists(dsc_in_same_dir):
                 return False
 
-            with open(in_buildinfo_path, 'rb') as f:
+            with open(dsc_in_same_dir, 'rb') as f:
                 for buf in iter(functools.partial(f.read, 32768), b''):
                     sha256.update(buf)
             if sha256.hexdigest() != d['sha256']:
