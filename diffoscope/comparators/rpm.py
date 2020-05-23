@@ -49,16 +49,16 @@ def convert_header_field(io, header):
         io.write(header)
     elif isinstance(header, bytes):
         try:
-            io.write(header.decode('utf-8'))
+            io.write(header.decode("utf-8"))
         except UnicodeDecodeError:
-            io.write(binascii.hexlify(header).decode('us-ascii'))
+            io.write(binascii.hexlify(header).decode("us-ascii"))
     else:
         io.write(repr(header))
 
 
 def get_rpm_header(path, ts):
     s = io.StringIO()
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         try:
             hdr = ts.hdrFromFdno(f)
         except rpm.error as e:
@@ -94,14 +94,14 @@ class RpmContainer(Archive):
         pass
 
     def get_member_names(self):
-        return ['content']
+        return ["content"]
 
-    @tool_required('rpm2cpio')
+    @tool_required("rpm2cpio")
     def extract(self, member_name, dest_dir):
-        assert member_name == 'content'
-        dest_path = os.path.join(dest_dir, 'content')
-        cmd = ['rpm2cpio', self.source.path]
-        with open(dest_path, 'wb') as dest:
+        assert member_name == "content"
+        dest_path = os.path.join(dest_dir, "content")
+        cmd = ["rpm2cpio", self.source.path]
+        with open(dest_path, "wb") as dest:
             subprocess.check_call(
                 cmd, shell=False, stdout=dest, stderr=subprocess.PIPE
             )

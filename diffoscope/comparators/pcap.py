@@ -27,25 +27,25 @@ from .utils.command import Command
 
 
 class Tcpdump(Command):
-    @tool_required('tcpdump')
+    @tool_required("tcpdump")
     def cmdline(self):
         return (
-            'tcpdump',
-            '-X',  # Print data and link level header in hex and ASCII
-            '-nn',  # Don't resolve host addresses, etc.
-            '-ttttt',  # Print delta from previous line
-            '-r',
+            "tcpdump",
+            "-X",  # Print data and link level header in hex and ASCII
+            "-nn",  # Don't resolve host addresses, etc.
+            "-ttttt",  # Print delta from previous line
+            "-r",
             self.path,
         )
 
 
 class PcapFile(File):
     DESCRIPTION = "tcpdump capture files (.pcap)"
-    FILE_TYPE_RE = re.compile(r'^(tcpdump|pcap) capture file\b')
+    FILE_TYPE_RE = re.compile(r"^(tcpdump|pcap) capture file\b")
 
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Tcpdump, self.path, other.path, source='tcpdump'
+                Tcpdump, self.path, other.path, source="tcpdump"
             )
         ]

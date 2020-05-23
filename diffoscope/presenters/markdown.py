@@ -40,11 +40,11 @@ class MarkdownTextPresenter(Presenter):
             self.print_func()
 
         if difference.unified_diff:
-            self.print_func(self.indent(difference.unified_diff, '    '))
+            self.print_func(self.indent(difference.unified_diff, "    "))
             self.print_func()
 
     def title(self, val):
-        prefix = '#' * min(self.depth + 1, 6)
+        prefix = "#" * min(self.depth + 1, 6)
 
         self.print_func("{} {}".format(prefix, val))
         self.print_func()

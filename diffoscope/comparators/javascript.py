@@ -26,14 +26,14 @@ from .utils.command import Command
 
 
 class JavaScriptBeautify(Command):
-    @tool_required('js-beautify')
+    @tool_required("js-beautify")
     def cmdline(self):
-        return ['js-beautify', self.path]
+        return ["js-beautify", self.path]
 
 
 class JavaScriptFile(File):
     DESCRIPTION = "JavaScript files"
-    FILE_EXTENSION_SUFFIX = '.js'
+    FILE_EXTENSION_SUFFIX = ".js"
 
     def compare_details(self, other, source=None):
         return [

@@ -39,38 +39,38 @@ class Msgunfmt(Command):
         self._header = io.BytesIO()
         self._encoding = None
 
-    @tool_required('msgunfmt')
+    @tool_required("msgunfmt")
     def cmdline(self):
-        return ['msgunfmt', self.path]
+        return ["msgunfmt", self.path]
 
     def filter(self, line):
         if not self._encoding:
             self._header.write(line)
-            if line == b'\n':
+            if line == b"\n":
                 logger.debug(
                     "unable to determine PO encoding, let's hope it's utf-8"
                 )
-                self._encoding = 'utf-8'
+                self._encoding = "utf-8"
                 return self._header.getvalue()
             found = Msgunfmt.CHARSET_RE.match(line)
             if found:
-                self._encoding = found.group(1).decode('us-ascii').lower()
+                self._encoding = found.group(1).decode("us-ascii").lower()
                 return (
                     self._header.getvalue()
                     .decode(self._encoding)
-                    .encode('utf-8')
+                    .encode("utf-8")
                 )
-            return b''
+            return b""
 
-        if self._encoding == 'utf-8':
+        if self._encoding == "utf-8":
             return line
 
-        return line.decode(self._encoding).encode('utf-8')
+        return line.decode(self._encoding).encode("utf-8")
 
 
 class MoFile(File):
     DESCRIPTION = "Gettext message catalogues"
-    FILE_TYPE_RE = re.compile(r'^GNU message catalog\b')
+    FILE_TYPE_RE = re.compile(r"^GNU message catalog\b")
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Msgunfmt, self.path, other.path)]

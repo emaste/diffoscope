@@ -41,25 +41,25 @@ def assert_algebraic_properties(d, size):
 
 
 def test_too_much_input_for_diff(monkeypatch):
-    monkeypatch.setattr(Config(), 'max_diff_input_lines', 20)
+    monkeypatch.setattr(Config(), "max_diff_input_lines", 20)
     too_long_text_a = io.StringIO("a\n" * 21)
     too_long_text_b = io.StringIO("b\n" * 21)
     difference = Difference.from_text_readers(
-        too_long_text_a, too_long_text_b, 'a', 'b'
+        too_long_text_a, too_long_text_b, "a", "b"
     )
-    assert '[ Too much input for diff ' in difference.unified_diff
+    assert "[ Too much input for diff " in difference.unified_diff
     assert_algebraic_properties(difference, 342)
 
 
 def test_too_long_diff_block_lines(monkeypatch):
-    monkeypatch.setattr(Config(), 'enforce_constraints', False)
-    monkeypatch.setattr(Config(), 'max_diff_block_lines_saved', 10)
+    monkeypatch.setattr(Config(), "enforce_constraints", False)
+    monkeypatch.setattr(Config(), "max_diff_block_lines_saved", 10)
     too_long_text_a = io.StringIO("a\n" * 21)
     too_long_text_b = io.StringIO("b\n" * 21)
     difference = Difference.from_text_readers(
-        too_long_text_a, too_long_text_b, 'a', 'b'
+        too_long_text_a, too_long_text_b, "a", "b"
     )
-    assert '[ 11 lines removed ]' in difference.unified_diff
+    assert "[ 11 lines removed ]" in difference.unified_diff
     assert_algebraic_properties(difference, 124)
 
 
@@ -109,26 +109,26 @@ def test_traverse_heapq():
     assert_size(diff, 284)
     results = [d.source1[6:] for d in diff.traverse_heapq(f)]
     assert results == [
-        '',
-        'a',
-        'c',
-        'b',
-        'c/1',
-        'a/3',
-        'a/2',
-        'b/2',
-        'b/3',
-        'c/3',
-        'b/1',
-        'a/1',
-        'c/2',
+        "",
+        "a",
+        "c",
+        "b",
+        "c/1",
+        "a/3",
+        "a/2",
+        "b/2",
+        "b/3",
+        "c/3",
+        "b/1",
+        "a/1",
+        "c/2",
     ]
 
 
 def test_non_str_arguments_to_source1_source2():
-    for x in ((None, 'str'), ('str', None)):
-        a = io.StringIO('a')
-        b = io.StringIO('b')
+    for x in ((None, "str"), ("str", None)):
+        a = io.StringIO("a")
+        b = io.StringIO("b")
 
         with pytest.raises(TypeError):
             Difference.from_text_readers(a, b, *x)

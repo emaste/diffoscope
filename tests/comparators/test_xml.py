@@ -26,9 +26,9 @@ from diffoscope.comparators.xml import XMLFile
 from ..utils.data import load_fixture, get_data
 
 
-xml_a = load_fixture('test1.xml')
-xml_b = load_fixture('test2.xml')
-invalid_xml = load_fixture('test_invalid.xml')
+xml_a = load_fixture("test1.xml")
+xml_b = load_fixture("test2.xml")
+invalid_xml = load_fixture("test_invalid.xml")
 
 
 def test_identification(xml_a):
@@ -52,5 +52,5 @@ def differences(xml_a, xml_b):
     sys.version_info < (3, 8), reason="requires Python 3.8 or higher"
 )
 def test_diff(differences):
-    expected_diff = get_data('test_xml_expected_diff')
+    expected_diff = get_data("test_xml_expected_diff")
     assert differences[0].unified_diff == expected_diff

@@ -46,9 +46,9 @@ logger = logging.getLogger(__name__)
 
 
 class Xxd(Command):
-    @tool_required('xxd')
+    @tool_required("xxd")
     def cmdline(self):
-        return ['xxd', self.path]
+        return ["xxd", self.path]
 
 
 def compare_root_paths(path1, path2):
@@ -73,7 +73,7 @@ def compare_root_paths(path1, path2):
     file2 = specialize(FilesystemFile(path2, container=container2))
     difference = compare_files(file1, file2)
 
-    if Config().exclude_directory_metadata in ('no', 'recursive'):
+    if Config().exclude_directory_metadata in ("no", "recursive"):
         meta = compare_meta(path1, path2)
         if meta:
             # Create an "empty" difference so we have something to attach file
@@ -97,7 +97,7 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         return None
 
     force_details = Config().force_details
-    with profile('has_same_content_as', file1):
+    with profile("has_same_content_as", file1):
         has_same_content = file1.has_same_content_as(file2)
 
     if has_same_content:
@@ -124,7 +124,7 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         file1.as_container is None or file2.as_container is None
     ):
         return file1.compare_bytes(file2, source)
-    with profile('compare_files (cumulative)', file1):
+    with profile("compare_files (cumulative)", file1):
         return file1.compare(file2, source)
 
 
@@ -136,8 +136,8 @@ def call_difftool(file1, file2):
     if Config().difftool is None:
         return
 
-    a = '/dev/null' if isinstance(file1, MissingFile) else file1.path
-    b = '/dev/null' if isinstance(file2, MissingFile) else file2.path
+    a = "/dev/null" if isinstance(file1, MissingFile) else file1.path
+    b = "/dev/null" if isinstance(file2, MissingFile) else file2.path
 
     if os.path.isdir(a) or os.path.isdir(b):
         return
@@ -162,7 +162,7 @@ def compare_binary_files(file1, file2, source=None):
         hexdump1 = hexdump_fallback(file1.path)
         hexdump2 = hexdump_fallback(file2.path)
         comment = (
-            'xxd not available in path. Falling back to Python hexlify.\n'
+            "xxd not available in path. Falling back to Python hexlify.\n"
         )
         return Difference.from_text(
             hexdump1, hexdump2, file1.name, file2.name, source, comment
@@ -171,7 +171,7 @@ def compare_binary_files(file1, file2, source=None):
 
 def hexdump_fallback(path):
     hexdump = io.StringIO()
-    with open(path, 'rb') as f:
-        for buf in iter(lambda: f.read(32), b''):
-            hexdump.write('%s\n' % binascii.hexlify(buf).decode('us-ascii'))
+    with open(path, "rb") as f:
+        for buf in iter(lambda: f.read(32), b""):
+            hexdump.write("%s\n" % binascii.hexlify(buf).decode("us-ascii"))
     return hexdump.getvalue()

@@ -27,8 +27,8 @@ from .json import JSONReaderV1
 
 def load_diff_from_path(path):
     bail_if_non_existing(path)
-    with open(path, 'rb') as fp:
-        return load_diff(codecs.getreader('utf-8')(fp), path)
+    with open(path, "rb") as fp:
+        return load_diff(codecs.getreader("utf-8")(fp), path)
 
 
 def load_diff(fp, path):

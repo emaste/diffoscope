@@ -33,8 +33,8 @@ from ..utils.tools import skip_unless_tools_exist
 # echo 'public class Test { static public void Main () {} }' > test.cs
 # mcs -out:test1.exe test.cs ; sleep 2; mcs -out:test2.exe test.cs
 
-exe1 = load_fixture('test1.exe')
-exe2 = load_fixture('test2.exe')
+exe1 = load_fixture("test1.exe")
+exe2 = load_fixture("test2.exe")
 
 
 def test_identification(exe1):
@@ -51,15 +51,15 @@ def differences(exe1, exe2):
     return exe1.compare(exe2).details
 
 
-@skip_unless_tools_exist('pedump')
+@skip_unless_tools_exist("pedump")
 def test_diff(differences):
-    expected_diff = get_data('pe_expected_diff')
+    expected_diff = get_data("pe_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('pedump')
+@skip_unless_tools_exist("pedump")
 def test_compare_non_existing(monkeypatch, exe1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = exe1.compare(MissingFile('/nonexisting', exe1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = exe1.compare(MissingFile("/nonexisting", exe1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0

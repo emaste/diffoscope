@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_named_temporary_file(*args, **kwargs):
-    kwargs['dir'] = kwargs.pop('dir', _get_base_temporary_directory())
+    kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
 
     f = tempfile.NamedTemporaryFile(*args, **kwargs)
     _FILES.append(f.name)
@@ -37,7 +37,7 @@ def get_named_temporary_file(*args, **kwargs):
 
 
 def get_temporary_directory(*args, **kwargs):
-    kwargs['dir'] = kwargs.pop('dir', _get_base_temporary_directory())
+    kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
     _DIRS.append(d)
@@ -82,7 +82,7 @@ def clean_all_temp_files():
 def _get_base_temporary_directory():
     if not _DIRS:
         d = tempfile.TemporaryDirectory(
-            dir=tempfile.gettempdir(), prefix='diffoscope_'
+            dir=tempfile.gettempdir(), prefix="diffoscope_"
         )
 
         logger.debug("Created top-level temporary directory: %s", d.name)

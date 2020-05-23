@@ -28,14 +28,14 @@ from .utils.command import Command
 
 
 class SSHKeyList(Command):
-    @tool_required('ssh-keygen')
+    @tool_required("ssh-keygen")
     def cmdline(self):
-        return ['ssh-keygen', '-l', '-f', self.path]
+        return ["ssh-keygen", "-l", "-f", self.path]
 
 
 class PublicKeyFile(File):
     DESCRIPTION = "OpenSSH public keys"
-    FILE_TYPE_RE = re.compile(r'^OpenSSH \S+ public key')
+    FILE_TYPE_RE = re.compile(r"^OpenSSH \S+ public key")
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(SSHKeyList, self.path, other.path)]

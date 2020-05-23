@@ -72,11 +72,11 @@ TABSIZE = 8
 # Characters we're willing to word wrap on
 WORDBREAK = " \t;.,/):-"
 
-JQUERY_SYSTEM_LOCATIONS = ('/usr/share/javascript/jquery/jquery.js',)
+JQUERY_SYSTEM_LOCATIONS = ("/usr/share/javascript/jquery/jquery.js",)
 
 logger = logging.getLogger(__name__)
-re_anchor_prefix = re.compile(r'^[^A-Za-z]')
-re_anchor_suffix = re.compile(r'[^A-Za-z-_:\.]')
+re_anchor_prefix = re.compile(r"^[^A-Za-z]")
+re_anchor_suffix = re.compile(r"[^A-Za-z-_:\.]")
 
 
 def send_and_exhaust(iterator, arg, default):
@@ -97,7 +97,7 @@ def send_and_exhaust(iterator, arg, default):
 
 
 def sha256(s):
-    return hashlib.sha256(s.encode('utf-8')).hexdigest()
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 
 def escape_anchor(val):
@@ -107,14 +107,14 @@ def escape_anchor(val):
     colons (":"), and periods (".").
     """
 
-    for pattern, repl in ((re_anchor_prefix, 'D'), (re_anchor_suffix, '-')):
+    for pattern, repl in ((re_anchor_prefix, "D"), (re_anchor_suffix, "-")):
         val = pattern.sub(repl, val)
 
     return val
 
 
 def output_diff_path(path):
-    return ' / '.join(n.source1 for n in path[1:])
+    return " / ".join(n.source1 for n in path[1:])
 
 
 def output_anchor(ctx, path):
@@ -135,49 +135,49 @@ def output_anchor(ctx, path):
     return val
 
 
-def convert(s, ponct=0, tag=''):
+def convert(s, ponct=0, tag=""):
     i = 0
     t = io.StringIO()
     for c in s:
         # used by diffs
         if c == DIFFON:
-            t.write('<%s>' % tag)
+            t.write("<%s>" % tag)
         elif c == DIFFOFF:
-            t.write('</%s>' % tag)
+            t.write("</%s>" % tag)
 
         # special highlighted chars
         elif c == "\t" and ponct == 1:
             n = TABSIZE - (i % TABSIZE)
             if n == 0:
                 n = TABSIZE
-            t.write('<span class="diffponct">\xbb</span>' + '\xa0' * (n - 1))
+            t.write('<span class="diffponct">\xbb</span>' + "\xa0" * (n - 1))
         elif c == " " and ponct == 1:
             t.write('<span class="diffponct">\xb7</span>')
         elif c == "\n" and ponct == 1:
             t.write('<br/><span class="diffponct">\\</span>')
         elif ord(c) < 32:
             conv = u"\\x%x" % ord(c)
-            t.write('<em>%s</em>' % conv)
+            t.write("<em>%s</em>" % conv)
             i += len(conv)
         else:
             t.write(html.escape(c))
             i += 1
 
         if WORDBREAK.count(c) == 1:
-            t.write('\u200b')
+            t.write("\u200b")
             i = 0
         if i > LINESIZE:
             i = 0
-            t.write('\u200b')
+            t.write("\u200b")
 
-    return unicodedata.normalize('NFC', t.getvalue())
+    return unicodedata.normalize("NFC", t.getvalue())
 
 
 def output_visual(ctx, visual, path, indentstr, indentnum):
-    logger.debug('including image for %s', visual.source)
+    logger.debug("including image for %s", visual.source)
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     anchor = output_anchor(ctx, path)
-    id = 'id="{}"'.format(anchor) if anchor else ''
+    id = 'id="{}"'.format(anchor) if anchor else ""
     return u"""{0[0]}<div class="difference">
 {0[1]}<div class="diffheader">
 {0[1]}<div class="diffcontrol">⊟</div>
@@ -199,11 +199,11 @@ def output_visual(ctx, visual, path, indentstr, indentnum):
 def output_node_frame(ctx, difference, path, indentstr, indentnum, body):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     anchor = output_anchor(ctx, path)
-    id = 'id="{}"'.format(anchor) if anchor else ''
+    id = 'id="{}"'.format(anchor) if anchor else ""
     dctrl_class, dctrl = (
-        ("diffcontrol", u'⊟')
+        ("diffcontrol", u"⊟")
         if difference.has_visible_children()
-        else ("diffcontrol-nochildren", u'⊡')
+        else ("diffcontrol-nochildren", u"⊡")
     )
     if difference.source1 == difference.source2:
         header = u"""{0[1]}<div class="{1}">{2}</div>
@@ -326,31 +326,31 @@ def output_header(css_url, our_css_url=False, icon_url=None):
             % css_url
         )
     else:
-        css_link = u''
+        css_link = u""
     if our_css_url:
         css_style = (
             u'  <link href="%s" type="text/css" rel="stylesheet" />\n'
             % our_css_url
         )
     else:
-        css_style = '<style>\n{}</style>\n'.format(templates.STYLES)
+        css_style = "<style>\n{}</style>\n".format(templates.STYLES)
     if icon_url:
         favicon = icon_url
     else:
-        favicon = u'data:image/png;base64,' + FAVICON_BASE64
+        favicon = u"data:image/png;base64," + FAVICON_BASE64
     return templates.HEADER % {
-        'title': html.escape(' '.join(sys.argv)),
-        'favicon': favicon,
-        'css_link': css_link,
-        'css_style': css_style,
+        "title": html.escape(" ".join(sys.argv)),
+        "favicon": favicon,
+        "css_link": css_link,
+        "css_style": css_style,
     }
 
 
 def output_footer(jquery_url=None):
-    footer = templates.FOOTER % {'version': VERSION}
+    footer = templates.FOOTER % {"version": VERSION}
     if jquery_url:
         return (
-            templates.SCRIPTS % {'jquery_url': html.escape(jquery_url)}
+            templates.SCRIPTS % {"jquery_url": html.escape(jquery_url)}
             + footer
         )
     return footer
@@ -359,7 +359,7 @@ def output_footer(jquery_url=None):
 @contextlib.contextmanager
 def file_printer(directory, filename):
     with codecs.open(
-        os.path.join(directory, filename), 'w', encoding='utf-8'
+        os.path.join(directory, filename), "w", encoding="utf-8"
     ) as f:
         yield f.write
 
@@ -367,7 +367,7 @@ def file_printer(directory, filename):
 @contextlib.contextmanager
 def spl_file_printer(directory, filename, accum):
     with codecs.open(
-        os.path.join(directory, filename), 'w', encoding='utf-8'
+        os.path.join(directory, filename), "w", encoding="utf-8"
     ) as f:
         print_func = f.write
 
@@ -439,8 +439,8 @@ class HTMLSideBySidePresenter:
                         u'<td class="diffline">%d </td>' % line1
                     )
                     self.spl_print_func(u'<td class="diffpresent">')
-                self.spl_print_func(convert(s1, ponct=1, tag='del'))
-                self.spl_print_func(u'</td>')
+                self.spl_print_func(convert(s1, ponct=1, tag="del"))
+                self.spl_print_func(u"</td>")
             else:
                 self.spl_print_func(u'<td colspan="2">\xa0</td>')
 
@@ -454,8 +454,8 @@ class HTMLSideBySidePresenter:
                         u'<td class="diffline">%d </td>' % line2
                     )
                     self.spl_print_func(u'<td class="diffpresent">')
-                self.spl_print_func(convert(s2, ponct=1, tag='ins'))
-                self.spl_print_func(u'</td>')
+                self.spl_print_func(convert(s2, ponct=1, tag="ins"))
+                self.spl_print_func(u"</td>")
             else:
                 self.spl_print_func(u'<td colspan="2">\xa0</td>')
         finally:
@@ -541,7 +541,7 @@ class HTMLSideBySidePresenter:
         self.spl_print_func(templates.UD_TABLE_HEADER)
 
     def output_limit_reached(self, limit_type, total, bytes_processed):
-        logger.debug('%s print limit reached', limit_type)
+        logger.debug("%s print limit reached", limit_type)
         bytes_left = total - bytes_processed
         self.error_row = templates.UD_TABLE_LIMIT_FOOTER % {
             "limit_type": limit_type,
@@ -745,7 +745,7 @@ class HTMLPresenter(Presenter):
             diff_path = output_diff_path(path)
             pagename = sha256(diff_path)
             if diff_path:
-                logger.debug('html output for %s', diff_path)
+                logger.debug("html output for %s", diff_path)
 
             ancestor = ancestors.pop(node, None)
             assert ancestor in path or (
@@ -821,7 +821,7 @@ class HTMLPresenter(Presenter):
                 outputs[node] = node_output.frame(
                     output_header(ctx.css_url, ctx.our_css_url, ctx.icon_url)
                     + u'<div class="difference">\n',
-                    u'</div>\n' + footer,
+                    u"</div>\n" + footer,
                 )
                 assert not ctx.single_page or node is root_difference
                 printers[node] = (
@@ -864,7 +864,7 @@ class HTMLPresenter(Presenter):
         if jquery_url is None:
             jquery_url = default_override
             default_override = None  # later, we can detect jquery_url was None
-        if jquery_url == 'disable' or not jquery_url:
+        if jquery_url == "disable" or not jquery_url:
             return None
 
         url = urlparse(jquery_url)
@@ -885,7 +885,7 @@ class HTMLPresenter(Presenter):
             if os.path.exists(path):
                 os.symlink(path, check_path)
                 logger.debug(
-                    'jquery found at %s and symlinked to %s', path, check_path
+                    "jquery found at %s and symlinked to %s", path, check_path
                 )
                 return url.path
 
@@ -894,10 +894,10 @@ class HTMLPresenter(Presenter):
             return None
 
         logger.warning(
-            '--jquery given, but jQuery was not found. Using it regardless.'
+            "--jquery given, but jQuery was not found. Using it regardless."
         )
         logger.debug(
-            'Locations searched: %s', ', '.join(JQUERY_SYSTEM_LOCATIONS)
+            "Locations searched: %s", ", ".join(JQUERY_SYSTEM_LOCATIONS)
         )
         return url.path
 

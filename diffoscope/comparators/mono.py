@@ -29,14 +29,14 @@ from .utils.command import Command
 
 
 class Pedump(Command):
-    @tool_required('pedump')
+    @tool_required("pedump")
     def cmdline(self):
-        return ['pedump', self.path]
+        return ["pedump", self.path]
 
 
 class MonoExeFile(File):
     DESCRIPTION = "Mono 'Portable Executable' files"
-    FILE_TYPE_RE = re.compile(r'\bPE[0-9]+\b.*\bMono\b')
+    FILE_TYPE_RE = re.compile(r"\bPE[0-9]+\b.*\bMono\b")
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Pedump, self.path, other.path)]

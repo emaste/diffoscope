@@ -31,10 +31,10 @@ from diffoscope.difference import Difference
 from .utils.file import File
 from .utils.command import Command
 
-HI_MAGIC_32 = struct.pack('>I', 0x1FACE)
-HI_MAGIC_64 = struct.pack('>I', 0x1FACE64)
+HI_MAGIC_32 = struct.pack(">I", 0x1FACE)
+HI_MAGIC_64 = struct.pack(">I", 0x1FACE64)
 
-if platform.architecture()[0] == '32bit':
+if platform.architecture()[0] == "32bit":
     HI_MAGIC = HI_MAGIC_32
 else:
     HI_MAGIC = HI_MAGIC_64
@@ -43,9 +43,9 @@ logger = logging.getLogger(__name__)
 
 
 class ShowIface(Command):
-    @tool_required('ghc')
+    @tool_required("ghc")
     def cmdline(self):
-        return ['ghc', '--show-iface', self.path]
+        return ["ghc", "--show-iface", self.path]
 
 
 class HiFile(File):
@@ -72,33 +72,33 @@ class HiFile(File):
     """
 
     DESCRIPTION = "GHC Haskell .hi files"
-    RE_FILE_EXTENSION = re.compile(r'\.(p_|dyn_)?hi$')
+    RE_FILE_EXTENSION = re.compile(r"\.(p_|dyn_)?hi$")
 
     @classmethod
     def recognizes(cls, file):
         if not HiFile.RE_FILE_EXTENSION.search(file.name):
             return False
 
-        if not hasattr(HiFile, 'hi_version'):
+        if not hasattr(HiFile, "hi_version"):
             try:
-                with profile('command', 'ghc'):
+                with profile("command", "ghc"):
                     output = subprocess.check_output(
-                        ['ghc', '--numeric-version']
+                        ["ghc", "--numeric-version"]
                     )
             except (OSError, subprocess.CalledProcessError):
                 HiFile.hi_version = None
                 logger.debug("Unable to read GHC version")
             else:
                 major, minor, patch = [
-                    int(x) for x in output.decode('utf-8').strip().split('.')
+                    int(x) for x in output.decode("utf-8").strip().split(".")
                 ]
-                HiFile.hi_version = '%d%02d%d' % (major, minor, patch)
+                HiFile.hi_version = "%d%02d%d" % (major, minor, patch)
                 logger.debug("Found .hi version %s", HiFile.hi_version)
 
         if HiFile.hi_version is None:
             return False
 
-        with open(file.path, 'rb') as fp:
+        with open(file.path, "rb") as fp:
             # Read magic
             buf = fp.read(4)
             if buf != HI_MAGIC:
@@ -125,13 +125,13 @@ class HiFile(File):
             # length (big-endian).
             if buf[0] == 0xFF:
                 buf = fp.read(4)
-                length = struct.unpack('>I', buf)[0]
+                length = struct.unpack(">I", buf)[0]
             else:
                 length = buf[0]
 
             # Now read characters; each is 32-bit big-endian.
-            version_found = ''.join(
-                chr(struct.unpack('>I', fp.read(4))[0]) for _ in range(length)
+            version_found = "".join(
+                chr(struct.unpack(">I", fp.read(4))[0]) for _ in range(length)
             )
 
             if version_found != HiFile.hi_version:

@@ -66,20 +66,20 @@ def _run_tests(fold, tests):
 
 
 class File(metaclass=abc.ABCMeta):
-    if hasattr(magic, 'open'):  # use Magic-file-extensions from file
+    if hasattr(magic, "open"):  # use Magic-file-extensions from file
 
         @classmethod
         def guess_file_type(self, path):
-            if not hasattr(self, '_mimedb'):
+            if not hasattr(self, "_mimedb"):
                 self._mimedb = magic.open(magic.NONE)
                 self._mimedb.load()
             return self._mimedb.file(
-                path.encode('utf-8', errors='surrogateescape')
+                path.encode("utf-8", errors="surrogateescape")
             )
 
         @classmethod
         def guess_encoding(self, path):
-            if not hasattr(self, '_mimedb_encoding'):
+            if not hasattr(self, "_mimedb_encoding"):
                 self._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
                 self._mimedb_encoding.load()
             return self._mimedb_encoding.file(path)
@@ -88,13 +88,13 @@ class File(metaclass=abc.ABCMeta):
 
         @classmethod
         def guess_file_type(self, path):
-            if not hasattr(self, '_mimedb'):
+            if not hasattr(self, "_mimedb"):
                 self._mimedb = magic.Magic()
             return maybe_decode(self._mimedb.from_file(path))
 
         @classmethod
         def guess_encoding(self, path):
-            if not hasattr(self, '_mimedb_encoding'):
+            if not hasattr(self, "_mimedb_encoding"):
                 self._mimedb_encoding = magic.Magic(mime_encoding=True)
             return maybe_decode(self._mimedb_encoding.from_file(path))
 
@@ -103,7 +103,7 @@ class File(metaclass=abc.ABCMeta):
         self._container = container
 
     def __repr__(self):
-        return '<%s %s>' % (self.__class__, self.name)
+        return "<%s %s>" % (self.__class__, self.name)
 
     # This should return a path that allows to access the file content
     @property
@@ -114,7 +114,7 @@ class File(metaclass=abc.ABCMeta):
     # Remove any temporary data associated with the file. The function
     # should be idempotent and work during the destructor.
     def cleanup(self):
-        if hasattr(self, '_as_container'):
+        if hasattr(self, "_as_container"):
             del self._as_container
 
     def __del__(self):
@@ -233,14 +233,14 @@ class File(metaclass=abc.ABCMeta):
         klasses = self.__class__.CONTAINER_CLASSES
 
         if not klasses:
-            if hasattr(self, '_other_file'):
+            if hasattr(self, "_other_file"):
                 return self._other_file.__class__.CONTAINER_CLASSES[0](self)
             return None
 
         def type_name(klass):
             return "{}.{}".format(klass.__module__, klass.__name__)
 
-        if hasattr(self, '_as_container'):
+        if hasattr(self, "_as_container"):
             return self._as_container
 
         self._as_container = None
@@ -249,7 +249,7 @@ class File(metaclass=abc.ABCMeta):
         # instantiates without error.
         for klass in klasses:
             logger.debug(
-                'Instantiating a %s for %s', type_name(klass), self.name,
+                "Instantiating a %s for %s", type_name(klass), self.name,
             )
             try:
                 container = klass(self)
@@ -277,7 +277,7 @@ class File(metaclass=abc.ABCMeta):
                 try:
                     infix = type(self).DESCRIPTION
                 except AttributeError:
-                    infix = 'this file format'
+                    infix = "this file format"
                 msg = "Format-specific differences are supported for {}.".format(
                     infix
                 )
@@ -287,18 +287,18 @@ class File(metaclass=abc.ABCMeta):
     def progress_name(self):
         x = self._name
 
-        return x[1:] if x.startswith('./') else x
+        return x[1:] if x.startswith("./") else x
 
     @property
     def magic_file_type(self):
-        if not hasattr(self, '_magic_file_type'):
+        if not hasattr(self, "_magic_file_type"):
             self._magic_file_type = File.guess_file_type(self.path)
         return self._magic_file_type
 
     @property
     def file_header(self):
-        if not hasattr(self, '_file_header'):
-            with open(self.path, 'rb') as f:
+        if not hasattr(self, "_file_header"):
+            with open(self.path, "rb") as f:
                 self._file_header = f.read(16)
         return self._file_header
 
@@ -318,12 +318,12 @@ class File(metaclass=abc.ABCMeta):
 
         @property
         def fuzzy_hash(self):
-            if not hasattr(self, '_fuzzy_hash'):
+            if not hasattr(self, "_fuzzy_hash"):
                 # tlsh is not meaningful with files smaller than 512 bytes
                 if os.stat(self.path).st_size >= 512:
                     h = tlsh.Tlsh()
-                    with open(self.path, 'rb') as f:
-                        for buf in iter(lambda: f.read(32768), b''):
+                    with open(self.path, "rb") as f:
+                        for buf in iter(lambda: f.read(32768), b""):
                             h.update(buf)
                     h.final()
                     try:
@@ -369,7 +369,7 @@ class File(metaclass=abc.ABCMeta):
         # changing that will be reflected elsewhere.
         if val.startswith("gzip compressed data"):
             val = re.compile(r", original size modulo 2\^\d+ \d+$").sub(
-                '', val
+                "", val
             )
 
         return val
@@ -378,7 +378,7 @@ class File(metaclass=abc.ABCMeta):
         details = []
         difference = Difference(None, self.name, other.name, source=source)
 
-        if hasattr(self, 'compare_details'):
+        if hasattr(self, "compare_details"):
             details.extend(self.compare_details(other, source))
         if self.as_container:
             if self.as_container.auto_diff_metadata:
@@ -389,14 +389,14 @@ class File(metaclass=abc.ABCMeta):
                             self._mangle_file_type(other.magic_file_type),
                             self,
                             other,
-                            source='filetype from file(1)',
+                            source="filetype from file(1)",
                         ),
                         Difference.from_text(
                             self.__class__.__name__,
                             other.__class__.__name__,
                             self,
                             other,
-                            source='filetype from diffoscope',
+                            source="filetype from diffoscope",
                         ),
                     ]
                 )
@@ -421,7 +421,7 @@ class File(metaclass=abc.ABCMeta):
         return difference
 
     def has_same_content_as(self, other):
-        logger.debug('File.has_same_content: %s %s', self, other)
+        logger.debug("File.has_same_content: %s %s", self, other)
         if os.path.isdir(self.path) or os.path.isdir(other.path):
             return False
         # try comparing small files directly first
@@ -434,9 +434,9 @@ class File(metaclass=abc.ABCMeta):
             return False
         if my_size == other_size and my_size <= SMALL_FILE_THRESHOLD:
             try:
-                with profile('command', 'cmp (internal)'):
-                    with open(self.path, 'rb') as file1, open(
-                        other.path, 'rb'
+                with profile("command", "cmp (internal)"):
+                    with open(self.path, "rb") as file1, open(
+                        other.path, "rb"
                     ) as file2:
                         return file1.read() == file2.read()
             except OSError:
@@ -446,11 +446,11 @@ class File(metaclass=abc.ABCMeta):
 
         return self.cmp_external(other)
 
-    @tool_required('cmp')
+    @tool_required("cmp")
     def cmp_external(self, other):
         return (
             subprocess.call(
-                ('cmp', '-s', self.path, other.path),
+                ("cmp", "-s", self.path, other.path),
                 shell=False,
                 close_fds=True,
             )
@@ -459,7 +459,7 @@ class File(metaclass=abc.ABCMeta):
 
     # To be specialized directly, or by implementing compare_details
     def compare(self, other, source=None):
-        if hasattr(self, 'compare_details') or self.as_container:
+        if hasattr(self, "compare_details") or self.as_container:
             try:
                 difference = self._compare_using_details(other, source)
                 # no differences detected inside? let's at least do a binary diff
@@ -470,10 +470,10 @@ class File(metaclass=abc.ABCMeta):
                     try:
                         infix = type(self).DESCRIPTION
                     except AttributeError:
-                        infix = 'this file format'
-                    suffix = ''
-                    if self.magic_file_type != 'data':
-                        suffix = ' file(1) reports: {}'.format(
+                        infix = "this file format"
+                    suffix = ""
+                    if self.magic_file_type != "data":
+                        suffix = " file(1) reports: {}".format(
                             self.magic_file_type
                         )
                     difference.add_comment(
@@ -495,12 +495,12 @@ class File(metaclass=abc.ABCMeta):
                 ):
                     if not val:
                         continue
-                    suffix = ' {}:\n{}'.format(
+                    suffix = " {}:\n{}".format(
                         prefix,
                         re.sub(
-                            r'^',
-                            '    ',
-                            val.decode('utf-8').strip(),
+                            r"^",
+                            "    ",
+                            val.decode("utf-8").strip(),
                             flags=re.MULTILINE,
                         ),
                     )
@@ -508,7 +508,7 @@ class File(metaclass=abc.ABCMeta):
                     # Truncate output
                     max_len = 250
                     if len(suffix) > max_len:
-                        suffix = '{}  [...]'.format(suffix[:max_len])
+                        suffix = "{}  [...]".format(suffix[:max_len])
 
                 difference.add_comment(
                     "Command `{}` failed with exit code {}.{}".format(
@@ -544,7 +544,7 @@ class File(metaclass=abc.ABCMeta):
                 )
 
             # Append any miscellaneous comments for this file.
-            for x in getattr(self, '_comments', []):
+            for x in getattr(self, "_comments", []):
                 difference.add_comment(x)
 
             return difference
@@ -557,5 +557,5 @@ def maybe_decode(s):
     """
 
     if type(s) is bytes:
-        return s.decode('utf-8')
+        return s.decode("utf-8")
     return s

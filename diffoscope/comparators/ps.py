@@ -32,14 +32,14 @@ logger = logging.getLogger(__name__)
 
 
 class Pstotext(Command):
-    @tool_required('ps2ascii')
+    @tool_required("ps2ascii")
     def cmdline(self):
-        return ['ps2ascii', self.path]
+        return ["ps2ascii", self.path]
 
 
 class PsFile(TextFile):
     DESCRIPTION = "PostScript documents"
-    FILE_TYPE_RE = re.compile(r'^PostScript document\b')
+    FILE_TYPE_RE = re.compile(r"^PostScript document\b")
 
     def compare(self, other, *args, **kwargs):
         differences = super().compare(other, *args, **kwargs)
@@ -47,7 +47,7 @@ class PsFile(TextFile):
         try:
             details = Difference.from_command(Pstotext, self.path, other.path)
         except RequiredToolNotFound:  # noqa
-            logger.debug('ps2ascii not found')
+            logger.debug("ps2ascii not found")
 
         if details:
             differences.add_details([details])

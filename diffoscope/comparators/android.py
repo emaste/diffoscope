@@ -34,13 +34,13 @@ logger = logging.getLogger(__name__)
 
 
 class AbootimgInfo(Command):
-    @tool_required('abootimg')
+    @tool_required("abootimg")
     def cmdline(self):
-        return ['abootimg', '-i', self.path]
+        return ["abootimg", "-i", self.path]
 
     def filter(self, line):
-        if line.startswith(b'* file name = '):
-            return b''
+        if line.startswith(b"* file name = "):
+            return b""
         return line
 
 
@@ -49,7 +49,7 @@ class AndroidBootImgContainer(Archive):
     def path(self):
         return self._path
 
-    @tool_required('abootimg')
+    @tool_required("abootimg")
     def open_archive(self):
         self._members = []
         self._unpacked = get_temporary_directory()
@@ -59,7 +59,7 @@ class AndroidBootImgContainer(Archive):
         )
 
         subprocess.check_call(
-            ['abootimg', '-x', os.path.abspath(self.source.path)],
+            ["abootimg", "-x", os.path.abspath(self.source.path)],
             cwd=self._unpacked.name,
             stdout=subprocess.PIPE,
         )
@@ -80,7 +80,7 @@ class AndroidBootImgContainer(Archive):
 
 class AndroidBootImgFile(File):
     DESCRIPTION = "Android boot images"
-    FILE_TYPE_RE = re.compile(r'^Android bootimg\b')
+    FILE_TYPE_RE = re.compile(r"^Android bootimg\b")
     CONTAINER_CLASSES = [AndroidBootImgContainer]
 
     def compare_details(self, other, source=None):

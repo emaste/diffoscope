@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 try:
     import progressbar
 except ImportError:
-    python_module_missing('progressbar')
+    python_module_missing("progressbar")
     progressbar = None
 
 
@@ -45,7 +45,7 @@ class ProgressLoggingHandler(logging.StreamHandler):
     def emit(self, record):
         try:
             super().emit(record)
-            if not getattr(self.progressbar.bar, 'finished', False):
+            if not getattr(self.progressbar.bar, "finished", False):
                 self.progressbar.bar.update()
         except Exception:
             # Wrap otherwise tests fail due to test_progress.py call main()
@@ -93,7 +93,7 @@ class ProgressManager:
                     )
 
         if parsed_args.status_fd:
-            self.register(StatusFD(os.fdopen(parsed_args.status_fd, 'w')))
+            self.register(StatusFD(os.fdopen(parsed_args.status_fd, "w")))
 
         return log_handler
 
@@ -223,12 +223,12 @@ class ProgressBar:
                     return msg.rjust(width)
 
                 # Print the last `width` characters with an ellipsis.
-                return '…{}'.format(msg[-width + 1 :])
+                return "…{}".format(msg[-width + 1 :])
 
         class OurProgressBar(progressbar.ProgressBar):
             def __init__(self, *args, **kwargs):
                 # Remove after https://github.com/niltonvolpato/python-progressbar/pull/57 is fixed.
-                kwargs.setdefault('fd', sys.stderr)
+                kwargs.setdefault("fd", sys.stderr)
                 super().__init__(*args, **kwargs)
                 # Terminal handling after parent init since that sets self.fd
                 self.erase_to_eol = line_eraser(self.fd)
@@ -251,15 +251,15 @@ class ProgressBar:
 
         self.bar = OurProgressBar(
             widgets=(
-                ' ',
+                " ",
                 progressbar.Bar(),
-                '  ',
+                "  ",
                 progressbar.Percentage(),
-                '  ',
+                "  ",
                 Message(),
-                '  ',
+                "  ",
                 progressbar.ETA(),
-                ' ',
+                " ",
             )
         )
         self.bar.start()
@@ -281,7 +281,7 @@ class StatusFD:
 
     def notify(self, current, total, msg):
         print(
-            json.dumps({'msg': msg, 'total': total, 'current': current}),
+            json.dumps({"msg": msg, "total": total, "current": current}),
             file=self.fileobj,
         )
 

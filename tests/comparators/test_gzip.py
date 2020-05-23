@@ -34,9 +34,9 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_file_version_is_at_least
 
 
-gzip1 = load_fixture('test1.gz')
-gzip2 = load_fixture('test2.gz')
-gzip3 = load_fixture('debian-bug-876316-control.tar.gz')
+gzip1 = load_fixture("test1.gz")
+gzip2 = load_fixture("test2.gz")
+gzip3 = load_fixture("debian-bug-876316-control.tar.gz")
 
 
 def test_identification(gzip1):
@@ -62,38 +62,38 @@ def differences(gzip1, gzip2):
     return gzip1.compare(gzip2).details
 
 
-@skip_unless_file_version_is_at_least('5.37')
+@skip_unless_file_version_is_at_least("5.37")
 def test_metadata(differences):
-    assert differences[0].source1.startswith('filetype')
-    assert differences[0].source2.startswith('filetype')
-    expected_diff = get_data('gzip_metadata_expected_diff')
+    assert differences[0].source1.startswith("filetype")
+    assert differences[0].source2.startswith("filetype")
+    expected_diff = get_data("gzip_metadata_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
 def test_content_source(differences):
-    assert differences[1].source1 == 'test1'
-    assert differences[1].source2 == 'test2'
+    assert differences[1].source1 == "test1"
+    assert differences[1].source2 == "test2"
 
 
 def test_content_source_without_extension(tmpdir, gzip1, gzip2):
-    path1 = str(tmpdir.join('test1'))
-    path2 = str(tmpdir.join('test2'))
+    path1 = str(tmpdir.join("test1"))
+    path2 = str(tmpdir.join("test2"))
     shutil.copy(gzip1.path, path1)
     shutil.copy(gzip2.path, path2)
     gzip1 = specialize(FilesystemFile(path1))
     gzip2 = specialize(FilesystemFile(path2))
     difference = gzip1.compare(gzip2).details
-    assert difference[1].source1 == 'test1-content'
-    assert difference[1].source2 == 'test2-content'
+    assert difference[1].source1 == "test1-content"
+    assert difference[1].source2 == "test2-content"
 
 
 def test_content_diff(differences):
-    expected_diff = get_data('text_ascii_expected_diff')
+    expected_diff = get_data("text_ascii_expected_diff")
     assert differences[1].unified_diff == expected_diff
 
 
 def test_compare_non_existing(monkeypatch, gzip1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = gzip1.compare(MissingFile('/nonexisting', gzip1))
-    assert difference.source2 == '/nonexisting'
-    assert difference.details[-1].source2 == '/dev/null'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = gzip1.compare(MissingFile("/nonexisting", gzip1))
+    assert difference.source2 == "/nonexisting"
+    assert difference.details[-1].source2 == "/dev/null"

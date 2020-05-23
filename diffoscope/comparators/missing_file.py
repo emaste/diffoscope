@@ -37,7 +37,7 @@ class MissingFile(File):
     @classmethod
     def recognizes(cls, file):
         if isinstance(file, FilesystemFile) and not os.path.lexists(file.name):
-            assert Config().new_file, '%s does not exist' % file.name
+            assert Config().new_file, "%s does not exist" % file.name
             return True
         return False
 
@@ -47,7 +47,7 @@ class MissingFile(File):
 
     @property
     def path(self):
-        return '/dev/null'
+        return "/dev/null"
 
     @property
     def other_file(self):
@@ -97,7 +97,7 @@ class MissingFile(File):
 
     # Be nice to device comparisons
     def get_device(self):
-        return ''
+        return ""
 
     # Be nice to metadata comparisons
     @property

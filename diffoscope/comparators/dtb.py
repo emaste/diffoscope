@@ -29,14 +29,14 @@ from .utils.command import Command
 
 
 class DeviceTreeContents(Command):
-    @tool_required('fdtdump')
+    @tool_required("fdtdump")
     def cmdline(self):
-        return ['fdtdump', self.path]
+        return ["fdtdump", self.path]
 
 
 class DeviceTreeFile(File):
     DESCRIPTION = "Device Tree Compiler blob files"
-    FILE_TYPE_RE = re.compile(r'^Device Tree Blob')
+    FILE_TYPE_RE = re.compile(r"^Device Tree Blob")
 
     def compare_details(self, other, source=None):
         return [

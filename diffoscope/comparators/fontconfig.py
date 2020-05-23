@@ -26,8 +26,8 @@ from .utils.file import File
 
 class FontconfigCacheFile(File):
     DESCRIPTION = "FreeDesktop Fontconfig cache files"
-    FILE_TYPE_HEADER_PREFIX = struct.pack('<H', 0xFC04)
-    FILE_EXTENSION_SUFFIX = '-le64.cache-4'
+    FILE_TYPE_HEADER_PREFIX = struct.pack("<H", 0xFC04)
+    FILE_EXTENSION_SUFFIX = "-le64.cache-4"
 
     def compare_details(self, other, source=None):
         return [
@@ -41,24 +41,24 @@ class FontconfigCacheFile(File):
 
 
 def describe_cache_file(filename):
-    fmt = '<IIQQQQQQQ'
+    fmt = "<IIQQQQQQQ"
     fields = (
-        'magic',
-        'version',
-        'size',
-        'dir',
-        'dirs',
-        'dirs_count',
-        'set',
-        'checksum',
-        'checksum_nano',
+        "magic",
+        "version",
+        "size",
+        "dir",
+        "dirs",
+        "dirs_count",
+        "set",
+        "checksum",
+        "checksum_nano",
     )
 
-    with open(filename, 'rb') as f:
+    with open(filename, "rb") as f:
         data = struct.unpack(fmt, f.read(struct.calcsize(fmt)))
         kwargs = {x: y for x, y in zip(fields, data)}
 
-        kwargs['dir_name'] = read_null_terminated_string(f, kwargs['dir'])
+        kwargs["dir_name"] = read_null_terminated_string(f, kwargs["dir"])
 
     return """
 struct FcCache {{
@@ -78,14 +78,14 @@ struct FcCache {{
 
 
 def read_null_terminated_string(fileobj, offset=None):
-    result = ''
+    result = ""
 
     if offset is not None:
         fileobj.seek(offset)
 
     while True:
-        x = fileobj.read(1).decode('ascii')
-        if x in ('', '\0'):
+        x = fileobj.read(1).decode("ascii")
+        if x in ("", "\0"):
             break
         result += x
 

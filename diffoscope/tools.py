@@ -39,10 +39,10 @@ find_executable = functools.lru_cache()(find_executable)
 # Please keep it alphabetized.
 OS_NAMES = collections.OrderedDict(
     [
-        ('arch', 'Arch Linux'),
-        ('debian', 'Debian'),
-        ('FreeBSD', 'FreeBSD'),
-        ('guix', 'GNU Guix'),
+        ("arch", "Arch Linux"),
+        ("debian", "Debian"),
+        ("FreeBSD", "FreeBSD"),
+        ("guix", "GNU Guix"),
     ]
 )
 
@@ -77,7 +77,7 @@ def tool_required(command):
     """
     from .exc import RequiredToolNotFound
 
-    if not hasattr(tool_required, 'all'):
+    if not hasattr(tool_required, "all"):
         tool_required.all = set()
     tool_required.all.add(command)
 
@@ -96,7 +96,7 @@ def tool_required(command):
             if not tool_check_installed(command):
                 raise RequiredToolNotFound(command)
 
-            with profile('command', command):
+            with profile("command", command):
                 return fn(*args, **kwargs)
 
         return tool_check

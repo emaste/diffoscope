@@ -28,14 +28,14 @@ from .utils.command import Command
 
 
 class Iccdump(Command):
-    @tool_required('cd-iccdump')
+    @tool_required("cd-iccdump")
     def cmdline(self):
-        return ['cd-iccdump', self.path]
+        return ["cd-iccdump", self.path]
 
 
 class IccFile(File):
     DESCRIPTION = "ColorSync colour profiles (.icc)"
-    FILE_TYPE_RE = re.compile(r'\bColorSync (ICC|color) [Pp]rofile')
+    FILE_TYPE_RE = re.compile(r"\bColorSync (ICC|color) [Pp]rofile")
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Iccdump, self.path, other.path)]

@@ -43,8 +43,8 @@ class ApkContainer(Archive):
     def path(self):
         return self._path
 
-    @tool_required('apktool')
-    @tool_required('zipinfo')
+    @tool_required("apktool")
+    @tool_required("zipinfo")
     def open_archive(self):
         self._members = []
         self._unpacked = os.path.join(
@@ -57,11 +57,11 @@ class ApkContainer(Archive):
 
         subprocess.check_call(
             (
-                'apktool',
-                'd',
-                '-k',
-                '-m',
-                '-o',
+                "apktool",
+                "d",
+                "-k",
+                "-m",
+                "-o",
                 self._unpacked,
                 self.source.path,
             ),
@@ -71,9 +71,9 @@ class ApkContainer(Archive):
         )
 
         # Optionally extract a few files that apktool does not
-        for x in ('classes.dex', 'resources.arsc'):
+        for x in ("classes.dex", "resources.arsc"):
             subprocess.call(
-                ('unzip', '-d', self._unpacked, self.source.path, x),
+                ("unzip", "-d", self._unpacked, self.source.path, x),
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
@@ -83,11 +83,11 @@ class ApkContainer(Archive):
             try:
                 subprocess.check_call(
                     (
-                        'unzip',
-                        '-d',
+                        "unzip",
+                        "-d",
                         self._unpacked,
                         self.source.path,
-                        'classes{}.dex'.format(x),
+                        "classes{}.dex".format(x),
                     ),
                     stderr=subprocess.PIPE,
                     stdout=subprocess.PIPE,
@@ -105,7 +105,7 @@ class ApkContainer(Archive):
                 # metadata information. Rename it to clarify and always make it
                 # appear at the beginning of the directory listing for
                 # reproducibility.
-                if filename == 'apktool.yml':
+                if filename == "apktool.yml":
                     abspath = filter_apk_metadata(
                         abspath, os.path.basename(self.source.name)
                     )
@@ -115,11 +115,11 @@ class ApkContainer(Archive):
 
                 relpath = abspath[len(self._unpacked) + 1 :]
 
-                if filename == 'AndroidManifest.xml':
+                if filename == "AndroidManifest.xml":
                     containing_dir = root[len(self._unpacked) + 1 :]
-                    if containing_dir == 'original':
+                    if containing_dir == "original":
                         self._andmanifest_orig = relpath
-                    if containing_dir == '':
+                    if containing_dir == "":
                         self._andmanifest = relpath
                     continue
 
@@ -137,7 +137,7 @@ class ApkContainer(Archive):
     def get_original_android_manifest(self):
         if self._andmanifest_orig:
             return self.get_member(self._andmanifest_orig)
-        return MissingFile('/dev/null', self._andmanifest_orig)
+        return MissingFile("/dev/null", self._andmanifest_orig)
 
     def close_archive(self):
         pass
@@ -154,21 +154,21 @@ class ApkContainer(Archive):
         comment = None
         diff_manifests = None
         if my_android_manifest and other_android_manifest:
-            source = 'AndroidManifest.xml (decoded)'
+            source = "AndroidManifest.xml (decoded)"
             diff_manifests = compare_files(
                 my_android_manifest, other_android_manifest, source=source
             )
             if diff_manifests is None:
-                comment = 'No difference found for decoded AndroidManifest.xml'
+                comment = "No difference found for decoded AndroidManifest.xml"
         else:
             comment = (
-                'No decoded AndroidManifest.xml found '
-                + 'for one of the APK files.'
+                "No decoded AndroidManifest.xml found "
+                + "for one of the APK files."
             )
         if diff_manifests:
             return diff_manifests
 
-        source = 'AndroidManifest.xml (original / undecoded)'
+        source = "AndroidManifest.xml (original / undecoded)"
         diff_manifests = compare_files(
             self.get_original_android_manifest(),
             other.get_original_android_manifest(),
@@ -191,7 +191,7 @@ class ApkContainer(Archive):
 class Apksigner(Command):
     VALID_RETURNCODES = {0, 1}
 
-    @tool_required('apksigner')
+    @tool_required("apksigner")
     def cmdline(self):
         # In Debian, the `apksigner` binary is a symbolic link to the .jar file
         # itself, requiring binfmt_misc support to execute directly. We
@@ -212,8 +212,8 @@ class Apksigner(Command):
 class ApkFile(File):
     DESCRIPTION = "Android APK files"
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
-    FILE_TYPE_RE = re.compile(r'^((Java|Zip) archive data|Dalvik dex file)\b')
-    FILE_EXTENSION_SUFFIX = '.apk'
+    FILE_TYPE_RE = re.compile(r"^((Java|Zip) archive data|Dalvik dex file)\b")
+    FILE_EXTENSION_SUFFIX = ".apk"
     CONTAINER_CLASSES = [ApkContainer, ZipContainer]
 
     def compare_details(self, other, source=None):
@@ -227,15 +227,15 @@ class ApkFile(File):
 
 
 def filter_apk_metadata(filepath, archive_name):
-    new_filename = os.path.join(os.path.dirname(filepath), 'APK metadata')
+    new_filename = os.path.join(os.path.dirname(filepath), "APK metadata")
 
     logger.debug("Moving APK metadata from %s to %s", filepath, new_filename)
 
     re_filename = re.compile(
-        r'^apkFileName: %s' % re.escape(os.path.basename(archive_name))
+        r"^apkFileName: %s" % re.escape(os.path.basename(archive_name))
     )
 
-    with open(filepath) as in_, open(new_filename, 'w') as out:
+    with open(filepath) as in_, open(new_filename, "w") as out:
         out.writelines(x for x in in_ if not re_filename.match(x))
 
     os.remove(filepath)

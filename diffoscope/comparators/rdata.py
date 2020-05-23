@@ -111,21 +111,21 @@ def get_module_path_for_rdb(rdb):
     prefix = os.path.join(temp_dir, "temp")
 
     logger.debug("Copying %s and %s to %s", rdx.path, rdb.path, temp_dir)
-    shutil.copy(rdb.path, '{}.rdb'.format(prefix))
-    shutil.copy(rdx.path, '{}.rdx'.format(prefix))
+    shutil.copy(rdb.path, "{}.rdb".format(prefix))
+    shutil.copy(rdx.path, "{}.rdx".format(prefix))
 
     # Return the "module" path, ie. without an extension
     return os.path.join(temp_dir, "temp")
 
 
 class RdsReader(Command):
-    @tool_required('Rscript')
+    @tool_required("Rscript")
     def cmdline(self):
         return [
-            'Rscript',
-            '--vanilla',
-            '-e',
-            'args <- commandArgs(TRUE); readRDS(args[1])',
+            "Rscript",
+            "--vanilla",
+            "-e",
+            "args <- commandArgs(TRUE); readRDS(args[1])",
             self.path,
         ]
 
@@ -150,9 +150,9 @@ class RdsFile(File):
 class RdbReader(Command):
     MASK_STDERR = True
 
-    @tool_required('Rscript')
+    @tool_required("Rscript")
     def cmdline(self):
-        return ['Rscript', '--vanilla', '-', self.path]
+        return ["Rscript", "--vanilla", "-", self.path]
 
     def input(self):
         return DUMP_RDB
@@ -160,7 +160,7 @@ class RdbReader(Command):
 
 class RdbFile(File):
     DESCRIPTION = "GNU R database files (.rdb)"
-    FILE_EXTENSION_SUFFIX = '.rdb'
+    FILE_EXTENSION_SUFFIX = ".rdb"
 
     def compare_details(self, other, source=None):
         a = get_module_path_for_rdb(self)

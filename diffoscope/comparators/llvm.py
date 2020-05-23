@@ -29,37 +29,37 @@ from .utils.command import Command
 
 
 class LlvmBcAnalyzer(Command):
-    @tool_required('llvm-bcanalyzer')
+    @tool_required("llvm-bcanalyzer")
     def cmdline(self):
-        return ['llvm-bcanalyzer', '-dump', self.path]
+        return ["llvm-bcanalyzer", "-dump", self.path]
 
     def filter(self, line):
-        if line.decode('utf-8', 'ignore').startswith('Summary of '):
-            return b'Summary:'
+        if line.decode("utf-8", "ignore").startswith("Summary of "):
+            return b"Summary:"
         return line
 
 
 class LlvmBcDisassembler(Command):
-    @tool_required('llvm-dis')
+    @tool_required("llvm-dis")
     def cmdline(self):
         # execute llvm-dis from the same directory as the file, so it doesn't
         # embed the whole path, including our tempdir, into the output.
         # this makes it easier to generate reproducible diffs for our tests.
         return [
-            'find',
+            "find",
             self.path,
-            '-execdir',
-            'llvm-dis',
-            '-o',
-            '-',
-            '{}',
-            ';',
+            "-execdir",
+            "llvm-dis",
+            "-o",
+            "-",
+            "{}",
+            ";",
         ]
 
 
 class LlvmBitCodeFile(File):
     DESCRIPTION = "LLVM IR bitcode files"
-    FILE_TYPE_RE = re.compile(r'^LLVM IR bitcode')
+    FILE_TYPE_RE = re.compile(r"^LLVM IR bitcode")
 
     def compare_details(self, other, source=None):
         return [

@@ -32,29 +32,29 @@ from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
 
-TEST_FILE1_PATH = data('text_ascii1')
-TEST_FILE2_PATH = data('text_ascii2')
+TEST_FILE1_PATH = data("text_ascii1")
+TEST_FILE2_PATH = data("text_ascii2")
 
 
 @pytest.fixture
 def rom1(tmpdir):
-    path = str(tmpdir.join('coreboot1'))
+    path = str(tmpdir.join("coreboot1"))
 
     subprocess.check_call(
-        ('cbfstool', path, 'create', '-m', 'x86', '-s', '32768'), shell=False
+        ("cbfstool", path, "create", "-m", "x86", "-s", "32768"), shell=False
     )
 
     subprocess.check_call(
         (
-            'cbfstool',
+            "cbfstool",
             path,
-            'add',
-            '-f',
+            "add",
+            "-f",
             TEST_FILE1_PATH,
-            '-n',
-            'text',
-            '-t',
-            'raw',
+            "-n",
+            "text",
+            "-t",
+            "raw",
         ),
         shell=False,
     )
@@ -65,52 +65,52 @@ def rom1(tmpdir):
 @pytest.fixture
 def rom2(tmpdir):
     size = 32768
-    path = str(tmpdir.join('coreboot2.rom'))
+    path = str(tmpdir.join("coreboot2.rom"))
 
     subprocess.check_call(
-        ('cbfstool', path, 'create', '-m', 'x86', '-s', '%s' % size),
+        ("cbfstool", path, "create", "-m", "x86", "-s", "%s" % size),
         shell=False,
     )
 
     subprocess.check_call(
         (
-            'cbfstool',
+            "cbfstool",
             path,
-            'add',
-            '-f',
+            "add",
+            "-f",
             TEST_FILE2_PATH,
-            '-n',
-            'text',
-            '-t',
-            'raw',
+            "-n",
+            "text",
+            "-t",
+            "raw",
         ),
         shell=False,
     )
 
     # Remove the last 4 bytes to exercise the full header search
     buf = bytearray(size)
-    with open(path, 'rb') as f:
+    with open(path, "rb") as f:
         f.readinto(buf)
 
-    with open(path, 'wb') as f:
-        size = struct.unpack_from('!I', buf, offset=len(buf) - 4 - 32 + 8)[0]
-        struct.pack_into('!I', buf, len(buf) - 4 - 32 + 8, size - 4)
+    with open(path, "wb") as f:
+        size = struct.unpack_from("!I", buf, offset=len(buf) - 4 - 32 + 8)[0]
+        struct.pack_into("!I", buf, len(buf) - 4 - 32 + 8, size - 4)
         f.write(buf[:-4])
 
     return specialize(FilesystemFile(path))
 
 
-@skip_unless_tools_exist('cbfstool')
+@skip_unless_tools_exist("cbfstool")
 def test_identification_using_offset(rom1):
     assert isinstance(rom1, CbfsFile)
 
 
-@skip_unless_tools_exist('cbfstool')
+@skip_unless_tools_exist("cbfstool")
 def test_identification_without_offset(rom2):
     assert isinstance(rom2, CbfsFile)
 
 
-@skip_unless_tools_exist('cbfstool')
+@skip_unless_tools_exist("cbfstool")
 def test_no_differences(rom1):
     difference = rom1.compare(rom1)
     assert difference is None
@@ -122,7 +122,7 @@ def differences(rom1, rom2):
     return difference.details
 
 
-@skip_unless_tools_exist('cbfstool')
+@skip_unless_tools_exist("cbfstool")
 def test_listing(differences):
     # Compares outputs of: "cbfstool $tmpdir/coreboot*.rom print"
     #
@@ -131,17 +131,17 @@ def test_listing(differences):
     # and the git log of this file), perform only these basic sanity checks.
 
     assert differences[0].source1.startswith("cbfstool")
-    assert re.search(r'\+text\s.*\sraw\s', differences[0].unified_diff)
+    assert re.search(r"\+text\s.*\sraw\s", differences[0].unified_diff)
 
 
-@skip_unless_tools_exist('cbfstool')
+@skip_unless_tools_exist("cbfstool")
 def test_content(differences):
-    assert differences[1].source1 == 'text'
-    assert differences[1].source2 == 'text'
-    expected_diff = get_data('text_ascii_expected_diff')
+    assert differences[1].source1 == "text"
+    assert differences[1].source2 == "text"
+    expected_diff = get_data("text_ascii_expected_diff")
     assert differences[1].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('cbfstool')
+@skip_unless_tools_exist("cbfstool")
 def test_compare_non_existing(monkeypatch, rom1):
     assert_non_existing(monkeypatch, rom1)

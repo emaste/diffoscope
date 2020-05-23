@@ -23,19 +23,19 @@ import logging
 
 
 def line_eraser(fd=sys.stderr) -> bytes:
-    eraser = b''  # avoid None to avoid 'NoneType + str/bytes' failures
+    eraser = b""  # avoid None to avoid 'NoneType + str/bytes' failures
     if fd.isatty():
         from curses import tigetstr, setupterm
 
         setupterm(fd=fd.fileno())
-        eraser = tigetstr('el')
+        eraser = tigetstr("el")
 
     if not eraser and fd.isatty():
         # is a tty, but doesn't support the proper escape code, so let's fake it
         from shutil import get_terminal_size
 
         width = get_terminal_size().columns
-        eraser = b'\r' + (b' ' * width) + b'\r'
+        eraser = b"\r" + (b" " * width) + b"\r"
 
     return eraser
 
@@ -51,9 +51,9 @@ def setup_logging(debug, log_handler):
     logger.addHandler(ch)
 
     formatter = logging.Formatter(
-        line_eraser().decode('ascii')
-        + '%(asctime)s %(levelname).1s: %(name)s: %(message)s',
-        '%Y-%m-%d %H:%M:%S',
+        line_eraser().decode("ascii")
+        + "%(asctime)s %(levelname).1s: %(name)s: %(message)s",
+        "%Y-%m-%d %H:%M:%S",
     )
     ch.setFormatter(formatter)
     try:

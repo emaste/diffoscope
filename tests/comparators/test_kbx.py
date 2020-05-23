@@ -25,8 +25,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
-kbx1 = load_fixture('test1.kbx')
-kbx2 = load_fixture('test2.kbx')
+kbx1 = load_fixture("test1.kbx")
+kbx2 = load_fixture("test2.kbx")
 
 
 def test_identification(kbx1):
@@ -43,12 +43,12 @@ def differences(kbx1, kbx2):
     return kbx1.compare(kbx2).details
 
 
-@skip_unless_tools_exist('kbxutil')
+@skip_unless_tools_exist("kbxutil")
 def test_diff(differences):
-    expected_diff = get_data('kbx_expected_diff')
+    expected_diff = get_data("kbx_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('kbxutil')
+@skip_unless_tools_exist("kbxutil")
 def test_compare_non_existing(monkeypatch, kbx1):
     assert_non_existing(monkeypatch, kbx1, has_null_source=False)

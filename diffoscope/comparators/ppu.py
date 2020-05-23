@@ -36,9 +36,9 @@ logger = logging.getLogger(__name__)
 
 
 class Ppudump(Command):
-    @tool_required('ppudump')
+    @tool_required("ppudump")
     def cmdline(self):
-        return ['ppudump', self.path]
+        return ["ppudump", self.path]
 
     def env(self):
         # ppudump will return times using the local timezone which is not ideal
@@ -48,56 +48,56 @@ class Ppudump(Command):
         # specified by TZDIR. So let's set it to a non-existent directory
         # so we get UTC output even when the system timezone is set otherwise.
         env = dict(os.environ)
-        env['TZ'] = ':UTC'
-        env['TZDIR'] = '/nonexistent'
+        env["TZ"] = ":UTC"
+        env["TZDIR"] = "/nonexistent"
         return env
 
     def filter(self, line):
         if re.match(
-            r'^Analyzing %s \(v[0-9]+\)$' % re.escape(self.path),
-            line.decode('utf-8', errors='ignore'),
+            r"^Analyzing %s \(v[0-9]+\)$" % re.escape(self.path),
+            line.decode("utf-8", errors="ignore"),
         ):
-            return b''
+            return b""
         return line
 
 
 class PpuFile(File):
     DESCRIPTION = "FreePascal files (.ppu)"
-    FILE_EXTENSION_SUFFIX = '.ppu'
+    FILE_EXTENSION_SUFFIX = ".ppu"
 
     @classmethod
     def recognizes(cls, file):
         if not super().recognizes(file):
             return False
 
-        if not file.file_header.startswith(b'PPU'):
+        if not file.file_header.startswith(b"PPU"):
             return False
 
-        ppu_version = file.file_header[3:6].decode('ascii', errors='ignore')
+        ppu_version = file.file_header[3:6].decode("ascii", errors="ignore")
 
-        if not hasattr(PpuFile, 'ppu_version'):
+        if not hasattr(PpuFile, "ppu_version"):
             try:
-                with profile('command', 'ppudump'):
+                with profile("command", "ppudump"):
                     subprocess.check_output(
-                        ['ppudump', '-vh', file.path],
+                        ["ppudump", "-vh", file.path],
                         shell=False,
                         stderr=subprocess.STDOUT,
                     )
                 PpuFile.ppu_version = ppu_version
             except subprocess.CalledProcessError as e:
-                error = e.output.decode('utf-8', errors='ignore')
-                m = re.search('Expecting PPU version ([0-9]+)', error)
+                error = e.output.decode("utf-8", errors="ignore")
+                m = re.search("Expecting PPU version ([0-9]+)", error)
                 try:
                     PpuFile.ppu_version = m.group(1)
                 except AttributeError:
                     if m is None:
                         PpuFile.ppu_version = None
-                        logger.debug('Unable to read PPU version')
+                        logger.debug("Unable to read PPU version")
                     else:
                         raise
             except OSError:
                 PpuFile.ppu_version = None
-                logger.debug('Unable to read PPU version')
+                logger.debug("Unable to read PPU version")
         return PpuFile.ppu_version == ppu_version
 
     def compare_details(self, other, source=None):

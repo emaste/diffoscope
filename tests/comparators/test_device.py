@@ -28,12 +28,12 @@ from ..utils.data import load_fixture, get_data, normalize_zeros
 from ..utils.tools import skip_unless_tools_exist
 
 
-text_ascii1 = load_fixture('text_ascii1')
+text_ascii1 = load_fixture("text_ascii1")
 
 
 @pytest.fixture
 def devnull():
-    return specialize(FilesystemFile('/dev/null'))
+    return specialize(FilesystemFile("/dev/null"))
 
 
 @pytest.fixture
@@ -50,19 +50,19 @@ def test_identification(devnull):
     assert isinstance(devnull, Device)
 
 
-@skip_unless_tools_exist('xxd')
+@skip_unless_tools_exist("xxd")
 def test_diff(differences):
-    if os.uname()[0] == 'FreeBSD':
-        expected_diff = get_data('device_expected_diff_freebsd')
+    if os.uname()[0] == "FreeBSD":
+        expected_diff = get_data("device_expected_diff_freebsd")
     else:
-        expected_diff = get_data('device_expected_diff')
+        expected_diff = get_data("device_expected_diff")
     assert normalize_zeros(differences.unified_diff) == expected_diff
 
 
-@skip_unless_tools_exist('xxd')
+@skip_unless_tools_exist("xxd")
 def test_diff_reverse(differences_reverse):
-    if os.uname()[0] == 'FreeBSD':
-        expected_diff = get_data('device_expected_diff_reverse_freebsd')
+    if os.uname()[0] == "FreeBSD":
+        expected_diff = get_data("device_expected_diff_reverse_freebsd")
     else:
-        expected_diff = get_data('device_expected_diff_reverse')
+        expected_diff = get_data("device_expected_diff_reverse")
     assert normalize_zeros(differences_reverse.unified_diff) == expected_diff

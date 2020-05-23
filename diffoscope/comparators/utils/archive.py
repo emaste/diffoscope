@@ -40,11 +40,11 @@ class Archive(Container, metaclass=abc.ABCMeta):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        with profile('open_archive', self):
+        with profile("open_archive", self):
             self._archive = self.open_archive()
 
     def __del__(self):
-        with profile('close_archive', self):
+        with profile("close_archive", self):
             self.close_archive()
 
     @property
@@ -94,7 +94,7 @@ class ArchiveMember(File):
             )
             assert self._temp_dir is None
             self._temp_dir = get_temporary_directory()
-            with profile('container_extract', self.container):
+            with profile("container_extract", self.container):
                 self._path = self.container.extract(
                     self._name, self._temp_dir.name
                 )
@@ -126,7 +126,7 @@ class MissingArchiveLikeObject:
         return []
 
     def list(self, *args, **kwargs):
-        return ''
+        return ""
 
     def close(self):
         pass
@@ -151,9 +151,9 @@ class MissingArchive(Archive):
         raise NotImplementedError()
 
     def get_member(self, member_name):
-        return MissingFile('/dev/null')
+        return MissingFile("/dev/null")
 
     # Be nice to gzip and the likes
     @property
     def path(self):
-        return '/dev/null'
+        return "/dev/null"

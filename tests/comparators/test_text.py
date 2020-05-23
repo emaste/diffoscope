@@ -28,8 +28,8 @@ from ..utils.data import data, load_fixture, get_data
 from ..utils.nonexisting import assert_non_existing
 
 
-ascii1 = load_fixture('text_ascii1')
-ascii2 = load_fixture('text_ascii2')
+ascii1 = load_fixture("text_ascii1")
+ascii2 = load_fixture("text_ascii2")
 
 
 def test_no_differences(ascii1):
@@ -40,47 +40,47 @@ def test_no_differences(ascii1):
 def test_difference_in_ascii(ascii1, ascii2):
     difference = ascii1.compare(ascii2)
     assert difference is not None
-    expected_diff = get_data('text_ascii_expected_diff')
+    expected_diff = get_data("text_ascii_expected_diff")
     assert difference.unified_diff == expected_diff
     assert not difference.comments
     assert len(difference.details) == 0
 
 
-unicode1 = load_fixture('text_unicode1')
-unicode2 = load_fixture('text_unicode2')
+unicode1 = load_fixture("text_unicode1")
+unicode2 = load_fixture("text_unicode2")
 
 
 def test_difference_in_unicode(unicode1, unicode2):
     difference = unicode1.compare(unicode2)
     expected_diff = codecs.open(
-        data('text_unicode_expected_diff'), encoding='utf-8'
+        data("text_unicode_expected_diff"), encoding="utf-8"
     ).read()
     assert difference.unified_diff == expected_diff
 
 
-iso8859 = load_fixture('text_iso8859')
+iso8859 = load_fixture("text_iso8859")
 
 
 def test_difference_between_iso88591_and_unicode(iso8859, unicode1):
     difference = iso8859.compare(unicode1)
     expected_diff = codecs.open(
-        data('text_iso8859_expected_diff'), encoding='utf-8'
+        data("text_iso8859_expected_diff"), encoding="utf-8"
     ).read()
     assert difference.unified_diff == expected_diff
 
 
 def test_difference_between_iso88591_and_unicode_only(iso8859, tmpdir):
-    utf8_path = str(tmpdir.join('utf8'))
-    with open(utf8_path, 'wb') as f:
+    utf8_path = str(tmpdir.join("utf8"))
+    with open(utf8_path, "wb") as f:
         f.write(
-            codecs.open(data('text_iso8859'), encoding='iso8859-1')
+            codecs.open(data("text_iso8859"), encoding="iso8859-1")
             .read()
-            .encode('utf-8')
+            .encode("utf-8")
         )
     utf8 = specialize(FilesystemFile(utf8_path))
     difference = iso8859.compare(utf8)
     assert difference.unified_diff is None
-    assert difference.details[0].source1 == 'encoding'
+    assert difference.details[0].source1 == "encoding"
 
 
 def test_compare_non_existing(monkeypatch, ascii1):
@@ -89,11 +89,11 @@ def test_compare_non_existing(monkeypatch, ascii1):
     )
 
 
-text_order1 = load_fixture('text_order1')
-text_order2 = load_fixture('text_order2')
+text_order1 = load_fixture("text_order1")
+text_order2 = load_fixture("text_order2")
 
 
 def test_ordering_differences(text_order1, text_order2):
     difference = text_order1.compare(text_order2)
-    assert difference.comments == ['Ordering differences only']
-    assert difference.unified_diff == get_data('text_order_expected_diff')
+    assert difference.comments == ["Ordering differences only"]
+    assert difference.unified_diff == get_data("text_order_expected_diff")

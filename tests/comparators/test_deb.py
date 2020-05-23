@@ -35,8 +35,8 @@ from ..utils.tools import (
 from ..utils.data import load_fixture, get_data
 
 
-deb1 = load_fixture('test1.deb')
-deb2 = load_fixture('test2.deb')
+deb1 = load_fixture("test1.deb")
+deb2 = load_fixture("test2.deb")
 
 
 def test_identification(deb1):
@@ -54,18 +54,18 @@ def differences(deb1, deb2):
 
 
 def test_metadata(differences):
-    expected_diff = get_data('deb_metadata_expected_diff')
+    expected_diff = get_data("deb_metadata_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
 def test_compressed_files(differences):
-    assert differences[1].source1 == 'control.tar.gz'
-    assert differences[2].source1 == 'data.tar.gz'
+    assert differences[1].source1 == "control.tar.gz"
+    assert differences[2].source1 == "data.tar.gz"
 
 
 def test_identification_of_md5sums_outside_deb(tmpdir):
-    path = str(tmpdir.join('md5sums'))
-    open(path, 'w')
+    path = str(tmpdir.join("md5sums"))
+    open(path, "w")
     f = specialize(FilesystemFile(path))
     assert type(f) is FilesystemFile
 
@@ -81,7 +81,7 @@ def test_identification_of_md5sums_in_deb(deb1, deb2, monkeypatch):
         return ret
 
     test_identification_of_md5sums_in_deb.found = False
-    monkeypatch.setattr(Md5sumsFile, 'recognizes', probe)
+    monkeypatch.setattr(Md5sumsFile, "recognizes", probe)
     deb1.compare(deb2)
     assert test_identification_of_md5sums_in_deb.found
 
@@ -95,8 +95,8 @@ def test_md5sums(differences):
 
 def test_identical_files_in_md5sums(deb1, deb2):
     for name in [
-        './usr/share/doc/test/README.Debian',
-        './usr/share/doc/test/copyright',
+        "./usr/share/doc/test/README.Debian",
+        "./usr/share/doc/test/copyright",
     ]:
         assert deb1.md5sums[name] == deb2.md5sums[name]
 
@@ -112,7 +112,7 @@ def test_identification_of_data_tar(deb1, deb2, monkeypatch):
         return ret
 
     test_identification_of_data_tar.found = False
-    monkeypatch.setattr(DebDataTarFile, 'recognizes', probe)
+    monkeypatch.setattr(DebDataTarFile, "recognizes", probe)
     deb1.compare(deb2)
     assert test_identification_of_data_tar.found
 
@@ -126,36 +126,36 @@ def test_skip_comparison_of_known_identical_files(deb1, deb2, monkeypatch):
         return orig_func(file1, file2, **kwargs)
 
     monkeypatch.setattr(
-        diffoscope.comparators.utils.compare, 'compare_files', probe
+        diffoscope.comparators.utils.compare, "compare_files", probe
     )
     deb1.compare(deb2)
-    assert './usr/share/doc/test/README.Debian' not in compared
+    assert "./usr/share/doc/test/README.Debian" not in compared
 
 
 def test_compare_non_existing(monkeypatch, deb1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = deb1.compare(MissingFile('/nonexisting', deb1))
-    assert difference.source2 == '/nonexisting'
-    assert difference.details[-1].source2 == '/dev/null'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = deb1.compare(MissingFile("/nonexisting", deb1))
+    assert difference.source2 == "/nonexisting"
+    assert difference.details[-1].source2 == "/dev/null"
 
 
-bug881937_deb1 = load_fixture('bug881937_1.deb')
-bug881937_deb2 = load_fixture('bug881937_2.deb')
-bug903391_deb1 = load_fixture('bug903391_1.deb')
-bug903391_deb2 = load_fixture('bug903391_2.deb')
-bug903401_deb1 = load_fixture('bug903401_1.deb')
-bug903401_deb2 = load_fixture('bug903401_2.deb')
-bug903565_deb1 = load_fixture('bug903565_1.deb')
-bug903565_deb2 = load_fixture('bug903565_2.deb')
+bug881937_deb1 = load_fixture("bug881937_1.deb")
+bug881937_deb2 = load_fixture("bug881937_2.deb")
+bug903391_deb1 = load_fixture("bug903391_1.deb")
+bug903391_deb2 = load_fixture("bug903391_2.deb")
+bug903401_deb1 = load_fixture("bug903401_1.deb")
+bug903401_deb2 = load_fixture("bug903401_2.deb")
+bug903565_deb1 = load_fixture("bug903565_1.deb")
+bug903565_deb2 = load_fixture("bug903565_2.deb")
 
 
-@skip_unless_tools_exist('xz')
-@skip_unless_file_version_is_at_least('5.37')
+@skip_unless_tools_exist("xz")
+@skip_unless_file_version_is_at_least("5.37")
 def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
     difference = bug881937_deb1.compare(bug881937_deb2)
-    assert difference.details[2].source1 == 'control.tar.gz'
-    assert difference.details[2].source2 == 'control.tar.xz'
-    expected_diff = get_data('bug881937_control_expected_diff')
+    assert difference.details[2].source1 == "control.tar.gz"
+    assert difference.details[2].source2 == "control.tar.xz"
+    expected_diff = get_data("bug881937_control_expected_diff")
     assert (
         difference.details[2].details[2].details[1].unified_diff
         == expected_diff

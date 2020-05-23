@@ -28,14 +28,14 @@ WASM_MAGIC = b"\x00asm"
 
 
 class Wasm2Wat(Command):
-    @tool_required('wasm2wat')
+    @tool_required("wasm2wat")
     def cmdline(self):
-        return ['wasm2wat', '--no-check', self.path]
+        return ["wasm2wat", "--no-check", self.path]
 
 
 class WasmFile(File):
     DESCRIPTION = "WebAssembly binary module"
-    FILE_EXTENSION_SUFFIX = '.wasm'
+    FILE_EXTENSION_SUFFIX = ".wasm"
 
     @classmethod
     def recognizes(cls, file):

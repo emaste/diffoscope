@@ -39,13 +39,13 @@ class GzipContainer(Archive):
         pass
 
     def get_member_names(self):
-        return [self.get_compressed_content_name('.gz')]
+        return [self.get_compressed_content_name(".gz")]
 
-    @tool_required('gzip')
+    @tool_required("gzip")
     def extract(self, member_name, dest_dir):
         dest_path = self.get_path_name(dest_dir)
-        logger.debug('gzip extracting to %s', dest_path)
-        with open(dest_path, 'wb') as fp:
+        logger.debug("gzip extracting to %s", dest_path)
+        with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["gzip", "--decompress", "--stdout", self.source.path],
                 shell=False,
@@ -58,7 +58,7 @@ class GzipContainer(Archive):
 class GzipFile(File):
     DESCRIPTION = "Gzipped files"
     CONTAINER_CLASSES = [GzipContainer]
-    FILE_TYPE_RE = re.compile(r'^gzip compressed data\b')
+    FILE_TYPE_RE = re.compile(r"^gzip compressed data\b")
 
     # Work around file(1) Debian bug #876316
     FALLBACK_FILE_EXTENSION_SUFFIX = ".gz"

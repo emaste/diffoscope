@@ -61,10 +61,10 @@ class Config:
         self.enforce_constraints = True
         self.excludes = ()
         self.exclude_commands = ()
-        self.exclude_directory_metadata = 'no'
+        self.exclude_directory_metadata = "no"
         self.compute_visual_diffs = False
         self.max_container_depth = 50
-        self.use_dbgsym = 'auto'
+        self.use_dbgsym = "auto"
         self.force_details = False
 
     def __setattr__(self, k, v):

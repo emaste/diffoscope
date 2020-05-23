@@ -43,14 +43,14 @@ class DexContainer(Archive):
         pass
 
     def get_member_names(self):
-        return [self.get_compressed_content_name('.dex') + '.jar']
+        return [self.get_compressed_content_name(".dex") + ".jar"]
 
-    @tool_required('enjarify')
+    @tool_required("enjarify")
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
-        logger.debug('dex extracting to %s', dest_path)
+        logger.debug("dex extracting to %s", dest_path)
         subprocess.check_call(
-            ['enjarify', '-o', dest_path, self.source.path],
+            ["enjarify", "-o", dest_path, self.source.path],
             shell=False,
             stderr=None,
             stdout=subprocess.PIPE,
@@ -60,6 +60,6 @@ class DexContainer(Archive):
 
 class DexFile(File):
     DESCRIPTION = "Dalvik .dex files"
-    FILE_TYPE_RE = re.compile(r'^Dalvik dex file .*\b')
-    FILE_EXTENSION_SUFFIX = '.dex'
+    FILE_TYPE_RE = re.compile(r"^Dalvik dex file .*\b")
+    FILE_EXTENSION_SUFFIX = ".dex"
     CONTAINER_CLASSES = [DexContainer]

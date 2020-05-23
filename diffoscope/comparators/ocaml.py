@@ -27,20 +27,20 @@ from .utils.command import Command
 
 
 class Ocamlobjinfo(Command):
-    @tool_required('ocamlobjinfo')
+    @tool_required("ocamlobjinfo")
     def cmdline(self):
-        return ('ocamlobjinfo', self.path)
+        return ("ocamlobjinfo", self.path)
 
     def filter(self, line):
-        val = line.decode('utf-8')
-        if val.startswith('File '):
-            return b''
+        val = line.decode("utf-8")
+        if val.startswith("File "):
+            return b""
         return line
 
 
 class OcamlInterfaceFile(File):
     DESCRIPTION = "OCaml interface files"
-    FILE_TYPE_RE = re.compile(r'^OCaml interface file ')
+    FILE_TYPE_RE = re.compile(r"^OCaml interface file ")
 
     def compare_details(self, other, source=None):
         return [

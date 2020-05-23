@@ -28,17 +28,17 @@ from .utils.command import Command
 
 
 class Showttf(Command):
-    @tool_required('showttf')
+    @tool_required("showttf")
     def cmdline(self):
-        return ['showttf', self.path]
+        return ["showttf", self.path]
 
     def filter(self, line):
-        return line.decode('latin-1').encode('utf-8')
+        return line.decode("latin-1").encode("utf-8")
 
 
 class TtfFile(File):
     DESCRIPTION = "TrueType font files"
-    FILE_TYPE_RE = re.compile(r'^(TrueType|OpenType) font data', re.IGNORECASE)
+    FILE_TYPE_RE = re.compile(r"^(TrueType|OpenType) font data", re.IGNORECASE)
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Showttf, self.path, other.path)]

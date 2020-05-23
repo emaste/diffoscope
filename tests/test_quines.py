@@ -26,10 +26,10 @@ from diffoscope.comparators.gzip import GzipFile
 from .utils.data import load_fixture, get_data
 from .utils.tools import skip_unless_file_version_is_at_least
 
-quine1 = load_fixture('quine.gz')
-quine2 = load_fixture('quine.zip')
-quine3 = load_fixture('quine_a.deb')
-quine4 = load_fixture('quine_b.deb')
+quine1 = load_fixture("quine.gz")
+quine2 = load_fixture("quine.zip")
+quine3 = load_fixture("quine_a.deb")
+quine4 = load_fixture("quine_b.deb")
 
 """
 Check that we are not recursively unpacking the quines in an infinite loop. See
@@ -52,9 +52,9 @@ def differences(quine1, quine2):
     return quine1.compare(quine2).details
 
 
-@skip_unless_file_version_is_at_least('5.37')
+@skip_unless_file_version_is_at_least("5.37")
 def test_difference(differences):
-    expected_diff = get_data('quine_expected_diff')
+    expected_diff = get_data("quine_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
@@ -69,5 +69,5 @@ def differences_deb(quine3, quine4):
 
 
 def test_differences_deb(differences_deb):
-    expected_diff = get_data('quine_deb_expected_diff')
+    expected_diff = get_data("quine_deb_expected_diff")
     assert differences_deb[0].unified_diff == expected_diff

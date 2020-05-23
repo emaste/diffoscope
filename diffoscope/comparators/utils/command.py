@@ -69,7 +69,7 @@ class Command(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     def shell_cmdline(self, *args, **kwargs):
-        kwargs.setdefault('replace', (self.path,))
+        kwargs.setdefault("replace", (self.path,))
         return format_cmdline(self.cmdline(), *args, **kwargs)
 
     def env(self):
@@ -98,10 +98,10 @@ class Command(metaclass=abc.ABCMeta):
         for index, line in enumerate(lines):
             if index >= Command.MAX_STDERR_LINES:
                 break
-            buf += line.decode('utf-8', errors='replace')
+            buf += line.decode("utf-8", errors="replace")
 
         if len(lines) > Command.MAX_STDERR_LINES:
-            buf += '[ truncated after {} lines; {} ignored ]\n'.format(
+            buf += "[ truncated after {} lines; {} ignored ]\n".format(
                 Command.MAX_STDERR_LINES, len(lines) - Command.MAX_STDERR_LINES
             )
 

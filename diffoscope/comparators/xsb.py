@@ -25,23 +25,23 @@ from .utils.command import Command
 
 
 class Dumpxsb(Command):
-    @tool_required('dumpxsb')
+    @tool_required("dumpxsb")
     def cmdline(self):
-        return ('dumpxsb', self.path)
+        return ("dumpxsb", self.path)
 
     def filter(self, line):
-        if line.decode('utf-8').strip() == self.path:
-            return b''
+        if line.decode("utf-8").strip() == self.path:
+            return b""
         return line
 
 
 class XsbFile(File):
     DESCRIPTION = "XML binary schemas (.xsb)"
-    FILE_EXTENSION_SUFFIX = '.xsb'
+    FILE_EXTENSION_SUFFIX = ".xsb"
 
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Dumpxsb, self.path, other.path, source='dumpxsb'
+                Dumpxsb, self.path, other.path, source="dumpxsb"
             )
         ]

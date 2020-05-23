@@ -32,14 +32,14 @@ def unsquashfs_version():
     # first line of 'unsquashfs -version' looks like:
     #   unsquashfs version 4.4pre-git (2019/08/15)
     try:
-        out = subprocess.check_output(['unsquashfs', '-version'])
+        out = subprocess.check_output(["unsquashfs", "-version"])
     except subprocess.CalledProcessError as e:
         out = e.output
-    return out.decode('UTF-8').splitlines()[0].split()[2].strip()
+    return out.decode("UTF-8").splitlines()[0].split()[2].strip()
 
 
-squashfs1 = load_fixture('test1.squashfs')
-squashfs2 = load_fixture('test2.squashfs')
+squashfs1 = load_fixture("test1.squashfs")
+squashfs2 = load_fixture("test2.squashfs")
 
 
 def test_identification(squashfs1):
@@ -54,7 +54,7 @@ def test_no_differences(squashfs1):
 def test_no_warnings(capfd, squashfs1, squashfs2):
     _ = squashfs1.compare(squashfs2)
     _, err = capfd.readouterr()
-    assert err == ''
+    assert err == ""
 
 
 @pytest.fixture
@@ -62,27 +62,27 @@ def differences(squashfs1, squashfs2):
     return squashfs1.compare(squashfs2).details
 
 
-@skip_unless_tool_is_at_least('unsquashfs', unsquashfs_version, '4.4')
+@skip_unless_tool_is_at_least("unsquashfs", unsquashfs_version, "4.4")
 def test_superblock(differences):
-    expected_diff = get_data('squashfs_superblock_expected_diff')
+    expected_diff = get_data("squashfs_superblock_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('unsquashfs')
+@skip_unless_tools_exist("unsquashfs")
 def test_symlink(differences):
-    assert differences[2].comment == 'symlink'
-    expected_diff = get_data('symlink_expected_diff')
+    assert differences[2].comment == "symlink"
+    expected_diff = get_data("symlink_expected_diff")
     assert differences[2].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('unsquashfs')
+@skip_unless_tools_exist("unsquashfs")
 def test_compressed_files(differences):
-    assert differences[3].source1 == '/text'
-    assert differences[3].source2 == '/text'
-    expected_diff = get_data('text_ascii_expected_diff')
+    assert differences[3].source1 == "/text"
+    assert differences[3].source2 == "/text"
+    expected_diff = get_data("text_ascii_expected_diff")
     assert differences[3].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('unsquashfs')
+@skip_unless_tools_exist("unsquashfs")
 def test_compare_non_existing(monkeypatch, squashfs1):
     assert_non_existing(monkeypatch, squashfs1)

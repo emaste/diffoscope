@@ -35,58 +35,58 @@ class Otool(Command):
         self._arch = arch
         super().__init__(path, *args, **kwargs)
 
-    @tool_required('otool')
+    @tool_required("otool")
     def cmdline(self):
-        return ['otool'] + self.otool_options() + [self.path]
+        return ["otool"] + self.otool_options() + [self.path]
 
     def otool_options(self):
-        return ['-arch', self._arch]
+        return ["-arch", self._arch]
 
     def filter(self, line):
         # Strip filename
-        prefix = '{}:'.format(self._path)
-        if line.decode('utf-8', 'ignore').startswith(prefix):
+        prefix = "{}:".format(self._path)
+        if line.decode("utf-8", "ignore").startswith(prefix):
             return line[len(prefix) :].strip()
         return line
 
 
 class OtoolHeaders(Otool):
     def otool_options(self):
-        return super().otool_options() + ['-h']
+        return super().otool_options() + ["-h"]
 
 
 class OtoolLibraries(Otool):
     def otool_options(self):
-        return super().otool_options() + ['-L']
+        return super().otool_options() + ["-L"]
 
 
 class OtoolDisassemble(Otool):
     def otool_options(self):
-        return super().otool_options() + ['-tdvV']
+        return super().otool_options() + ["-tdvV"]
 
 
 class OtoolDisassembleInternal(Otool):
     def otool_options(self):
-        return super().otool_options() + ['-tdvVQ']
+        return super().otool_options() + ["-tdvVQ"]
 
 
 class MachoFile(File):
     DESCRIPTION = "MacOS binaries"
-    FILE_TYPE_RE = re.compile(r'^Mach-O ')
+    FILE_TYPE_RE = re.compile(r"^Mach-O ")
     RE_EXTRACT_ARCHS = re.compile(
-        r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$'
+        r"^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$"
     )
 
     @staticmethod
-    @tool_required('lipo')
+    @tool_required("lipo")
     def get_arch_from_macho(path):
-        lipo_output = subprocess.check_output(['lipo', '-info', path]).decode(
-            'utf-8'
+        lipo_output = subprocess.check_output(["lipo", "-info", path]).decode(
+            "utf-8"
         )
         lipo_match = MachoFile.RE_EXTRACT_ARCHS.match(lipo_output)
         if lipo_match is None:
             raise ValueError(
-                'lipo -info on Mach-O file %s did not produce expected output. Output was: %s'
+                "lipo -info on Mach-O file %s did not produce expected output. Output was: %s"
                 % path,
                 lipo_output,
             )
@@ -100,11 +100,11 @@ class MachoFile(File):
 
         differences.append(
             Difference.from_text(
-                '\n'.join(my_archs),
-                '\n'.join(other_archs),
+                "\n".join(my_archs),
+                "\n".join(other_archs),
                 self.name,
                 other.name,
-                source='architectures',
+                source="architectures",
             )
         )
 

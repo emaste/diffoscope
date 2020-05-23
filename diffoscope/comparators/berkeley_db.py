@@ -27,23 +27,23 @@ from .utils.command import Command
 
 
 class DbDump(Command):
-    @tool_required('db_dump')
+    @tool_required("db_dump")
     def cmdline(self):
-        return ('db_dump', '-d', 'a', self.path)
+        return ("db_dump", "-d", "a", self.path)
 
     def filter(self, line):
-        val = line.decode('utf-8')
+        val = line.decode("utf-8")
         # We must strip some fields as libdb itself does not repeatedly read
         # its own metadata reliably, even on the same file.
-        for x in ('h_hash: ', 'bt_compare: ', '\tuid: '):
+        for x in ("h_hash: ", "bt_compare: ", "\tuid: "):
             if val.startswith(x):
-                return b''
+                return b""
         return line
 
 
 class BerkeleyDBFile(File):
     DESCRIPTION = "Berkeley DB database files"
-    FILE_TYPE_RE = re.compile(r'^Berkeley DB ')
+    FILE_TYPE_RE = re.compile(r"^Berkeley DB ")
 
     def compare_details(self, other, source=None):
         return [

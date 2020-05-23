@@ -27,24 +27,24 @@ from .utils.command import Command
 
 
 class Kbxutil(Command):
-    @tool_required('kbxutil')
+    @tool_required("kbxutil")
     def cmdline(self):
-        return ('kbxutil', self.path)
+        return ("kbxutil", self.path)
 
     def filter(self, line):
         return line
-        if line.decode('utf-8').strip() == self.path:
-            return b''
+        if line.decode("utf-8").strip() == self.path:
+            return b""
         return line
 
 
 class KbxFile(File):
     DESCRIPTION = "GPG keybox databases"
-    FILE_TYPE_RE = re.compile(r'^GPG keybox database\b')
+    FILE_TYPE_RE = re.compile(r"^GPG keybox database\b")
 
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Kbxutil, self.path, other.path, source='kbxutil'
+                Kbxutil, self.path, other.path, source="kbxutil"
             )
         ]

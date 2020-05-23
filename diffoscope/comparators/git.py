@@ -29,7 +29,7 @@ from .utils.file import File
 
 class GitIndexFile(File):
     DESCRIPTION = "Git repositories"
-    FILE_TYPE_RE = re.compile(r'^Git index')
+    FILE_TYPE_RE = re.compile(r"^Git index")
 
     def compare_details(self, other, source=None):
         return [
@@ -43,13 +43,13 @@ class GitIndexFile(File):
 
 
 def parse_index(f):
-    _, version = struct.unpack('>LL', f.read(4 * 2))
+    _, version = struct.unpack(">LL", f.read(4 * 2))
 
-    return {'version': version, 'entries': list(parse_entries(f))}
+    return {"version": version, "entries": list(parse_entries(f))}
 
 
 def parse_entries(f):
-    num_entries = struct.unpack('>L', f.read(4))[0]
+    num_entries = struct.unpack(">L", f.read(4))[0]
 
     for _ in range(num_entries):
         x = {}
@@ -57,21 +57,21 @@ def parse_entries(f):
         pos = f.tell()
 
         (
-            x['ctime'],
-            x['ctime_nano'],
-            x['mtime'],
-            x['mtime_nano'],
-            x['dev'],
-            x['inode'],
-            x['mode'],
-            x['uid'],
-            x['gid'],
-            x['size'],
-            x['sha'],
-            x['flags'],
-        ) = struct.unpack('>LLLLLLLLLL20sH', f.read((4 * 10) + 20 + 2))
+            x["ctime"],
+            x["ctime_nano"],
+            x["mtime"],
+            x["mtime_nano"],
+            x["dev"],
+            x["inode"],
+            x["mode"],
+            x["uid"],
+            x["gid"],
+            x["size"],
+            x["sha"],
+            x["flags"],
+        ) = struct.unpack(">LLLLLLLLLL20sH", f.read((4 * 10) + 20 + 2))
 
-        x['path'] = f.read(x['flags'] & 0x0FFF)
+        x["path"] = f.read(x["flags"] & 0x0FFF)
 
         f.read((pos + ((f.tell() - pos + 8) & ~7)) - f.tell())
 
@@ -79,7 +79,7 @@ def parse_entries(f):
 
 
 def describe_index(filename):
-    with open(filename, 'rb') as f:
+    with open(filename, "rb") as f:
         index = parse_index(f)
 
     return """
@@ -88,7 +88,7 @@ Version: {version}
 Entries:
 {entries_fmt}
 """.format(
-        entries_fmt=''.join(describe_entry(x) for x in index['entries']),
+        entries_fmt="".join(describe_entry(x) for x in index["entries"]),
         **index,
     )
 
@@ -107,7 +107,7 @@ Inode:     {x[inode]}
 Device ID: ({major}, {minor})
 """.format(
         x=x,
-        major=os.major(x['dev']),
-        minor=os.minor(x['dev']),
-        hexsha=binascii.b2a_hex(x['sha']).decode('utf-8'),
+        major=os.major(x["dev"]),
+        minor=os.minor(x["dev"]),
+        hexsha=binascii.b2a_hex(x["sha"]).decode("utf-8"),
     )

@@ -41,19 +41,19 @@ class Symlink(File):
         return os.readlink(self.name)
 
     def create_placeholder(self):
-        with get_named_temporary_file('w+', delete=False) as f:
-            f.write('destination: %s\n' % self.symlink_destination)
+        with get_named_temporary_file("w+", delete=False) as f:
+            f.write("destination: %s\n" % self.symlink_destination)
             f.flush()
             return f.name
 
     @property
     def path(self):
-        if not hasattr(self, '_placeholder'):
+        if not hasattr(self, "_placeholder"):
             self._placeholder = self.create_placeholder()
         return self._placeholder
 
     def cleanup(self):
-        if hasattr(self, '_placeholder'):
+        if hasattr(self, "_placeholder"):
             try:
                 os.remove(self._placeholder)
             except FileNotFoundError:

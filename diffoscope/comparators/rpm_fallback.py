@@ -24,7 +24,7 @@ from .utils.file import File
 
 
 class AbstractRpmFile(File):
-    FILE_TYPE_RE = re.compile(r'^RPM\s')
+    FILE_TYPE_RE = re.compile(r"^RPM\s")
 
 
 class RpmFile(AbstractRpmFile):
@@ -33,6 +33,6 @@ class RpmFile(AbstractRpmFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to import Python rpm module. Falling back to binary comparison.'
+            "Unable to import Python rpm module. Falling back to binary comparison."
         )
         return difference

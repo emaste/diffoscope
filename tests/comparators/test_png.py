@@ -28,8 +28,8 @@ from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
 
-png1 = load_fixture('test1.png')
-png2 = load_fixture('test2.png')
+png1 = load_fixture("test1.png")
+png2 = load_fixture("test2.png")
 
 
 def test_identification(png1):
@@ -46,22 +46,22 @@ def differences(png1, png2):
     return png1.compare(png2).details
 
 
-@skip_unless_tools_exist('sng')
+@skip_unless_tools_exist("sng")
 def test_diff(differences):
-    expected_diff = get_data('png_expected_diff')
+    expected_diff = get_data("png_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('sng')
+@skip_unless_tools_exist("sng")
 def test_compare_non_existing(monkeypatch, png1):
     assert_non_existing(monkeypatch, png1, has_null_source=False)
 
 
-@skip_unless_tools_exist('sng', 'compose', 'convert', 'identify')
+@skip_unless_tools_exist("sng", "compose", "convert", "identify")
 def test_has_visuals(monkeypatch, png1, png2):
-    monkeypatch.setattr(Config(), 'compute_visual_diffs', True)
+    monkeypatch.setattr(Config(), "compute_visual_diffs", True)
     png_diff = png1.compare(png2)
     assert len(png_diff.details) == 2
     assert len(png_diff.details[1].visuals) == 2
-    assert png_diff.details[1].visuals[0].data_type == 'image/png;base64'
-    assert png_diff.details[1].visuals[1].data_type == 'image/gif;base64'
+    assert png_diff.details[1].visuals[0].data_type == "image/png;base64"
+    assert png_diff.details[1].visuals[1].data_type == "image/gif;base64"

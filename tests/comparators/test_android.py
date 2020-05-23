@@ -27,12 +27,12 @@ from diffoscope.comparators.missing_file import MissingFile
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 
-bootimg1 = load_fixture('android1.img')
-bootimg2 = load_fixture('android2.img')
+bootimg1 = load_fixture("android1.img")
+bootimg2 = load_fixture("android2.img")
 
 # abootimg misfires on big endian architectures
 # Part of the bug: https://bugs.debian.org/725729
-bearch = sys.byteorder == 'big'
+bearch = sys.byteorder == "big"
 
 
 def test_identification(bootimg1):
@@ -49,17 +49,17 @@ def differences(bootimg1, bootimg2):
     return bootimg1.compare(bootimg2).details
 
 
-@skip_unless_tools_exist('abootimg')
-@pytest.mark.skipif(bearch, reason='abootimg is buggy on BE architectures')
+@skip_unless_tools_exist("abootimg")
+@pytest.mark.skipif(bearch, reason="abootimg is buggy on BE architectures")
 def test_diff(differences):
-    expected_diff = get_data('android_expected_diff')
+    expected_diff = get_data("android_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('abootimg')
-@pytest.mark.skipif(bearch, reason='abootimg is buggy on BE architectures')
+@skip_unless_tools_exist("abootimg")
+@pytest.mark.skipif(bearch, reason="abootimg is buggy on BE architectures")
 def test_compare_non_existing(monkeypatch, bootimg1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = bootimg1.compare(MissingFile('/nonexisting', bootimg1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = bootimg1.compare(MissingFile("/nonexisting", bootimg1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0

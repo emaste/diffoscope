@@ -25,31 +25,31 @@ from .utils.command import Command
 
 
 class OpenSSLPKCS7(Command):
-    @tool_required('openssl')
+    @tool_required("openssl")
     def cmdline(self):
-        return ('openssl', 'pkcs7', '-print', '-noout', '-in', self.path)
+        return ("openssl", "pkcs7", "-print", "-noout", "-in", self.path)
 
 
 class OpenSSLSMIME(Command):
     MASK_STDERR = True
 
-    @tool_required('openssl')
+    @tool_required("openssl")
     def cmdline(self):
         return (
-            'openssl',
-            'smime',
-            '-inform',
-            'der',
-            '-verify',
-            '-noverify',
-            '-in',
+            "openssl",
+            "smime",
+            "-inform",
+            "der",
+            "-verify",
+            "-noverify",
+            "-in",
             self.path,
         )
 
 
 class Pkcs7File(File):
     DESCRIPTION = "Public Key Cryptography Standards (PKCS) files (version #7)"
-    FILE_TYPE_HEADER_PREFIX = b'-----BEGIN PKCS7-----'[:16]
+    FILE_TYPE_HEADER_PREFIX = b"-----BEGIN PKCS7-----"[:16]
 
     def compare_details(self, other, source=None):
         return [
@@ -57,7 +57,7 @@ class Pkcs7File(File):
                 OpenSSLPKCS7,
                 self.path,
                 other.path,
-                source='openssl pkcs7 -print',
+                source="openssl pkcs7 -print",
             )
         ]
 
@@ -69,6 +69,6 @@ class MobileProvisionFile(File):
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                OpenSSLSMIME, self.path, other.path, source='openssl smime'
+                OpenSSLSMIME, self.path, other.path, source="openssl smime"
             )
         ]

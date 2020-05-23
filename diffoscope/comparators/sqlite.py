@@ -28,14 +28,14 @@ from .utils.command import Command
 
 
 class Sqlite3Dump(Command):
-    @tool_required('sqlite3')
+    @tool_required("sqlite3")
     def cmdline(self):
-        return ['sqlite3', self.path, '.dump']
+        return ["sqlite3", self.path, ".dump"]
 
 
 class Sqlite3Database(File):
     DESCRIPTION = "SQLite databases"
-    FILE_TYPE_RE = re.compile(r'^SQLite 3.x database')
+    FILE_TYPE_RE = re.compile(r"^SQLite 3.x database")
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Sqlite3Dump, self.path, other.path)]

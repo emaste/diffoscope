@@ -29,8 +29,8 @@ from diffoscope.progress import ProgressManager, StatusFD
 
 from .utils.tools import skip_unless_module_exists
 
-TEST_TAR1_PATH = os.path.join(os.path.dirname(__file__), 'data', 'test1.tar')
-TEST_TAR2_PATH = os.path.join(os.path.dirname(__file__), 'data', 'test2.tar')
+TEST_TAR1_PATH = os.path.join(os.path.dirname(__file__), "data", "test1.tar")
+TEST_TAR2_PATH = os.path.join(os.path.dirname(__file__), "data", "test2.tar")
 
 
 def run(capsys, *args):
@@ -52,7 +52,7 @@ def progressbar_version():
 def progressbar_err():
     # This fixture returns an expected error message depending on progressbar
     # version, from the lowest to the highest.
-    expected_err = {'3.19': 'ETA', '3.34': ''}
+    expected_err = {"3.19": "ETA", "3.34": ""}
 
     actual_ver = progressbar_version()
 
@@ -60,12 +60,12 @@ def progressbar_err():
         if LooseVersion(actual_ver) < LooseVersion(k):
             return v
 
-    return ''
+    return ""
 
 
-@skip_unless_module_exists('progressbar')
+@skip_unless_module_exists("progressbar")
 def test_progress(capsys, progressbar_err):
-    ret, _, err = run(capsys, TEST_TAR1_PATH, TEST_TAR2_PATH, '--progress')
+    ret, _, err = run(capsys, TEST_TAR1_PATH, TEST_TAR2_PATH, "--progress")
 
     assert ret == 1
     assert progressbar_err in err
@@ -84,8 +84,8 @@ def test_status_fd(capsys):
 
     # Ensure each line is valid
     for x in output:
-        assert 'msg' in x
-        assert x['current'] <= x['total']
+        assert "msg" in x
+        assert x["current"] <= x["total"]
 
     # Last line should mark us as "complete"
-    assert output[-1]['current'] == output[-1]['total']
+    assert output[-1]["current"] == output[-1]["total"]

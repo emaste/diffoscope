@@ -42,59 +42,59 @@ logger = logging.getLogger(__name__)
 
 
 # Monkeypatch libarchive-c (<< 2.2)
-if not hasattr(libarchive.ffi, 'entry_rdevmajor'):
+if not hasattr(libarchive.ffi, "entry_rdevmajor"):
     libarchive.ffi.ffi(
-        'entry_rdevmajor', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
+        "entry_rdevmajor", [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
     )
     libarchive.ArchiveEntry.rdevmajor = property(
         lambda self: libarchive.ffi.entry_rdevmajor(self._entry_p)
     )
-if not hasattr(libarchive.ffi, 'entry_rdevminor'):
+if not hasattr(libarchive.ffi, "entry_rdevminor"):
     libarchive.ffi.ffi(
-        'entry_rdevminor', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
+        "entry_rdevminor", [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
     )
     libarchive.ArchiveEntry.rdevminor = property(
         lambda self: libarchive.ffi.entry_rdevminor(self._entry_p)
     )
 # Monkeypatch libarchive-c (<< 2.3)
-if not hasattr(libarchive.ffi, 'entry_nlink'):
+if not hasattr(libarchive.ffi, "entry_nlink"):
     libarchive.ffi.ffi(
-        'entry_nlink', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
+        "entry_nlink", [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
     )
     libarchive.ArchiveEntry.nlink = property(
         lambda self: libarchive.ffi.entry_nlink(self._entry_p)
     )
-if not hasattr(libarchive.ffi, 'entry_uid'):
+if not hasattr(libarchive.ffi, "entry_uid"):
     libarchive.ffi.ffi(
-        'entry_uid', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32
+        "entry_uid", [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32
     )
     libarchive.ArchiveEntry.uid = property(
         lambda self: libarchive.ffi.entry_uid(self._entry_p)
     )
-if not hasattr(libarchive.ffi, 'entry_gid'):
+if not hasattr(libarchive.ffi, "entry_gid"):
     libarchive.ffi.ffi(
-        'entry_gid', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32
+        "entry_gid", [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32
     )
     libarchive.ArchiveEntry.gid = property(
         lambda self: libarchive.ffi.entry_uid(self._entry_p)
     )
-if not hasattr(libarchive.ffi, 'entry_mtime_nsec'):
+if not hasattr(libarchive.ffi, "entry_mtime_nsec"):
     libarchive.ffi.ffi(
-        'entry_mtime_nsec', [libarchive.ffi.c_archive_entry_p], ctypes.c_long
+        "entry_mtime_nsec", [libarchive.ffi.c_archive_entry_p], ctypes.c_long
     )
     libarchive.ArchiveEntry.mtime_nsec = property(
         lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p)
     )
-if not hasattr(libarchive.ffi, 'entry_uname'):
+if not hasattr(libarchive.ffi, "entry_uname"):
     libarchive.ffi.ffi(
-        'entry_uname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p
+        "entry_uname", [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p
     )
     libarchive.ArchiveEntry.uname = property(
         lambda self: libarchive.ffi.entry_uname(self._entry_p)
     )
-if not hasattr(libarchive.ffi, 'entry_gname'):
+if not hasattr(libarchive.ffi, "entry_gname"):
     libarchive.ffi.ffi(
-        'entry_gname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p
+        "entry_gname", [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p
     )
     libarchive.ArchiveEntry.gname = property(
         lambda self: libarchive.ffi.entry_gname(self._entry_p)
@@ -103,8 +103,8 @@ if not hasattr(libarchive.ffi, 'entry_gname'):
 # Wire mtime_nsec attribute as some libarchive versions (>=2.8) don't expose it
 # for ArchiveEntry. Doing this allows a unified API no matter which version is
 # available.
-if not hasattr(libarchive.ArchiveEntry, 'mtime_nsec') and hasattr(
-    libarchive.ffi, 'entry_mtime_nsec'
+if not hasattr(libarchive.ArchiveEntry, "mtime_nsec") and hasattr(
+    libarchive.ffi, "entry_mtime_nsec"
 ):
     libarchive.ArchiveEntry.mtime_nsec = property(
         lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p)
@@ -115,7 +115,7 @@ if not hasattr(libarchive.ArchiveEntry, 'mtime_nsec') and hasattr(
 # Otherwise, we'll get sometimes str and sometimes bytes and always pain.
 libarchive.ArchiveEntry.pathname = property(
     lambda self: libarchive.ffi.entry_pathname(self._entry_p).decode(
-        'utf-8', errors='surrogateescape'
+        "utf-8", errors="surrogateescape"
     )
 )
 
@@ -126,43 +126,43 @@ def list_libarchive(path, ignore_errors=False):
             for entry in archive:
                 name_and_link = entry.name
                 if entry.issym:
-                    name_and_link = '{entry.name} -> {entry.linkname}'.format(
+                    name_and_link = "{entry.name} -> {entry.linkname}".format(
                         entry=entry
                     )
-                if Config().exclude_directory_metadata == 'recursive':
-                    yield '{name_and_link}\n'.format(
+                if Config().exclude_directory_metadata == "recursive":
+                    yield "{name_and_link}\n".format(
                         name_and_link=name_and_link
                     )
                     continue
                 if entry.isblk or entry.ischr:
-                    size_or_dev = '{major:>3},{minor:>3}'.format(
+                    size_or_dev = "{major:>3},{minor:>3}".format(
                         major=entry.rdevmajor, minor=entry.rdevminor
                     )
                 else:
                     size_or_dev = entry.size
                 mtime = time.strftime(
-                    '%Y-%m-%d %H:%M:%S', time.gmtime(entry.mtime)
-                ) + '.{:06d}'.format(entry.mtime_nsec // 1000)
+                    "%Y-%m-%d %H:%M:%S", time.gmtime(entry.mtime)
+                ) + ".{:06d}".format(entry.mtime_nsec // 1000)
                 if entry.uname:
-                    user = '{user:<8} {uid:>7}'.format(
+                    user = "{user:<8} {uid:>7}".format(
                         user=entry.uname.decode(
-                            'utf-8', errors='surrogateescape'
+                            "utf-8", errors="surrogateescape"
                         ),
-                        uid='({})'.format(entry.uid),
+                        uid="({})".format(entry.uid),
                     )
                 else:
                     user = entry.uid
                 if entry.gname:
-                    group = '{group:<8} {gid:>7}'.format(
+                    group = "{group:<8} {gid:>7}".format(
                         group=entry.gname.decode(
-                            'utf-8', errors='surrogateescape'
+                            "utf-8", errors="surrogateescape"
                         ),
-                        gid='({})'.format(entry.gid),
+                        gid="({})".format(entry.gid),
                     )
                 else:
                     group = entry.gid
-                yield '{strmode} {entry.nlink:>3} {user:>8} {group:>8} {size_or_dev:>8} {mtime:>8} {name_and_link}\n'.format(
-                    strmode=entry.strmode.decode('us-ascii'),
+                yield "{strmode} {entry.nlink:>3} {user:>8} {group:>8} {size_or_dev:>8} {mtime:>8} {name_and_link}\n".format(
+                    strmode=entry.strmode.decode("us-ascii"),
                     entry=entry,
                     user=user,
                     group=group,
@@ -202,7 +202,7 @@ class LibarchiveDirectory(Directory, LibarchiveMember):
     @property
     def path(self):
         raise NotImplementedError(
-            'LibarchiveDirectory is not meant to be extracted.'
+            "LibarchiveDirectory is not meant to be extracted."
         )
 
     def is_directory(self):
@@ -261,7 +261,7 @@ class LibarchiveContainer(Archive):
             for entry in archive:
                 if entry.pathname == member_name:
                     return self.get_subclass(entry)
-        raise KeyError('%s not found in archive' % member_name)
+        raise KeyError("%s not found in archive" % member_name)
 
     def get_filtered_members(self):
         try:
@@ -288,7 +288,7 @@ class LibarchiveContainer(Archive):
         return LibarchiveMember(self, entry)
 
     def ensure_unpacked(self):
-        if hasattr(self, '_members'):
+        if hasattr(self, "_members"):
             return
 
         tmpdir = get_temporary_directory().name
@@ -319,7 +319,7 @@ class LibarchiveContainer(Archive):
 
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 try:
-                    with open(dst, 'wb') as f:
+                    with open(dst, "wb") as f:
                         for block in entry.get_blocks():
                             f.write(block)
                 except Exception as e:

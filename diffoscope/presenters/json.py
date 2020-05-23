@@ -47,18 +47,18 @@ class JSONPresenter(Presenter):
             self.stack.pop()
 
         elements = [
-            ('source1', difference.source1),
-            ('source2', difference.source2),
+            ("source1", difference.source1),
+            ("source2", difference.source2),
         ]
         if difference.comments:
-            elements += [('comments', [x for x in difference.comments])]
+            elements += [("comments", [x for x in difference.comments])]
         if difference.has_internal_linenos:
-            elements += [('has_internal_linenos', True)]
-        elements += [('unified_diff', difference.unified_diff)]
+            elements += [("has_internal_linenos", True)]
+        elements += [("unified_diff", difference.unified_diff)]
 
         child_differences = []
         if difference.details:
-            elements += [('details', child_differences)]
+            elements += [("details", child_differences)]
 
         self.stack[-1].append(OrderedDict(elements))
         if difference.details:

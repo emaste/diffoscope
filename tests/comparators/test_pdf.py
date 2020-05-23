@@ -27,10 +27,10 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
 from ..utils.nonexisting import assert_non_existing
 
 
-pdf1 = load_fixture('test1.pdf')
-pdf2 = load_fixture('test2.pdf')
-pdf1a = load_fixture('test_weird_non_unicode_chars1.pdf')
-pdf2a = load_fixture('test_weird_non_unicode_chars2.pdf')
+pdf1 = load_fixture("test1.pdf")
+pdf2 = load_fixture("test2.pdf")
+pdf1a = load_fixture("test_weird_non_unicode_chars1.pdf")
+pdf2a = load_fixture("test_weird_non_unicode_chars2.pdf")
 
 
 def test_identification(pdf1):
@@ -53,13 +53,13 @@ def differences(pdf1, pdf2):
     return pdf1.compare(pdf2).details
 
 
-@skip_unless_tools_exist('pdftotext')
+@skip_unless_tools_exist("pdftotext")
 def test_text_diff(differences):
-    expected_diff = get_data('pdf_text_expected_diff')
+    expected_diff = get_data("pdf_text_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('pdftotext')
+@skip_unless_tools_exist("pdftotext")
 def test_compare_non_existing(monkeypatch, pdf1):
     assert_non_existing(monkeypatch, pdf1, has_null_source=False)
 
@@ -69,8 +69,8 @@ def differences_metadata(pdf1, pdf1a):
     return pdf1.compare(pdf1a).details
 
 
-@skip_unless_tools_exist('pdftotext')
-@skip_unless_module_exists('PyPDF2')
+@skip_unless_tools_exist("pdftotext")
+@skip_unless_module_exists("PyPDF2")
 def test_metadata(differences_metadata):
-    expected_diff = get_data('pdf_metadata_expected_diff')
+    expected_diff = get_data("pdf_metadata_expected_diff")
     assert differences_metadata[0].unified_diff == expected_diff

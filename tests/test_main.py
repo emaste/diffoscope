@@ -25,8 +25,8 @@ import tempfile
 
 from diffoscope.main import main
 
-TEST_TAR1_PATH = os.path.join(os.path.dirname(__file__), 'data/test1.tar')
-TEST_TAR2_PATH = os.path.join(os.path.dirname(__file__), 'data/test2.tar')
+TEST_TAR1_PATH = os.path.join(os.path.dirname(__file__), "data/test1.tar")
+TEST_TAR2_PATH = os.path.join(os.path.dirname(__file__), "data/test2.tar")
 TEST_TARS = (TEST_TAR1_PATH, TEST_TAR2_PATH)
 
 
@@ -40,36 +40,36 @@ def run(capsys, *args):
 
 
 def test_non_existing_files(capsys):
-    ret, _, err = run(capsys, '/nonexisting1', '/nonexisting2')
+    ret, _, err = run(capsys, "/nonexisting1", "/nonexisting2")
 
     assert ret == 2
-    assert '/nonexisting1: No such file or directory' in err
-    assert '/nonexisting2: No such file or directory' in err
+    assert "/nonexisting1: No such file or directory" in err
+    assert "/nonexisting2: No such file or directory" in err
 
 
 def test_non_existing_left_with_new_file(capsys):
-    ret, out, _ = run(capsys, '--new-file', '/nonexisting1', __file__)
+    ret, out, _ = run(capsys, "--new-file", "/nonexisting1", __file__)
 
     assert ret == 1
-    assert '--- /nonexisting1' in out
-    assert ('+++ %s' % __file__) in out
+    assert "--- /nonexisting1" in out
+    assert ("+++ %s" % __file__) in out
 
 
 def test_non_existing_right_with_new_file(capsys):
-    ret, out, _ = run(capsys, '--new-file', __file__, '/nonexisting2')
+    ret, out, _ = run(capsys, "--new-file", __file__, "/nonexisting2")
 
     assert ret == 1
-    assert ('--- %s' % __file__) in out
-    assert '+++ /nonexisting2' in out
+    assert ("--- %s" % __file__) in out
+    assert "+++ /nonexisting2" in out
 
 
 def test_non_existing_files_with_new_file(capsys):
-    ret, out, _ = run(capsys, '--new-file', '/nonexisting1', '/nonexisting2')
+    ret, out, _ = run(capsys, "--new-file", "/nonexisting1", "/nonexisting2")
 
     assert ret == 1
-    assert '--- /nonexisting1' in out
-    assert '+++ /nonexisting2' in out
-    assert 'Trying to compare two non-existing files.' in out
+    assert "--- /nonexisting1" in out
+    assert "+++ /nonexisting2" in out
+    assert "Trying to compare two non-existing files." in out
 
 
 def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
@@ -81,7 +81,7 @@ def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
             os.kill(os.getpid(), signal.SIGTERM)
 
         monkeypatch.setattr(
-            'diffoscope.comparators.text.TextFile.compare', suicide
+            "diffoscope.comparators.text.TextFile.compare", suicide
         )
         tempfile.tempdir = str(tmpdir)
 
@@ -94,18 +94,18 @@ def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
 
 
 def test_ctrl_c_handling(tmpdir, monkeypatch, capsys):
-    monkeypatch.setattr('tempfile.tempdir', str(tmpdir))
+    monkeypatch.setattr("tempfile.tempdir", str(tmpdir))
 
     def interrupt(*args):
         raise KeyboardInterrupt
 
     monkeypatch.setattr(
-        'diffoscope.comparators.text.TextFile.compare', interrupt
+        "diffoscope.comparators.text.TextFile.compare", interrupt
     )
 
     ret, _, err = run(capsys, *TEST_TARS)
 
-    assert '' in err
+    assert "" in err
     assert ret == 2
     assert os.listdir(str(tmpdir)) == []
 
@@ -114,8 +114,8 @@ def test_no_differences(capsys):
     ret, out, err = run(capsys, TEST_TAR1_PATH, TEST_TAR1_PATH)
 
     assert ret == 0
-    assert err == ''
-    assert out == ''
+    assert err == ""
+    assert out == ""
 
 
 def test_no_differences_directories(capsys, tmpdir):
@@ -124,53 +124,53 @@ def test_no_differences_directories(capsys, tmpdir):
         os.utime(path, (0, 0))  # Ensure consistent mtime
         return path
 
-    ret, out, err = run(capsys, create_dir('a'), create_dir('b'))
+    ret, out, err = run(capsys, create_dir("a"), create_dir("b"))
 
     assert ret == 0
     # if getfacl is not available there will be a warning message on stderr
     # if it's available then err should be empty
-    assert err == '' or "getfacl" in err
-    assert out == ''
+    assert err == "" or "getfacl" in err
+    assert out == ""
 
 
 def test_list_tools(capsys):
-    ret, out, err = run(capsys, '--list-tools')
+    ret, out, err = run(capsys, "--list-tools")
 
     assert ret == 0
-    assert err == ''
-    assert 'External-Tools-Required: ' in out
-    assert 'xxd,' in out
+    assert err == ""
+    assert "External-Tools-Required: " in out
+    assert "xxd," in out
 
 
 def test_list_missing_tools(capsys):
-    ret, out, err = run(capsys, '--list-missing-tools')
+    ret, out, err = run(capsys, "--list-missing-tools")
 
     assert ret == 0
-    assert err == ''
-    assert 'External-Tools-Required: ' in out
+    assert err == ""
+    assert "External-Tools-Required: " in out
     # No assertions about the contents of the output since we don't control
     # what's installed in the test environment
 
 
 def test_profiling(capsys):
-    ret, out, err = run(capsys, TEST_TAR1_PATH, TEST_TAR1_PATH, '--profile=-')
+    ret, out, err = run(capsys, TEST_TAR1_PATH, TEST_TAR1_PATH, "--profile=-")
 
     assert ret == 0
     assert "Profiling output for" in out
-    assert err == ''
+    assert err == ""
 
 
 def test_non_unicode_filename(capsys, tmpdir):
     # Bug reference: https://bugs.debian.org/898022
-    path = str(tmpdir.dirpath()).encode('utf-8')
-    a = os.path.join(path, b'\xf0\x28\x8c\x28')
-    b = os.path.join(path, b'\xf0\x28\x8c\x29')
-    with open(a, 'w'), open(b, 'w'):
+    path = str(tmpdir.dirpath()).encode("utf-8")
+    a = os.path.join(path, b"\xf0\x28\x8c\x28")
+    b = os.path.join(path, b"\xf0\x28\x8c\x29")
+    with open(a, "w"), open(b, "w"):
         pass
 
     # sys.argv does pretty much this decoding to arguments
-    files = [x.decode('utf-8', errors='surrogateescape') for x in (a, b)]
+    files = [x.decode("utf-8", errors="surrogateescape") for x in (a, b)]
     ret, out, err = run(capsys, *files)
 
     assert ret == 0
-    assert out == err == ''
+    assert out == err == ""

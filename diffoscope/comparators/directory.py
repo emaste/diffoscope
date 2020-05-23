@@ -52,17 +52,17 @@ def list_files(path):
     return all_files
 
 
-if os.uname()[0] == 'FreeBSD':
+if os.uname()[0] == "FreeBSD":
 
     class Stat(Command):
-        @tool_required('stat')
+        @tool_required("stat")
         def cmdline(self):
             return [
-                'stat',
-                '-t',
-                '%Y-%m-%d %H:%M:%S',
-                '-f',
-                '%Sp %l %Su %Sg %z %Sm %k %b %#Xf',
+                "stat",
+                "-t",
+                "%Y-%m-%d %H:%M:%S",
+                "-f",
+                "%Sp %l %Su %Sg %z %Sm %k %b %#Xf",
                 self.path,
             ]
 
@@ -70,27 +70,27 @@ if os.uname()[0] == 'FreeBSD':
 else:
 
     class Stat(Command):
-        @tool_required('stat')
+        @tool_required("stat")
         def cmdline(self):
-            return ['stat', self.path]
+            return ["stat", self.path]
 
-        FILE_RE = re.compile(r'^\s*File:.*$')
-        DEVICE_RE = re.compile(r'Device: [0-9a-f]+h/[0-9]+d\s+')
-        INODE_RE = re.compile(r'Inode: [0-9]+\s+')
-        ACCESS_TIME_RE = re.compile(r'^Access: [0-9]{4}-[0-9]{2}-[0-9]{2}.*$')
-        CHANGE_TIME_RE = re.compile(r'^Change: [0-9]{4}-[0-9]{2}-[0-9]{2}.*$')
+        FILE_RE = re.compile(r"^\s*File:.*$")
+        DEVICE_RE = re.compile(r"Device: [0-9a-f]+h/[0-9]+d\s+")
+        INODE_RE = re.compile(r"Inode: [0-9]+\s+")
+        ACCESS_TIME_RE = re.compile(r"^Access: [0-9]{4}-[0-9]{2}-[0-9]{2}.*$")
+        CHANGE_TIME_RE = re.compile(r"^Change: [0-9]{4}-[0-9]{2}-[0-9]{2}.*$")
 
         def filter(self, line):
-            line = line.decode('utf-8')
-            line = Stat.FILE_RE.sub('', line)
-            line = Stat.DEVICE_RE.sub('', line)
-            line = Stat.INODE_RE.sub('', line)
-            line = Stat.ACCESS_TIME_RE.sub('', line)
-            line = Stat.CHANGE_TIME_RE.sub('', line)
-            return line.encode('utf-8')
+            line = line.decode("utf-8")
+            line = Stat.FILE_RE.sub("", line)
+            line = Stat.DEVICE_RE.sub("", line)
+            line = Stat.INODE_RE.sub("", line)
+            line = Stat.ACCESS_TIME_RE.sub("", line)
+            line = Stat.CHANGE_TIME_RE.sub("", line)
+            return line.encode("utf-8")
 
 
-@tool_required('lsattr')
+@tool_required("lsattr")
 def lsattr(path):
     """
     NB. Difficult to replace with in-Python version. See
@@ -99,29 +99,29 @@ def lsattr(path):
 
     try:
         output = subprocess.check_output(
-            ['lsattr', '-d', path], shell=False, stderr=subprocess.STDOUT
-        ).decode('utf-8')
+            ["lsattr", "-d", path], shell=False, stderr=subprocess.STDOUT
+        ).decode("utf-8")
         return output.split()[0]
     except subprocess.CalledProcessError as e:
         if e.returncode == 1:
             # filesystem doesn't support xattrs
-            return ''
+            return ""
 
 
 class Getfacl(Command):
-    @tool_required('getfacl')
+    @tool_required("getfacl")
     def cmdline(self):
         osname = os.uname()[0]
-        if osname == 'FreeBSD':
-            return ['getfacl', '-q', '-h', self.path]
-        return ['getfacl', '-p', '-c', self.path]
+        if osname == "FreeBSD":
+            return ["getfacl", "-q", "-h", self.path]
+        return ["getfacl", "-p", "-c", self.path]
 
 
 def xattr(path1, path2):
     try:
         import xattr as xattr_
     except ImportError:
-        python_module_missing('xattr')
+        python_module_missing("xattr")
         return None
 
     # Support the case where the python3-xattr package is installed but
@@ -135,26 +135,26 @@ def xattr(path1, path2):
             return xattr_.xattr(x).items()
 
     def fn(x):
-        return '\n'.join(
-            '{}: {}'.format(
-                k.decode('utf-8', 'ignore'), v.decode('utf-8', 'ignore')
+        return "\n".join(
+            "{}: {}".format(
+                k.decode("utf-8", "ignore"), v.decode("utf-8", "ignore")
             )
             for k, v in get_all(x)
         )
 
     return Difference.from_text(
-        fn(path1), fn(path2), path1, path2, source='extended file attributes'
+        fn(path1), fn(path2), path1, path2, source="extended file attributes"
     )
 
 
 def compare_meta(path1, path2):
-    if Config().exclude_directory_metadata in ('yes', 'recursive'):
+    if Config().exclude_directory_metadata in ("yes", "recursive"):
         logger.debug(
             "Excluding directory metadata for paths (%s, %s)", path1, path2
         )
         return []
 
-    logger.debug('compare_meta(%r, %r)', path1, path2)
+    logger.debug("compare_meta(%r, %r)", path1, path2)
     differences = []
 
     # Don't run any commands if any of the paths do not exist
@@ -178,7 +178,7 @@ def compare_meta(path1, path2):
         lsattr2 = lsattr(path2)
         differences.append(
             Difference.from_text(
-                lsattr1, lsattr2, path1, path2, source='lsattr'
+                lsattr1, lsattr2, path1, path2, source="lsattr"
             )
         )
     except RequiredToolNotFound:
@@ -219,7 +219,7 @@ class FilesystemDirectory(Directory):
 
     @property
     def as_container(self):
-        if not hasattr(self, '_as_container'):
+        if not hasattr(self, "_as_container"):
             self._as_container = DirectoryContainer(self)
         return self._as_container
 
@@ -234,11 +234,11 @@ class FilesystemDirectory(Directory):
         differences = []
 
         listing_diff = Difference.from_text(
-            '\n'.join(list_files(self.path)),
-            '\n'.join(list_files(other.path)),
+            "\n".join(list_files(self.path)),
+            "\n".join(list_files(other.path)),
             self.path,
             other.path,
-            source='file list',
+            source="file list",
         )
         if listing_diff:
             differences.append(listing_diff)
@@ -259,7 +259,7 @@ class FilesystemDirectory(Directory):
 
 class DirectoryContainer(Container):
     def get_member_names(self):
-        return sorted(os.listdir(self.source.path or '.'))
+        return sorted(os.listdir(self.source.path or "."))
 
     def get_member(self, member_name):
         member_path = os.path.join(self.source.path, member_name)

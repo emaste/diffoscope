@@ -54,15 +54,15 @@ class ArContainer(LibarchiveContainer):
 
 
 class ArSymbolTableDumper(Command):
-    @tool_required('nm')
+    @tool_required("nm")
     def cmdline(self):
-        return ['nm', '-s', self.path]
+        return ["nm", "-s", self.path]
 
 
 class ArFile(File):
     DESCRIPTION = "ar(1) archives"
     CONTAINER_CLASSES = [ArContainer]
-    FILE_TYPE_RE = re.compile(r'\bar archive\b')
+    FILE_TYPE_RE = re.compile(r"\bar archive\b")
 
     def compare_details(self, other, source=None):
         return [

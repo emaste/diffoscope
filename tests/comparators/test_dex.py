@@ -31,8 +31,8 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from .test_java import javap_version
 
 
-dex1 = load_fixture('test1.dex')
-dex2 = load_fixture('test2.dex')
+dex1 = load_fixture("test1.dex")
+dex2 = load_fixture("test2.dex")
 
 
 def enjarify_version():
@@ -41,13 +41,13 @@ def enjarify_version():
     # virtualenvs and to match the behaviour of enjarify(1).
     if (
         subprocess.call(
-            ('python3', '-c', 'import enjarify.typeinference'),
+            ("python3", "-c", "import enjarify.typeinference"),
             stderr=subprocess.PIPE,
         )
         == 0
     ):
-        return '1.0.3'
-    return '1.0.2'
+        return "1.0.3"
+    return "1.0.2"
 
 
 def test_identification(dex1):
@@ -64,26 +64,26 @@ def differences(dex1, dex2):
     return dex1.compare(dex2).details
 
 
-@skip_unless_tools_exist('enjarify', 'zipinfo', 'javap')
-@skip_unless_tool_is_at_least('javap', javap_version, '9.0.4')
-@skip_unless_tool_is_at_least('enjarify', enjarify_version, '1.0.3')
+@skip_unless_tools_exist("enjarify", "zipinfo", "javap")
+@skip_unless_tool_is_at_least("javap", javap_version, "9.0.4")
+@skip_unless_tool_is_at_least("enjarify", enjarify_version, "1.0.3")
 def test_differences(differences):
-    assert differences[0].source1 == 'test1.jar'
-    assert differences[0].source2 == 'test2.jar'
+    assert differences[0].source1 == "test1.jar"
+    assert differences[0].source2 == "test2.jar"
     zipinfo = differences[0].details[0]
     classdiff = differences[0].details[1]
-    assert zipinfo.source1 == 'zipinfo -v {}'
-    assert zipinfo.source2 == 'zipinfo -v {}'
-    assert classdiff.source1 == 'com/example/MainActivity.class'
-    assert classdiff.source2 == 'com/example/MainActivity.class'
-    expected_diff = get_data('dex_expected_diffs')
+    assert zipinfo.source1 == "zipinfo -v {}"
+    assert zipinfo.source2 == "zipinfo -v {}"
+    assert classdiff.source1 == "com/example/MainActivity.class"
+    assert classdiff.source2 == "com/example/MainActivity.class"
+    expected_diff = get_data("dex_expected_diffs")
     found_diff = zipinfo.unified_diff + classdiff.details[0].unified_diff
     assert expected_diff == found_diff
 
 
-@skip_unless_tools_exist('enjarify', 'zipinfo', 'javap')
+@skip_unless_tools_exist("enjarify", "zipinfo", "javap")
 def test_compare_non_existing(monkeypatch, dex1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = dex1.compare(MissingFile('/nonexisting', dex1))
-    assert difference.source2 == '/nonexisting'
-    assert difference.details[-1].source2 == '/dev/null'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = dex1.compare(MissingFile("/nonexisting", dex1))
+    assert difference.source2 == "/nonexisting"
+    assert difference.details[-1].source2 == "/dev/null"

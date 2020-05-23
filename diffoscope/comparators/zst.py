@@ -39,13 +39,13 @@ class ZstContainer(Archive):
         pass
 
     def get_member_names(self):
-        return [self.get_compressed_content_name('.zst')]
+        return [self.get_compressed_content_name(".zst")]
 
-    @tool_required('zstd')
+    @tool_required("zstd")
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
-        logger.debug('zstd extracting to %s', dest_path)
-        with open(dest_path, 'wb') as fp:
+        logger.debug("zstd extracting to %s", dest_path)
+        with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["zstd", "-d", "-c", self.source.path],
                 shell=False,
@@ -58,4 +58,4 @@ class ZstContainer(Archive):
 class ZstFile(File):
     DESCRIPTION = "Zstandard compressed files"
     CONTAINER_CLASSES = [ZstContainer]
-    FILE_TYPE_RE = re.compile(r'^Zstandard compressed data')
+    FILE_TYPE_RE = re.compile(r"^Zstandard compressed data")

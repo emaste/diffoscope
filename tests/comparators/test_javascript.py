@@ -28,8 +28,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 
 
-javascript1 = load_fixture('test1.js')
-javascript2 = load_fixture('test2.js')
+javascript1 = load_fixture("test1.js")
+javascript2 = load_fixture("test2.js")
 
 
 def test_identification(javascript1):
@@ -46,15 +46,15 @@ def differences(javascript1, javascript2):
     return javascript1.compare(javascript2).details
 
 
-@skip_unless_tools_exist('js-beautify')
+@skip_unless_tools_exist("js-beautify")
 def test_diff(differences):
-    expected_diff = get_data('javascript_expected_diff')
+    expected_diff = get_data("javascript_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('js-beautify')
+@skip_unless_tools_exist("js-beautify")
 def test_compare_non_existing(monkeypatch, javascript1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = javascript1.compare(MissingFile('/nonexisting', javascript1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = javascript1.compare(MissingFile("/nonexisting", javascript1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0

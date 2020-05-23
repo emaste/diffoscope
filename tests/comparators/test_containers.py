@@ -28,14 +28,14 @@ from ..utils.tools import (
     skip_unless_file_version_is_at_least,
 )
 
-gzip1 = load_fixture('containers/a.tar.gz')
-gzip2 = load_fixture('containers/b.tar.gz')
+gzip1 = load_fixture("containers/a.tar.gz")
+gzip2 = load_fixture("containers/b.tar.gz")
 
-xz1 = load_fixture('containers/a.tar.xz')
-xz2 = load_fixture('containers/b.tar.xz')
+xz1 = load_fixture("containers/a.tar.xz")
+xz2 = load_fixture("containers/b.tar.xz")
 
-bzip1 = load_fixture('containers/a.tar.bz2')
-bzip2 = load_fixture('containers/b.tar.bz2')
+bzip1 = load_fixture("containers/a.tar.bz2")
+bzip2 = load_fixture("containers/b.tar.bz2")
 
 TYPES = "gzip bzip2 xz".split()
 
@@ -51,8 +51,8 @@ def set2(gzip2, bzip2, xz2):
 
 
 def expected_magic_diff(ext1, ext2):
-    meta1 = get_data('containers/magic_%s' % ext1)
-    meta2 = get_data('containers/magic_%s' % ext2)
+    meta1 = get_data("containers/magic_%s" % ext1)
+    meta2 = get_data("containers/magic_%s" % ext2)
     return "@@ -1 +1 @@\n" + "-" + meta1 + "+" + meta2
 
 
@@ -66,8 +66,8 @@ def expected_type_diff(ext1, ext2):
 # Compares same content files, but with different extensions
 
 
-@skip_unless_tools_exist('xz')
-@skip_unless_file_version_is_at_least('5.37')
+@skip_unless_tools_exist("xz")
+@skip_unless_file_version_is_at_least("5.37")
 def test_equal(set1):
     for x, y in itertools.product(TYPES, TYPES):
         diff = set1[x].compare(set1[y])
@@ -84,11 +84,11 @@ def test_equal(set1):
 # Compares different content files with different extensions
 
 
-@skip_unless_tools_exist('xz')
-@skip_unless_file_version_is_at_least('5.37')
+@skip_unless_tools_exist("xz")
+@skip_unless_file_version_is_at_least("5.37")
 def test_different(set1, set2):
     for x, y in itertools.product(TYPES, TYPES):
-        expected_diff = get_data('containers/different_files_expected_diff')
+        expected_diff = get_data("containers/different_files_expected_diff")
         differences = set1[x].compare(set2[y]).details
         if x == y:
             assert differences[0].details[1].unified_diff == expected_diff

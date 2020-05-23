@@ -25,8 +25,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
-pcap1 = load_fixture('test1.pcap')
-pcap2 = load_fixture('test2.pcap')
+pcap1 = load_fixture("test1.pcap")
+pcap2 = load_fixture("test2.pcap")
 
 
 def test_identification(pcap1):
@@ -43,12 +43,12 @@ def differences(pcap1, pcap2):
     return pcap1.compare(pcap2).details
 
 
-@skip_unless_tools_exist('tcpdump')
+@skip_unless_tools_exist("tcpdump")
 def test_diff(differences):
-    expected_diff = get_data('pcap_expected_diff')
+    expected_diff = get_data("pcap_expected_diff")
     assert differences[0].unified_diff[: 2 ** 13] == expected_diff[: 2 ** 13]
 
 
-@skip_unless_tools_exist('tcpdump')
+@skip_unless_tools_exist("tcpdump")
 def test_compare_non_existing(monkeypatch, pcap1):
     assert_non_existing(monkeypatch, pcap1, has_null_source=False)

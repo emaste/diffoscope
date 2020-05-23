@@ -33,28 +33,28 @@ def zst_fixture(prefix):
     @pytest.fixture
     def zstd(tmpdir):
         input_ = str(tmpdir.join(prefix))
-        output = str(tmpdir.join('{}.zst'.format(prefix)))
+        output = str(tmpdir.join("{}.zst".format(prefix)))
 
-        with open(input_, 'w') as f:
+        with open(input_, "w") as f:
             f.write(prefix)
 
-        subprocess.check_call(('zstd', input_))
+        subprocess.check_call(("zstd", input_))
 
         return specialize(FilesystemFile(output))
 
     return zstd
 
 
-zst1 = zst_fixture('test1')
-zst2 = zst_fixture('test2')
+zst1 = zst_fixture("test1")
+zst2 = zst_fixture("test2")
 
 
-@skip_unless_tools_exist('zstd')
+@skip_unless_tools_exist("zstd")
 def test_identification(zst1):
     assert isinstance(zst1, ZstFile)
 
 
-@skip_unless_tools_exist('zstd')
+@skip_unless_tools_exist("zstd")
 def test_no_differences(zst1):
     difference = zst1.compare(zst1)
     assert difference is None
@@ -65,7 +65,7 @@ def differences(zst1, zst2):
     return zst1.compare(zst2).details
 
 
-@skip_unless_tools_exist('zstd')
+@skip_unless_tools_exist("zstd")
 def test_content_source(differences):
-    assert differences[0].source1 == 'test1'
-    assert differences[0].source2 == 'test2'
+    assert differences[0].source1 == "test1"
+    assert differences[0].source2 == "test2"

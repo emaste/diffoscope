@@ -38,13 +38,13 @@ from .config import Config
 DIFF_CHUNK = 4096
 
 logger = logging.getLogger(__name__)
-re_diff_change = re.compile(r'^([+-@]).*', re.MULTILINE)
+re_diff_change = re.compile(r"^([+-@]).*", re.MULTILINE)
 
 
 class DiffParser:
     RANGE_RE = re.compile(
         # example: '@@ -26814,9 +26814,8 @@'
-        rb'''
+        rb"""
           ^
             @@\s+
               -
@@ -54,7 +54,7 @@ class DiffParser:
               (?P<start2>\d+)(,(?P<len2>\d+))?
             \s+@@
           $
-        ''',
+        """,
         re.VERBOSE,
     )
 
@@ -73,14 +73,14 @@ class DiffParser:
 
     @property
     def diff(self):
-        return self._diff.getvalue().decode('UTF-8', errors='replace')
+        return self._diff.getvalue().decode("UTF-8", errors="replace")
 
     @property
     def success(self):
         return self._success
 
     def parse(self):
-        for line in self._output.split(b'\n'):
+        for line in self._output.split(b"\n"):
             self._action = self._action(line)
 
         self._action = None
@@ -90,24 +90,24 @@ class DiffParser:
         if not line:
             return None
 
-        if line.startswith(b'---'):
+        if line.startswith(b"---"):
             return self.read_headers
 
-        if line.startswith(b'+++'):
+        if line.startswith(b"+++"):
             return self.read_headers
 
         found = DiffParser.RANGE_RE.match(line)
 
         if not found:
-            raise ValueError('Unable to parse diff headers: %r' % line)
+            raise ValueError("Unable to parse diff headers: %r" % line)
 
-        self._diff.write(line + b'\n')
-        if found.group('len1'):
-            self._remaining_hunk_lines = int(found.group('len1'))
+        self._diff.write(line + b"\n")
+        if found.group("len1"):
+            self._remaining_hunk_lines = int(found.group("len1"))
         else:
             self._remaining_hunk_lines = 1
-        if found.group('len2'):
-            self._remaining_hunk_lines += int(found.group('len2'))
+        if found.group("len2"):
+            self._remaining_hunk_lines += int(found.group("len2"))
         else:
             self._remaining_hunk_lines += 1
 
@@ -119,13 +119,13 @@ class DiffParser:
         if not line:
             return None
 
-        if line[:1] == b' ':
+        if line[:1] == b" ":
             self._remaining_hunk_lines -= 2
-        elif line[:1] == b'+':
+        elif line[:1] == b"+":
             self._remaining_hunk_lines -= 1
-        elif line[:1] == b'-':
+        elif line[:1] == b"-":
             self._remaining_hunk_lines -= 1
-        elif line[:1] == b'\\':
+        elif line[:1] == b"\\":
             # When both files don't end with \n, do not show it as a difference
             if self._end_nl is None:
                 end_nl1 = self._end_nl_q1.get()
@@ -136,11 +136,11 @@ class DiffParser:
         elif self._remaining_hunk_lines == 0:
             return self.read_headers(line)
         else:
-            raise ValueError('Unable to parse diff hunk: %r' % line)
+            raise ValueError("Unable to parse diff hunk: %r" % line)
 
-        self._diff.write(line + b'\n')
+        self._diff.write(line + b"\n")
 
-        if line[:1] in (b'-', b'+'):
+        if line[:1] in (b"-", b"+"):
             if line[:1] == self._direction:
                 self._block_len += 1
             else:
@@ -160,7 +160,7 @@ class DiffParser:
             removed = self._block_len - Config().max_diff_block_lines_saved
             if removed:
                 self._diff.write(
-                    b'%s[ %d lines removed ]\n' % (self._direction, removed)
+                    b"%s[ %d lines removed ]\n" % (self._direction, removed)
                 )
             return self.read_hunk(line)
 
@@ -170,11 +170,11 @@ class DiffParser:
         return self.skip_block
 
 
-@tool_required('diff')
+@tool_required("diff")
 def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
-    cmd = [get_tool_name('diff'), '-aU7', fifo1, fifo2]
+    cmd = [get_tool_name("diff"), "-aU7", fifo1, fifo2]
 
-    logger.debug("Running %s", ' '.join(cmd))
+    logger.debug("Running %s", " ".join(cmd))
 
     p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
@@ -183,14 +183,14 @@ def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
 
     logger.debug(
         "%s: returncode %d, parsed %s",
-        ' '.join(cmd),
+        " ".join(cmd),
         p.returncode,
         parser.success,
     )
 
     if not parser.success and p.returncode not in (0, 1):
         raise subprocess.CalledProcessError(
-            p.returncode, cmd, output=parser.diff.encode('utf-8')
+            p.returncode, cmd, output=parser.diff.encode("utf-8")
         )
 
     if p.returncode == 0:
@@ -235,7 +235,7 @@ class FIFOFeeder(threading.Thread):
             # Now clear the fd's nonblocking flag to let writes block normally.
             fcntl.fcntl(fd, fcntl.F_SETFL, 0)
 
-            with open(fd, 'wb') as fifo:
+            with open(fd, "wb") as fifo:
                 # The queue works around a unified diff limitation: if there's
                 # no newlines in both don't make it a difference
                 end_nl = self.feeder(fifo)
@@ -304,13 +304,13 @@ def make_feeder_from_raw_reader(in_file, filter=None):
                 h.update(out)
             if line_count < max_lines:
                 out_file.write(out)
-            end_nl = buf[-1] == '\n'
+            end_nl = buf[-1] == "\n"
 
         if h and line_count >= max_lines:
             out_file.write(
                 "[ Too much input for diff (SHA: {}) ]\n".format(
                     h.hexdigest()
-                ).encode('utf-8')
+                ).encode("utf-8")
             )
             end_nl = True
 
@@ -322,8 +322,8 @@ def make_feeder_from_raw_reader(in_file, filter=None):
 def diff(feeder1, feeder2):
     tmpdir = get_temporary_directory().name
 
-    fifo1_path = os.path.join(tmpdir, 'fifo1')
-    fifo2_path = os.path.join(tmpdir, 'fifo2')
+    fifo1_path = os.path.join(tmpdir, "fifo1")
+    fifo2_path = os.path.join(tmpdir, "fifo2")
     with FIFOFeeder(feeder1, fifo1_path) as fifo1, FIFOFeeder(
         feeder2, fifo2_path
     ) as fifo2:
@@ -345,38 +345,38 @@ def reverse_unified_diff(diff):
     # XXX - should move to just use plain bytes nearly everywhere until ready
     # to print instead of using strings internally as well.
     for line in diff_split_lines(diff):
-        line = line.encode('utf-8', errors='replace')
+        line = line.encode("utf-8", errors="replace")
         assert isinstance(line, bytes)
         found = DiffParser.RANGE_RE.match(line)
 
         if found:
-            before = found.group('start2')
-            if found.group('len2') is not None:
-                before += b',' + found.group('len2')
+            before = found.group("start2")
+            if found.group("len2") is not None:
+                before += b"," + found.group("len2")
 
-            after = found.group('start1')
-            if found.group('len1') is not None:
-                after += b',' + found.group('len1')
+            after = found.group("start1")
+            if found.group("len1") is not None:
+                after += b"," + found.group("len1")
 
-            res.append(b'@@ -%s +%s @@\n' % (before, after))
-        elif line.startswith(b'-'):
-            res.append(b'+')
+            res.append(b"@@ -%s +%s @@\n" % (before, after))
+        elif line.startswith(b"-"):
+            res.append(b"+")
             res.append(line[1:])
-        elif line.startswith(b'+'):
-            res.append(b'-')
+        elif line.startswith(b"+"):
+            res.append(b"-")
             res.append(line[1:])
         else:
             res.append(line)
-    return b''.join(res).decode('utf-8', errors='replace')
+    return b"".join(res).decode("utf-8", errors="replace")
 
 
 def color_unified_diff(diff):
-    RESET = '\033[0m'
-    RED, GREEN, CYAN = '\033[31m', '\033[32m', '\033[0;36m'
+    RESET = "\033[0m"
+    RED, GREEN, CYAN = "\033[31m", "\033[32m", "\033[0;36m"
 
     def repl(m):
-        return '{}{}{}'.format(
-            {'-': RED, '@': CYAN, '+': GREEN}[m.group(1)], m.group(0), RESET
+        return "{}{}{}".format(
+            {"-": RED, "@": CYAN, "+": GREEN}[m.group(1)], m.group(0), RESET
         )
 
     return re_diff_change.sub(repl, diff)
@@ -389,7 +389,7 @@ MAX_WF_SIZE = 1024  # any higher, and linediff takes >1 second and >200MB RAM
 
 def _linediff_sane(x):
     # turn non-printable chars into "."
-    return "." if ord(x) < 32 and x not in '\t\n' else x
+    return "." if ord(x) < 32 and x not in "\t\n" else x
 
 
 def diffinput_truncate(s, sz):
@@ -398,7 +398,7 @@ def diffinput_truncate(s, sz):
         s = s[
             :sz
         ] + "[ ... truncated by diffoscope; len: {}, SHA: {} ... ]".format(
-            len(s[sz:]), hashlib.sha256(s[sz:].encode('utf-8')).hexdigest()
+            len(s[sz:]), hashlib.sha256(s[sz:].encode("utf-8")).hexdigest()
         )
     return s
 
@@ -423,20 +423,20 @@ def linediff(s, t, diffon, diffoff):
         sanev = "".join(_linediff_sane(c) for c in v)
         return (diffon + sanev + diffoff) if k else sanev
 
-    s1 = ''.join(to_string(*p) for p in l1)
-    t1 = ''.join(to_string(*p) for p in l2)
+    s1 = "".join(to_string(*p) for p in l1)
+    t1 = "".join(to_string(*p) for p in l2)
     return prefix + s1 + suffix, prefix + t1 + suffix
 
 
 def linediff_wagnerfischer(s, t):
-    '''
+    """
     Line diff algorithm, originally from diff2html.
 
     https://en.wikipedia.org/wiki/Wagner%E2%80%93Fischer_algorithm
 
     Finds the minimum (levenshtein) edit distance between two strings, but has
     quadratic performance O(m*n).
-    '''
+    """
     m, n = len(s), len(t)
     d = [[(0, 0) for i in range(n + 1)] for i in range(m + 1)]
 
@@ -564,8 +564,8 @@ class SideBySideDiff:
             type_name = "deleted"
         elif (
             orig1 == orig2
-            and not s1.endswith('lines removed ]')
-            and not s2.endswith('lines removed ]')
+            and not s1.endswith("lines removed ]")
+            and not s2.endswith("lines removed ]")
         ):
             type_name = "unmodified"
         else:
@@ -612,11 +612,11 @@ class SideBySideDiff:
 
         for l in diff_split_lines(self.unified_diff, False):
             self._bytes_processed += len(l) + 1
-            m = re.match(r'^--- ([^\s]*)', l)
+            m = re.match(r"^--- ([^\s]*)", l)
             if m:
                 yield from self.empty_buffer()
                 continue
-            m = re.match(r'^\+\+\+ ([^\s]*)', l)
+            m = re.match(r"^\+\+\+ ([^\s]*)", l)
             if m:
                 yield from self.empty_buffer()
                 continue
@@ -640,7 +640,7 @@ class SideBySideDiff:
                 )
                 continue
 
-            if re.match(r'^\[', l):
+            if re.match(r"^\[", l):
                 yield from self.empty_buffer()
                 yield "C", l
 
@@ -648,11 +648,11 @@ class SideBySideDiff:
                 if self.hunk_size2 == 0:
                     self.buf[-1] = (
                         self.buf[-1][0],
-                        self.buf[-1][1] + '\n' + l[2:],
+                        self.buf[-1][1] + "\n" + l[2:],
                     )
                 else:
                     self.buf[-1] = (
-                        self.buf[-1][0] + '\n' + l[2:],
+                        self.buf[-1][0] + "\n" + l[2:],
                         self.buf[-1][1],
                     )
                 continue

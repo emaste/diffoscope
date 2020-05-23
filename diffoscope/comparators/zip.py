@@ -42,30 +42,30 @@ class Zipinfo(Command):
     # which are safe to ignore.
     VALID_RETURNCODES = {0, 1, 2}
 
-    re_strip_path = re.compile(r'^(warning|error) \[[^\]]+\]:\s+(.*)$')
+    re_strip_path = re.compile(r"^(warning|error) \[[^\]]+\]:\s+(.*)$")
 
-    @tool_required('zipinfo')
+    @tool_required("zipinfo")
     def cmdline(self):
-        return ['zipinfo', self.path]
+        return ["zipinfo", self.path]
 
     def filter(self, line):
         # we don't care about the archive file path
-        if line.startswith(b'Archive:'):
-            return b''
+        if line.startswith(b"Archive:"):
+            return b""
 
         # Strip paths from errors and warnings
         # eg: "warning [/full/path]: 472 extra bytes at beginning or within zipfile"
-        m = self.re_strip_path.match(line.decode('utf-8'))
+        m = self.re_strip_path.match(line.decode("utf-8"))
         if m is not None:
-            return '{}: {}\n'.format(m.group(1), m.group(2)).encode('utf-8')
+            return "{}: {}\n".format(m.group(1), m.group(2)).encode("utf-8")
 
         return line
 
 
 class ZipinfoVerbose(Zipinfo):
-    @tool_required('zipinfo')
+    @tool_required("zipinfo")
     def cmdline(self):
-        return ['zipinfo', '-v', self.path]
+        return ["zipinfo", "-v", self.path]
 
 
 class Zipnote(Command):
@@ -77,13 +77,13 @@ class Zipnote(Command):
 
         self.flag = False
 
-    @tool_required('zipnote')
+    @tool_required("zipnote")
     def cmdline(self):
         path = self.path
-        if not path.endswith('.zip'):
-            path = get_named_temporary_file(suffix='.zip').name
+        if not path.endswith(".zip"):
+            path = get_named_temporary_file(suffix=".zip").name
             shutil.copy(self.path, path)
-        return ['zipnote', path]
+        return ["zipnote", path]
 
     def filter(self, line):
         """
@@ -96,26 +96,26 @@ class Zipnote(Command):
             goodbye
         """
 
-        if line == b'@ (zip file comment below this line)\n':
+        if line == b"@ (zip file comment below this line)\n":
             self.flag = True
-            return b'Zip file comment: '
+            return b"Zip file comment: "
 
-        if line == b'@ (comment above this line)\n':
+        if line == b"@ (comment above this line)\n":
             self.flag = False
-            return b'\n\n'  # spacer
+            return b"\n\n"  # spacer
 
-        if line.startswith(b'@ '):
+        if line.startswith(b"@ "):
             filename = line[2:-1].decode()
             self.flag = True
             return "Filename: {}\nComment: ".format(filename).encode()
 
-        return line[:-1] if self.flag else b''
+        return line[:-1] if self.flag else b""
 
 
 class BsdtarVerbose(Command):
-    @tool_required('bsdtar')
+    @tool_required("bsdtar")
     def cmdline(self):
-        return ['bsdtar', '-tvf', self.path]
+        return ["bsdtar", "-tvf", self.path]
 
 
 def zipinfo_differences(file, other):
@@ -154,7 +154,7 @@ class ZipDirectory(Directory, ArchiveMember):
 
 class ZipContainer(Archive):
     def open_archive(self):
-        return zipfile.ZipFile(self.source.path, 'r')
+        return zipfile.ZipFile(self.source.path, "r")
 
     def close_archive(self):
         self.archive.close()
@@ -168,11 +168,11 @@ class ZipContainer(Archive):
         # any weird character so we can get to the bytes.
         targetpath = os.path.join(
             dest_dir, os.path.basename(member_name)
-        ).encode(sys.getfilesystemencoding(), errors='replace')
+        ).encode(sys.getfilesystemencoding(), errors="replace")
 
         try:
             with self.archive.open(member_name) as source, open(
-                targetpath, 'wb'
+                targetpath, "wb"
             ) as target:
                 shutil.copyfileobj(source, target)
             return targetpath.decode(sys.getfilesystemencoding())
@@ -185,21 +185,21 @@ class ZipContainer(Archive):
 
     def get_member(self, member_name):
         zipinfo = self.archive.getinfo(member_name)
-        if zipinfo.filename[-1] == '/':
+        if zipinfo.filename[-1] == "/":
             return ZipDirectory(self, member_name)
         return ArchiveMember(self, member_name)
 
 
 class ZipFile(File):
-    DESCRIPTION = 'ZIP archives'
+    DESCRIPTION = "ZIP archives"
     CONTAINER_CLASSES = [ZipContainer]
     FILE_TYPE_RE = re.compile(
-        r'^((?:iOS App )?Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
+        r"^((?:iOS App )?Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b"
     )
 
     def compare_details(self, other, source=None):
         differences = []
-        if Config().exclude_directory_metadata != 'recursive':
+        if Config().exclude_directory_metadata != "recursive":
             differences.extend(zipinfo_differences(self, other))
         differences.append(
             Difference.from_command(Zipnote, self.path, other.path)
@@ -228,7 +228,7 @@ class MozillaZipContainer(ZipContainer):
 
 
 class MozillaZipFile(ZipFile):
-    DESCRIPTION = 'Mozilla-optimized .ZIP archives'
+    DESCRIPTION = "Mozilla-optimized .ZIP archives"
     CONTAINER_CLASSES = [MozillaZipContainer]
 
     @classmethod
@@ -236,15 +236,15 @@ class MozillaZipFile(ZipFile):
         # Mozilla-optimized ZIPs start with a 32-bit little endian integer
         # indicating the amount of data to preload, followed by the ZIP
         # central directory (with a PK\x01\x02 signature)
-        return file.file_header[4:8] == b'PK\x01\x02'
+        return file.file_header[4:8] == b"PK\x01\x02"
 
 
 class JmodJavaModule(ZipFile):
-    DESCRIPTION = 'Java .jmod modules'
-    FILE_TYPE_RE = re.compile(r'^(Zip archive data|Java jmod module)')
+    DESCRIPTION = "Java .jmod modules"
+    FILE_TYPE_RE = re.compile(r"^(Zip archive data|Java jmod module)")
 
     @classmethod
     def recognizes(cls, file):
         # Not all versions of file(1) support the detection of these
         # modules yet so we perform our own manual check for a "JM" prefix.
-        return file.file_header[:2] == b'JM'
+        return file.file_header[:2] == b"JM"

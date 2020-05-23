@@ -29,20 +29,20 @@ from .utils.file import File
 try:
     import jsondiff
 except ImportError:  # noqa
-    python_module_missing('jsondiff')
+    python_module_missing("jsondiff")
     jsondiff = None
 
 
 class JSONFile(File):
     DESCRIPTION = "JSON files"
-    FILE_TYPE_RE = re.compile(r'JSON data')  # Requires file 5.35+
+    FILE_TYPE_RE = re.compile(r"JSON data")  # Requires file 5.35+
 
     @classmethod
     def recognizes(cls, file):
-        with open(file.path, 'rb') as f:
+        with open(file.path, "rb") as f:
             try:
                 file.parsed = json.loads(
-                    f.read().decode('utf-8', errors='ignore'),
+                    f.read().decode("utf-8", errors="ignore"),
                     object_pairs_hook=collections.OrderedDict,
                 )
             except ValueError:
@@ -74,8 +74,8 @@ class JSONFile(File):
         if jsondiff is None:
             return
 
-        a = getattr(self, 'parsed', {})
-        b = getattr(other, 'parsed', {})
+        a = getattr(self, "parsed", {})
+        b = getattr(other, "parsed", {})
 
         try:
             diff = {repr(x): y for x, y in jsondiff.diff(a, b).items()}
@@ -94,6 +94,6 @@ class JSONFile(File):
 
     @staticmethod
     def dumps(file, sort_keys=True):
-        if not hasattr(file, 'parsed'):
+        if not hasattr(file, "parsed"):
             return ""
         return json.dumps(file.parsed, indent=4, sort_keys=sort_keys)

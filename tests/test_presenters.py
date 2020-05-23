@@ -42,18 +42,18 @@ re_html = re.compile(
 )
 
 
-def run(capsys, *args, pair=('test1.tar', 'test2.tar')):
+def run(capsys, *args, pair=("test1.tar", "test2.tar")):
     with pytest.raises(SystemExit) as exc, cwd_data():
         main(args + pair)
     out, err = capsys.readouterr()
 
-    assert err == ''
+    assert err == ""
     assert exc.value.code == 1
     return out
 
 
 def run_images(capsys, *args):
-    return run(capsys, *args, pair=('test1.png', 'test2.png'))
+    return run(capsys, *args, pair=("test1.png", "test2.png"))
 
 
 def extract_body(val):
@@ -62,7 +62,7 @@ def extract_body(val):
     versions, etc.
     """
 
-    result = re_html.search(val).group('body')
+    result = re_html.search(val).group("body")
 
     # Ensure that we extracted something
     assert len(result) > 0
@@ -72,8 +72,8 @@ def extract_body(val):
 
 def expand_collapsed_json(tmpdir, name):
     diff = load_diff_from_path(data(name + ".collapsed-diff.json"))
-    diff_path = str(tmpdir.join(name + '.diff.json'))
-    with open(diff_path, 'w') as fp:
+    diff_path = str(tmpdir.join(name + ".diff.json"))
+    with open(diff_path, "w") as fp:
         JSONPresenter(lambda x: print(x, file=fp)).start(
             diff.fmap(diff_expand)
         )
@@ -83,121 +83,121 @@ def expand_collapsed_json(tmpdir, name):
 def test_text_option_is_default(capsys):
     out = run(capsys)
 
-    assert out == get_data('output.txt')
+    assert out == get_data("output.txt")
 
 
-@skip_unless_file_version_is_at_least('5.37')
+@skip_unless_file_version_is_at_least("5.37")
 def test_text_proper_indentation(capsys):
-    out = run(capsys, pair=('archive1.tar', 'archive2.tar'))
+    out = run(capsys, pair=("archive1.tar", "archive2.tar"))
 
-    assert out == get_data('archive12.diff.txt')
+    assert out == get_data("archive12.diff.txt")
 
 
 def test_text_option_color(capsys):
-    out = run(capsys, '--text-color=always')
+    out = run(capsys, "--text-color=always")
 
-    assert out == get_data('output.colored.txt')
+    assert out == get_data("output.colored.txt")
 
 
 def test_text_option_with_file(tmpdir, capsys):
-    report_path = str(tmpdir.join('report.txt'))
+    report_path = str(tmpdir.join("report.txt"))
 
-    out = run(capsys, '--text', report_path)
+    out = run(capsys, "--text", report_path)
 
-    assert out == ''
+    assert out == ""
 
-    with open(report_path, 'r', encoding='utf-8') as f:
-        assert f.read() == get_data('output.txt')
+    with open(report_path, "r", encoding="utf-8") as f:
+        assert f.read() == get_data("output.txt")
 
 
 def test_text_option_with_stdout(capsys):
-    out = run(capsys, '--text', '-')
+    out = run(capsys, "--text", "-")
 
-    assert out == get_data('output.txt')
+    assert out == get_data("output.txt")
 
 
 def test_markdown(capsys):
-    out = run(capsys, '--markdown', '-')
+    out = run(capsys, "--markdown", "-")
 
-    assert out == get_data('output.md')
+    assert out == get_data("output.md")
 
 
 def test_restructuredtext(capsys):
-    out = run(capsys, '--restructured-text', '-')
+    out = run(capsys, "--restructured-text", "-")
 
-    assert out == get_data('output.rst')
+    assert out == get_data("output.rst")
 
 
 def test_json(capsys):
-    out = run(capsys, '--json', '-')
+    out = run(capsys, "--json", "-")
 
-    assert out == get_data('output.json')
+    assert out == get_data("output.json")
 
 
 def test_no_report_option(capsys):
     out = run(capsys)
 
-    assert out == get_data('output.txt')
+    assert out == get_data("output.txt")
 
 
 def test_html_option_with_file(tmpdir, capsys):
-    report_path = str(tmpdir.join('report.html'))
+    report_path = str(tmpdir.join("report.html"))
 
-    out = run(capsys, '--html', report_path)
+    out = run(capsys, "--html", report_path)
 
-    assert out == ''
-    with open(report_path, 'r', encoding='utf-8') as f:
+    assert out == ""
+    with open(report_path, "r", encoding="utf-8") as f:
         body = extract_body(f.read())
         assert body.count('div class="difference"') == 4
 
 
-@skip_unless_tools_exist('compare', 'convert', 'sng')
+@skip_unless_tools_exist("compare", "convert", "sng")
 def test_html_visuals(tmpdir, capsys):
-    report_path = str(tmpdir.join('report.html'))
+    report_path = str(tmpdir.join("report.html"))
 
-    out = run_images(capsys, '--html', report_path)
+    out = run_images(capsys, "--html", report_path)
 
-    assert out == ''
-    body = extract_body(open(report_path, 'r', encoding='utf-8').read())
+    assert out == ""
+    body = extract_body(open(report_path, "r", encoding="utf-8").read())
     assert '<img src="data:image/png;base64' in body
     assert '<img src="data:image/gif;base64' in body
 
 
 def test_htmldir_option(tmpdir, capsys):
-    html_dir = os.path.join(str(tmpdir), 'target')
+    html_dir = os.path.join(str(tmpdir), "target")
 
-    out = run(capsys, '--html-dir', html_dir, '--jquery', 'disable')
+    out = run(capsys, "--html-dir", html_dir, "--jquery", "disable")
 
-    assert out == ''
+    assert out == ""
     assert os.path.isdir(html_dir)
     with open(
-        os.path.join(html_dir, 'index.html'), 'r', encoding='utf-8'
+        os.path.join(html_dir, "index.html"), "r", encoding="utf-8"
     ) as f:
         body = extract_body(f.read())
         assert body.count('div class="difference"') == 4
 
 
 def test_html_option_with_stdout(capsys):
-    body = extract_body(run(capsys, '--html', '-'))
+    body = extract_body(run(capsys, "--html", "-"))
 
     assert body.count('div class="difference"') == 4
 
 
 def test_html_regression_875281(tmpdir, capsys):
-    diff_path = expand_collapsed_json(tmpdir, 'debian-bug-875281')
-    report_path = str(tmpdir.join('report.html'))
+    diff_path = expand_collapsed_json(tmpdir, "debian-bug-875281")
+    report_path = str(tmpdir.join("report.html"))
     out = run(
         capsys,
-        '--html',
+        "--html",
         report_path,
-        '--max-page-size=5000',
+        "--max-page-size=5000",
         pair=(diff_path,),
     )
-    assert out == ''
+    assert out == ""
 
-    with open(report_path, 'r', encoding='utf-8') as f:
+    with open(report_path, "r", encoding="utf-8") as f:
         assert extract_body(f.read()) == get_data(
-            'output_regression_875281.html'
+            "output_regression_875281.html"
         )
 
 
@@ -221,16 +221,16 @@ def test_partial_string():
     a, b = object(), object()
     tmpl = PartialString("{0} {1}", a, b)
     assert tmpl.holes == (a, b)
-    assert tmpl.format({a: "Hello,", b: "World!"}) == 'Hello, World!'
-    assert tmpl.pformat({a: "Hello,"}) == PartialString('Hello, {0}', b)
-    assert tmpl.pformat({b: "World!"}) == PartialString('{0} World!', a)
+    assert tmpl.format({a: "Hello,", b: "World!"}) == "Hello, World!"
+    assert tmpl.pformat({a: "Hello,"}) == PartialString("Hello, {0}", b)
+    assert tmpl.pformat({b: "World!"}) == PartialString("{0} World!", a)
     assert tmpl.base_len, tmpl.num_holes == (1, 2)
     assert tmpl.size(hole_size=33) == 67
-    assert tmpl.pformat({a: PartialString('{0}', b)}) == PartialString(
-        '{0} {0}', b
+    assert tmpl.pformat({a: PartialString("{0}", b)}) == PartialString(
+        "{0} {0}", b
     )
-    assert tmpl.pformat({a: tmpl}) == PartialString('{0} {1} {1}', a, b)
-    assert tmpl.pformat({b: tmpl}) == PartialString('{0} {0} {1}', a, b)
+    assert tmpl.pformat({a: tmpl}) == PartialString("{0} {1} {1}", a, b)
+    assert tmpl.pformat({b: tmpl}) == PartialString("{0} {0} {1}", a, b)
     PartialString("{1}", a, b)
     with pytest.raises(IndexError):
         PartialString("{0} {1} {2}", a, b)
@@ -244,7 +244,7 @@ def test_partial_string_cont():
     key = t.holes
     assert (
         t.format({key[0]: "line1", key[1]: "line2", key[2]: "line3"})
-        == 'x: line1\ny: line2\nz: line3\n'
+        == "x: line1\ny: line2\nz: line3\n"
     )
     assert t.size(hole_size=5) == 27
 
@@ -252,7 +252,7 @@ def test_partial_string_cont():
 def test_partial_string_numl():
     tmpl = PartialString.numl("{0} {1} {2}", 2, object())
     assert tmpl.holes[:2] == (0, 1)
-    assert tmpl.pformatl("(1)", "(2)", "(o)") == PartialString('(1) (2) (o)')
+    assert tmpl.pformatl("(1)", "(2)", "(o)") == PartialString("(1) (2) (o)")
 
 
 def test_partial_string_escape():
@@ -260,7 +260,7 @@ def test_partial_string_escape():
         "find {0} -name {1} " + PartialString.escape(r"-exec ls -la {} \;"), 2
     )
     assert tmpl == PartialString(
-        'find {0} -name {1} -exec ls -la {{}} \\;', *tmpl.holes
+        "find {0} -name {1} -exec ls -la {{}} \\;", *tmpl.holes
     )
     assert tmpl.size() == 33
     assert tmpl.size(4) == 39
@@ -269,11 +269,11 @@ def test_partial_string_escape():
     ).pformat({2: "{}"})
 
     assert tmpl.pformatl("my{}path", "my{}file") == PartialString(
-        'find my{{}}path -name my{{}}file -exec ls -la {{}} \\;'
+        "find my{{}}path -name my{{}}file -exec ls -la {{}} \\;"
     )
     assert (
         tmpl.formatl("my{}path", "my{}file")
-        == 'find my{}path -name my{}file -exec ls -la {} \\;'
+        == "find my{}path -name my{}file -exec ls -la {} \\;"
     )
 
     esc = PartialString("{{}} {0}", None)

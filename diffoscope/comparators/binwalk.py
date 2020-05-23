@@ -36,14 +36,14 @@ except ImportError:
 try:
     import binwalk
 except ImportError:
-    python_module_missing('rpm')
+    python_module_missing("rpm")
     binwalk = None
 else:
     # Disable binwalk's own user configuration for predictable results and to
     # ensure it does not create (!) unnecessary directories, etc. (re. #903444)
     def fn(self):
-        if not hasattr(fn, '_temp_dir'):
-            fn._temp_dir = get_temporary_directory('binwalk').name
+        if not hasattr(fn, "_temp_dir"):
+            fn._temp_dir = get_temporary_directory("binwalk").name
         return fn._temp_dir
 
     binwalk.core.settings.Settings._get_user_config_dir = fn
@@ -66,7 +66,7 @@ class BinwalkFileContainer(Archive):
 
 
 class BinwalkFile(File):
-    FILE_TYPE_RE = re.compile(r'\bcpio archive\b')
+    FILE_TYPE_RE = re.compile(r"\bcpio archive\b")
     CONTAINER_CLASSES = [BinwalkFileContainer]
 
     @classmethod
@@ -87,12 +87,12 @@ class BinwalkFile(File):
         if isinstance(file.container, cls.CONTAINER_CLASSES[0]):
             return False
 
-        unpacked = get_temporary_directory(prefix='binwalk')
+        unpacked = get_temporary_directory(prefix="binwalk")
         logger.debug("Extracting %s to %s", file.path, unpacked.name)
 
         binwalk.scan(
             file.path,
-            dd='cpio:cpio',
+            dd="cpio:cpio",
             carve=True,
             quiet=True,
             signature=True,
@@ -100,11 +100,11 @@ class BinwalkFile(File):
         )
 
         members = {
-            '{} file embedded at offset {}'.format(
+            "{} file embedded at offset {}".format(
                 os.path.splitext(x)[1],
                 os.path.basename(os.path.splitext(x)[0]),
             ): x
-            for x in glob.glob(os.path.join(unpacked.name, '*/*'))
+            for x in glob.glob(os.path.join(unpacked.name, "*/*"))
         }
 
         logger.debug("Found %d embedded member(s)", len(members))

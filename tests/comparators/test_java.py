@@ -29,16 +29,16 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 
 
-class1 = load_fixture('Test1.class')
-class2 = load_fixture('Test2.class')
+class1 = load_fixture("Test1.class")
+class2 = load_fixture("Test2.class")
 
 
 def javap_version():
     try:
-        out = subprocess.check_output(['javap', '-version'])
+        out = subprocess.check_output(["javap", "-version"])
     except subprocess.CalledProcessError as e:
         out = e.output
-    return out.decode('UTF-8').strip()
+    return out.decode("UTF-8").strip()
 
 
 def test_identification(class1):
@@ -52,13 +52,13 @@ def test_no_differences(class1):
 
 @pytest.fixture
 def differences_procyon(monkeypatch, class1, class2):
-    monkeypatch.setattr(class1, 'decompilers', [ProcyonDecompiler])
+    monkeypatch.setattr(class1, "decompilers", [ProcyonDecompiler])
     return class1.compare(class2).details
 
 
 @pytest.fixture
 def differences_javap(monkeypatch, class1, class2):
-    monkeypatch.setattr(class1, 'decompilers', [Javap])
+    monkeypatch.setattr(class1, "decompilers", [Javap])
     return class1.compare(class2).details
 
 
@@ -68,28 +68,28 @@ def diff(differences, expected_diff_file):
 
 
 def compare_non_existing(monkeypatch, class1, decompiler):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    monkeypatch.setattr(class1, 'decompilers', [decompiler])
-    difference = class1.compare(MissingFile('/nonexisting', class1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    monkeypatch.setattr(class1, "decompilers", [decompiler])
+    difference = class1.compare(MissingFile("/nonexisting", class1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0
 
 
-@skip_unless_tools_exist('procyon')
+@skip_unless_tools_exist("procyon")
 def test_diff_procyon(differences_procyon):
-    diff(differences_procyon, 'procyon_class_expected_diff')
+    diff(differences_procyon, "procyon_class_expected_diff")
 
 
-@skip_unless_tool_is_at_least('javap', javap_version, '9.0.4')
+@skip_unless_tool_is_at_least("javap", javap_version, "9.0.4")
 def test_diff_javap(differences_javap):
-    diff(differences_javap, 'javap_class_expected_diff')
+    diff(differences_javap, "javap_class_expected_diff")
 
 
-@skip_unless_tools_exist('procyon')
+@skip_unless_tools_exist("procyon")
 def test_compare_non_existing_procyon(monkeypatch, class1):
     compare_non_existing(monkeypatch, class1, ProcyonDecompiler)
 
 
-@skip_unless_tools_exist('javap')
+@skip_unless_tools_exist("javap")
 def test_compare_non_existing_javap(monkeypatch, class1):
     compare_non_existing(monkeypatch, class1, Javap)

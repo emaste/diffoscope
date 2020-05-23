@@ -56,7 +56,7 @@ def perform_fuzzy_matching(members1, members2):
             comparisons.sort(key=operator.itemgetter(0))
             score, name2 = comparisons[0]
             logger.debug(
-                'fuzzy top match %s %s: %d difference score',
+                "fuzzy top match %s %s: %d difference score",
                 name1,
                 name2,
                 score,

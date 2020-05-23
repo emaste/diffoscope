@@ -30,9 +30,9 @@ from .missing_file import MissingFile
 
 class GnumericFile(File):
     DESCRIPTION = "Gnumeric spreadsheets"
-    FILE_EXTENSION_SUFFIX = '.gnumeric'
+    FILE_EXTENSION_SUFFIX = ".gnumeric"
 
-    @tool_required('ssconvert')
+    @tool_required("ssconvert")
     def compare_details(self, other, source=None):
         if isinstance(other, MissingFile):
             return [
@@ -50,7 +50,7 @@ class GnumericFile(File):
                 self.dump(other),
                 self.name,
                 other.name,
-                source='ssconvert',
+                source="ssconvert",
             )
         ]
 
@@ -59,8 +59,8 @@ class GnumericFile(File):
 
         subprocess.check_call(
             (
-                'ssconvert',
-                '--export-type=Gnumeric_stf:stf_assistant',
+                "ssconvert",
+                "--export-type=Gnumeric_stf:stf_assistant",
                 file.path,
                 t.name,
             )

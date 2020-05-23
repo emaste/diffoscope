@@ -29,8 +29,8 @@ from ..utils.data import load_fixture, get_data, data
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 
 
-icc1 = load_fixture('test1.icc')
-icc2 = load_fixture('test2.icc')
+icc1 = load_fixture("test1.icc")
+icc2 = load_fixture("test2.icc")
 
 
 def cd_iccdump_version():
@@ -51,14 +51,14 @@ def cd_iccdump_version():
     somewhat-arbitrary newline too.
     """
 
-    val = subprocess.check_output(('cd-iccdump', data('test1.icc'))).decode(
-        'utf-8'
+    val = subprocess.check_output(("cd-iccdump", data("test1.icc"))).decode(
+        "utf-8"
     )
 
     for x in val.splitlines():
-        if x.startswith('  Profile ID') and len(x) == 47:
-            return '1.4.3'
-    return '1.3.3'
+        if x.startswith("  Profile ID") and len(x) == 47:
+            return "1.4.3"
+    return "1.3.3"
 
 
 def test_identification(icc1):
@@ -75,21 +75,21 @@ def differences(icc1, icc2):
     return icc1.compare(icc2).details
 
 
-@skip_unless_tool_is_at_least('cd-iccdump', cd_iccdump_version, '1.4.3')
+@skip_unless_tool_is_at_least("cd-iccdump", cd_iccdump_version, "1.4.3")
 def test_diff(differences):
-    if 'ne_SU' in differences[0].unified_diff:
+    if "ne_SU" in differences[0].unified_diff:
         pytest.skip(
             "Endian-specific differences detected; see "
             "<https://bugs.debian.org/847595>"
         )
 
-    expected_diff = get_data('icc_expected_diff')
+    expected_diff = get_data("icc_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('cd-iccdump')
+@skip_unless_tools_exist("cd-iccdump")
 def test_compare_non_existing(monkeypatch, icc1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = icc1.compare(MissingFile('/nonexisting', icc1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = icc1.compare(MissingFile("/nonexisting", icc1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0

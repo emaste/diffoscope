@@ -36,7 +36,7 @@ from .utils.specialize import specialize
 try:
     from debian import deb822
 except ImportError:
-    python_module_missing('debian')
+    python_module_missing("debian")
     deb822 = None
 
 logger = logging.getLogger(__name__)
@@ -49,13 +49,13 @@ def get_build_id_map(container):
     for member_name, member in container.get_adjusted_members():
         # Let's assume the name will end with .deb to avoid looking at
         # too many irrelevant files
-        if not member_name.endswith('.deb'):
+        if not member_name.endswith(".deb"):
             continue
 
         specialize(member)
 
         if isinstance(member, DebFile) and member.control:
-            build_ids = member.control.get('Build-Ids', None)
+            build_ids = member.control.get("Build-Ids", None)
             if build_ids:
                 d.update({build_id: member for build_id in build_ids.split()})
 
@@ -63,8 +63,8 @@ def get_build_id_map(container):
 
 
 class DebContainer(LibarchiveContainer):
-    RE_DATA_TAR = re.compile(r'^data\.tar(\.gz|\.xz|\.bz2|\.lzma)?$')
-    RE_CONTROL_TAR = re.compile(r'^control\.tar(\.gz|\.xz)?$')
+    RE_DATA_TAR = re.compile(r"^data\.tar(\.gz|\.xz|\.bz2|\.lzma)?$")
+    RE_CONTROL_TAR = re.compile(r"^control\.tar(\.gz|\.xz)?$")
 
     @property
     def data_tar(self):
@@ -74,10 +74,10 @@ class DebContainer(LibarchiveContainer):
 
             specialize(member)
 
-            if name.endswith('.tar'):
+            if name.endswith(".tar"):
                 return member
 
-            return specialize(member.as_container.get_member('content'))
+            return specialize(member.as_container.get_member("content"))
 
     @property
     def control_tar(self):
@@ -87,10 +87,10 @@ class DebContainer(LibarchiveContainer):
 
             specialize(member)
 
-            if name.endswith('.tar'):
+            if name.endswith(".tar"):
                 return member
 
-            return specialize(member.as_container.get_member('content'))
+            return specialize(member.as_container.get_member("content"))
 
     def perform_fuzzy_matching(self, my_members, other_members):
         matched = set()
@@ -113,14 +113,14 @@ class DebContainer(LibarchiveContainer):
 
 class DebFile(File):
     CONTAINER_CLASSES = [DebContainer]
-    FILE_TYPE_RE = re.compile(r'^Debian binary package')
+    FILE_TYPE_RE = re.compile(r"^Debian binary package")
 
     @property
     def md5sums(self):
-        if not hasattr(self, '_md5sums'):
+        if not hasattr(self, "_md5sums"):
             control_tar = self.as_container.control_tar
             md5sums_file = (
-                control_tar.as_container.lookup_file('./md5sums')
+                control_tar.as_container.lookup_file("./md5sums")
                 if control_tar
                 else None
             )
@@ -136,12 +136,12 @@ class DebFile(File):
         if not deb822:
             return None
 
-        if not hasattr(self, '_control'):
+        if not hasattr(self, "_control"):
             control_file = self.as_container.control_tar.as_container.lookup_file(
-                './control'
+                "./control"
             )
             if control_file:
-                with open(control_file.path, 'rb') as f:
+                with open(control_file.path, "rb") as f:
                     self._control = deb822.Deb822(f)
 
         return self._control
@@ -163,7 +163,7 @@ class Md5sumsFile(File):
     def recognizes(cls, file):
         return (
             isinstance(file, ArchiveMember)
-            and file.name == './md5sums'
+            and file.name == "./md5sums"
             and isinstance(file.container.source, ArchiveMember)
             and isinstance(
                 file.container.source.container.source, ArchiveMember
@@ -180,24 +180,24 @@ class Md5sumsFile(File):
     def parse(self):
         try:
             md5sums = {}
-            with open(self.path, 'r', encoding='utf-8') as f:
+            with open(self.path, "r", encoding="utf-8") as f:
                 for line in f:
-                    md5sum, path = re.split(r'\s+', line.strip(), maxsplit=1)
-                    md5sums['./%s' % path] = md5sum
+                    md5sum, path = re.split(r"\s+", line.strip(), maxsplit=1)
+                    md5sums["./%s" % path] = md5sum
             return md5sums
         except (UnicodeDecodeError, ValueError):
             logger.debug("Malformed md5sums, ignoring.")
             return {}
 
     def strip_checksum(self, path):
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             for line in f:
                 yield " ".join(line.split(" ")[2:])
 
     def compare_details(self, other, source=None):
         return [
             compare_files(
-                self, other, source='md5sums', diff_content_only=True
+                self, other, source="md5sums", diff_content_only=True
             ),
             Difference.from_text_readers(
                 self.strip_checksum(self.path),
@@ -225,8 +225,8 @@ class DebTarContainer(TarContainer):
             if (
                 not Config().force_details
                 and my_member.name == other_member.name
-                and my_md5sums.get(my_member.name, 'my')
-                == other_md5sums.get(other_member.name, 'other')
+                and my_md5sums.get(my_member.name, "my")
+                == other_md5sums.get(other_member.name, "other")
             ):
                 logger.debug("Skip %s: identical md5sum", my_member.name)
                 continue

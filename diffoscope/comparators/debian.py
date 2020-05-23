@@ -97,15 +97,15 @@ class DebControlContainer(Container):
 
     @staticmethod
     def get_version_trimming_re(dcc):
-        version = dcc.source._deb822.get('Version')
+        version = dcc.source._deb822.get("Version")
 
         # Remove the epoch as it's not in the filename
-        version = re.sub(r'^\d+:', '', version)
-        if '-' in version:
-            upstream, revision = version.rsplit('-', 1)
+        version = re.sub(r"^\d+:", "", version)
+        if "-" in version:
+            upstream, revision = version.rsplit("-", 1)
 
             return re.compile(
-                r'_%s(?:-%s)?' % (re.escape(upstream), re.escape(revision))
+                r"_%s(?:-%s)?" % (re.escape(upstream), re.escape(revision))
             )
 
         return re.compile(re.escape(version))
@@ -115,23 +115,23 @@ class DebControlContainer(Container):
             yield self._trim_version_number(name), self.get_member(name)
 
     def get_member_names(self):
-        field = self.source._deb822.get('Files') or self.source._deb822.get(
-            'Checksums-Sha256'
+        field = self.source._deb822.get("Files") or self.source._deb822.get(
+            "Checksums-Sha256"
         )
 
         # Show results from debugging packages last; they are rather verbose,
         # masking other more interesting differences due to truncating the
         # output.
         return sorted(
-            (x['name'] for x in field),
-            key=lambda x: (x.endswith('.deb') and '-dbgsym_' in x, x),
+            (x["name"] for x in field),
+            key=lambda x: (x.endswith(".deb") and "-dbgsym_" in x, x),
         )
 
     def get_member(self, member_name):
         return DebControlMember(self, member_name)
 
     def _trim_version_number(self, name):
-        return self._version_re.sub('', name)
+        return self._version_re.sub("", name)
 
 
 class DebControlFile(File):
@@ -148,7 +148,7 @@ class DebControlFile(File):
             def get_as_string(self, _):
                 return ""
 
-        return DummyChanges(Files=[], Version='')
+        return DummyChanges(Files=[], Version="")
 
     def compare_details(self, other, source=None):
         differences = []
@@ -158,7 +158,7 @@ class DebControlFile(File):
         for field in sorted(
             set(self._deb822.keys()).union(set(other_deb822.keys()))
         ):
-            if field.startswith('Checksums-') or field == 'Files':
+            if field.startswith("Checksums-") or field == "Files":
                 continue
 
             my_value = ""
@@ -176,24 +176,24 @@ class DebControlFile(File):
             )
 
         # Compare Files as string
-        if self._deb822.get('Files'):
+        if self._deb822.get("Files"):
             differences.append(
                 Difference.from_text(
-                    self._deb822.get_as_string('Files'),
-                    other_deb822.get_as_string('Files'),
+                    self._deb822.get_as_string("Files"),
+                    other_deb822.get_as_string("Files"),
                     self.path,
                     other.path,
-                    source='Files',
+                    source="Files",
                 )
             )
         else:
             differences.append(
                 Difference.from_text(
-                    self._deb822.get_as_string('Checksums-Sha256'),
-                    other_deb822.get_as_string('Checksums-Sha256'),
+                    self._deb822.get_as_string("Checksums-Sha256"),
+                    other_deb822.get_as_string("Checksums-Sha256"),
                     self.path,
                     other.path,
-                    source='Checksums-Sha256',
+                    source="Checksums-Sha256",
                 )
             )
 
@@ -202,8 +202,8 @@ class DebControlFile(File):
 
 class DotChangesFile(DebControlFile):
     DESCRIPTION = "Debian .changes files"
-    FILE_EXTENSION_SUFFIX = '.changes'
-    FILE_TYPE_RE = re.compile(r'^(ASCII text|UTF-8 Unicode text)')
+    FILE_EXTENSION_SUFFIX = ".changes"
+    FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text)")
 
     @classmethod
     def recognizes(cls, file):
@@ -227,16 +227,16 @@ class DotChangesFile(DebControlFile):
 
         other_deb822 = self._get_deb822(other)
 
-        files = zip(self._deb822.get('Files'), other_deb822.get('Files'))
+        files = zip(self._deb822.get("Files"), other_deb822.get("Files"))
 
         files_identical = all(
-            x == y for x, y in files if not x['name'].endswith('.buildinfo')
+            x == y for x, y in files if not x["name"].endswith(".buildinfo")
         )
 
         if (
             files_identical
             and len(differences.details) == 1
-            and differences.details[0].source1 == 'Files'
+            and differences.details[0].source1 == "Files"
         ):
             logger.warning("Ignoring buildinfo file differences")
             return None
@@ -246,14 +246,14 @@ class DotChangesFile(DebControlFile):
 
 class DotDscFile(DebControlFile):
     DESCRIPTION = "Debian source packages (.dsc)"
-    FILE_EXTENSION_SUFFIX = '.dsc'
+    FILE_EXTENSION_SUFFIX = ".dsc"
 
     @classmethod
     def recognizes(cls, file):
         if not super().recognizes(file):
             return False
 
-        with open(file.path, 'rb') as f:
+        with open(file.path, "rb") as f:
             file._deb822 = Dsc(f)
 
         return True
@@ -281,8 +281,8 @@ class DotBuildinfoContainer(DebControlContainer):
 class DotBuildinfoFile(DebControlFile):
     DESCRIPTION = "Debian .buildinfo files"
     CONTAINER_CLASSES = [DotBuildinfoContainer]
-    FILE_EXTENSION_SUFFIX = '.buildinfo'
-    FILE_TYPE_RE = re.compile(r'^(ASCII text|UTF-8 Unicode text)')
+    FILE_EXTENSION_SUFFIX = ".buildinfo"
+    FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text)")
 
     @classmethod
     def recognizes(cls, file):

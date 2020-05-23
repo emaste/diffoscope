@@ -34,26 +34,26 @@ logger = logging.getLogger(__name__)
 
 class Gifbuild(Command):
     RE_FILTERS = (
-        re.compile(r'^# GIF information from'),
-        re.compile(r'^# End of .* dump'),
+        re.compile(r"^# GIF information from"),
+        re.compile(r"^# End of .* dump"),
     )
 
-    @tool_required('gifbuild')
+    @tool_required("gifbuild")
     def cmdline(self):
-        return ['gifbuild', '-d', self.path]
+        return ["gifbuild", "-d", self.path]
 
     def filter(self, line):
-        if any(x.match(line.decode('utf-8')) for x in self.RE_FILTERS):
+        if any(x.match(line.decode("utf-8")) for x in self.RE_FILTERS):
             return b""
         return line
 
 
-@tool_required('identify')
+@tool_required("identify")
 def is_image_static(image):
     try:
         return (
-            subprocess.check_output(('identify', '-format', '%n', image.path))
-            == b'1'
+            subprocess.check_output(("identify", "-format", "%n", image.path))
+            == b"1"
         )
     except subprocess.CalledProcessError:
         return False
@@ -69,7 +69,7 @@ def can_compose_gif_images(image1, image2):
 
 class GifFile(File):
     DESCRIPTION = "GIF image files"
-    FILE_TYPE_RE = re.compile(r'^GIF image data\b')
+    FILE_TYPE_RE = re.compile(r"^GIF image data\b")
 
     def compare_details(self, other, source=None):
         gifbuild_diff = Difference.from_command(

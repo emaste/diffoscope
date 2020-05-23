@@ -38,13 +38,13 @@ class ProcyonDecompiler(Command):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required('procyon')
+    @tool_required("procyon")
     def cmdline(self):
-        return ['procyon', '-ec', self.path]
+        return ["procyon", "-ec", self.path]
 
     def filter(self, line):
-        if re.match(r'^(//)', line.decode('utf-8')):
-            return b''
+        if re.match(r"^(//)", line.decode("utf-8")):
+            return b""
         return line
 
 
@@ -53,30 +53,30 @@ class Javap(Command):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required('javap')
+    @tool_required("javap")
     def cmdline(self):
         return [
-            'javap',
-            '-verbose',
-            '-constants',
-            '-s',
-            '-l',
-            '-private',
+            "javap",
+            "-verbose",
+            "-constants",
+            "-s",
+            "-l",
+            "-private",
             self.path,
         ]
 
     def filter(self, line):
-        regex = r'^(Classfile {}$|  Last modified |  MD5 checksum )'.format(
+        regex = r"^(Classfile {}$|  Last modified |  MD5 checksum )".format(
             re.escape(self.real_path)
         )
-        if re.match(regex, line.decode('utf-8')):
-            return b''
+        if re.match(regex, line.decode("utf-8")):
+            return b""
         return line
 
 
 class ClassFile(File):
     DESCRIPTION = "Java .class files"
-    FILE_TYPE_RE = re.compile(r'^compiled Java class data\b')
+    FILE_TYPE_RE = re.compile(r"^compiled Java class data\b")
 
     decompilers = [ProcyonDecompiler, Javap]
 

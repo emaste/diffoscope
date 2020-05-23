@@ -38,7 +38,7 @@ def _collapse_line(line, escape=html.escape):
 def _diff_collapse_line(line):
     return (
         line[0] + _collapse_line(line[1:])
-        if line and line[0] in '+- '
+        if line and line[0] in "+- "
         else line
     )
 
@@ -53,7 +53,7 @@ def _expand_line(line):
 
 def _diff_expand_line(line):
     return (
-        line[0] + _expand_line(line[1:]) if line and line[0] in '+- ' else line
+        line[0] + _expand_line(line[1:]) if line and line[0] in "+- " else line
     )
 
 

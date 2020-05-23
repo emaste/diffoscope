@@ -31,7 +31,7 @@ class RequiredToolNotFound(Exception):
     def __init__(self, command):
         self.command = get_tool_name(command)
 
-    def get_comment(self, infix=''):
+    def get_comment(self, infix=""):
         xs = [
             "'{}' not available in path.".format(self.command),
             infix,

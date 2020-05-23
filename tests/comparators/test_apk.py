@@ -28,14 +28,14 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
-apk1 = load_fixture('test1.apk')
-apk2 = load_fixture('test2.apk')
-apk3 = load_fixture('test3.apk')
+apk1 = load_fixture("test1.apk")
+apk2 = load_fixture("test2.apk")
+apk3 = load_fixture("test3.apk")
 
 
 def apktool_version():
     return (
-        subprocess.check_output(['apktool', '-version'])
+        subprocess.check_output(["apktool", "-version"])
         .decode("utf-8")
         .strip()
     )
@@ -60,48 +60,48 @@ def differences2(apk1, apk3):
     return apk1.compare(apk3).details
 
 
-@skip_unless_tools_exist('apktool', 'zipinfo')
+@skip_unless_tools_exist("apktool", "zipinfo")
 def test_compare_non_existing(monkeypatch, apk1):
     assert_non_existing(monkeypatch, apk1)
 
 
-@skip_unless_tools_exist('apktool', 'zipinfo')
+@skip_unless_tools_exist("apktool", "zipinfo")
 def test_zipinfo(differences):
-    assert differences[0].source1 == 'zipinfo {}'
-    assert differences[0].source2 == 'zipinfo {}'
-    expected_diff = get_data('apk_zipinfo_expected_diff')
+    assert differences[0].source1 == "zipinfo {}"
+    assert differences[0].source2 == "zipinfo {}"
+    expected_diff = get_data("apk_zipinfo_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('zipinfo')
-@skip_unless_tool_is_at_least('apktool', apktool_version, '2.5.0')
+@skip_unless_tools_exist("zipinfo")
+@skip_unless_tool_is_at_least("apktool", apktool_version, "2.5.0")
 @pytest.mark.skipif(
     sys.version_info < (3, 8), reason="requires Python 3.8 or higher"
 )
 def test_android_manifest(differences):
-    assert differences[1].source1 == 'AndroidManifest.xml (decoded)'
-    assert differences[1].source2 == 'AndroidManifest.xml (decoded)'
-    expected_diff = get_data('apk_manifest_expected_diff')
+    assert differences[1].source1 == "AndroidManifest.xml (decoded)"
+    assert differences[1].source2 == "AndroidManifest.xml (decoded)"
+    expected_diff = get_data("apk_manifest_expected_diff")
     assert differences[1].details[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('apktool', 'zipinfo')
+@skip_unless_tools_exist("apktool", "zipinfo")
 def test_apk_metadata_source(differences):
-    assert differences[2].source1 == 'APK metadata'
-    assert differences[2].source2 == 'APK metadata'
+    assert differences[2].source1 == "APK metadata"
+    assert differences[2].source2 == "APK metadata"
 
 
-@skip_unless_tools_exist('apktool', 'zipinfo')
+@skip_unless_tools_exist("apktool", "zipinfo")
 def test_skip_undecoded_android_manifest(differences):
     assert not any(
-        difference.source1 == 'original/AndroidManifest.xml'
+        difference.source1 == "original/AndroidManifest.xml"
         for difference in differences
     )
     assert not any(
-        difference.source2 == 'original/AndroidManifest.xml'
+        difference.source2 == "original/AndroidManifest.xml"
         for difference in differences
     )
-    undecoded_manifest = 'AndroidManifest.xml (original / undecoded)'
+    undecoded_manifest = "AndroidManifest.xml (original / undecoded)"
     assert not any(
         difference.source1 == undecoded_manifest for difference in differences
     )
@@ -110,12 +110,12 @@ def test_skip_undecoded_android_manifest(differences):
     )
 
 
-@skip_unless_tools_exist('apktool', 'zipinfo')
+@skip_unless_tools_exist("apktool", "zipinfo")
 def test_no_android_manifest(differences2):
-    undecoded_manifest = 'AndroidManifest.xml (original / undecoded)'
+    undecoded_manifest = "AndroidManifest.xml (original / undecoded)"
     assert differences2[2].source1 == undecoded_manifest
     assert differences2[2].source2 == undecoded_manifest
     assert (
-        differences2[2].comment == 'No decoded AndroidManifest.xml '
-        'found for one of the APK files.'
+        differences2[2].comment == "No decoded AndroidManifest.xml "
+        "found for one of the APK files."
     )

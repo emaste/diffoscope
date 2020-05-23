@@ -28,8 +28,8 @@ from .utils.file import File
 
 def order_only_difference(unified_diff):
     diff_lines = unified_diff.splitlines()
-    added_lines = [line[1:] for line in diff_lines if line.startswith('+')]
-    removed_lines = [line[1:] for line in diff_lines if line.startswith('-')]
+    added_lines = [line[1:] for line in diff_lines if line.startswith("+")]
+    removed_lines = [line[1:] for line in diff_lines if line.startswith("-")]
     # Faster check: does number of lines match?
     if len(added_lines) != len(removed_lines):
         return False
@@ -41,22 +41,22 @@ def order_only_difference(unified_diff):
 
 class TextFile(File):
     DESCRIPTION = "text files"
-    FILE_TYPE_RE = re.compile(r'\btext\b')
+    FILE_TYPE_RE = re.compile(r"\btext\b")
 
     @property
     def encoding(self):
-        if not hasattr(self, '_encoding'):
+        if not hasattr(self, "_encoding"):
             self._encoding = File.guess_encoding(self.path)
         return self._encoding
 
     def compare(self, other, source=None):
-        my_encoding = self.encoding or 'utf-8'
-        other_encoding = other.encoding or 'utf-8'
+        my_encoding = self.encoding or "utf-8"
+        other_encoding = other.encoding or "utf-8"
         try:
             with codecs.open(
-                self.path, 'r', encoding=my_encoding
+                self.path, "r", encoding=my_encoding
             ) as my_content, codecs.open(
-                other.path, 'r', encoding=other_encoding
+                other.path, "r", encoding=other_encoding
             ) as other_content:
                 difference = Difference.from_text_readers(
                     my_content, other_content, self.name, other.name, source
@@ -78,7 +78,7 @@ class TextFile(File):
                                 other_encoding,
                                 None,
                                 None,
-                                source='encoding',
+                                source="encoding",
                             )
                         ]
                     )

@@ -28,34 +28,34 @@ from .utils.command import Command
 
 
 class Pgpdump(Command):
-    @tool_required('pgpdump')
+    @tool_required("pgpdump")
     def cmdline(self):
         return (
-            'pgpdump',
-            '-i',  # Dump integer packets
-            '-l',  # Dump literal packets
-            '-m',  # Dump marker packets
-            '-p',  # Dump private packets
-            '-u',  # Display UTC time
+            "pgpdump",
+            "-i",  # Dump integer packets
+            "-l",  # Dump literal packets
+            "-m",  # Dump marker packets
+            "-p",  # Dump private packets
+            "-u",  # Display UTC time
             self.path,
         )
 
 
 class PgpFile(File):
     DESCRIPTION = "PGP signed/encrypted messages"
-    FILE_TYPE_RE = re.compile(r'^PGP message\b')
+    FILE_TYPE_RE = re.compile(r"^PGP message\b")
 
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Pgpdump, self.path, other.path, source='pgpdump'
+                Pgpdump, self.path, other.path, source="pgpdump"
             )
         ]
 
 
 class PgpSignature(TextFile):
     DESCRIPTION = "PGP signatures"
-    FILE_TYPE_RE = re.compile(r'^PGP signature\b')
+    FILE_TYPE_RE = re.compile(r"^PGP signature\b")
 
     def compare(self, other, source=None):
         # Don't display signatures as hexdumps; use TextFile's comparisons...
@@ -65,7 +65,7 @@ class PgpSignature(TextFile):
         difference.add_details(
             [
                 Difference.from_command(
-                    Pgpdump, self.path, other.path, source='pgpdump'
+                    Pgpdump, self.path, other.path, source="pgpdump"
                 )
             ]
         )

@@ -38,25 +38,25 @@ class Ffprobe(Command):
     def stdout(self):
         return self._process.stderr.splitlines(True)
 
-    @tool_required('ffprobe')
+    @tool_required("ffprobe")
     def cmdline(self):
-        return ('ffprobe', self.path)
+        return ("ffprobe", self.path)
 
     def filter(self, line):
         if self.flag:
             return line
-        if line == b'  Metadata:\n':
+        if line == b"  Metadata:\n":
             self.flag = True
-        return b''
+        return b""
 
 
 class FfprobeFile(File):
     DESCRIPTION = "Multimedia metadata"
-    FILE_TYPE_RE = re.compile(r'^Audio file')
+    FILE_TYPE_RE = re.compile(r"^Audio file")
 
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Ffprobe, self.path, other.path, source='ffprobe'
+                Ffprobe, self.path, other.path, source="ffprobe"
             )
         ]

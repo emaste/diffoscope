@@ -27,18 +27,18 @@ from .utils.command import Command
 
 
 class Odt2txt(Command):
-    @tool_required('odt2txt')
+    @tool_required("odt2txt")
     def cmdline(self):
-        return ('odt2txt', '--encoding=UTF-8', self.path)
+        return ("odt2txt", "--encoding=UTF-8", self.path)
 
 
 class OdtFile(File):
     DESCRIPTION = "OpenOffice .odt files"
-    FILE_TYPE_RE = re.compile(r'^OpenDocument Text\b')
+    FILE_TYPE_RE = re.compile(r"^OpenDocument Text\b")
 
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(
-                Odt2txt, self.path, other.path, source='odt2txt'
+                Odt2txt, self.path, other.path, source="odt2txt"
             )
         ]

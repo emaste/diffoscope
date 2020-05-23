@@ -33,10 +33,10 @@ from diffoscope.tools import get_package_provider
 
 def file_version():
     return (
-        subprocess.check_output(('file', '-v'))
-        .decode('utf-8')
+        subprocess.check_output(("file", "-v"))
+        .decode("utf-8")
         .splitlines()[0]
-        .split('-')[-1]
+        .split("-")[-1]
     )
 
 
@@ -56,24 +56,24 @@ def skipif(*args, **kwargs):
     For more information on the rationale here, see issue #35.
     """
 
-    if not kwargs.get('check_env_for_missing_tools', False):
+    if not kwargs.get("check_env_for_missing_tools", False):
         return pytest.mark.skipif(*args, **kwargs)
 
-    key = 'DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS'
+    key = "DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS"
     val = os.environ.get(key)
 
     if val is None:
         return pytest.mark.skipif(*args, **kwargs)
 
-    tools_required = kwargs.get('tools', ())
-    missing_tools = val.split() + ['/missing']  # special value used in tests
+    tools_required = kwargs.get("tools", ())
+    missing_tools = val.split() + ["/missing"]  # special value used in tests
 
     if not tools_required or any(
         x for x in tools_required if x in missing_tools
     ):
         return pytest.mark.skipif(*args, **kwargs)
 
-    msg = "{} ({}={!r})".format(kwargs['reason'], key, val)
+    msg = "{} ({}={!r})".format(kwargs["reason"], key, val)
 
     # We cannot simply call pytest.fail here as that would result in a failure
     # during the test collection phase instead when the test is actually
@@ -158,21 +158,21 @@ def skip_unless_tool_is_between(
 
 
 def skip_if_binutils_does_not_support_x86():
-    if tools_missing('objdump'):
-        return skip_unless_tools_exist('objdump')
+    if tools_missing("objdump"):
+        return skip_unless_tools_exist("objdump")
 
     return skipif(
-        'elf64-x86-64' not in get_supported_elf_formats(),
+        "elf64-x86-64" not in get_supported_elf_formats(),
         reason="requires a binutils capable of reading x86-64 binaries",
-        tools=('objdump',),
+        tools=("objdump",),
     )
 
 
 @functools.lru_cache()
 def get_supported_elf_formats():
     return set(
-        subprocess.check_output(('objdump', '--info'))
-        .decode('utf-8')
+        subprocess.check_output(("objdump", "--info"))
+        .decode("utf-8")
         .splitlines()
     )
 
@@ -198,12 +198,12 @@ def skip_unless_module_exists(name):
     return skipif(
         module_is_not_importable(name),
         reason="requires {} Python module".format(name),
-        tools=('{}_module'.format(name)),
+        tools=("{}_module".format(name)),
     )
 
 
 def skip_unless_file_version_is_at_least(version):
-    return skip_unless_tool_is_at_least('file', file_version, version)
+    return skip_unless_tool_is_at_least("file", file_version, version)
 
 
 def reason(*tools):
@@ -215,6 +215,6 @@ def reason(*tools):
             xs.append(x)
             continue
 
-        xs.append('{} (try installing {})'.format(x, provider))
+        xs.append("{} (try installing {})".format(x, provider))
 
     return "requires {}".format(" and ".join(xs))

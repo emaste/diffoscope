@@ -33,7 +33,7 @@ class TarContainer(LibarchiveContainer):
 class TarFile(File):
     DESCRIPTION = "tape archives (.tar)"
     CONTAINER_CLASSES = [TarContainer]
-    FILE_TYPE_RE = re.compile(r'\btar archive\b')
+    FILE_TYPE_RE = re.compile(r"\btar archive\b")
 
     def compare_details(self, other, source=None):
         return [

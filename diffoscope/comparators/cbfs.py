@@ -39,30 +39,30 @@ class CbfsListing(Command):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._header_re = re.compile(
-            r'^.*: ([^,]+, bootblocksize [0-9]+, romsize [0-9]+, offset 0x[0-9A-Fa-f]+)$'
+            r"^.*: ([^,]+, bootblocksize [0-9]+, romsize [0-9]+, offset 0x[0-9A-Fa-f]+)$"
         )
 
-    @tool_required('cbfstool')
+    @tool_required("cbfstool")
     def cmdline(self):
-        return ['cbfstool', self.path, 'print']
+        return ["cbfstool", self.path, "print"]
 
     def filter(self, line):
-        return self._header_re.sub('\\1', line.decode('utf-8')).encode('utf-8')
+        return self._header_re.sub("\\1", line.decode("utf-8")).encode("utf-8")
 
 
 class CbfsContainer(Archive):
-    @tool_required('cbfstool')
+    @tool_required("cbfstool")
     def entries(self, path):
-        cmd = ['cbfstool', path, 'print']
-        output = subprocess.check_output(cmd, shell=False).decode('utf-8')
+        cmd = ["cbfstool", path, "print"]
+        output = subprocess.check_output(cmd, shell=False).decode("utf-8")
         header = True
-        for line in output.rstrip('\n').split('\n'):
+        for line in output.rstrip("\n").split("\n"):
             if header:
-                if line.startswith('Name'):
+                if line.startswith("Name"):
                     header = False
                 continue
             name = line.split()[0]
-            if name == '(empty)':
+            if name == "(empty)":
                 continue
             yield name
 
@@ -75,16 +75,16 @@ class CbfsContainer(Archive):
     def get_member_names(self):
         return list(self.entries(self.source.path))
 
-    @tool_required('cbfstool')
+    @tool_required("cbfstool")
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, os.path.basename(member_name))
         cmd = [
-            'cbfstool',
+            "cbfstool",
             self.source.path,
-            'extract',
-            '-n',
+            "extract",
+            "-n",
             member_name,
-            '-f',
+            "-f",
             dest_path,
         ]
         logger.debug("cbfstool extract %s to %s", member_name, dest_path)
@@ -113,7 +113,7 @@ def is_header_valid(buf, size, offset=0):
         cbfs_offset,
         architecture,
         pad,
-    ) = struct.unpack_from('!IIIIIIII', buf, offset)
+    ) = struct.unpack_from("!IIIIIIII", buf, offset)
     return (
         magic == CBFS_HEADER_MAGIC
         and (
@@ -133,27 +133,27 @@ class CbfsFile(File):
         size = os.stat(file.path).st_size
         if size < CBFS_HEADER_SIZE or size > CBFS_MAXIMUM_FILE_SIZE:
             return False
-        with open(file.path, 'rb') as f:
+        with open(file.path, "rb") as f:
             # pick at the latest byte as it should contain the relative offset of the header
             f.seek(-4, io.SEEK_END)
             # <pgeorgi> given the hardware we support so far, it looks like
             #           that field is now bound to be little endian
             #   -- #coreboot, 2015-10-14
-            rel_offset = struct.unpack('<i', f.read(4))[0]
+            rel_offset = struct.unpack("<i", f.read(4))[0]
             if (
                 rel_offset < 0
                 and -rel_offset > CBFS_HEADER_SIZE
                 and -rel_offset < size
             ):
                 f.seek(rel_offset, io.SEEK_END)
-                logger.debug('looking for header at offset: %x', f.tell())
+                logger.debug("looking for header at offset: %x", f.tell())
                 if is_header_valid(f.read(CBFS_HEADER_SIZE), size):
                     return True
-            elif not file.name.endswith('.rom'):
+            elif not file.name.endswith(".rom"):
                 return False
             else:
                 logger.debug(
-                    'CBFS relative offset seems wrong, scanning whole image'
+                    "CBFS relative offset seems wrong, scanning whole image"
                 )
             f.seek(0, io.SEEK_SET)
             offset = 0

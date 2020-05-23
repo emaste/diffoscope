@@ -27,13 +27,13 @@ from ..utils.data import get_data
 
 def test_destination(tmpdir):
     def create(x):
-        path = os.path.join(str(tmpdir.mkdir(x)), 'src')
-        os.symlink('/{}'.format(x), path)
+        path = os.path.join(str(tmpdir.mkdir(x)), "src")
+        os.symlink("/{}".format(x), path)
         return specialize(FilesystemFile(path))
 
-    a = create('a')
-    b = create('b')
+    a = create("a")
+    b = create("b")
 
-    expected_diff = get_data('symlink_expected_destination_diff')
+    expected_diff = get_data("symlink_expected_destination_diff")
 
     assert a.compare(b).unified_diff == expected_diff

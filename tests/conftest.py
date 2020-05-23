@@ -31,7 +31,7 @@ def pytest_configure(config):
     set_path()
 
 
-@pytest.fixture(autouse=True, scope='session')
+@pytest.fixture(autouse=True, scope="session")
 def environ():
     # Ensure normalize_environment fixture runs before each test.
     normalize_environment()

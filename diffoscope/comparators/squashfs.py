@@ -42,21 +42,21 @@ logger = logging.getLogger(__name__)
 
 
 class SquashfsSuperblock(Command):
-    @tool_required('unsquashfs')
+    @tool_required("unsquashfs")
     def cmdline(self):
-        return ['unsquashfs', '-s', self.path]
+        return ["unsquashfs", "-s", self.path]
 
     def filter(self, line):
         # strip filename
         return re.sub(
-            r'^(Found a valid .*) on .*', '\\1', line.decode('utf-8')
-        ).encode('utf-8')
+            r"^(Found a valid .*) on .*", "\\1", line.decode("utf-8")
+        ).encode("utf-8")
 
 
 class SquashfsListing(Command):
-    @tool_required('unsquashfs')
+    @tool_required("unsquashfs")
     def cmdline(self):
-        return ['unsquashfs', '-d', '', '-lls', self.path]
+        return ["unsquashfs", "-d", "", "-lls", self.path]
 
 
 class SquashfsInvalidLineFormat(Exception):
@@ -89,7 +89,7 @@ class SquashfsRegularFile(SquashfsMember):
     # Example line:
     # -rw-r--r-- user/group   446 2015-06-24 14:49 squashfs-root/text
     LINE_RE = re.compile(
-        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$'
+        r"^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$"
     )
 
     @staticmethod
@@ -107,7 +107,7 @@ class SquashfsDirectory(Directory, SquashfsMember):
     # Example line:
     # drwxr-xr-x user/group    51 2015-06-24 14:47 squashfs-root
     LINE_RE = re.compile(
-        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$'
+        r"^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$"
     )
 
     @staticmethod
@@ -118,7 +118,7 @@ class SquashfsDirectory(Directory, SquashfsMember):
         return m.groupdict()
 
     def __init__(self, archive, member_name):
-        SquashfsMember.__init__(self, archive, member_name or '/')
+        SquashfsMember.__init__(self, archive, member_name or "/")
 
     def compare(self, other, source=None):
         return None
@@ -146,7 +146,7 @@ class SquashfsSymlink(Symlink, SquashfsMember):
     # Example line:
     # lrwxrwxrwx user/group   6 2015-06-24 14:47 squashfs-root/link -> broken
     LINE_RE = re.compile(
-        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)\s+->\s+(?P<destination>.*)$'
+        r"^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)\s+->\s+(?P<destination>.*)$"
     )
 
     @staticmethod
@@ -172,10 +172,10 @@ class SquashfsDevice(Device, SquashfsMember):
     # Example line:
     # crw-r--r-- root/root  1,  3 2015-06-24 14:47 squashfs-root/null
     LINE_RE = re.compile(
-        r'^(?P<kind>c|b)\S+\s+\S+\s+(?P<major>\d+),\s*(?P<minor>\d+)\s+\S+\s+\S+\s+(?P<member_name>.*)$'
+        r"^(?P<kind>c|b)\S+\s+\S+\s+(?P<major>\d+),\s*(?P<minor>\d+)\s+\S+\s+\S+\s+(?P<member_name>.*)$"
     )
 
-    KIND_MAP = {'c': stat.S_IFCHR, 'b': stat.S_IFBLK}
+    KIND_MAP = {"c": stat.S_IFCHR, "b": stat.S_IFBLK}
 
     @staticmethod
     def parse(line):
@@ -185,25 +185,25 @@ class SquashfsDevice(Device, SquashfsMember):
 
         d = m.groupdict()
         try:
-            d['mode'] = SquashfsDevice.KIND_MAP[d['kind']]
-            del d['kind']
+            d["mode"] = SquashfsDevice.KIND_MAP[d["kind"]]
+            del d["kind"]
         except KeyError:
             raise SquashfsInvalidLineFormat(
-                "unknown device kind %s" % d['kind']
+                "unknown device kind %s" % d["kind"]
             )
 
         try:
-            d['major'] = int(d['major'])
+            d["major"] = int(d["major"])
         except ValueError:
             raise SquashfsInvalidLineFormat(
-                "unable to parse major number %s" % d['major']
+                "unable to parse major number %s" % d["major"]
             )
 
         try:
-            d['minor'] = int(d['minor'])
+            d["minor"] = int(d["minor"])
         except ValueError:
             raise SquashfsInvalidLineFormat(
-                "unable to parse minor number %s" % d['minor']
+                "unable to parse minor number %s" % d["minor"]
             )
         return d
 
@@ -224,11 +224,11 @@ class SquashfsContainer(Archive):
     auto_diff_metadata = False
 
     MEMBER_CLASS = {
-        'd': SquashfsDirectory,
-        'l': SquashfsSymlink,
-        'c': SquashfsDevice,
-        'b': SquashfsDevice,
-        '-': SquashfsRegularFile,
+        "d": SquashfsDirectory,
+        "l": SquashfsSymlink,
+        "c": SquashfsDevice,
+        "b": SquashfsDevice,
+        "-": SquashfsRegularFile,
     }
 
     def open_archive(self):
@@ -252,7 +252,7 @@ class SquashfsContainer(Archive):
         return self._members.keys()
 
     def ensure_unpacked(self):
-        if hasattr(self, '_members'):
+        if hasattr(self, "_members"):
             return
 
         self._members = collections.OrderedDict()
@@ -262,23 +262,23 @@ class SquashfsContainer(Archive):
 
         output = subprocess.check_output(
             (
-                'unsquashfs',
-                '-n',
-                '-f',
-                '-no',
-                '-li',
-                '-d',
-                '.',
+                "unsquashfs",
+                "-n",
+                "-f",
+                "-no",
+                "-li",
+                "-d",
+                ".",
                 self.source.path,
             ),
             stderr=subprocess.PIPE,
             cwd=self._temp_dir,
         )
 
-        output = iter(output.decode('utf-8').rstrip('\n').split('\n'))
+        output = iter(output.decode("utf-8").rstrip("\n").split("\n"))
 
         # Skip headers
-        for _ in iter(functools.partial(next, output), ''):
+        for _ in iter(functools.partial(next, output), ""):
             pass
 
         for line in output:
@@ -297,7 +297,7 @@ class SquashfsContainer(Archive):
                 continue
 
             # Pop to avoid duplicating member name in the key and the value
-            member_name = kwargs.pop('member_name')
+            member_name = kwargs.pop("member_name")
 
             self._members[member_name] = (cls, kwargs)
 
@@ -312,7 +312,7 @@ class SquashfsContainer(Archive):
 class SquashfsFile(File):
     DESCRIPTION = "SquashFS filesystems"
     CONTAINER_CLASSES = [SquashfsContainer]
-    FILE_TYPE_RE = re.compile(r'^Squashfs filesystem\b')
+    FILE_TYPE_RE = re.compile(r"^Squashfs filesystem\b")
 
     def compare_details(self, other, source=None):
         return [

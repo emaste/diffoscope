@@ -26,11 +26,11 @@ from ..utils.data import get_data, load_fixture
 from ..utils.tools import skip_unless_tools_exist
 
 
-haskell1 = load_fixture('test1.hi')
-haskell2 = load_fixture('test2.hi')
+haskell1 = load_fixture("test1.hi")
+haskell2 = load_fixture("test2.hi")
 
 
-@skip_unless_tools_exist('ghc')
+@skip_unless_tools_exist("ghc")
 def test_identification(haskell1):
     if isinstance(haskell1, FilesystemFile):
         pytest.skip("mismatch between system ghc and fixture")
@@ -47,10 +47,10 @@ def differences(haskell1, haskell2):
     return haskell1.compare(haskell2).details
 
 
-@skip_unless_tools_exist('ghc')
+@skip_unless_tools_exist("ghc")
 def test_diff(haskell1, differences):
     if isinstance(haskell1, FilesystemFile):
         pytest.skip("mismatch between system ghc and fixture")
 
-    expected_diff = get_data('haskell_expected_diff')
+    expected_diff = get_data("haskell_expected_diff")
     assert differences[0].unified_diff == expected_diff

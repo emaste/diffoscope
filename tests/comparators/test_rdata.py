@@ -26,8 +26,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 
 
-file1 = load_fixture('test1.rdx')
-file2 = load_fixture('test2.rdx')
+file1 = load_fixture("test1.rdx")
+file2 = load_fixture("test2.rdx")
 
 
 def test_identification(file1):
@@ -44,14 +44,14 @@ def differences(file1, file2):
     return file1.compare(file2).details
 
 
-@skip_unless_tools_exist('Rscript')
+@skip_unless_tools_exist("Rscript")
 def test_num_items(differences):
     assert len(differences) == 1
 
 
-@skip_unless_tools_exist('Rscript')
+@skip_unless_tools_exist("Rscript")
 def test_item_rds(differences):
-    assert differences[0].source1 == 'test1.rdx-content'
-    assert differences[0].source2 == 'test2.rdx-content'
-    expected_diff = get_data('rds_expected_diff')
+    assert differences[0].source1 == "test1.rdx-content"
+    assert differences[0].source2 == "test2.rdx-content"
+    expected_diff = get_data("rds_expected_diff")
     assert differences[0].details[0].unified_diff == expected_diff

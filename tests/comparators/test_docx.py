@@ -25,8 +25,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
-docx1 = load_fixture('test1.docx')
-docx2 = load_fixture('test2.docx')
+docx1 = load_fixture("test1.docx")
+docx2 = load_fixture("test2.docx")
 
 
 def test_identification(docx1):
@@ -43,12 +43,12 @@ def differences(docx1, docx2):
     return docx1.compare(docx2).details
 
 
-@skip_unless_tools_exist('docx2txt')
+@skip_unless_tools_exist("docx2txt")
 def test_diff(differences):
-    expected_diff = get_data('docx_expected_diff')
+    expected_diff = get_data("docx_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('docx2txt')
+@skip_unless_tools_exist("docx2txt")
 def test_compare_non_existing(monkeypatch, docx1):
     assert_non_existing(monkeypatch, docx1, has_null_source=False)

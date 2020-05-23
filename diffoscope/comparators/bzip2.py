@@ -38,13 +38,13 @@ class Bzip2Container(Archive):
         pass
 
     def get_member_names(self):
-        return [self.get_compressed_content_name('.bz2')]
+        return [self.get_compressed_content_name(".bz2")]
 
-    @tool_required('bzip2')
+    @tool_required("bzip2")
     def extract(self, member_name, dest_dir):
         dest_path = self.get_path_name(dest_dir)
-        logger.debug('bzip2 extracting to %s', dest_path)
-        with open(dest_path, 'wb') as fp:
+        logger.debug("bzip2 extracting to %s", dest_path)
+        with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["bzip2", "--decompress", "--stdout", self.source.path],
                 shell=False,
@@ -57,4 +57,4 @@ class Bzip2Container(Archive):
 class Bzip2File(File):
     DESCRIPTION = "bzip2 archives"
     CONTAINER_CLASSES = [Bzip2Container]
-    FILE_TYPE_RE = re.compile(r'^bzip2 compressed data\b')
+    FILE_TYPE_RE = re.compile(r"^bzip2 compressed data\b")

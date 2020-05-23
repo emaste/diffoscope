@@ -25,8 +25,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
-xsb1 = load_fixture('test1.xsb')
-xsb2 = load_fixture('test2.xsb')
+xsb1 = load_fixture("test1.xsb")
+xsb2 = load_fixture("test2.xsb")
 
 
 def test_identification(xsb1):
@@ -43,12 +43,12 @@ def differences(xsb1, xsb2):
     return xsb1.compare(xsb2).details
 
 
-@skip_unless_tools_exist('dumpxsb')
+@skip_unless_tools_exist("dumpxsb")
 def test_diff(differences):
-    expected_diff = get_data('xsb_expected_diff')
+    expected_diff = get_data("xsb_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('dumpxsb')
+@skip_unless_tools_exist("dumpxsb")
 def test_compare_non_existing(monkeypatch, xsb1):
     assert_non_existing(monkeypatch, xsb1, has_null_source=False)

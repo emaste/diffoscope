@@ -32,7 +32,7 @@ from .utils.archive import Archive
 try:
     import guestfs
 except ImportError:
-    python_module_missing('guestfs')
+    python_module_missing("guestfs")
     guestfs = None
 
 logger = logging.getLogger(__name__)
@@ -47,10 +47,10 @@ class FsImageContainer(Archive):
         try:
             # force a check that LIBGUESTFS_CACHEDIR exists. otherwise guestfs
             # will fall back to /var/tmp, which we don't want
-            self.g.set_cachedir(os.environ['LIBGUESTFS_CACHEDIR'])
+            self.g.set_cachedir(os.environ["LIBGUESTFS_CACHEDIR"])
         except KeyError:
             pass
-        self.g.add_drive_opts(self.source.path, format='raw', readonly=1)
+        self.g.add_drive_opts(self.source.path, format="raw", readonly=1)
         try:
             self.g.launch()
         except RuntimeError:
@@ -62,7 +62,7 @@ class FsImageContainer(Archive):
             return None
         devices = self.g.list_devices()
         try:
-            self.g.mount(devices[0], '/')
+            self.g.mount(devices[0], "/")
         except RuntimeError:
             logger.exception("guestfs count not mount image; invalid file?")
             return None
@@ -78,40 +78,40 @@ class FsImageContainer(Archive):
     def get_member_names(self):
         if not guestfs:
             return []
-        return [os.path.basename(self.source.path) + '.tar']
+        return [os.path.basename(self.source.path) + ".tar"]
 
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
-        logger.debug('filesystem image extracting to %s', dest_path)
-        self.g.tar_out('/', dest_path)
+        logger.debug("filesystem image extracting to %s", dest_path)
+        self.g.tar_out("/", dest_path)
         return dest_path
 
 
 class FsImageFile(File):
     DESCRIPTION = "ext2/ext3/ext4/btrfs/fat filesystems"
     CONTAINER_CLASSES = [FsImageContainer]
-    FILE_TYPE_RE = re.compile(r'^(Linux.*filesystem data|BTRFS Filesystem).*')
+    FILE_TYPE_RE = re.compile(r"^(Linux.*filesystem data|BTRFS Filesystem).*")
 
     @classmethod
     def recognizes(cls, file):
         # Avoid DOS / MBR file type as it generate a lot of false positives,
         # manually check "System identifier string" instead
-        with open(file.path, 'rb') as f:
+        with open(file.path, "rb") as f:
             f.seek(54)
-            if f.read(8) in (b'FAT12   ', b'FAT16   '):
+            if f.read(8) in (b"FAT12   ", b"FAT16   "):
                 return True
             f.seek(82)
-            if f.read(8) == b'FAT32   ':
+            if f.read(8) == b"FAT32   ":
                 return True
         return super().recognizes(file)
 
     def compare_details(self, other, source=None):
         differences = []
-        my_fs = ''
-        other_fs = ''
-        if hasattr(self.as_container, 'fs'):
+        my_fs = ""
+        other_fs = ""
+        if hasattr(self.as_container, "fs"):
             my_fs = self.as_container.fs
-        if hasattr(other.as_container, 'fs'):
+        if hasattr(other.as_container, "fs"):
             other_fs = other.as_container.fs
         if my_fs != other_fs:
             differences.append(

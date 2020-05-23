@@ -25,8 +25,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
-mp3_1 = load_fixture('test1.mp3')
-mp3_2 = load_fixture('test2.mp3')
+mp3_1 = load_fixture("test1.mp3")
+mp3_2 = load_fixture("test2.mp3")
 
 
 def test_identification(mp3_1):
@@ -43,12 +43,12 @@ def differences(mp3_1, mp3_2):
     return mp3_1.compare(mp3_2).details
 
 
-@skip_unless_tools_exist('ffprobe')
+@skip_unless_tools_exist("ffprobe")
 def test_diff(differences):
-    expected_diff = get_data('mp3_expected_diff')
+    expected_diff = get_data("mp3_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('ffprobe')
+@skip_unless_tools_exist("ffprobe")
 def test_compare_non_existing(monkeypatch, mp3_1):
     assert_non_existing(monkeypatch, mp3_1, has_null_source=False)

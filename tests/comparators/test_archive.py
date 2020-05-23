@@ -22,8 +22,8 @@ import pytest
 from ..utils.data import load_fixture
 
 
-archive1 = load_fixture('archive1.tar')
-archive2 = load_fixture('archive2.tar')
+archive1 = load_fixture("archive1.tar")
+archive2 = load_fixture("archive2.tar")
 
 
 @pytest.fixture
@@ -32,5 +32,5 @@ def differences(archive1, archive2):
 
 
 def test_compressed_content_name(differences):
-    assert differences[1].details[1].source1 == 'compressed'
-    assert differences[1].details[1].source2 == 'compressed'
+    assert differences[1].details[1].source1 == "compressed"
+    assert differences[1].details[1].source2 == "compressed"

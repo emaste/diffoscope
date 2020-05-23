@@ -28,14 +28,14 @@ def run(capsys, *args):
         main(
             args
             + tuple(
-                os.path.join(os.path.dirname(__file__), 'data', x)
-                for x in ('test1.tar', 'test2.tar')
+                os.path.join(os.path.dirname(__file__), "data", x)
+                for x in ("test1.tar", "test2.tar")
             )
         )
 
     out, err = capsys.readouterr()
 
-    assert err == ''
+    assert err == ""
 
     return exc.value.code, out
 
@@ -44,52 +44,52 @@ def test_none(capsys):
     ret, out = run(capsys)
 
     assert ret == 1
-    assert '── dir/text' in out
-    assert '── dir/link' in out
+    assert "── dir/text" in out
+    assert "── dir/link" in out
 
 
 def test_all(capsys):
-    ret, out = run(capsys, '--exclude=*')
+    ret, out = run(capsys, "--exclude=*")
 
     assert ret == 0
-    assert out == ''
+    assert out == ""
 
 
 def test_specific(capsys):
-    ret, out = run(capsys, '--exclude=dir/text')
+    ret, out = run(capsys, "--exclude=dir/text")
 
     assert ret == 1
-    assert '── dir/text' not in out
-    assert '── dir/link' in out
+    assert "── dir/text" not in out
+    assert "── dir/link" in out
 
 
 def test_specific_case(capsys):
-    ret, out = run(capsys, '--exclude=dir/TEXT')
+    ret, out = run(capsys, "--exclude=dir/TEXT")
 
     assert ret == 1
-    assert '── dir/text' in out
-    assert '── dir/link' in out
+    assert "── dir/text" in out
+    assert "── dir/link" in out
 
 
 def test_multiple(capsys):
-    ret, out = run(capsys, '--exclude=dir/text', '--exclude=dir/link')
+    ret, out = run(capsys, "--exclude=dir/text", "--exclude=dir/link")
 
     assert ret == 1
-    assert '── dir/text' not in out
-    assert '── dir/link' not in out
+    assert "── dir/text" not in out
+    assert "── dir/link" not in out
 
 
 def test_nomatch(capsys):
-    ret, out = run(capsys, '--exclude=nomatch')
+    ret, out = run(capsys, "--exclude=nomatch")
 
     assert ret == 1
-    assert '── dir/text' in out
-    assert '── dir/link' in out
+    assert "── dir/text" in out
+    assert "── dir/link" in out
 
 
 def test_wildcard(capsys):
-    ret, out = run(capsys, '--exclude=*link')
+    ret, out = run(capsys, "--exclude=*link")
 
     assert ret == 1
-    assert '── dir/text' in out
-    assert '── dir/link' not in out
+    assert "── dir/text" in out
+    assert "── dir/link" not in out

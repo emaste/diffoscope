@@ -26,8 +26,8 @@ from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
 
-wasmmodule1 = load_fixture('hello1.wasm')
-wasmmodule2 = load_fixture('hello2.wasm')
+wasmmodule1 = load_fixture("hello1.wasm")
+wasmmodule2 = load_fixture("hello2.wasm")
 
 
 def test_identification(wasmmodule1):
@@ -44,13 +44,13 @@ def differences(wasmmodule1, wasmmodule2):
     return wasmmodule1.compare(wasmmodule2).details
 
 
-@skip_unless_tools_exist('wasm2wat')
+@skip_unless_tools_exist("wasm2wat")
 def test_diff(differences):
-    expected_diff = get_data('wasm_expected_diff')
+    expected_diff = get_data("wasm_expected_diff")
     actual_diff = differences[0].unified_diff
     assert actual_diff == expected_diff
 
 
-@skip_unless_tools_exist('wasm2wat')
+@skip_unless_tools_exist("wasm2wat")
 def test_compare_non_existing(monkeypatch, wasmmodule1):
     assert_non_existing(monkeypatch, wasmmodule1, has_null_source=False)

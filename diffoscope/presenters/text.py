@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 
 
 class TextPresenter(Presenter):
-    PREFIX = u'│ '
-    RE_PREFIX = re.compile(r'(^|\n)')
+    PREFIX = u"│ "
+    RE_PREFIX = re.compile(r"(^|\n)")
 
     def __init__(self, print_func, color):
         self.print_func = create_limited_print_func(
@@ -48,11 +48,11 @@ class TextPresenter(Presenter):
 
     @classmethod
     def run(cls, data, difference, parsed_args):
-        with make_printer(data['target']) as fn:
+        with make_printer(data["target"]) as fn:
             color = {
-                'auto': fn.output.isatty(),
-                'never': False,
-                'always': True,
+                "auto": fn.output.isatty(),
+                "never": False,
+                "always": True,
             }[parsed_args.text_color]
 
             presenter = cls(fn, color)

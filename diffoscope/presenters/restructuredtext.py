@@ -21,7 +21,7 @@ from .utils import Presenter
 
 
 class RestructuredTextPresenter(Presenter):
-    TITLE_CHARS = '=-`:.\'"~^_*+#'
+    TITLE_CHARS = "=-`:.'\"~^_*+#"
 
     def __init__(self, print_func):
         self.print_func = print_func
@@ -42,9 +42,9 @@ class RestructuredTextPresenter(Presenter):
             self.print_func(x)
 
         if difference.unified_diff:
-            self.print_func('::')
+            self.print_func("::")
             self.print_func()
-            self.print_func(self.indent(difference.unified_diff, '    '))
+            self.print_func(self.indent(difference.unified_diff, "    "))
             self.print_func()
 
     def title(self, val):

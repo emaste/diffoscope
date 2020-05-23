@@ -24,7 +24,7 @@ import pytest
 def test_sbin_added_to_path():
     from diffoscope.tools import tool_required
 
-    _, _, filenames = list(os.walk('/sbin'))[0]
+    _, _, filenames = list(os.walk("/sbin"))[0]
 
     @tool_required(filenames[0])
     def fn():
@@ -37,7 +37,7 @@ def test_required_tool_not_found():
     from diffoscope.exc import RequiredToolNotFound
     from diffoscope.tools import tool_required
 
-    @tool_required('does-not-exist')
+    @tool_required("does-not-exist")
     def fn():
         pass
 

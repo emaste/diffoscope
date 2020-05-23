@@ -28,19 +28,19 @@ import _string
 def round_sigfig(num, s):
     # https://stackoverflow.com/questions/3410976/how-to-round-a-number-to-significant-figures-in-python
     # This was too painful :/
-    x = float(('%%.%sg' % s) % num)
+    x = float(("%%.%sg" % s) % num)
     return x if abs(x) < (10 ** (s - 1)) else int(x)
 
 
-def sizeof_fmt(num, suffix='B', sigfig=3):
+def sizeof_fmt(num, suffix="B", sigfig=3):
     # https://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
     # A more powerful version is python3-hurry.filesize but that's an extra dependency
-    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(num) < 1024.0:
             break
         num /= 1024.0
     else:
-        unit = 'Y'
+        unit = "Y"
     return "%s %s%s" % (round_sigfig(num, sigfig), unit, suffix)
 
 
@@ -52,7 +52,7 @@ class Presenter:
 
     @classmethod
     def run(cls, data, difference, parsed_args):
-        with make_printer(data['target']) as fn:
+        with make_printer(data["target"]) as fn:
             cls(fn).start(difference)
 
     def start(self, difference):
@@ -78,7 +78,7 @@ class Presenter:
         #
         # We don't use textwrap.indent as that unnecessarily calls
         # str.splitlines, etc.
-        return prefix + val.rstrip().replace('\n', '\n{}'.format(prefix))
+        return prefix + val.rstrip().replace("\n", "\n{}".format(prefix))
 
 
 class PrintLimitReached(Exception):
@@ -93,18 +93,18 @@ class DiffBlockLimitReached(Exception):
 def make_printer(path):
     output = sys.stdout
 
-    if path != '-':
-        output = codecs.open(path, 'w', encoding='utf-8')
+    if path != "-":
+        output = codecs.open(path, "w", encoding="utf-8")
 
     def fn(*args, **kwargs):
-        kwargs['file'] = output
+        kwargs["file"] = output
         print(*args, **kwargs)
 
     fn.output = output
 
     yield fn
 
-    if path != '-':
+    if path != "-":
         output.close()
 
 

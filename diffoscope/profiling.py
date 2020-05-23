@@ -43,7 +43,7 @@ class ProfileManager:
         if not self._singleton:
             self.data = collections.defaultdict(
                 lambda: collections.defaultdict(
-                    lambda: {'time': 0.0, 'count': 0}
+                    lambda: {"time": 0.0, "count": 0}
                 )
             )
 
@@ -53,12 +53,12 @@ class ProfileManager:
 
     def increment(self, start, namespace, key):
         if not isinstance(key, str):
-            key = '{}.{}'.format(
+            key = "{}.{}".format(
                 key.__class__.__module__, key.__class__.__name__
             )
 
-        self.data[namespace][key]['time'] += time.time() - start
-        self.data[namespace][key]['count'] += 1
+        self.data[namespace][key]["time"] += time.time() - start
+        self.data[namespace][key]["count"] += 1
 
     def finish(self, parsed_args):
         from .presenters.utils import make_printer
@@ -70,26 +70,26 @@ class ProfileManager:
             self.output(fn)
 
     def output(self, print_fn):
-        title = "# Profiling output for: {}".format(' '.join(sys.argv))
+        title = "# Profiling output for: {}".format(" ".join(sys.argv))
 
         print_fn(title)
 
         def key(x):
-            return x[1]['time']
+            return x[1]["time"]
 
         for namespace, keys in sorted(self.data.items(), key=lambda x: x[0]):
             print_fn(
                 "\n## {} (total time: {:.3f}s)".format(
-                    namespace, sum(x['time'] for x in keys.values())
+                    namespace, sum(x["time"] for x in keys.values())
                 )
             )
 
             for value, totals in sorted(keys.items(), key=key, reverse=True):
                 print_fn(
                     "  {:10.3f}s {:6d} call{}    {}".format(
-                        totals['time'],
-                        totals['count'],
-                        ' ' if totals['count'] == 1 else 's',
+                        totals["time"],
+                        totals["count"],
+                        " " if totals["count"] == 1 else "s",
                         value,
                     )
                 )

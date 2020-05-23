@@ -33,7 +33,7 @@ def run_read_write(capsys, diff, *args):
 
     out, err = capsys.readouterr()
 
-    assert err == ''
+    assert err == ""
     assert exc.value.code == 1
     assert out == get_data(diff)  # presented-output is same as parsed-input
     return out
@@ -41,11 +41,11 @@ def run_read_write(capsys, diff, *args):
 
 def run_diff_read(diffpath):
     with cwd_data():
-        diff = compare_root_paths('test1.tar', 'test2.tar')
+        diff = compare_root_paths("test1.tar", "test2.tar")
         read = load_diff_from_path(diffpath)
     assert diff.equals(read)
 
 
 def test_json(capsys):
-    run_read_write(capsys, 'output.json', '--json', '-')
-    run_diff_read('output.json')
+    run_read_write(capsys, "output.json", "--json", "-")
+    run_diff_read("output.json")

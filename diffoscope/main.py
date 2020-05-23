@@ -61,13 +61,13 @@ logger = logging.getLogger(__name__)
 try:
     import tlsh
 except ImportError:
-    python_module_missing('tlsh')
+    python_module_missing("tlsh")
     tlsh = None
 
 try:
     import argcomplete
 except ImportError:
-    python_module_missing('argcomplete')
+    python_module_missing("argcomplete")
     argcomplete = None
 
 
@@ -85,360 +85,360 @@ class BooleanAction(argparse.Action):
 
 def create_parser():
     parser = argparse.ArgumentParser(
-        description='Calculate differences between two files or directories',
+        description="Calculate differences between two files or directories",
         add_help=False,
         formatter_class=HelpFormatter,
     )
     parser.add_argument(
-        'path1',
+        "path1",
         help='First file or directory to compare. Specify "-" to read a '
-        'diffoscope diff from stdin.',
+        "diffoscope diff from stdin.",
     )
     parser.add_argument(
-        'path2',
-        nargs='?',
-        help='Second file or directory to '
-        'compare. If omitted, no comparison is done but instead we read a '
-        'diffoscope diff from path1 and will output this in the formats '
-        'specified by the rest of the command line.',
+        "path2",
+        nargs="?",
+        help="Second file or directory to "
+        "compare. If omitted, no comparison is done but instead we read a "
+        "diffoscope diff from path1 and will output this in the formats "
+        "specified by the rest of the command line.",
     )
     parser.add_argument(
-        '--debug',
-        action='store_true',
+        "--debug",
+        action="store_true",
         default=False,
-        help='Display debug messages',
+        help="Display debug messages",
     )
     parser.add_argument(
-        '--pdb',
-        action='store_true',
-        help='Open the Python pdb debugger in case of crashes',
+        "--pdb",
+        action="store_true",
+        help="Open the Python pdb debugger in case of crashes",
     )
     parser.add_argument(
-        '--status-fd',
-        metavar='FD',
+        "--status-fd",
+        metavar="FD",
         type=int,
-        help='Send machine-readable status to file descriptor FD',
+        help="Send machine-readable status to file descriptor FD",
     )
     parser.add_argument(
-        '--progress',
-        '--no-progress',
+        "--progress",
+        "--no-progress",
         action=BooleanAction,
         default=None,
-        help='Show an approximate progress bar. Default: yes if '
-        'stdin is a tty, otherwise no.',
+        help="Show an approximate progress bar. Default: yes if "
+        "stdin is a tty, otherwise no.",
     )
     parser.add_argument(
-        '--no-default-limits',
-        action='store_true',
+        "--no-default-limits",
+        action="store_true",
         default=False,
-        help='Disable most default output limits and diff calculation limits.',
+        help="Disable most default output limits and diff calculation limits.",
     )
 
-    group1 = parser.add_argument_group('output types')
+    group1 = parser.add_argument_group("output types")
     group1.add_argument(
-        '--text',
-        metavar='OUTPUT_FILE',
-        dest='text_output',
-        help='Write plain text output to given file (use - for stdout)',
+        "--text",
+        metavar="OUTPUT_FILE",
+        dest="text_output",
+        help="Write plain text output to given file (use - for stdout)",
     )
     group1.add_argument(
-        '--text-color',
-        metavar='WHEN',
-        default='auto',
-        choices=['never', 'auto', 'always'],
-        help='When to output color diff. WHEN is one of {%(choices)s}. '
-        'Default: auto, meaning yes if the output is a terminal, otherwise no.',
+        "--text-color",
+        metavar="WHEN",
+        default="auto",
+        choices=["never", "auto", "always"],
+        help="When to output color diff. WHEN is one of {%(choices)s}. "
+        "Default: auto, meaning yes if the output is a terminal, otherwise no.",
     )
     group1.add_argument(
-        '--output-empty',
-        action='store_true',
-        help='If there was no difference, then output an empty '
-        'diff for each output type that was specified. In '
-        '--text output, an empty file is written.',
+        "--output-empty",
+        action="store_true",
+        help="If there was no difference, then output an empty "
+        "diff for each output type that was specified. In "
+        "--text output, an empty file is written.",
     )
     group1.add_argument(
-        '--html',
-        metavar='OUTPUT_FILE',
-        dest='html_output',
-        help='Write HTML report to given file (use - for stdout)',
+        "--html",
+        metavar="OUTPUT_FILE",
+        dest="html_output",
+        help="Write HTML report to given file (use - for stdout)",
     )
     group1.add_argument(
-        '--html-dir',
-        metavar='OUTPUT_DIR',
-        dest='html_output_directory',
-        help='Write multi-file HTML report to given directory',
+        "--html-dir",
+        metavar="OUTPUT_DIR",
+        dest="html_output_directory",
+        help="Write multi-file HTML report to given directory",
     )
     group1.add_argument(
-        '--css',
-        metavar='URL',
-        dest='css_url',
-        help='Link to an extra CSS for the HTML report',
+        "--css",
+        metavar="URL",
+        dest="css_url",
+        help="Link to an extra CSS for the HTML report",
     )
     group1.add_argument(
-        '--jquery',
-        metavar='URL',
-        dest='jquery_url',
-        help='URL link to jQuery, for --html and --html-dir output. '
-        'If this is a non-existent relative URL, diffoscope will create a '
-        'symlink to a system installation. (Paths searched: %s.) '
-        'If not given, --html output will not use JS but --html-dir will '
+        "--jquery",
+        metavar="URL",
+        dest="jquery_url",
+        help="URL link to jQuery, for --html and --html-dir output. "
+        "If this is a non-existent relative URL, diffoscope will create a "
+        "symlink to a system installation. (Paths searched: %s.) "
+        "If not given, --html output will not use JS but --html-dir will "
         'if it can be found; give "disable" to disable JS on all outputs.'
-        % ', '.join(JQUERY_SYSTEM_LOCATIONS),
+        % ", ".join(JQUERY_SYSTEM_LOCATIONS),
     )
     group1.add_argument(
-        '--json',
-        metavar='OUTPUT_FILE',
-        dest='json_output',
-        help='Write JSON text output to given file (use - for stdout)',
+        "--json",
+        metavar="OUTPUT_FILE",
+        dest="json_output",
+        help="Write JSON text output to given file (use - for stdout)",
     )
     group1.add_argument(
-        '--markdown',
-        metavar='OUTPUT_FILE',
-        dest='markdown_output',
-        help='Write Markdown text output to given file (use - for stdout)',
+        "--markdown",
+        metavar="OUTPUT_FILE",
+        dest="markdown_output",
+        help="Write Markdown text output to given file (use - for stdout)",
     )
     group1.add_argument(
-        '--restructured-text',
-        metavar='OUTPUT_FILE',
-        dest='restructuredtext_output',
-        help='Write RsT text output to given file (use - for stdout)',
+        "--restructured-text",
+        metavar="OUTPUT_FILE",
+        dest="restructuredtext_output",
+        help="Write RsT text output to given file (use - for stdout)",
     )
     group1.add_argument(
-        '--difftool',
-        metavar='TOOL',
-        dest='difftool',
-        help='Compare differences one-by-one using the specified external '
-        'command similar to git-difftool(1)',
+        "--difftool",
+        metavar="TOOL",
+        dest="difftool",
+        help="Compare differences one-by-one using the specified external "
+        "command similar to git-difftool(1)",
     )
     group1.add_argument(
-        '--profile',
-        metavar='OUTPUT_FILE',
-        dest='profile_output',
-        help='Write profiling info to given file (use - for stdout)',
+        "--profile",
+        metavar="OUTPUT_FILE",
+        dest="profile_output",
+        help="Write profiling info to given file (use - for stdout)",
     )
 
-    group2 = parser.add_argument_group('output limits')
+    group2 = parser.add_argument_group("output limits")
     # everything marked with default=None below is affected by no-default-limits
     group2.add_argument(
-        '--max-text-report-size',
-        metavar='BYTES',
+        "--max-text-report-size",
+        metavar="BYTES",
         type=int,
-        help='Maximum bytes written in --text report. (0 to '
-        'disable, default: %d)' % Config().max_text_report_size,
+        help="Maximum bytes written in --text report. (0 to "
+        "disable, default: %d)" % Config().max_text_report_size,
         default=None,
     )
     group2.add_argument(
-        '--max-report-size',
-        metavar='BYTES',
+        "--max-report-size",
+        metavar="BYTES",
         type=int,
-        help='Maximum bytes of a report in a given format, '
-        'across all of its pages. Note that some formats, such '
-        'as --html, may be restricted by even smaller limits '
-        'such as --max-page-size. (0 to disable, default: %d)'
+        help="Maximum bytes of a report in a given format, "
+        "across all of its pages. Note that some formats, such "
+        "as --html, may be restricted by even smaller limits "
+        "such as --max-page-size. (0 to disable, default: %d)"
         % Config().max_report_size,
         default=None,
     ).completer = RangeCompleter(Config().max_report_size)
     group2.add_argument(
-        '--max-diff-block-lines',
-        metavar='LINES',
+        "--max-diff-block-lines",
+        metavar="LINES",
         type=int,
-        help='Maximum number of lines output per unified-diff '
-        'block, across all pages. (0 to disable, default: %d)'
+        help="Maximum number of lines output per unified-diff "
+        "block, across all pages. (0 to disable, default: %d)"
         % Config().max_diff_block_lines,
         default=None,
     ).completer = RangeCompleter(Config().max_diff_block_lines)
     group2.add_argument(
-        '--max-page-size',
-        metavar='BYTES',
+        "--max-page-size",
+        metavar="BYTES",
         type=int,
-        help='Maximum bytes of the top-level (--html-dir) or sole '
-        '(--html) page. (default: %(default)s, remains in effect '
-        'even with --no-default-limits)',
+        help="Maximum bytes of the top-level (--html-dir) or sole "
+        "(--html) page. (default: %(default)s, remains in effect "
+        "even with --no-default-limits)",
         default=Config().max_page_size,
     ).completer = RangeCompleter(Config().max_page_size)
     group2.add_argument(
-        '--max-page-size-child',
-        metavar='BYTES',
+        "--max-page-size-child",
+        metavar="BYTES",
         type=int,
-        help='In --html-dir output, this is the maximum bytes of '
-        'each child page (default: %(default)s, remains in '
-        'effect even with --no-default-limits)',
+        help="In --html-dir output, this is the maximum bytes of "
+        "each child page (default: %(default)s, remains in "
+        "effect even with --no-default-limits)",
         default=str(Config().max_page_size_child),
     ).completer = RangeCompleter(Config().max_page_size_child)
     group2.add_argument(
-        '--max-page-diff-block-lines',
-        metavar='LINES',
+        "--max-page-diff-block-lines",
+        metavar="LINES",
         type=int,
-        help='Maximum number of lines output per unified-diff block '
-        'on the top-level (--html-dir) or sole (--html) page, before '
-        'spilling it into child pages (--html-dir) or skipping the '
-        'rest of the diff block. Child pages are limited instead by '
-        '--max-page-size-child. (default: %(default)s, remains in '
-        'effect even with --no-default-limits)',
+        help="Maximum number of lines output per unified-diff block "
+        "on the top-level (--html-dir) or sole (--html) page, before "
+        "spilling it into child pages (--html-dir) or skipping the "
+        "rest of the diff block. Child pages are limited instead by "
+        "--max-page-size-child. (default: %(default)s, remains in "
+        "effect even with --no-default-limits)",
         default=Config().max_page_diff_block_lines,
     ).completer = RangeCompleter(Config().max_page_diff_block_lines)
 
-    group3 = parser.add_argument_group('diff calculation')
+    group3 = parser.add_argument_group("diff calculation")
     group3.add_argument(
-        '--new-file', action='store_true', help='Treat absent files as empty'
+        "--new-file", action="store_true", help="Treat absent files as empty"
     )
     group3.add_argument(
-        '--exclude',
-        dest='excludes',
-        metavar='GLOB_PATTERN',
-        action='append',
+        "--exclude",
+        dest="excludes",
+        metavar="GLOB_PATTERN",
+        action="append",
         default=[],
-        help='Exclude files whose names (including any directory part) '
-        'match %(metavar)s. Use this option to ignore files based on '
-        'their names.',
+        help="Exclude files whose names (including any directory part) "
+        "match %(metavar)s. Use this option to ignore files based on "
+        "their names.",
     )
     group3.add_argument(
-        '--exclude-command',
-        dest='exclude_commands',
-        metavar='REGEX_PATTERN',
-        action='append',
+        "--exclude-command",
+        dest="exclude_commands",
+        metavar="REGEX_PATTERN",
+        action="append",
         default=[],
-        help='Exclude commands that match %(metavar)s. For '
+        help="Exclude commands that match %(metavar)s. For "
         "example '^readelf.*\\s--debug-dump=info' can take a "
-        'long time and differences here are likely secondary '
-        'differences caused by something represented '
-        'elsewhere. Use this option to disable commands that '
-        'use a lot of resources.',
+        "long time and differences here are likely secondary "
+        "differences caused by something represented "
+        "elsewhere. Use this option to disable commands that "
+        "use a lot of resources.",
     )
     group3.add_argument(
-        '--exclude-directory-metadata',
-        choices=('auto', 'yes', 'no', 'recursive'),
-        help='Exclude directory metadata. Useful if comparing '
-        'files whose filesystem-level metadata is not intended '
-        'to be distributed to other systems. This is true for '
-        'most distributions package builders, but not true '
-        'for the output of commands such as `make install`. '
-        'Metadata of archive members remain un-excluded '
+        "--exclude-directory-metadata",
+        choices=("auto", "yes", "no", "recursive"),
+        help="Exclude directory metadata. Useful if comparing "
+        "files whose filesystem-level metadata is not intended "
+        "to be distributed to other systems. This is true for "
+        "most distributions package builders, but not true "
+        "for the output of commands such as `make install`. "
+        "Metadata of archive members remain un-excluded "
         'except if "recursive" choice is set. '
-        'Use this option to ignore permissions, timestamps, '
-        'xattrs etc. Default: False if comparing two '
+        "Use this option to ignore permissions, timestamps, "
+        "xattrs etc. Default: False if comparing two "
         'directories, else True. Note that "file" metadata '
-        'actually a property of its containing directory, '
-        'and is not relevant when distributing the file across '
-        'systems.',
+        "actually a property of its containing directory, "
+        "and is not relevant when distributing the file across "
+        "systems.",
     )
     group3.add_argument(
-        '--fuzzy-threshold',
+        "--fuzzy-threshold",
         type=int,
-        help='Threshold for fuzzy-matching '
-        '(0 to disable, %(default)s is default, 400 is high fuzziness)',
+        help="Threshold for fuzzy-matching "
+        "(0 to disable, %(default)s is default, 400 is high fuzziness)",
         default=Config().fuzzy_threshold,
     ).completer = RangeCompleter(400)
     group3.add_argument(
-        '--tool-prefix-binutils',
-        metavar='PREFIX',
-        help='Prefix for binutils program names, e.g. '
+        "--tool-prefix-binutils",
+        metavar="PREFIX",
+        help="Prefix for binutils program names, e.g. "
         '"aarch64-linux-gnu-" for a foreign-arch binary or "g" '
-        'if you\'re on a non-GNU system.',
+        "if you're on a non-GNU system.",
     )
     group3.add_argument(
-        '--max-diff-input-lines',
-        metavar='LINES',
+        "--max-diff-input-lines",
+        metavar="LINES",
         type=int,
-        help='Maximum number of lines fed to diff(1) '
-        '(0 to disable, default: %d)' % Config().max_diff_input_lines,
+        help="Maximum number of lines fed to diff(1) "
+        "(0 to disable, default: %d)" % Config().max_diff_input_lines,
         default=None,
     ).completer = RangeCompleter(Config().max_diff_input_lines)
     group3.add_argument(
-        '--max-container-depth',
-        metavar='DEPTH',
+        "--max-container-depth",
+        metavar="DEPTH",
         type=int,
-        help='Maximum depth to recurse into containers. '
-        '(Cannot be disabled for security reasons, default: '
-        '%(default)s)',
+        help="Maximum depth to recurse into containers. "
+        "(Cannot be disabled for security reasons, default: "
+        "%(default)s)",
         default=Config().max_container_depth,
     )
     group3.add_argument(
-        '--max-diff-block-lines-saved',
-        metavar='LINES',
+        "--max-diff-block-lines-saved",
+        metavar="LINES",
         type=int,
-        help='Maximum number of lines saved per diff block. '
-        'Most users should not need this, unless you run out '
-        'of memory. This truncates diff(1) output before emitting '
-        'it in a report, and affects all types of output, '
-        'including --text and --json. (0 to disable, default: '
-        '%(default)s)',
+        help="Maximum number of lines saved per diff block. "
+        "Most users should not need this, unless you run out "
+        "of memory. This truncates diff(1) output before emitting "
+        "it in a report, and affects all types of output, "
+        "including --text and --json. (0 to disable, default: "
+        "%(default)s)",
         default=0,
     )
     group3.add_argument(
-        '--use-dbgsym',
-        metavar='WHEN',
-        default='auto',
-        choices=('no', 'auto', 'yes'),
-        help='When to automatically use corresponding -dbgsym packages when '
-        'comparing .deb files. WHEN is one of {%(choices)s}. Default: auto, '
-        'meaning yes if two .changes or .buildinfo files are specified, '
-        'otherwise no.',
+        "--use-dbgsym",
+        metavar="WHEN",
+        default="auto",
+        choices=("no", "auto", "yes"),
+        help="When to automatically use corresponding -dbgsym packages when "
+        "comparing .deb files. WHEN is one of {%(choices)s}. Default: auto, "
+        "meaning yes if two .changes or .buildinfo files are specified, "
+        "otherwise no.",
     )
     group3.add_argument(
-        '--force-details',
+        "--force-details",
         default=False,
-        action='store_true',
-        help='Force recursing into the depths of file formats '
-        'even if files have the same content, only really '
-        'useful for debugging diffoscope. Default: %(default)s',
+        action="store_true",
+        help="Force recursing into the depths of file formats "
+        "even if files have the same content, only really "
+        "useful for debugging diffoscope. Default: %(default)s",
     )
 
-    group4 = parser.add_argument_group('information commands')
+    group4 = parser.add_argument_group("information commands")
     group4.add_argument(
-        '--help', '-h', action='help', help="Show this help and exit"
+        "--help", "-h", action="help", help="Show this help and exit"
     )
     group4.add_argument(
-        '--version',
-        action='version',
-        version='diffoscope %s' % VERSION,
+        "--version",
+        action="version",
+        version="diffoscope %s" % VERSION,
         help="Show program's version number and exit",
     )
     group4.add_argument(
-        '--list-tools',
-        nargs='?',
+        "--list-tools",
+        nargs="?",
         type=str,
         action=ListToolsAction,
-        metavar='DISTRO',
+        metavar="DISTRO",
         choices=OS_NAMES,
-        help='Show external tools required and exit. '
-        'DISTRO can be one of {%(choices)s}. '
-        'If specified, the output will list packages in that '
-        'distribution that satisfy these dependencies.',
+        help="Show external tools required and exit. "
+        "DISTRO can be one of {%(choices)s}. "
+        "If specified, the output will list packages in that "
+        "distribution that satisfy these dependencies.",
     )
     group4.add_argument(
-        '--list-debian-substvars',
+        "--list-debian-substvars",
         action=ListDebianSubstvarsAction,
         help="List packages needed for Debian in 'substvar' format.",
     )
     group4.add_argument(
-        '--list-missing-tools',
-        nargs='?',
+        "--list-missing-tools",
+        nargs="?",
         type=str,
         action=ListMissingToolsAction,
-        metavar='DISTRO',
+        metavar="DISTRO",
         choices=OS_NAMES,
-        help='Show missing external tools and exit. '
-        'DISTRO can be one of {%(choices)s}. '
-        'If specified, the output will list packages in that '
-        'distribution that satisfy these dependencies.',
+        help="Show missing external tools and exit. "
+        "DISTRO can be one of {%(choices)s}. "
+        "If specified, the output will list packages in that "
+        "distribution that satisfy these dependencies.",
     )
 
     if not tlsh:
         parser.epilog = (
-            'File renaming detection based on fuzzy-matching is currently '
+            "File renaming detection based on fuzzy-matching is currently "
             'disabled. It can be enabled by installing the "tlsh" module '
-            'available from https://github.com/trendmicro/tlsh or in the '
-            'python3-tlsh package.'
+            "available from https://github.com/trendmicro/tlsh or in the "
+            "python3-tlsh package."
         )
     if argcomplete:
         argcomplete.autocomplete(parser)
-    elif '_ARGCOMPLETE' in os.environ:
+    elif "_ARGCOMPLETE" in os.environ:
         logger.error(
             'Argument completion requested but the "argcomplete" module is '
-            'not installed. It can be obtained from '
-            'https://pypi.python.org/pypi/argcomplete or in the '
-            'python3-argcomplete package.'
+            "not installed. It can be obtained from "
+            "https://pypi.python.org/pypi/argcomplete or in the "
+            "python3-argcomplete package."
         )
         sys.exit(1)
 
@@ -453,8 +453,8 @@ def create_parser():
             ]
             if ineffective_flags:
                 logger.warning(
-                    'Loading diff instead of calculating it, but '
-                    'diff-calculation flags were given; they will be ignored:'
+                    "Loading diff instead of calculating it, but "
+                    "diff-calculation flags were given; they will be ignored:"
                 )
                 logger.warning(ineffective_flags)
 
@@ -466,26 +466,26 @@ class HelpFormatter(argparse.HelpFormatter):
         val = super().format_help(*args, **kwargs)
 
         # Only append the file formats if --help is passed.
-        if not set(sys.argv) & {'--help', '-h'}:
+        if not set(sys.argv) & {"--help", "-h"}:
             return val
 
         def append(title, content, indent=24, max_width=78):
             nonlocal val
             wrapped = textwrap.fill(content, max_width - indent)
-            val += '\n{}:\n{}\n'.format(
-                title, textwrap.indent(wrapped, ' ' * indent)
+            val += "\n{}:\n{}\n".format(
+                title, textwrap.indent(wrapped, " " * indent)
             )
 
         append(
-            'file formats supported',
+            "file formats supported",
             ComparatorManager().format_descriptions(),
         )
 
-        append('diffoscope homepage', '<https://diffoscope.org/>')
+        append("diffoscope homepage", "<https://diffoscope.org/>")
 
         append(
-            'bugs/issues',
-            '<https://salsa.debian.org/reproducible-builds/diffoscope/issues>',
+            "bugs/issues",
+            "<https://salsa.debian.org/reproducible-builds/diffoscope/issues>",
             max_width=sys.maxsize,
         )
 
@@ -524,8 +524,8 @@ class ListToolsAction(argparse.Action):
                 if not tool_check_installed(tool)
             ]
 
-        print("External-Tools-Required: ", end='')
-        print(', '.join(external_tools))
+        print("External-Tools-Required: ", end="")
+        print(", ".join(external_tools))
 
         current_os = get_current_os()
         os_list = [current_os] if (current_os in OS_NAMES) else iter(OS_NAMES)
@@ -534,16 +534,16 @@ class ListToolsAction(argparse.Action):
 
         for os_ in os_list:
             tools = set()
-            print("Available-in-{}-packages: ".format(OS_NAMES[os_]), end='')
+            print("Available-in-{}-packages: ".format(OS_NAMES[os_]), end="")
             for x in external_tools:
                 try:
                     tools.add(EXTERNAL_TOOLS[x][os_])
                 except KeyError:
                     pass
-            print(', '.join(sorted(tools)))
+            print(", ".join(sorted(tools)))
 
-        print("Missing-Python-Modules: ", end='')
-        print(', '.join(sorted(python_module_missing.modules)))
+        print("Missing-Python-Modules: ", end="")
+        print(", ".join(sorted(python_module_missing.modules)))
 
         sys.exit(0)
 
@@ -565,29 +565,29 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         # tools (NB. not package names) as their modules may not have been
         # imported by the `ComparatorManager().reload()` call above. (#908072)
         tools = set(
-            ('gpg', 'rpm2cpio')  # comparators/debian.py  # comparators/rpm.py
+            ("gpg", "rpm2cpio")  # comparators/debian.py  # comparators/rpm.py
         )
         tools.update(tool_required.all)
 
         packages = set()
         for x in tools:
             try:
-                packages.add(EXTERNAL_TOOLS[x]['debian'])
+                packages.add(EXTERNAL_TOOLS[x]["debian"])
             except KeyError:
                 pass
 
         # Exclude "Required" packages
-        for x in ('gzip', 'tar', 'coreutils', 'diffutils', 'findutils'):
+        for x in ("gzip", "tar", "coreutils", "diffutils", "findutils"):
             packages.discard(x)
 
-        description = 'File formats supported include: {}'.format(
+        description = "File formats supported include: {}".format(
             ComparatorManager().format_descriptions(),
         )
-        wrapped = '${Newline}'.join(textwrap.wrap(description, 79))
-        wrapped = wrapped.replace('${Newline}.', '${Newline}')
-        print('diffoscope:Description={}'.format(wrapped))
+        wrapped = "${Newline}".join(textwrap.wrap(description, 79))
+        wrapped = wrapped.replace("${Newline}.", "${Newline}")
+        print("diffoscope:Description={}".format(wrapped))
 
-        print('diffoscope:Recommends={}'.format(', '.join(sorted(packages))))
+        print("diffoscope:Recommends={}".format(", ".join(sorted(packages))))
         sys.exit(0)
 
 
@@ -628,16 +628,16 @@ def configure(parsed_args):
 
     tool_prepend_prefix(
         parsed_args.tool_prefix_binutils,
-        'ar',
-        'as',
-        'ld',
-        'ld.bfd',
-        'nm',
-        'objcopy',
-        'objdump',
-        'ranlib',
-        'readelf',
-        'strip',
+        "ar",
+        "as",
+        "ld",
+        "ld.bfd",
+        "nm",
+        "objcopy",
+        "objdump",
+        "ranlib",
+        "readelf",
+        "strip",
     )
 
     Config().check_constraints()
@@ -668,7 +668,7 @@ def run_diffoscope(parsed_args):
     normalize_environment()
     path1, path2 = parsed_args.path1, parsed_args.path2
     if path2 is None:
-        if path1 == '-':
+        if path1 == "-":
             logger.debug("Loading diff from stdin")
             difference = load_diff(sys.stdin, "stdin")
         else:
@@ -684,23 +684,23 @@ def run_diffoscope(parsed_args):
                 )
                 return 1
     else:
-        if Config().exclude_directory_metadata in ('auto', None):
+        if Config().exclude_directory_metadata in ("auto", None):
             # Default to ignoring metadata directory...
-            Config().exclude_directory_metadata = 'yes'
+            Config().exclude_directory_metadata = "yes"
             if os.path.isdir(path1) and os.path.isdir(path2):
                 # ... except if we passed two directories.
-                Config().exclude_directory_metadata = 'no'
+                Config().exclude_directory_metadata = "no"
 
-        logger.debug('Starting comparison')
+        logger.debug("Starting comparison")
         with Progress():
-            with profile('main', 'outputs'):
+            with profile("main", "outputs"):
                 difference = compare_root_paths(path1, path2)
         ProgressManager().finish()
     # Generate an empty, dummy diff to write, saving the exit code first.
     has_differences = bool(difference is not None)
     if difference is None and parsed_args.output_empty:
         difference = Difference(None, path1, path2)
-    with profile('main', 'outputs'):
+    with profile("main", "outputs"):
         PresenterManager().output(difference, parsed_args, has_differences)
     return 1 if has_differences else 0
 
@@ -719,7 +719,7 @@ def main(args=None):
         import libarchive  # noqa
     except (ImportError, AttributeError):
         traceback.print_exc()
-        python_module_missing('libarchive')
+        python_module_missing("libarchive")
         print(
             "\nMissing or incomplete libarchive module. Try installing your "
             "system's 'libarchive' package.",
@@ -729,14 +729,14 @@ def main(args=None):
 
     # Rewrite/support some legacy argument styles
     for val, repl in (
-        ('--exclude-directory-metadata', '--exclude-directory-metadata=yes'),
-        ('--no-exclude-directory-metadata', '--exclude-directory-metadata=no'),
+        ("--exclude-directory-metadata", "--exclude-directory-metadata=yes"),
+        ("--no-exclude-directory-metadata", "--exclude-directory-metadata=no"),
     ):
         args = [repl if x == val else x for x in args]
 
     parsed_args = None
     try:
-        with profile('main', 'parse_args'):
+        with profile("main", "parse_args"):
             parser, post_parse = create_parser()
             parsed_args = parser.parse_args(args)
         log_handler = ProgressManager().setup(parsed_args)
@@ -746,10 +746,10 @@ def main(args=None):
     except OSError as e:
         if e.errno != errno.ENOSPC:
             raise
-        logger.error('No space left on device. Diffoscope exiting.')
+        logger.error("No space left on device. Diffoscope exiting.")
         sys.exit(2)
     except KeyboardInterrupt:
-        logger.error('Keyboard Interrupt')
+        logger.error("Keyboard Interrupt")
         sys.exit(2)
     except BrokenPipeError:
         sys.exit(2)
@@ -766,7 +766,7 @@ def main(args=None):
         # which sets Config() values.
         Config().reset()
 
-        with profile('main', 'cleanup'):
+        with profile("main", "cleanup"):
             clean_all_temp_files()
 
         # Print profiling output at the very end
@@ -774,5 +774,5 @@ def main(args=None):
             ProfileManager().finish(parsed_args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

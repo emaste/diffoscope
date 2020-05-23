@@ -38,11 +38,11 @@ class JSONReaderV1:
         return self.load_rec(raw)
 
     def load_rec(self, raw):
-        source1 = raw['source1']
-        source2 = raw['source2']
-        unified_diff = raw['unified_diff']
-        comments = raw.get('comments', [])
-        details = [self.load_rec(child) for child in raw.get('details', [])]
+        source1 = raw["source1"]
+        source2 = raw["source2"]
+        unified_diff = raw["unified_diff"]
+        comments = raw.get("comments", [])
+        details = [self.load_rec(child) for child in raw.get("details", [])]
 
         return Difference(
             unified_diff, source1, source2, comment=comments, details=details

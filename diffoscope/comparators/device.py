@@ -53,19 +53,19 @@ class Device(File):
             return False
 
     def create_placeholder(self):
-        with get_named_temporary_file(mode='w+', delete=False) as f:
+        with get_named_temporary_file(mode="w+", delete=False) as f:
             f.write(format_device(*self.get_device()))
             f.flush()
             return f.name
 
     @property
     def path(self):
-        if not hasattr(self, '_placeholder'):
+        if not hasattr(self, "_placeholder"):
             self._placeholder = self.create_placeholder()
         return self._placeholder
 
     def cleanup(self):
-        if hasattr(self, '_placeholder'):
+        if hasattr(self, "_placeholder"):
             os.remove(self._placeholder)
             del self._placeholder
         super().cleanup()
@@ -84,9 +84,9 @@ class Device(File):
 
 def format_device(mode, major, minor):
     if stat.S_ISCHR(mode):
-        kind = 'character'
+        kind = "character"
     elif stat.S_ISBLK(mode):
-        kind = 'block'
+        kind = "block"
     else:
-        kind = 'weird'
-    return 'device:%s\nmajor: %d\nminor: %d\n' % (kind, major, minor)
+        kind = "weird"
+    return "device:%s\nmajor: %d\nminor: %d\n" % (kind, major, minor)

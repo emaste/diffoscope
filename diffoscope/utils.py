@@ -27,16 +27,16 @@ def format_cmdline(cmd, replace=(), truncate=None):
 
     def fn(x):
         if x in replace:
-            return '{}'
+            return "{}"
         # Don't expose the full path name of the temporary directory
         if x.startswith(prefix):
-            x = os.path.join('«TEMP»', x[len(prefix) + 1 :])
+            x = os.path.join("«TEMP»", x[len(prefix) + 1 :])
         x = repr(x)
-        if ' ' not in x:
+        if " " not in x:
             x = x[1:-1]
         return x
 
-    result = ' '.join(fn(x) for x in cmd)
+    result = " ".join(fn(x) for x in cmd)
 
     if truncate is not None and len(result) > truncate:
         result = result[: truncate + 4] + " […]"
@@ -47,7 +47,7 @@ def format_cmdline(cmd, replace=(), truncate=None):
 def format_bytes(size, decimal_places=2):
     # https://stackoverflow.com/a/43690506
 
-    for unit in ('B', 'KiB', 'MiB', 'GiB', 'TiB'):
+    for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
         if size < 1024.0:
             break
         size /= 1024.0
@@ -60,6 +60,6 @@ def bail_if_non_existing(*paths):
         for path in paths:
             if not os.path.lexists(path):
                 sys.stderr.write(
-                    '%s: %s: No such file or directory\n' % (sys.argv[0], path)
+                    "%s: %s: No such file or directory\n" % (sys.argv[0], path)
                 )
         sys.exit(2)

@@ -40,26 +40,26 @@ from ..utils.tools import (
 )
 
 
-obj1 = load_fixture('test1.o')
-obj2 = load_fixture('test2.o')
-ignore_readelf_errors1 = load_fixture('test1.debug')
-ignore_readelf_errors2 = load_fixture('test2.debug')
+obj1 = load_fixture("test1.o")
+obj2 = load_fixture("test2.o")
+ignore_readelf_errors1 = load_fixture("test1.debug")
+ignore_readelf_errors2 = load_fixture("test2.debug")
 
 
 def readelf_version():
     try:
-        out = subprocess.check_output(['readelf', '--version'])
+        out = subprocess.check_output(["readelf", "--version"])
     except subprocess.CalledProcessError as e:
         out = e.output
 
     # Only match GNU readelf; we only need to match some versions
-    m = re.match(r'^GNU readelf .* (?P<version>[\d.]+)\n', out.decode('utf-8'))
+    m = re.match(r"^GNU readelf .* (?P<version>[\d.]+)\n", out.decode("utf-8"))
 
     # Return '0' as the version if we can't parse one; it should be harmless.
     if m is None:
-        return '0'
+        return "0"
 
-    return m.group('version')
+    return m.group("version")
 
 
 def test_obj_identification(obj1):
@@ -76,27 +76,27 @@ def obj_differences(obj1, obj2):
     return obj1.compare(obj2).details
 
 
-@skip_unless_tools_exist('readelf')
-@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_unless_tools_exist("readelf")
+@skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_obj_compare_non_existing(monkeypatch, obj1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = obj1.compare(MissingFile('/nonexisting', obj1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = obj1.compare(MissingFile("/nonexisting", obj1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0
 
 
-@skip_unless_tools_exist('readelf')
-@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_unless_tools_exist("readelf")
+@skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_diff(obj_differences):
     assert len(obj_differences) == 1
-    expected_diff = get_data('elf_obj_expected_diff')
+    expected_diff = get_data("elf_obj_expected_diff")
     assert obj_differences[0].unified_diff == expected_diff
 
 
-TEST_LIB1_PATH = data('test1.a')
-TEST_LIB2_PATH = data('test2.a')
+TEST_LIB1_PATH = data("test1.a")
+TEST_LIB2_PATH = data("test2.a")
 
 
 @pytest.fixture
@@ -123,31 +123,31 @@ def lib_differences(lib1, lib2):
     return lib1.compare(lib2).details
 
 
-@skip_unless_tools_exist('readelf', 'objdump')
-@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_unless_tools_exist("readelf", "objdump")
+@skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_lib_differences(lib_differences):
     assert len(lib_differences) == 2
-    assert lib_differences[0].source1 == 'file list'
-    expected_metadata_diff = get_data('elf_lib_metadata_expected_diff')
+    assert lib_differences[0].source1 == "file list"
+    expected_metadata_diff = get_data("elf_lib_metadata_expected_diff")
     assert lib_differences[0].unified_diff == expected_metadata_diff
-    assert 'objdump' in lib_differences[1].details[0].source1
-    expected_objdump_diff = get_data('elf_lib_objdump_expected_diff')
+    assert "objdump" in lib_differences[1].details[0].source1
+    expected_objdump_diff = get_data("elf_lib_objdump_expected_diff")
     assert lib_differences[1].details[0].unified_diff == expected_objdump_diff
 
 
-@skip_unless_tools_exist('readelf', 'objdump')
-@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_unless_tools_exist("readelf", "objdump")
+@skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_lib_compare_non_existing(monkeypatch, lib1):
-    monkeypatch.setattr(Config(), 'new_file', True)
-    difference = lib1.compare(MissingFile('/nonexisting', lib1))
-    assert difference.source2 == '/nonexisting'
+    monkeypatch.setattr(Config(), "new_file", True)
+    difference = lib1.compare(MissingFile("/nonexisting", lib1))
+    assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0
 
 
-TEST_LIBMIX1_PATH = data('elfmix1.not_a')
-TEST_LIBMIX2_PATH = data('elfmix2.a')
+TEST_LIBMIX1_PATH = data("elfmix1.not_a")
+TEST_LIBMIX2_PATH = data("elfmix2.a")
 
 
 @pytest.fixture
@@ -165,33 +165,33 @@ def libmix_differences(libmix1, libmix2):
     return libmix1.compare(libmix2).details
 
 
-@skip_unless_tools_exist('xxd')
-@skip_unless_tools_exist('readelf', 'objdump')
-@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_unless_tools_exist("xxd")
+@skip_unless_tools_exist("readelf", "objdump")
+@skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_libmix_differences(libmix_differences):
     assert len(libmix_differences) == 5
     file_list, mach_o, x86_o, src_c, x_obj = libmix_differences
 
     # Check order and basic identification
-    assert file_list.source1 == 'file list'
+    assert file_list.source1 == "file list"
     assert "Falling back to binary" in mach_o.comments[0]
     x86_o = x86_o.details[0]
-    assert x86_o.source1.startswith('objdump ')
-    assert src_c.source1.endswith('.c')
+    assert x86_o.source1.startswith("objdump ")
+    assert src_c.source1.endswith(".c")
     x_obj = x_obj.details[0]
-    assert x_obj.source1.startswith('readelf ')
+    assert x_obj.source1.startswith("readelf ")
 
     # Content
-    assert 'return42_or_3' in file_list.unified_diff
-    assert mach_o.unified_diff == get_data('elfmix_mach_o_expected_diff')
-    assert x86_o.unified_diff == get_data('elfmix_disassembly_expected_diff')
-    assert src_c.unified_diff == get_data('elfmix_src_c_expected_diff')
-    assert x_obj.unified_diff == get_data('elfmix_x_obj_expected_diff')
+    assert "return42_or_3" in file_list.unified_diff
+    assert mach_o.unified_diff == get_data("elfmix_mach_o_expected_diff")
+    assert x86_o.unified_diff == get_data("elfmix_disassembly_expected_diff")
+    assert src_c.unified_diff == get_data("elfmix_src_c_expected_diff")
+    assert x_obj.unified_diff == get_data("elfmix_x_obj_expected_diff")
 
 
-TEST_DBGSYM_DEB1_PATH = data('dbgsym/add/test-dbgsym_1_amd64.deb')
-TEST_DBGSYM_DEB2_PATH = data('dbgsym/mult/test-dbgsym_1_amd64.deb')
+TEST_DBGSYM_DEB1_PATH = data("dbgsym/add/test-dbgsym_1_amd64.deb")
+TEST_DBGSYM_DEB2_PATH = data("dbgsym/mult/test-dbgsym_1_amd64.deb")
 
 
 @pytest.fixture
@@ -216,31 +216,31 @@ def dbgsym_dir2():
 
 @pytest.fixture
 def dbgsym_differences(monkeypatch, dbgsym_dir1, dbgsym_dir2):
-    monkeypatch.setattr(Config(), 'use_dbgsym', 'yes')
+    monkeypatch.setattr(Config(), "use_dbgsym", "yes")
     return dbgsym_dir1.compare(dbgsym_dir2)
 
 
-@skip_unless_tools_exist('readelf', 'objdump', 'objcopy')
+@skip_unless_tools_exist("readelf", "objdump", "objcopy")
 @skip_if_binutils_does_not_support_x86()
-@skip_unless_module_exists('debian.deb822')
+@skip_unless_module_exists("debian.deb822")
 def test_differences_with_dbgsym(dbgsym_differences):
-    assert dbgsym_differences.details[2].source1 == 'data.tar.xz'
+    assert dbgsym_differences.details[2].source1 == "data.tar.xz"
     bin_details = dbgsym_differences.details[2].details[0].details[0]
-    assert bin_details.source1 == './usr/bin/test'
-    assert bin_details.details[1].source1.startswith('objdump')
+    assert bin_details.source1 == "./usr/bin/test"
+    assert bin_details.details[1].source1.startswith("objdump")
     assert (
-        'test-cases/dbgsym/package/test.c:2'
+        "test-cases/dbgsym/package/test.c:2"
         in bin_details.details[1].unified_diff
     )
 
 
-@skip_unless_tools_exist('readelf', 'objdump', 'objcopy')
+@skip_unless_tools_exist("readelf", "objdump", "objcopy")
 @skip_if_binutils_does_not_support_x86()
-@skip_unless_module_exists('debian.deb822')
+@skip_unless_module_exists("debian.deb822")
 def test_original_gnu_debuglink(dbgsym_differences):
     bin_details = dbgsym_differences.details[2].details[0].details[0]
-    assert '.gnu_debuglink' in bin_details.details[2].source1
-    expected_gnu_debuglink = get_data('gnu_debuglink_expected_diff')
+    assert ".gnu_debuglink" in bin_details.details[2].source1
+    expected_gnu_debuglink = get_data("gnu_debuglink_expected_diff")
     assert bin_details.details[2].unified_diff == expected_gnu_debuglink
 
 
@@ -259,9 +259,9 @@ def ignore_readelf_errors_differences(
     return ignore_readelf_errors1.compare(ignore_readelf_errors2).details
 
 
-@skip_unless_tools_exist('readelf')
-@skip_if_tool_version_is('readelf', readelf_version, '2.29')
+@skip_unless_tools_exist("readelf")
+@skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_ignore_readelf_errors(ignore_readelf_errors_differences):
-    expected_diff = get_data('ignore_readelf_errors_expected_diff')
+    expected_diff = get_data("ignore_readelf_errors_expected_diff")
     assert ignore_readelf_errors_differences[0].unified_diff == expected_diff

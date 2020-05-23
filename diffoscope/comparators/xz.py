@@ -39,13 +39,13 @@ class XzContainer(Archive):
         pass
 
     def get_member_names(self):
-        return [self.get_compressed_content_name('.xz')]
+        return [self.get_compressed_content_name(".xz")]
 
-    @tool_required('xz')
+    @tool_required("xz")
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
-        logger.debug('xz extracting to %s', dest_path)
-        with open(dest_path, 'wb') as fp:
+        logger.debug("xz extracting to %s", dest_path)
+        with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["xz", "--decompress", "--stdout", self.source.path],
                 shell=False,
@@ -58,7 +58,7 @@ class XzContainer(Archive):
 class XzFile(File):
     DESCRIPTION = "XZ compressed files"
     CONTAINER_CLASSES = [XzContainer]
-    FILE_TYPE_RE = re.compile(r'^XZ compressed data$')
+    FILE_TYPE_RE = re.compile(r"^XZ compressed data$")
 
     # Work around file(1) Debian bug #876316
     FALLBACK_FILE_EXTENSION_SUFFIX = ".xz"

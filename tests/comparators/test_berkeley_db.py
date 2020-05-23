@@ -25,8 +25,8 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
-db1 = load_fixture('test1.db')
-db2 = load_fixture('test2.db')
+db1 = load_fixture("test1.db")
+db2 = load_fixture("test2.db")
 
 
 def test_identification(db1):
@@ -43,12 +43,12 @@ def test_no_differences(db1):
     assert difference is None
 
 
-@skip_unless_tools_exist('db_dump')
+@skip_unless_tools_exist("db_dump")
 def test_diff(differences):
-    expected_diff = get_data('berkeley_db_expected_diff')
+    expected_diff = get_data("berkeley_db_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('db_dump')
+@skip_unless_tools_exist("db_dump")
 def test_compare_non_existing(monkeypatch, db1):
     assert_non_existing(monkeypatch, db1, has_null_source=False)

@@ -55,7 +55,7 @@ class Container(metaclass=abc.ABCMeta):
 
         # Keep a count of how "nested" we are
         self.depth = 0
-        if hasattr(source, 'container') and source.container is not None:
+        if hasattr(source, "container") and source.container is not None:
             self.depth = source.container.depth + 1
 
     @property
@@ -181,13 +181,13 @@ class Container(metaclass=abc.ABCMeta):
                 for my_member, my_size in my_members.values():
                     p.begin_step(my_size, msg=my_member.progress_name)
                     yield my_member, MissingFile(
-                        '/dev/null', my_member
+                        "/dev/null", my_member
                     ), NO_COMMENT
 
                 for other_member, other_size in other_members.values():
                     p.begin_step(other_size, msg=other_member.progress_name)
                     yield MissingFile(
-                        '/dev/null', other_member
+                        "/dev/null", other_member
                     ), other_member, NO_COMMENT
 
     def compare(self, other, source=None, no_recurse=False):
@@ -213,4 +213,4 @@ class MissingContainer(Container):
         return self.source.other_file.as_container.get_member_names()
 
     def get_member(self, member_name):
-        return MissingFile('/dev/null')
+        return MissingFile("/dev/null")

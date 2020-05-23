@@ -21,10 +21,10 @@ import os
 
 
 def set_path():
-    pathlist = os.environ['PATH'].split(os.pathsep)
+    pathlist = os.environ["PATH"].split(os.pathsep)
 
-    for x in ('/sbin', '/usr/sbin', '/usr/local/sbin'):
+    for x in ("/sbin", "/usr/sbin", "/usr/local/sbin"):
         if x not in pathlist:
             pathlist.append(x)
 
-    os.environ['PATH'] = os.pathsep.join(pathlist)
+    os.environ["PATH"] = os.pathsep.join(pathlist)

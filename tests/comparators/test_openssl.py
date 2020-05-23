@@ -31,38 +31,38 @@ from ..utils.tools import skip_unless_tools_exist
 def pkcs7_fixture(prefix):
     @pytest.fixture
     def inner(tmpdir):
-        crt = str(tmpdir.join('{}.crt'.format(prefix)))
-        pem = str(tmpdir.join('{}.pem'.format(prefix)))
-        p7c = str(tmpdir.join('{}.p7c'.format(prefix)))
+        crt = str(tmpdir.join("{}.crt".format(prefix)))
+        pem = str(tmpdir.join("{}.pem".format(prefix)))
+        p7c = str(tmpdir.join("{}.p7c".format(prefix)))
 
         subprocess.check_call(
             (
-                'openssl',
-                'req',
-                '-x509',
-                '-newkey',
-                'rsa:4096',
-                '-keyout',
+                "openssl",
+                "req",
+                "-x509",
+                "-newkey",
+                "rsa:4096",
+                "-keyout",
                 pem,
-                '-out',
+                "-out",
                 crt,
-                '-days',
-                '365',
-                '-nodes',
-                '-subj',
-                '/CN=localhost',
+                "-days",
+                "365",
+                "-nodes",
+                "-subj",
+                "/CN=localhost",
             )
         )
         subprocess.check_call(
             (
-                'openssl',
-                'crl2pkcs7',
-                '-nocrl',
-                '-certfile',
+                "openssl",
+                "crl2pkcs7",
+                "-nocrl",
+                "-certfile",
                 crt,
-                '-out',
+                "-out",
                 p7c,
-                '-certfile',
+                "-certfile",
                 pem,
             )
         )
@@ -72,16 +72,16 @@ def pkcs7_fixture(prefix):
     return inner
 
 
-pkcs71 = pkcs7_fixture('test1')
-pkcs72 = pkcs7_fixture('test2')
+pkcs71 = pkcs7_fixture("test1")
+pkcs72 = pkcs7_fixture("test2")
 
 
-@skip_unless_tools_exist('openssl')
+@skip_unless_tools_exist("openssl")
 def test_identification(pkcs71):
     assert isinstance(pkcs71, Pkcs7File)
 
 
-@skip_unless_tools_exist('openssl')
+@skip_unless_tools_exist("openssl")
 def test_no_differences(pkcs71):
     difference = pkcs71.compare(pkcs71)
     assert difference is None
@@ -92,10 +92,10 @@ def differences(pkcs71, pkcs72):
     return pkcs71.compare(pkcs72).details
 
 
-@skip_unless_tools_exist('openssl')
+@skip_unless_tools_exist("openssl")
 def test_differences(differences):
     # Don't test exact unified diff; the signatures generated in
     # `pkcs7_fixture` are non-deterministic.
 
-    assert 'notAfter:' in differences[0].unified_diff
-    assert 'serialNumber:' in differences[0].unified_diff
+    assert "notAfter:" in differences[0].unified_diff
+    assert "serialNumber:" in differences[0].unified_diff

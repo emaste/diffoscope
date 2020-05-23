@@ -26,11 +26,11 @@ from diffoscope.comparators.missing_file import MissingFile
 def assert_non_existing(
     monkeypatch, fixture, has_null_source=True, has_details=True
 ):
-    monkeypatch.setattr(Config(), 'new_file', True)
+    monkeypatch.setattr(Config(), "new_file", True)
     assert Config().new_file, "Did not get patched"
 
-    difference = fixture.compare(MissingFile('/nonexisting', fixture))
+    difference = fixture.compare(MissingFile("/nonexisting", fixture))
 
-    assert difference.source2 == '/nonexisting'
+    assert difference.source2 == "/nonexisting"
     assert not has_details or len(difference.details) > 0
-    assert not has_null_source or difference.details[-1].source2 == '/dev/null'
+    assert not has_null_source or difference.details[-1].source2 == "/dev/null"

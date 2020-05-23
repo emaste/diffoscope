@@ -30,62 +30,62 @@ from diffoscope.difference import Difference, VisualDifference
 from .utils.file import File
 from .utils.command import Command
 
-re_ansi_escapes = re.compile(r'\x1b[^m]*m')
+re_ansi_escapes = re.compile(r"\x1b[^m]*m")
 
 logger = logging.getLogger(__name__)
 
 
 class Img2Txt(Command):
-    @tool_required('img2txt')
+    @tool_required("img2txt")
     def cmdline(self):
-        return ['img2txt', '--width', '60', '--format', 'utf8', self.path]
+        return ["img2txt", "--width", "60", "--format", "utf8", self.path]
 
     def filter(self, line):
         # Strip ANSI escapes
-        return re_ansi_escapes.sub('', line.decode('utf-8')).encode('utf-8')
+        return re_ansi_escapes.sub("", line.decode("utf-8")).encode("utf-8")
 
 
 class Identify(Command):
     ATTRIBUTES = (
-        'Image format: %m',
-        'File size: %b',
-        'Height: %[height]',
-        'Width: %[width]',
-        'Orientation: %[orientation]',
-        'Compression type: %[compression]',
-        'Compression quality: %[quality]',
-        'Colorspace: %[colorspace]',
-        'Channels: %[channels]',
-        'Depth: %[depth]',
-        'Interlace mode: %[interlace]',
-        'Rendering intent: %[rendering-intent]',
-        'X resolution: %[resolution.x]',
-        'Y resolution: %[resolution.y]',
-        'Resolution units: %[units]',
-        'Transparency channel enabled: %A',
-        'Gamma: %[gamma]',
-        'Number of unique colors: %[colors]',
-        'Comment: %c',
-        'EXIF data: %[EXIF:*]',
+        "Image format: %m",
+        "File size: %b",
+        "Height: %[height]",
+        "Width: %[width]",
+        "Orientation: %[orientation]",
+        "Compression type: %[compression]",
+        "Compression quality: %[quality]",
+        "Colorspace: %[colorspace]",
+        "Channels: %[channels]",
+        "Depth: %[depth]",
+        "Interlace mode: %[interlace]",
+        "Rendering intent: %[rendering-intent]",
+        "X resolution: %[resolution.x]",
+        "Y resolution: %[resolution.y]",
+        "Resolution units: %[units]",
+        "Transparency channel enabled: %A",
+        "Gamma: %[gamma]",
+        "Number of unique colors: %[colors]",
+        "Comment: %c",
+        "EXIF data: %[EXIF:*]",
     )
 
-    @tool_required('identify')
+    @tool_required("identify")
     def cmdline(self):
-        return ['identify', '-format', '\n'.join(self.ATTRIBUTES), self.path]
+        return ["identify", "-format", "\n".join(self.ATTRIBUTES), self.path]
 
 
-@tool_required('compare')
+@tool_required("compare")
 def pixel_difference(image1_path, image2_path):
-    compared_filename = get_named_temporary_file(suffix='.png').name
+    compared_filename = get_named_temporary_file(suffix=".png").name
 
     try:
         subprocess.check_call(
             (
-                'compare',
+                "compare",
                 image1_path,
                 image2_path,
-                '-compose',
-                'src',
+                "-compose",
+                "src",
                 compared_filename,
             )
         )
@@ -94,41 +94,41 @@ def pixel_difference(image1_path, image2_path):
         if e.returncode == 1:
             pass
 
-    with open(compared_filename, 'rb') as f:
-        content = base64.b64encode(f.read()).decode('utf8')
+    with open(compared_filename, "rb") as f:
+        content = base64.b64encode(f.read()).decode("utf8")
 
-    return VisualDifference('image/png;base64', content, "Pixel difference")
+    return VisualDifference("image/png;base64", content, "Pixel difference")
 
 
-@tool_required('convert')
+@tool_required("convert")
 def flicker_difference(image1_path, image2_path):
-    compared_filename = get_named_temporary_file(suffix='.gif').name
+    compared_filename = get_named_temporary_file(suffix=".gif").name
 
     subprocess.check_call(
         (
-            'convert',
-            '-delay',
-            '50',
+            "convert",
+            "-delay",
+            "50",
             image1_path,
             image2_path,
-            '-loop',
-            '0',
-            '-compose',
-            'difference',
+            "-loop",
+            "0",
+            "-compose",
+            "difference",
             compared_filename,
         )
     )
 
-    with open(compared_filename, 'rb') as f:
-        content = base64.b64encode(f.read()).decode('utf8')
+    with open(compared_filename, "rb") as f:
+        content = base64.b64encode(f.read()).decode("utf8")
 
-    return VisualDifference('image/gif;base64', content, "Flicker difference")
+    return VisualDifference("image/gif;base64", content, "Flicker difference")
 
 
-@tool_required('identify')
+@tool_required("identify")
 def get_image_size(image_path):
     return subprocess.check_output(
-        ('identify', '-format', '%[h]x%[w]', image_path)
+        ("identify", "-format", "%[h]x%[w]", image_path)
     )
 
 
@@ -141,7 +141,7 @@ def same_size(image1, image2):
 
 class JPEGImageFile(File):
     DESCRIPTION = "JPEG images"
-    FILE_TYPE_RE = re.compile(r'\bJPEG image data\b')
+    FILE_TYPE_RE = re.compile(r"\bJPEG image data\b")
 
     def compare_details(self, other, source=None):
         content_diff = Difference.from_command(
@@ -176,7 +176,7 @@ class JPEGImageFile(File):
 
 class ICOImageFile(File):
     DESCRIPTION = "Microsoft Windows icon files"
-    FILE_TYPE_RE = re.compile(r'\bMS Windows icon resource\b')
+    FILE_TYPE_RE = re.compile(r"\bMS Windows icon resource\b")
 
     def compare_details(self, other, source=None):
         differences = []
@@ -218,10 +218,10 @@ class ICOImageFile(File):
         return differences
 
     @staticmethod
-    @tool_required('convert')
+    @tool_required("convert")
     def convert(file):
-        result = get_named_temporary_file(suffix='.png').name
+        result = get_named_temporary_file(suffix=".png").name
 
-        subprocess.check_call(('convert', file.path, result))
+        subprocess.check_call(("convert", file.path, result))
 
         return result

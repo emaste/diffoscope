@@ -29,25 +29,25 @@ from .utils.command import Command
 try:
     import PyPDF2
 except ImportError:  # noqa
-    python_module_missing('PyPDF2')
+    python_module_missing("PyPDF2")
     PyPDF2 = None
 
 
 class Pdftotext(Command):
-    @tool_required('pdftotext')
+    @tool_required("pdftotext")
     def cmdline(self):
-        return ['pdftotext', self.path, '-']
+        return ["pdftotext", self.path, "-"]
 
 
 class Dumppdf(Command):
-    @tool_required('dumppdf')
+    @tool_required("dumppdf")
     def cmdline(self):
-        return ['dumppdf', '-adt', self.path]
+        return ["dumppdf", "-adt", self.path]
 
 
 class PdfFile(File):
     DESCRIPTION = "PDF documents"
-    FILE_TYPE_RE = re.compile(r'^PDF document\b')
+    FILE_TYPE_RE = re.compile(r"^PDF document\b")
 
     def compare_details(self, other, source=None):
         xs = []
@@ -86,6 +86,6 @@ class PdfFile(File):
 
         xs = []
         for k, v in sorted(document_info.items()):
-            xs.append("{}: {!r}".format(k.lstrip('/'), v))
+            xs.append("{}: {!r}".format(k.lstrip("/"), v))
 
         return "\n".join(xs)

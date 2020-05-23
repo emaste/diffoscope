@@ -29,7 +29,7 @@ from .missing_file import MissingFile
 try:
     from defusedxml import minidom
 except ImportError:
-    python_module_missing('defusedxml')
+    python_module_missing("defusedxml")
     from xml.dom import minidom
 
 
@@ -65,7 +65,7 @@ def _parse(file):
     _format(xml)
     xml.normalize()
 
-    return xml.toprettyxml(indent=2 * ' ', encoding='utf-8').decode('utf-8')
+    return xml.toprettyxml(indent=2 * " ", encoding="utf-8").decode("utf-8")
 
 
 class XMLFile(File):
@@ -77,7 +77,7 @@ class XMLFile(File):
     """
 
     DESCRIPTION = "XML files"
-    FILE_EXTENSION_SUFFIX = '.xml'
+    FILE_EXTENSION_SUFFIX = ".xml"
 
     @classmethod
     def recognizes(cls, file):

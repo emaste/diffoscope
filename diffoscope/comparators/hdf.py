@@ -27,14 +27,14 @@ from .utils.command import Command
 
 
 class H5dump(Command):
-    @tool_required('h5dump')
+    @tool_required("h5dump")
     def cmdline(self):
-        return ['h5dump', self.path]
+        return ["h5dump", self.path]
 
 
 class Hdf5File(File):
     DESCRIPTION = "Hierarchical Data Format database"
-    FILE_TYPE_RE = re.compile(r'^Hierarchical Data Format \(version 5\) data')
+    FILE_TYPE_RE = re.compile(r"^Hierarchical Data Format \(version 5\) data")
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(H5dump, self.path, other.path)]

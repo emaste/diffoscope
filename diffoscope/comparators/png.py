@@ -37,21 +37,21 @@ class Sng(Command):
     # sng will return 1 if there are even minor errors in the file
     VALID_RETURNCODES = {0, 1}
 
-    @tool_required('sng')
+    @tool_required("sng")
     def cmdline(self):
-        return ['sng']
+        return ["sng"]
 
     def stdin(self):
-        return open(self.path, 'rb')
+        return open(self.path, "rb")
 
 
 class PngFile(File):
     DESCRIPTION = "PNG images"
-    FILE_TYPE_RE = re.compile(r'^PNG image data\b')
+    FILE_TYPE_RE = re.compile(r"^PNG image data\b")
 
     def compare_details(self, other, source=None):
         sng_diff = Difference.from_command(
-            Sng, self.path, other.path, source='sng'
+            Sng, self.path, other.path, source="sng"
         )
         differences = [sng_diff]
 

@@ -39,13 +39,13 @@ class Lz4Container(Archive):
         pass
 
     def get_member_names(self):
-        return [self.get_compressed_content_name('.lz4')]
+        return [self.get_compressed_content_name(".lz4")]
 
-    @tool_required('lz4')
+    @tool_required("lz4")
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
-        logger.debug('lz4 extracting to %s', dest_path)
-        with open(dest_path, 'wb') as fp:
+        logger.debug("lz4 extracting to %s", dest_path)
+        with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["lz4", "-d", "-c", self.source.path],
                 shell=False,
@@ -58,7 +58,7 @@ class Lz4Container(Archive):
 class Lz4File(File):
     DESCRIPTION = "LZ4 compressed files"
     CONTAINER_CLASSES = [Lz4Container]
-    FILE_TYPE_RE = re.compile(r'^LZ4 compressed data \([^\)]+\)$')
+    FILE_TYPE_RE = re.compile(r"^LZ4 compressed data \([^\)]+\)$")
 
     # Work around file(1) Debian bug #876316
     FALLBACK_FILE_EXTENSION_SUFFIX = ".lz4"

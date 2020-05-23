@@ -258,12 +258,12 @@ class Difference:
 
     @staticmethod
     def from_command_exc(klass, path1, path2, *args, **kwargs):
-        command_args = kwargs.pop('command_args', [])
-        ignore_returncodes = kwargs.pop('ignore_returncodes', ())
+        command_args = kwargs.pop("command_args", [])
+        ignore_returncodes = kwargs.pop("ignore_returncodes", ())
 
         def command_and_feeder(path):
             command = None
-            if path == '/dev/null':
+            if path == "/dev/null":
                 feeder = feeders.empty()
             else:
                 command = klass(path, *command_args)
@@ -279,9 +279,9 @@ class Difference:
             assert excluded1 or excluded2
             return None, True
 
-        if 'source' not in kwargs:
+        if "source" not in kwargs:
             source_cmd = command1 or command2
-            kwargs['source'] = source_cmd.shell_cmdline(truncate=120)
+            kwargs["source"] = source_cmd.shell_cmdline(truncate=120)
 
         try:
             difference = Difference.from_feeder(
@@ -323,7 +323,7 @@ class Difference:
 
     @property
     def comment(self):
-        return '\n'.join(self._comments)
+        return "\n".join(self._comments)
 
     @property
     def comments(self):
