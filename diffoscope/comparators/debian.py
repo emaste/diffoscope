@@ -70,6 +70,31 @@ class DebControlContainer(Container):
         super().__init__(*args, **kwargs)
         self._version_re = DebControlContainer.get_version_trimming_re(self)
 
+    def recognizes(self):
+        if "Checksums-Sha256" not in self.source._deb822:
+            return False
+
+        for x in self.source._deb822.get("Checksums-Sha256"):
+            sha256 = hashlib.sha256()
+
+            # This will not work in nested containers
+            dsc_in_same_dir = os.path.join(
+                os.path.dirname(self.source.path), x["Name"]
+            )
+
+            if not os.path.exists(dsc_in_same_dir):
+                return False
+
+            # Validate whether the checksum matches
+            with open(dsc_in_same_dir, "rb") as f:
+                for buf in iter(functools.partial(f.read, 32768), b""):
+                    sha256.update(buf)
+
+            if sha256.hexdigest() != x["sha256"]:
+                return False
+
+        return True
+
     @staticmethod
     def get_version_trimming_re(dcc):
         version = dcc.source._deb822.get('Version')
@@ -185,14 +210,12 @@ class DotChangesFile(DebControlFile):
         if not super().recognizes(file):
             return False
 
-        changes = Changes(filename=file.path)
+        file._deb822 = Changes(filename=file.path)
 
         try:
-            changes.validate("sha256", check_signature=False)
+            file._deb822.validate("sha256", check_signature=False)
         except FileNotFoundError:
             return False
-
-        file._deb822 = changes
 
         return True
 
@@ -231,25 +254,7 @@ class DotDscFile(DebControlFile):
             return False
 
         with open(file.path, 'rb') as f:
-            dsc = Dsc(f)
-
-            for d in dsc.get('Files'):
-                md5 = hashlib.md5()
-
-                # XXX: this will not work for containers
-                dsc_in_same_dir = os.path.join(
-                    os.path.dirname(file.path), d['Name']
-                )
-                if not os.path.exists(dsc_in_same_dir):
-                    return False
-
-                with open(dsc_in_same_dir, 'rb') as f:
-                    for buf in iter(functools.partial(f.read, 32768), b''):
-                        md5.update(buf)
-                if md5.hexdigest() != d['md5sum']:
-                    return False
-
-            file._deb822 = dsc
+            file._deb822 = Dsc(f)
 
         return True
 
@@ -284,29 +289,8 @@ class DotBuildinfoFile(DebControlFile):
         if not super().recognizes(file):
             return False
 
-        with open(file.path, 'rb') as f:
-            # We can parse .buildinfo files just like .dsc
-            buildinfo = Dsc(f)
-
-        if 'Checksums-Sha256' not in buildinfo:
-            return False
-
-        for d in buildinfo.get('Checksums-Sha256'):
-            sha256 = hashlib.sha256()
-
-            # XXX: this will not work for containers
-            dsc_in_same_dir = os.path.join(
-                os.path.dirname(file.path), d['Name']
-            )
-            if not os.path.exists(dsc_in_same_dir):
-                return False
-
-            with open(dsc_in_same_dir, 'rb') as f:
-                for buf in iter(functools.partial(f.read, 32768), b''):
-                    sha256.update(buf)
-            if sha256.hexdigest() != d['sha256']:
-                return False
-
-        file._deb822 = buildinfo
+        # Parse .buildinfo files like .dsc files
+        with open(file.path, "rb") as f:
+            file._deb822 = Dsc(f)
 
         return True

@@ -252,7 +252,18 @@ class File(metaclass=abc.ABCMeta):
                 'Instantiating a %s for %s', type_name(klass), self.name,
             )
             try:
-                self._as_container = klass(self)
+                container = klass(self)
+
+                if not container.recognizes():
+                    logger.debug(
+                        "Instantiated a %s for %s, but cannot use it as a container",
+                        type_name(klass),
+                        self.name,
+                    )
+                    continue
+
+                self._as_container = container
+
                 logger.debug(
                     "Returning a %s for %s", type_name(klass), self.name,
                 )

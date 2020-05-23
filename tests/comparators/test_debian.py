@@ -230,13 +230,13 @@ def test_dot_dsc_identification(dot_dsc1):
 
 
 @skip_unless_module_exists('debian.deb822')
-def test_dot_dsc_invalid(tmpdir, dot_dsc2):
+def test_dot_dsc_no_associated_tar_gz(tmpdir, dot_dsc2):
     tmpdir.mkdir('a')
     dot_dsc_path = str(tmpdir.join('a/test_1.dsc'))
     shutil.copy(TEST_DOT_CHANGES_FILE1_PATH, dot_dsc_path)
     # we don't copy the referenced .tar.gz
     identified = specialize(FilesystemFile(dot_dsc_path))
-    assert not isinstance(identified, DotDscFile)
+    assert isinstance(identified, DotDscFile)
 
 
 def test_dot_dsc_no_differences(dot_dsc1):
@@ -288,13 +288,13 @@ def test_dot_buildinfo_identification(dot_buildinfo1):
 
 
 @skip_unless_module_exists('debian.deb822')
-def test_dot_buildinfo_invalid(tmpdir):
+def test_dot_buildinfo_no_deb(tmpdir):
     tmpdir.mkdir('a')
     dot_buildinfo_path = str(tmpdir.join('a/test_1.buildinfo'))
     shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, dot_buildinfo_path)
     # we don't copy the referenced .deb
     identified = specialize(FilesystemFile(dot_buildinfo_path))
-    assert not isinstance(identified, DotBuildinfoFile)
+    assert isinstance(identified, DotBuildinfoFile)
 
 
 def test_dot_buildinfo_no_differences(dot_buildinfo1):
