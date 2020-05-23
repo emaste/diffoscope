@@ -1,8 +1,70 @@
-diffoscope (145) UNRELEASED; urgency=medium
+diffoscope (145) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
 
- -- Chris Lamb <lamby@debian.org>  Thu, 14 May 2020 16:26:30 +0100
+  * Improvements:
+
+    - Add support for Apple Xcode mobile provisioning .mobilepovision files.
+      (Closes: reproducible-builds/diffoscope#113)
+    - Add support for printing the signatures via apksigner(1).
+      (Closes: reproducible-builds/diffoscope#121)
+    - Use SHA256 over MD5 when generating page names for the HTML directory
+      presenter, validate checksums for files referenced in .changes files
+      using SHA256 too, and move to using SHA256 in "Too much input for diff"
+      output too. (Closes: reproducible-builds/diffoscope#124)
+    - Don't leak the full path of the temporary directory in "Command [..]
+      exited with 1".  (Closes: reproducible-builds/diffoscope#126)
+    - Identify "iOS App Zip archive data" files as .zip files.
+      (Closes: reproducible-builds/diffoscope#116)
+
+  * Bug fixes:
+
+    - Correct "differences" typo in the ApkFile handler.
+      (Closes: reproducible-builds/diffoscope#127)
+
+  * Reporting/output improvements:
+
+    - Never emit the same id="foo" TML anchor reference twice, otherwise
+      identically-named parts will not be able to linked to via "#foo".
+      (Closes: reproducible-builds/diffoscope#120)
+    - Never emit HTML with empty "id" anchor lements as it is not possible to
+      link to "#" (vs "#foo"). We use "#top" as a fallback value so it will
+      work for the top-level parent container.
+    - Clarify the message when we cannot find the "debian" Python module.
+    - Clarify "Command [..] failed with exit code" to remove duplicate "exited
+      with exit" but also to note that diffoscope is intepreting this as an
+      error.
+    - Add descriptions for the 'fallback' Debian module file types.
+    - Rename the --debugger command-line argument to --pdb.
+
+  * Testsuite improvements:
+
+    - Prevent CI (and runtime) apksigner test failures due to lack of
+      binfmt_misc on Salsa CI and elsewhere.
+
+  * Codebase improvements:
+
+    - Initially add a pair of comments to tidy up a slightly abstraction level
+      violating code in diffoscope.comparators.mising_file and the
+      .dsc/.buildinfo file handling, but replace this later by by inlining
+      MissingFile's special handling of deb822 to prevent leaking through
+      abstraction layers in the first place.
+    - Use a BuildinfoFile (etc.) regardless of whether the associated files
+      such as the orig.tar.gz and the .deb are present, but don't treat them as
+      actual containers. (Re: reproducible-builds/diffoscope#122)
+    - Rename the "Openssl" command class to "OpenSSLPKCS7" to accommodate other
+      commands with this prefix.
+    - Wrap a docstring across multiple lines, drop an inline pprint import and
+      comment the HTMLPrintContext class, etc.
+
+  [ Emanuel Bronshtein ]
+  * Avoid build-cache in building the released Docker image.
+    (Closes: reproducible-builds/diffoscope#123)
+
+  [ Holger Levsen ]
+  * Wrap long lines in older changelog entries.
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 23 May 2020 09:31:26 +0100
 
 diffoscope (144) unstable; urgency=medium
 
