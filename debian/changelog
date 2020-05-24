@@ -38,7 +38,7 @@ diffoscope (145) unstable; urgency=medium
       work for the top-level parent container.
     - Clarify the message when we cannot find the "debian" Python module.
     - Clarify "Command [..] failed with exit code" to remove duplicate "exited
-      with exit" but also to note that diffoscope is intepreting this as an
+      with exit" but also to note that diffoscope is interpreting this as an
       error.
     - Add descriptions for the 'fallback' Debian module file types.
     - Rename the --debugger command-line argument to --pdb.
