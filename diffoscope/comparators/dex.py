@@ -51,7 +51,6 @@ class DexContainer(Archive):
         logger.debug("dex extracting to %s", dest_path)
         subprocess.check_call(
             ["enjarify", "-o", dest_path, self.source.path],
-            shell=False,
             stderr=None,
             stdout=subprocess.PIPE,
         )

@@ -48,7 +48,6 @@ class XzContainer(Archive):
         with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["xz", "--decompress", "--stdout", self.source.path],
-                shell=False,
                 stdout=fp,
                 stderr=None,
             )

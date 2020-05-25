@@ -47,10 +47,7 @@ class Lz4Container(Archive):
         logger.debug("lz4 extracting to %s", dest_path)
         with open(dest_path, "wb") as fp:
             subprocess.check_call(
-                ["lz4", "-d", "-c", self.source.path],
-                shell=False,
-                stdout=fp,
-                stderr=None,
+                ["lz4", "-d", "-c", self.source.path], stdout=fp, stderr=None,
             )
         return dest_path
 

@@ -255,7 +255,7 @@ class Changes:
         pipe = subprocess.Popen(
             ["gpg", "--status-fd", "1", "--verify", "--batch",
              self.get_changes_file()],
-            shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         gpg_output, gpg_output_stderr = pipe.communicate()
 
         if pipe.returncode != 0:

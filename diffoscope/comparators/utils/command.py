@@ -46,7 +46,6 @@ class Command(metaclass=abc.ABCMeta):
         # don't) shell is still the most readable option for composing processes
         self._process = subprocess.run(
             self.cmdline(),
-            shell=False,
             close_fds=True,
             env=self.env(),
             input=self.input(),

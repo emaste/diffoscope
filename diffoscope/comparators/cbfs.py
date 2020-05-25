@@ -54,7 +54,7 @@ class CbfsContainer(Archive):
     @tool_required("cbfstool")
     def entries(self, path):
         cmd = ["cbfstool", path, "print"]
-        output = subprocess.check_output(cmd, shell=False).decode("utf-8")
+        output = subprocess.check_output(cmd).decode("utf-8")
         header = True
         for line in output.rstrip("\n").split("\n"):
             if header:
@@ -89,7 +89,7 @@ class CbfsContainer(Archive):
         ]
         logger.debug("cbfstool extract %s to %s", member_name, dest_path)
         subprocess.check_call(
-            cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
         )
         return dest_path
 

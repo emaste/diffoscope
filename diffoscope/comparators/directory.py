@@ -99,7 +99,7 @@ def lsattr(path):
 
     try:
         output = subprocess.check_output(
-            ["lsattr", "-d", path], shell=False, stderr=subprocess.STDOUT
+            ["lsattr", "-d", path], stderr=subprocess.STDOUT
         ).decode("utf-8")
         return output.split()[0]
     except subprocess.CalledProcessError as e:

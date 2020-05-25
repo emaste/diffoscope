@@ -47,7 +47,6 @@ class Bzip2Container(Archive):
         with open(dest_path, "wb") as fp:
             subprocess.check_call(
                 ["bzip2", "--decompress", "--stdout", self.source.path],
-                shell=False,
                 stdout=fp,
                 stderr=subprocess.PIPE,
             )

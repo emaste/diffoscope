@@ -40,7 +40,6 @@ def get_iso9660_names(path):
                 "-i",
                 path,
             ),
-            shell=False,
         )
         .strip()
         .split("\n")

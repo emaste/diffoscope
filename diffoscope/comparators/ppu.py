@@ -80,7 +80,6 @@ class PpuFile(File):
                 with profile("command", "ppudump"):
                     subprocess.check_output(
                         ["ppudump", "-vh", file.path],
-                        shell=False,
                         stderr=subprocess.STDOUT,
                     )
                 PpuFile.ppu_version = ppu_version

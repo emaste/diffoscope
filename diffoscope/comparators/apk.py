@@ -65,7 +65,6 @@ class ApkContainer(Archive):
                 self._unpacked,
                 self.source.path,
             ),
-            shell=False,
             stderr=None,
             stdout=subprocess.PIPE,
         )

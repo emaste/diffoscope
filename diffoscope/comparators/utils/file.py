@@ -450,9 +450,7 @@ class File(metaclass=abc.ABCMeta):
     def cmp_external(self, other):
         return (
             subprocess.call(
-                ("cmp", "-s", self.path, other.path),
-                shell=False,
-                close_fds=True,
+                ("cmp", "-s", self.path, other.path), close_fds=True,
             )
             == 0
         )

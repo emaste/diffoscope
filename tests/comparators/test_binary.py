@@ -173,7 +173,7 @@ def test_with_compare_details_and_parsing_error():
 
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
-            subprocess.check_output(["sh", "-c", "exit 0"], shell=False)
+            subprocess.check_output(["sh", "-c", "exit 0"])
             raise OutputParsingError("sh", self)
 
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
@@ -188,7 +188,7 @@ def test_with_compare_details_and_extraction_error():
 
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
-            subprocess.check_output(["sh", "-c", "exit 0"], shell=False)
+            subprocess.check_output(["sh", "-c", "exit 0"])
             raise ContainerExtractionError(self.path, Exception())
 
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))

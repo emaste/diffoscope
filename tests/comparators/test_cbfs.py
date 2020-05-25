@@ -41,7 +41,7 @@ def rom1(tmpdir):
     path = str(tmpdir.join("coreboot1"))
 
     subprocess.check_call(
-        ("cbfstool", path, "create", "-m", "x86", "-s", "32768"), shell=False
+        ("cbfstool", path, "create", "-m", "x86", "-s", "32768")
     )
 
     subprocess.check_call(
@@ -56,7 +56,6 @@ def rom1(tmpdir):
             "-t",
             "raw",
         ),
-        shell=False,
     )
 
     return specialize(FilesystemFile(path))
@@ -69,7 +68,6 @@ def rom2(tmpdir):
 
     subprocess.check_call(
         ("cbfstool", path, "create", "-m", "x86", "-s", "%s" % size),
-        shell=False,
     )
 
     subprocess.check_call(

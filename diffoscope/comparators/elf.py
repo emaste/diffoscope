@@ -171,7 +171,6 @@ class ReadElfSection(Readelf):
         if not hasattr(ReadElfSection, "_base_options"):
             output = subprocess.check_output(
                 [get_tool_name("readelf"), "--help"],
-                shell=False,
                 stderr=subprocess.DEVNULL,
             ).decode("us-ascii", errors="replace")
 
