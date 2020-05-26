@@ -2,7 +2,7 @@
 
 include /usr/share/dpkg/pkg-info.mk
 
-SHELL := /bin/bash  # for the <(echo …) below, this was easiest way.
+SHELL := /bin/bash  # for the <(echo …) below, this was the easiest way.
 PY_VERSION := $(shell awk '/^VERSION = / {gsub(/"/, "", $$3); print $$3}' diffoscope/__init__.py )
 CHECK_VERSION := $(shell grep '^$(PY_VERSION)[^0-9].*$$' <(echo $(DEB_VERSION)))
 
