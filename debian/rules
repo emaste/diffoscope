@@ -39,8 +39,7 @@ doc/%.1:
 debian/diffoscope.bash-completion:
 	register-python-argcomplete3 diffoscope > $@
 
-override_dh_auto_build: debian/diffoscope.bash-completion
-	dh_auto_build -O--buildsystem=pybuild
+execute_after_dh_auto_build: debian/diffoscope.bash-completion
 	dh_auto_build -O--buildsystem=makefile -Ddoc
 
 override_dh_python3:
@@ -49,9 +48,8 @@ override_dh_python3:
 		--recommends-section=cmdline \
 		--recommends-section=comparators \
 
-override_dh_gencontrol:
+execute_before_dh_gencontrol:
 	bin/diffoscope --list-debian-substvars >> debian/diffoscope.substvars
-	dh_gencontrol -O--buildsystem=pybuild
 
 diffoscope/presenters/icon.py: favicon.png
 	(echo '# Generated from $@'; \
