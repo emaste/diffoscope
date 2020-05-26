@@ -16,7 +16,7 @@ Build-Depends:
  caca-utils <!nocheck>,
  colord <!nocheck>,
  db-util <!nocheck>,
- debhelper-compat (= 12),
+ debhelper-compat (= 13),
  default-jdk-headless <!nocheck> | default-jdk <!nocheck>,
  device-tree-compiler (>= 1.4.2) <!nocheck>,
  dh-python (>= 2.20160818~),
