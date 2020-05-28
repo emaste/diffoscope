@@ -163,6 +163,6 @@ class ComparatorManager:
                 except AttributeError:
                     pass
 
-        xs = list(sorted(set(gen_descriptions())))
+        xs = list(sorted(set(gen_descriptions()), key=str.upper))
 
         return "{} and {}.\n".format(", ".join(xs[:-1]), xs[-1])
