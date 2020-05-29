@@ -62,7 +62,7 @@ class FsImageContainer(Archive):
             return None
         devices = self.g.list_devices()
         try:
-            self.g.mount(devices[0], "/")
+            self.g.mount_options("ro", devices[0], "/")
         except RuntimeError:
             logger.exception("guestfs count not mount image; invalid file?")
             return None
