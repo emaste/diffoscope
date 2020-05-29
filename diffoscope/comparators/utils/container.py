@@ -70,9 +70,6 @@ class Container(metaclass=abc.ABCMeta):
     def get_member(self, member_name):
         raise NotImplementedError()
 
-    def recognizes(self):
-        return True
-
     def get_path_name(self, dest_dir):
         return os.path.join(dest_dir, str(uuid.uuid4()))
 

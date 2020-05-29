@@ -20,11 +20,9 @@
 
 import re
 import os.path
-import hashlib
 import logging
-import functools
 
-from debian.deb822 import Dsc
+from debian.deb822 import Dsc, Deb822
 
 from diffoscope.changes import Changes
 from diffoscope.difference import Difference
@@ -70,31 +68,6 @@ class DebControlContainer(Container):
         super().__init__(*args, **kwargs)
         self._version_re = DebControlContainer.get_version_trimming_re(self)
 
-    def recognizes(self):
-        if "Checksums-Sha256" not in self.source._deb822:
-            return False
-
-        for x in self.source._deb822.get("Checksums-Sha256"):
-            sha256 = hashlib.sha256()
-
-            # This will not work in nested containers
-            dsc_in_same_dir = os.path.join(
-                os.path.dirname(self.source.path), x["Name"]
-            )
-
-            if not os.path.exists(dsc_in_same_dir):
-                return False
-
-            # Validate whether the checksum matches
-            with open(dsc_in_same_dir, "rb") as f:
-                for buf in iter(functools.partial(f.read, 32768), b""):
-                    sha256.update(buf)
-
-            if sha256.hexdigest() != x["sha256"]:
-                return False
-
-        return True
-
     @staticmethod
     def get_version_trimming_re(dcc):
         version = dcc.source._deb822.get("Version")
@@ -119,13 +92,24 @@ class DebControlContainer(Container):
             "Checksums-Sha256"
         )
 
+        parent_dir = os.path.dirname(self.source.path)
+
         # Show results from debugging packages last; they are rather verbose,
         # masking other more interesting differences due to truncating the
         # output.
-        return sorted(
+        for name in sorted(
             (x["name"] for x in field),
             key=lambda x: (x.endswith(".deb") and "-dbgsym_" in x, x),
-        )
+        ):
+            if not os.path.exists(os.path.join(parent_dir, name)):
+                logger.debug(
+                    "Could not find file %s referenced in %s",
+                    name,
+                    self.source.name,
+                )
+                break
+
+            yield name
 
     def get_member(self, member_name):
         return DebControlMember(self, member_name)
@@ -150,8 +134,26 @@ class DebControlFile(File):
 
         return DummyChanges(Files=[], Version="")
 
+    @staticmethod
+    def _parse_gpg(file):
+        try:
+            with open(file.path) as f:
+                header, _, footer = Deb822.split_gpg_and_payload(f)
+        except EOFError:
+            header = []
+            footer = []
+
+        return [b"\n".join(x).decode("utf-8") for x in (header, footer)]
+
     def compare_details(self, other, source=None):
-        differences = []
+        gpg_a = self._parse_gpg(self)
+        gpg_b = self._parse_gpg(other)
+
+        differences = [
+            Difference.from_text(
+                gpg_a[0], gpg_b[0], self.path, other.path, source="GPG header"
+            )
+        ]
 
         other_deb822 = self._get_deb822(other)
 
@@ -196,6 +198,16 @@ class DebControlFile(File):
                     source="Checksums-Sha256",
                 )
             )
+
+        differences.append(
+            Difference.from_text(
+                gpg_a[1],
+                gpg_b[1],
+                self.path,
+                other.path,
+                source="GPG signature",
+            )
+        )
 
         return differences
 
