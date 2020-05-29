@@ -96,6 +96,11 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
     if any_excluded(file1.name, file2.name):
         return None
 
+    # Specialize the files first so "has_same_content_as" can be overridden
+    # by subclasses
+    specialize(file1)
+    specialize(file2)
+
     force_details = Config().force_details
     with profile("has_same_content_as", file1):
         has_same_content = file1.has_same_content_as(file2)
@@ -110,9 +115,6 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
             return None
     elif diff_content_only:
         return Difference(None, file1.name, file2.name, comment="Files differ")
-
-    specialize(file1)
-    specialize(file2)
 
     call_difftool(file1, file2)
 
