@@ -79,6 +79,7 @@ else:
         INODE_RE = re.compile(r"Inode: [0-9]+\s+")
         ACCESS_TIME_RE = re.compile(r"^Access: [0-9]{4}-[0-9]{2}-[0-9]{2}.*$")
         CHANGE_TIME_RE = re.compile(r"^Change: [0-9]{4}-[0-9]{2}-[0-9]{2}.*$")
+        BIRTH_TIME_RE = re.compile(r"^\s*Birth:.*$")
 
         def filter(self, line):
             line = line.decode("utf-8")
@@ -87,6 +88,7 @@ else:
             line = Stat.INODE_RE.sub("", line)
             line = Stat.ACCESS_TIME_RE.sub("", line)
             line = Stat.CHANGE_TIME_RE.sub("", line)
+            line = Stat.BIRTH_TIME_RE.sub("", line)
             return line.encode("utf-8")
 
 
