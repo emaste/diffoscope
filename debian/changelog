@@ -1,8 +1,32 @@
-diffoscope (146) UNRELEASED; urgency=medium
+diffoscope (146) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Refactor .changes and .buildinfo handling to show all details (including
+    the GPG header and footer components), even when referenced files are not
+    present. (Closes: reproducible-builds/diffoscope#122)
+  * Normalise filesystem stat(2) "birth times" (ie. st_birthtime) in the same
+    way we do with stat(1)'s "Access:" and "Change:" times to fix a
+    nondetermistic build failure on GNU Guix.
+    (Closes: reproducible-builds/diffoscope#74)
+  * Drop the (default) subprocess.Popen(shell=False) keyword argument so that
+    the more unsafe shell=True is more obvious.
+  * Ignore lower vs. upper-case when ordering our file format descriptions.
+  * Don't skip string normalisation in Black.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 23 May 2020 09:54:40 +0100
+  [ Mattia Rizzolo ]
+  * Add a "py3dist" override for the rpm-python module (Closes: #949598)
+  * Bump the debhelper compat level to 13 and use the new
+    execute_after_*/execture_before_* style rules.
+  * Fix a spelling error in changelog.
+
+  [ Daniel Fullmer ]
+  * Mount GuestFS filesystem images readonly.
+
+  [ Jean-Romain Garnier ]
+  * Prevent an issue where (for example) LibarchiveMember's has_same_content
+    method is called regardless of the actual type of file.
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 30 May 2020 12:36:51 +0100
 
 diffoscope (145) unstable; urgency=medium
 
