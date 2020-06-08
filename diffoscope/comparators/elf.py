@@ -34,7 +34,6 @@ from .deb import DebFile, get_build_id_map
 from .utils.file import File
 from .utils.command import Command
 from .utils.container import Container
-from .utils.libarchive import list_libarchive
 
 DEBUG_SECTION_GROUPS = (
     "rawline",
