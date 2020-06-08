@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ from diffoscope.difference import Difference
 
 from .image import pixel_difference, flicker_difference, same_size
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 logger = logging.getLogger(__name__)
 
@@ -52,8 +52,7 @@ class Gifbuild(Command):
 def is_image_static(image):
     try:
         return (
-            subprocess.check_output(("identify", "-format", "%n", image.path))
-            == b"1"
+            our_check_output(("identify", "-format", "%n", image.path)) == b"1"
         )
     except subprocess.CalledProcessError:
         return False

@@ -4,7 +4,7 @@
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
 # Copyright © 2015 Clemens Lang <cal@macports.org>
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,13 +20,12 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
-import subprocess
 
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 
 class Otool(Command):
@@ -80,9 +79,7 @@ class MachoFile(File):
     @staticmethod
     @tool_required("lipo")
     def get_arch_from_macho(path):
-        lipo_output = subprocess.check_output(["lipo", "-info", path]).decode(
-            "utf-8"
-        )
+        lipo_output = our_check_output(["lipo", "-info", path]).decode("utf-8")
         lipo_match = MachoFile.RE_EXTRACT_ARCHS.match(lipo_output)
         if lipo_match is None:
             raise ValueError(

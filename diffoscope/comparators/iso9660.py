@@ -25,14 +25,14 @@ from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 from .utils.libarchive import LibarchiveContainerWithFilelist
 
 
 @tool_required("isoinfo")
 def get_iso9660_names(path):
     return (
-        subprocess.check_output(
+        our_check_output(
             (
                 "isoinfo",
                 "-R",  # Always use RockRidge for names

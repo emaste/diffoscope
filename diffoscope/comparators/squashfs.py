@@ -36,7 +36,7 @@ from .device import Device
 from .symlink import Symlink
 from .directory import Directory
 from .utils.archive import Archive, ArchiveMember
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 logger = logging.getLogger(__name__)
 
@@ -260,7 +260,7 @@ class SquashfsContainer(Archive):
 
         logger.debug("Extracting %s to %s", self.source.path, self._temp_dir)
 
-        output = subprocess.check_output(
+        output = our_check_output(
             (
                 "unsquashfs",
                 "-n",

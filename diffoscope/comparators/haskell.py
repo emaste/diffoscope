@@ -3,7 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ from diffoscope.profiling import profile
 from diffoscope.difference import Difference
 
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 HI_MAGIC_32 = struct.pack(">I", 0x1FACE)
 HI_MAGIC_64 = struct.pack(">I", 0x1FACE64)
@@ -82,9 +82,7 @@ class HiFile(File):
         if not hasattr(HiFile, "hi_version"):
             try:
                 with profile("command", "ghc"):
-                    output = subprocess.check_output(
-                        ["ghc", "--numeric-version"]
-                    )
+                    output = our_check_output(["ghc", "--numeric-version"])
             except (OSError, subprocess.CalledProcessError):
                 HiFile.hi_version = None
                 logger.debug("Unable to read GHC version")

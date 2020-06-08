@@ -118,3 +118,9 @@ class Command(metaclass=abc.ABCMeta):
     @property
     def stdout(self):
         return self._process.stdout.splitlines(True)
+
+
+def our_check_output(cmd, *args, **kwargs):
+    logger.debug("Calling external command %r", cmd)
+
+    return subprocess.check_output(cmd, *args, **kwargs)

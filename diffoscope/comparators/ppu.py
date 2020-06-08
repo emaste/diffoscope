@@ -5,7 +5,7 @@
 # Copyright © 2015 Daniel Kahn Gillmor <dkg@fifthhorseman.net>
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
 # Copyright © 2015 Paul Gevers <elbrus@debian.org>
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ from diffoscope.profiling import profile
 from diffoscope.difference import Difference
 
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +78,7 @@ class PpuFile(File):
         if not hasattr(PpuFile, "ppu_version"):
             try:
                 with profile("command", "ppudump"):
-                    subprocess.check_output(
+                    our_check_output(
                         ["ppudump", "-vh", file.path],
                         stderr=subprocess.STDOUT,
                     )

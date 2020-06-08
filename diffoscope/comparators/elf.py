@@ -32,7 +32,7 @@ from diffoscope.difference import Difference
 
 from .deb import DebFile, get_build_id_map
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 from .utils.container import Container
 
 DEBUG_SECTION_GROUPS = (
@@ -168,7 +168,7 @@ class ReadElfSection(Readelf):
     @staticmethod
     def base_options():
         if not hasattr(ReadElfSection, "_base_options"):
-            output = subprocess.check_output(
+            output = our_check_output(
                 [get_tool_name("readelf"), "--help"],
                 stderr=subprocess.DEVNULL,
             ).decode("us-ascii", errors="replace")
@@ -381,7 +381,7 @@ class ElfStringSection(ElfSection):
 @tool_required("readelf")
 def get_build_id(path):
     try:
-        output = subprocess.check_output(
+        output = our_check_output(
             [get_tool_name("readelf"), "--notes", path],
             stderr=subprocess.DEVNULL,
         )
@@ -403,7 +403,7 @@ def get_build_id(path):
 @tool_required("readelf")
 def get_debug_link(path):
     try:
-        output = subprocess.check_output(
+        output = our_check_output(
             [get_tool_name("readelf"), "--string-dump=.gnu_debuglink", path],
             stderr=subprocess.DEVNULL,
         )
@@ -442,9 +442,7 @@ class ElfContainer(Container):
             "--section-headers",
             self.source.path,
         ]
-        output = subprocess.check_output(
-            cmd, shell=False, stderr=subprocess.DEVNULL
-        )
+        output = our_check_output(cmd, shell=False, stderr=subprocess.DEVNULL)
         has_debug_symbols = False
 
         try:
@@ -573,7 +571,7 @@ class ElfContainer(Container):
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
         def objcopy(*args):
-            subprocess.check_call(
+            our_check_output(
                 (get_tool_name("objcopy"),) + args,
                 shell=False,
                 stderr=subprocess.DEVNULL,

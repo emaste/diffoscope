@@ -32,7 +32,7 @@ from diffoscope.progress import Progress
 from diffoscope.difference import Difference
 
 from .binary import FilesystemFile
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 from .utils.container import Container
 
 logger = logging.getLogger(__name__)
@@ -100,7 +100,7 @@ def lsattr(path):
     """
 
     try:
-        output = subprocess.check_output(
+        output = our_check_output(
             ["lsattr", "-d", path], stderr=subprocess.STDOUT
         ).decode("utf-8")
         return output.split()[0]

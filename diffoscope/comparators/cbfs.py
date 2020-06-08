@@ -30,7 +30,7 @@ from diffoscope.difference import Difference
 
 from .utils.file import File
 from .utils.archive import Archive
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,7 @@ class CbfsContainer(Archive):
     @tool_required("cbfstool")
     def entries(self, path):
         cmd = ["cbfstool", path, "print"]
-        output = subprocess.check_output(cmd).decode("utf-8")
+        output = our_check_output(cmd)
         header = True
         for line in output.rstrip("\n").split("\n"):
             if header:
@@ -88,7 +88,7 @@ class CbfsContainer(Archive):
             dest_path,
         ]
         logger.debug("cbfstool extract %s to %s", member_name, dest_path)
-        subprocess.check_call(
+        our_check_output(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
         )
         return dest_path

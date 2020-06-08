@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2015-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ from diffoscope.tempfiles import get_named_temporary_file
 from diffoscope.difference import Difference, VisualDifference
 
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 re_ansi_escapes = re.compile(r"\x1b[^m]*m")
 
@@ -79,7 +79,7 @@ def pixel_difference(image1_path, image2_path):
     compared_filename = get_named_temporary_file(suffix=".png").name
 
     try:
-        subprocess.check_call(
+        our_check_output(
             (
                 "compare",
                 image1_path,
@@ -104,7 +104,7 @@ def pixel_difference(image1_path, image2_path):
 def flicker_difference(image1_path, image2_path):
     compared_filename = get_named_temporary_file(suffix=".gif").name
 
-    subprocess.check_call(
+    our_check_output(
         (
             "convert",
             "-delay",
@@ -127,9 +127,7 @@ def flicker_difference(image1_path, image2_path):
 
 @tool_required("identify")
 def get_image_size(image_path):
-    return subprocess.check_output(
-        ("identify", "-format", "%[h]x%[w]", image_path)
-    )
+    return our_check_output(("identify", "-format", "%[h]x%[w]", image_path))
 
 
 def same_size(image1, image2):
@@ -222,6 +220,6 @@ class ICOImageFile(File):
     def convert(file):
         result = get_named_temporary_file(suffix=".png").name
 
-        subprocess.check_call(("convert", file.path, result))
+        our_check_output(("convert", file.path, result))
 
         return result
