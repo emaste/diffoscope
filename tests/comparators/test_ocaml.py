@@ -35,7 +35,7 @@ def ocaml_fixture(prefix):
         input_ = str(tmpdir.join("{}.mli".format(prefix)))
         output = str(tmpdir.join("{}.cmi".format(prefix)))
 
-        with open(input_, "w") as f:
+        with open(input_, "w"):
             pass
 
         subprocess.check_call(("ocamlc", "-c", input_))
