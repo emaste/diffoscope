@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-from .html import ( # noqa
+from .html import (  # noqa
     HTMLPresenter,
     HTMLDirectoryPresenter,
     JQUERY_SYSTEM_LOCATIONS,
