@@ -20,7 +20,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
-import os.path
 
 from diffoscope.config import Config
 from diffoscope.comparators.macho import MachoFile

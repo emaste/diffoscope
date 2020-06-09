@@ -24,7 +24,7 @@ from diffoscope.comparators.ocaml import OcamlInterfaceFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import get_data
 from ..utils.tools import skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 

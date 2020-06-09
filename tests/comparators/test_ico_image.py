@@ -26,7 +26,6 @@ from ..utils.data import load_fixture, get_data
 from ..utils.tools import (
     skip_unless_tools_exist,
     skip_unless_tool_is_at_least,
-    skip_unless_tool_is_between,
 )
 from .test_jpeg_image import identify_version
 

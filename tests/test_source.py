@@ -19,7 +19,6 @@
 
 import os
 import glob
-import diffoscope
 import subprocess
 
 from .utils.tools import skip_unless_tool_is_at_least

@@ -20,7 +20,6 @@
 
 import codecs
 
-from diffoscope.comparators.text import TextFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.utils.specialize import specialize
 
