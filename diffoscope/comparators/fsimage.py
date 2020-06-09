@@ -23,7 +23,6 @@ import logging
 import os.path
 
 from diffoscope.difference import Difference
-from diffoscope.exc import ContainerExtractionError
 from diffoscope.tools import python_module_missing
 
 from .utils.file import File
