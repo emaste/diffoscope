@@ -248,7 +248,7 @@ def test_ignore_readelf_errors1_identify(ignore_readelf_errors1):
     assert isinstance(ignore_readelf_errors1, ElfFile)
 
 
-def test_ignore_readelf_errors1_identify(ignore_readelf_errors2):
+def test_ignore_readelf_errors2_identify(ignore_readelf_errors2):
     assert isinstance(ignore_readelf_errors2, ElfFile)
 
 
