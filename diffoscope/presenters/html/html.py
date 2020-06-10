@@ -432,9 +432,7 @@ class HTMLSideBySidePresenter:
                 if has_internal_linenos:
                     self.spl_print_func('<td colspan="2" class="diffpresent">')
                 else:
-                    self.spl_print_func(
-                        '<td class="diffline">%d </td>' % line1
-                    )
+                    self.spl_print_func(f'<td class="diffline">{line1} </td>')
                     self.spl_print_func('<td class="diffpresent">')
                 self.spl_print_func(convert(s1, ponct=1, tag="del"))
                 self.spl_print_func("</td>")
@@ -445,7 +443,7 @@ class HTMLSideBySidePresenter:
                 if has_internal_linenos:
                     self.spl_print_func('<td colspan="2" class="diffpresent">')
                 else:
-                    self.spl_print_func('<td class="diffline">%s </td>' % line2)
+                    self.spl_print_func(f'<td class="diffline">{line2} </td>')
                     self.spl_print_func('<td class="diffpresent">')
                 self.spl_print_func(convert(s2, ponct=1, tag="ins"))
                 self.spl_print_func("</td>")
