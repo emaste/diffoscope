@@ -417,14 +417,10 @@ class HTMLSideBySidePresenter:
     def output_hunk_header(self, hunk_off1, hunk_size1, hunk_off2, hunk_size2):
         self.spl_print_func('<tr class="diffhunk">')
 
-        self.spl_print_func(
-            '<td colspan="2">Offset %d, %d lines modified</td>'
-            % (hunk_off1, hunk_size1)
-        )
-        self.spl_print_func(
-            '<td colspan="2">Offset %d, %d lines modified</td>'
-            % (hunk_off2, hunk_size2)
-        )
+        for a, b in ((hunk_off1, hunk_size1), (hunk_off2, hunk_size2)):
+            self.spl_print_func(
+                f'<td colspan="2">Offset {a}, {b} lines modified</td>'
+            )
 
         self.spl_print_func("</tr>\n")
 
