@@ -427,7 +427,8 @@ def linediff(s, t, diffon, diffoff):
 
     s1 = "".join(to_string(*p) for p in l1)
     t1 = "".join(to_string(*p) for p in l2)
-    return prefix + s1 + suffix, prefix + t1 + suffix
+
+    return f"{prefix}{s1}{suffix}", f"{prefix}{t1}{suffix}"
 
 
 def linediff_wagnerfischer(s, t):
