@@ -156,7 +156,7 @@ def convert(s, ponct=0, tag=""):
         elif c == "\n" and ponct == 1:
             t.write('<br/><span class="diffponct">\\</span>')
         elif ord(c) < 32:
-            conv = u"\\x%x" % ord(c)
+            conv = "\\x%x" % ord(c)
             t.write("<em>%s</em>" % conv)
             i += len(conv)
         else:
@@ -178,7 +178,7 @@ def output_visual(ctx, visual, path, indentstr, indentnum):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     anchor = output_anchor(ctx, path)
     id = 'id="{}"'.format(anchor) if anchor else ""
-    return u"""{0[0]}<div class="difference">
+    return """{0[0]}<div class="difference">
 {0[1]}<div class="diffheader">
 {0[1]}<div class="diffcontrol">⊟</div>
 {0[1]}<div {5}><span class="source">{1}</span>
@@ -201,12 +201,12 @@ def output_node_frame(ctx, difference, path, indentstr, indentnum, body):
     anchor = output_anchor(ctx, path)
     id = 'id="{}"'.format(anchor) if anchor else ""
     dctrl_class, dctrl = (
-        ("diffcontrol", u"⊟")
+        ("diffcontrol", "⊟")
         if difference.has_visible_children()
-        else ("diffcontrol-nochildren", u"⊡")
+        else ("diffcontrol-nochildren", "⊡")
     )
     if difference.source1 == difference.source2:
-        header = u"""{0[1]}<div class="{1}">{2}</div>
+        header = """{0[1]}<div class="{1}">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
 {0[1]}<div {6}><span class="source">{5}</span>
 {0[2]}<a class="anchor" href="#{4}">\xb6</a>
@@ -221,7 +221,7 @@ def output_node_frame(ctx, difference, path, indentstr, indentnum, body):
             id,
         )
     else:
-        header = u"""{0[1]}<div class="{1} diffcontrol-double">{2}</div>
+        header = """{0[1]}<div class="{1} diffcontrol-double">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
 {0[1]}<div><span class="source">{5}</span> vs.</div>
 {0[1]}<div {7}><span class="source">{6}</span>
@@ -239,7 +239,7 @@ def output_node_frame(ctx, difference, path, indentstr, indentnum, body):
         )
 
     return PartialString.numl(
-        u"""{0[1]}<div class="diffheader">
+        """{0[1]}<div class="diffheader">
 {1}{0[1]}</div>
 {2}""",
         3,
@@ -259,22 +259,22 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     t, cont = PartialString.cont()
 
-    comments = u""
+    comments = ""
     if difference.comments:
-        comments = u'{1[1]}<div class="comment {0}">{2}{1[1]}</div>\n'.format(
+        comments = '{1[1]}<div class="comment {0}">{2}{1[1]}</div>\n'.format(
             "multiline" if len(difference.comments) > 1 else "",
             indent,
             "\n".join(
-                u"{1}".format(indent, html.escape(x))
+                "{1}".format(indent, html.escape(x))
                 for x in difference.comments
             ),
         )
 
-    visuals = u""
+    visuals = ""
     for visual in difference.visuals:
         visuals += output_visual(ctx, visual, path, indentstr, indentnum + 1)
 
-    udiff = u""
+    udiff = ""
     ud_cont = None
     if difference.unified_diff:
         ud_cont = HTMLSideBySidePresenter().output_unified_diff(
@@ -290,7 +290,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
             ud_cont = None
 
     # PartialString for this node
-    body = PartialString.numl(u"{0}{1}{2}{-1}", 3, cont).pformatl(
+    body = PartialString.numl("{0}{1}{2}{-1}", 3, cont).pformatl(
         comments, visuals, udiff
     )
     if len(path) == 1:
@@ -306,7 +306,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
             ctx, d, path + [d], indentstr, indentnum + 1, PartialString.of(d)
         )
         child = PartialString.numl(
-            u"""{0[1]}<div class="difference">
+            """{0[1]}<div class="difference">
 {1}{0[1]}</div>
 {-1}""",
             2,
@@ -316,20 +316,19 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 
     # there might be extra holes for the unified diff continuation
     assert len(t.holes) >= len(difference.details) + 1
-    return cont(t, u""), ud_cont
+    return cont(t, ""), ud_cont
 
 
 def output_header(css_url, our_css_url=False, icon_url=None):
     if css_url:
         css_link = (
-            u'  <link href="%s" type="text/css" rel="stylesheet" />\n'
-            % css_url
+            '  <link href="%s" type="text/css" rel="stylesheet" />\n' % css_url
         )
     else:
-        css_link = u""
+        css_link = ""
     if our_css_url:
         css_style = (
-            u'  <link href="%s" type="text/css" rel="stylesheet" />\n'
+            '  <link href="%s" type="text/css" rel="stylesheet" />\n'
             % our_css_url
         )
     else:
@@ -337,7 +336,7 @@ def output_header(css_url, our_css_url=False, icon_url=None):
     if icon_url:
         favicon = icon_url
     else:
-        favicon = u"data:image/png;base64," + FAVICON_BASE64
+        favicon = "data:image/png;base64," + FAVICON_BASE64
     return templates.HEADER % {
         "title": html.escape(" ".join(sys.argv)),
         "favicon": favicon,
@@ -427,39 +426,33 @@ class HTMLSideBySidePresenter:
     def output_line(
         self, has_internal_linenos, type_name, s1, line1, s2, line2
     ):
-        self.spl_print_func(u'<tr class="diff%s">' % type_name)
+        self.spl_print_func('<tr class="diff%s">' % type_name)
         try:
             if s1:
                 if has_internal_linenos:
-                    self.spl_print_func(
-                        u'<td colspan="2" class="diffpresent">'
-                    )
+                    self.spl_print_func('<td colspan="2" class="diffpresent">')
                 else:
                     self.spl_print_func(
-                        u'<td class="diffline">%d </td>' % line1
+                        '<td class="diffline">%d </td>' % line1
                     )
-                    self.spl_print_func(u'<td class="diffpresent">')
+                    self.spl_print_func('<td class="diffpresent">')
                 self.spl_print_func(convert(s1, ponct=1, tag="del"))
-                self.spl_print_func(u"</td>")
+                self.spl_print_func("</td>")
             else:
-                self.spl_print_func(u'<td colspan="2">\xa0</td>')
+                self.spl_print_func('<td colspan="2">\xa0</td>')
 
             if s2:
                 if has_internal_linenos:
-                    self.spl_print_func(
-                        u'<td colspan="2" class="diffpresent">'
-                    )
+                    self.spl_print_func('<td colspan="2" class="diffpresent">')
                 else:
-                    self.spl_print_func(
-                        u'<td class="diffline">%d </td>' % line2
-                    )
-                    self.spl_print_func(u'<td class="diffpresent">')
+                    self.spl_print_func('<td class="diffline">%s </td>' % line2)
+                    self.spl_print_func('<td class="diffpresent">')
                 self.spl_print_func(convert(s2, ponct=1, tag="ins"))
-                self.spl_print_func(u"</td>")
+                self.spl_print_func("</td>")
             else:
-                self.spl_print_func(u'<td colspan="2">\xa0</td>')
+                self.spl_print_func('<td colspan="2">\xa0</td>')
         finally:
-            self.spl_print_func(u"</tr>\n")
+            self.spl_print_func("</tr>\n")
 
     def spl_print_enter(self, print_context, rotation_params):
         # Takes ownership of print_context
@@ -532,7 +525,7 @@ class HTMLSideBySidePresenter:
                 templates.UD_TABLE_FOOTER
                 % {"filename": html.escape(filename), "text": "load diff"}
             )
-            self.spl_print_func(u"</table>\n")
+            self.spl_print_func("</table>\n")
             self.spl_print_exit(None, None, None)
 
         # rotate to the next child page
@@ -567,7 +560,7 @@ class HTMLSideBySidePresenter:
                 elif t == "H":
                     self.output_hunk_header(*args)
                 elif t == "C":
-                    self.spl_print_func(u'<td colspan="2">%s</td>\n' % args)
+                    self.spl_print_func('<td colspan="2">%s</td>\n' % args)
                 else:
                     raise AssertionError()
                 self.spl_rows += 1
@@ -594,7 +587,7 @@ class HTMLSideBySidePresenter:
             wrote_all = False
         finally:
             # no footer on the last page, just a close tag
-            self.spl_print_func(u"</table>")
+            self.spl_print_func("</table>")
         yield wrote_all
 
     def output_unified_diff(self, ctx, unified_diff, has_internal_linenos):
@@ -620,7 +613,7 @@ class HTMLSideBySidePresenter:
                 # size-limit to write the remaining pages with
                 # exhaust the iterator and save the last item in wrote_all
                 new_limit = yield PartialString(
-                    PartialString.escape(udiff.getvalue()) + u"{0}</table>\n",
+                    PartialString.escape(udiff.getvalue()) + "{0}</table>\n",
                     None,
                 )
                 wrote_all = send_and_exhaust(it, new_limit, wrote_all)
@@ -820,8 +813,8 @@ class HTMLPresenter(Presenter):
 
                 outputs[node] = node_output.frame(
                     output_header(ctx.css_url, ctx.our_css_url, ctx.icon_url)
-                    + u'<div class="difference">\n',
-                    u"</div>\n" + footer,
+                    + '<div class="difference">\n',
+                    "</div>\n" + footer,
                 )
                 assert not ctx.single_page or node is root_difference
                 printers[node] = (
