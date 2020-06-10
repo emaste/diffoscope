@@ -278,12 +278,12 @@ def empty_file_feeder():
     return feeder
 
 
-def make_feeder_from_raw_reader(in_file, filter=None):
+def make_feeder_from_raw_reader(in_file, filterfn=None):
     """
     Create a feeder that checksums, truncates, and transcodes the data.  The
-    optional argument FILTER is a callable that gets passed each line, and
+    optional argument filterfn is a callable that gets passed each line, and
     returns the line that should be used in its stead.  (There is no facility
-    for FILTER to discard a line entirely.)
+    for filterfn to discard a line entirely.)
 
     See _Feeder for feeders.
     """
@@ -299,7 +299,7 @@ def make_feeder_from_raw_reader(in_file, filter=None):
 
         for buf in in_file:
             line_count += 1
-            out = filter(buf) if filter else buf
+            out = filterfn(buf) if filterfn else buf
             if h:
                 h.update(out)
             if line_count < max_lines:
