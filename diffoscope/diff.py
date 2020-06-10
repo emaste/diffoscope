@@ -384,7 +384,9 @@ def color_unified_diff(diff):
 
 DIFFON = "\x01"
 DIFFOFF = "\x02"
-MAX_WF_SIZE = 1024  # any higher, and linediff takes >1 second and >200MB RAM
+MAX_WAGNER_FISCHER_SIZE = (
+    1024  # any higher, and linediff takes >1 second and >200MB RAM
+)
 
 
 def _linediff_sane(x):
@@ -404,7 +406,7 @@ def diffinput_truncate(s, sz):
 
 
 def linediff(s, t, diffon, diffoff):
-    # calculate common prefix/suffix, easy optimisation to WF
+    # calculate common prefix/suffix, easy optimisation for Wagner-Fischer
     prefix = os.path.commonprefix((s, t))
     if prefix:
         s = s[len(prefix) :]
@@ -414,9 +416,9 @@ def linediff(s, t, diffon, diffoff):
         s = s[: -len(suffix)]
         t = t[: -len(suffix)]
 
-    # truncate so WF doesn't blow up RAM
-    s = diffinput_truncate(s, MAX_WF_SIZE)
-    t = diffinput_truncate(t, MAX_WF_SIZE)
+    # truncate so Wagner-Fischer doesn't blow up RAM
+    s = diffinput_truncate(s, MAX_WAGNER_FISCHER_SIZE)
+    t = diffinput_truncate(t, MAX_WAGNER_FISCHER_SIZE)
     l1, l2 = zip(*linediff_simplify(linediff_wagnerfischer(s, t)))
 
     def to_string(k, v):
@@ -487,7 +489,7 @@ def linediff_wagnerfischer(s, t):
 
 
 def linediff_simplify(g):
-    """Simplify the output of WF."""
+    """Simplify the output of Wagner-Fischer."""
     current = None
     for l, r in g:
         if not current:
