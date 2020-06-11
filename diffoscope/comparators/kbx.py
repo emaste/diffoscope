@@ -32,7 +32,6 @@ class Kbxutil(Command):
         return ("kbxutil", self.path)
 
     def filter(self, line):
-        return line
         if line.decode("utf-8").strip() == self.path:
             return b""
         return line
