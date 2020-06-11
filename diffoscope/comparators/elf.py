@@ -263,13 +263,6 @@ READELF_COMMANDS = (
 )
 
 
-def _compare_elf_data(path1, path2):
-    return [
-        Difference.from_command(x, path1, path2, ignore_returncodes={1})
-        for x in list(READELF_COMMANDS) + READELF_DEBUG_DUMP_COMMANDS
-    ]
-
-
 def _should_skip_section(name, type):
     for x in READELF_COMMANDS:
         if x.should_skip_section(name, type):
@@ -622,4 +615,9 @@ class ElfFile(File):
     FILE_TYPE_RE = re.compile(r"^ELF ")
 
     def compare_details(self, other, source=None):
-        return _compare_elf_data(self.path, other.path)
+        return [
+            Difference.from_command(
+                x, self.path, other.path, ignore_returncodes={1}
+            )
+            for x in list(READELF_COMMANDS) + READELF_DEBUG_DUMP_COMMANDS
+        ]
