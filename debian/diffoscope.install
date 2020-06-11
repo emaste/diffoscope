@@ -1,1 +1,2 @@
 bin/diffoscope usr/bin
+debian/zsh-completion/_diffoscope usr/share/zsh/vendor-completions
