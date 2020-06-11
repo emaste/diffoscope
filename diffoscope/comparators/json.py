@@ -83,7 +83,7 @@ class JSONFile(File):
         b = getattr(other, "parsed", {})
 
         try:
-            diff = {repr(x): y for x, y in jsondiff.diff(a, b).items()}
+            diff = {repr(x): repr(y) for x, y in jsondiff.diff(a, b).items()}
         except Exception:
             return
 
