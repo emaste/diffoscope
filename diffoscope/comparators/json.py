@@ -19,12 +19,15 @@
 
 import re
 import json
+import logging
 import collections
 
 from diffoscope.difference import Difference
 from diffoscope.tools import python_module_missing
 
 from .utils.file import File
+
+logger = logging.getLogger(__name__)
 
 try:
     import jsondiff
@@ -73,6 +76,8 @@ class JSONFile(File):
     def compare_with_jsondiff(self, difference, other):
         if jsondiff is None:
             return
+
+        logger.debug(f"Comparing using jsondiff {jsondiff.__version__}")
 
         a = getattr(self, "parsed", {})
         b = getattr(other, "parsed", {})
