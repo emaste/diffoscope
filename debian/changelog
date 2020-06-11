@@ -6,6 +6,8 @@ diffoscope (148) UNRELEASED; urgency=medium
 
 diffoscope (147) unstable; urgency=medium
 
+  [ Chris Lamb ]
+
   * New features:
 
     - Add output from strings(1) to ELF binaries. It is intended this will
