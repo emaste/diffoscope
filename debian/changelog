@@ -1,8 +1,44 @@
-diffoscope (147) UNRELEASED; urgency=medium
+diffoscope (147) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * New features:
 
- -- Chris Lamb <lamby@debian.org>  Sat, 30 May 2020 12:44:42 +0100
+    - Add output from strings(1) to ELF binaries. It is intended this will
+      expose expose build paths that are hidden somewhere within the objdump(1)
+      output. (Closes: reproducible-builds/diffoscope#148)
+    - Add basic zsh shell tab-completion support.
+      (Closes: reproducible-builds/diffoscope#158)
+
+  * Bug fixes:
+
+    - Prevent a traceback when comparing a PDF document that does not contain
+      any metadata, ie. it is missing a PDF "/Info" stanza.
+      (Closes: reproducible-builds/diffoscope#150)
+    - Fix compatibility with jsondiff 1.2.0 which was causing a traceback and
+      log the version of jsondiff we are using to aid debugging in the future.
+      (Closes: reproducible-builds/diffoscope#159
+    - Fix an issue in GnuPG keybox handling that left filenames in the diff.
+    - Don't mask an existing test name; ie. ensure it is actually run.
+
+  * Reporting:
+
+    - Log all calls to subprocess.check_output by using our own wrapper utility.
+      (Closes: reproducible-builds/diffoscope#151)
+
+  * Code improvements:
+
+    - Replace references to "WF" with "Wagner-Fischer" for clarity.
+    - Drop a large number of unused imports (list_libarchive,
+      ContainerExtractionError, etc.)
+    - Don't assign exception to a variable that we do not use.
+    - Compare string values with the equality operator, not via "is" identity.
+    - Don't alias an open file to a variable when we don't use it.
+    - Don't alias "filter" builtin.
+    - Refactor many small parts of the HTML generation, dropping explicit
+      u"unicode" strings, tidying the generation of the "Offset X, Y lines
+      modified" messages, moving to PEP 498 f-strings where appropriate, etc.
+    - Inline a number of single-used utility methods.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 11 Jun 2020 12:50:34 +0100
 
 diffoscope (146) unstable; urgency=medium
 
