@@ -609,15 +609,27 @@ class ElfContainer(Container):
         return self._sections[member_name]
 
 
+class Strings(Command):
+    @tool_required("strings")
+    def cmdline(self):
+        return ("strings", "--all", self.path)
+
+
 class ElfFile(File):
     DESCRIPTION = "ELF binaries"
     CONTAINER_CLASSES = [ElfContainer]
     FILE_TYPE_RE = re.compile(r"^ELF ")
 
     def compare_details(self, other, source=None):
-        return [
+        differences = [
             Difference.from_command(
                 x, self.path, other.path, ignore_returncodes={1}
             )
             for x in list(READELF_COMMANDS) + READELF_DEBUG_DUMP_COMMANDS
         ]
+
+        differences.append(
+            Difference.from_command(Strings, self.path, other.path)
+        )
+
+        return differences

@@ -185,6 +185,7 @@ EXTERNAL_TOOLS = {
         "guix": "openssh",
     },
     "stat": {"debian": "coreutils", "arch": "coreutils", "guix": "coreutils"},
+    "strings": {"debian": "binutils-multiarch"},
     "sqlite3": {
         "debian": "sqlite3",
         "arch": "sqlite",
