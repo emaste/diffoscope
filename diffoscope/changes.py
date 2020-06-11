@@ -196,6 +196,8 @@ class Changes:
             if item.endswith('.dsc'):
                 return item
 
+        return None
+
     def get_pool_path(self):
         """
         Returns the path the changes file would be
