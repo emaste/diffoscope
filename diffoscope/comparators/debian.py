@@ -101,6 +101,8 @@ class DebControlContainer(Container):
             (x["name"] for x in field),
             key=lambda x: (x.endswith(".deb") and "-dbgsym_" in x, x),
         ):
+            # The referenced files are supplied by the user, but the Deb822
+            # parser rejects malicious imput such as "../../etc/shadow" etc.
             if not os.path.exists(os.path.join(parent_dir, name)):
                 logger.debug(
                     "Could not find file %s referenced in %s",
