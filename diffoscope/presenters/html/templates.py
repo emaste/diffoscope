@@ -203,8 +203,7 @@ href="%(pagename)s.html" target="_blank">open details (total %(size)s)</a> ...</
 DIFFNODE_LIMIT = """<div class="error">Max HTML report size reached</div>
 """
 
-UD_TABLE_HEADER = """<div class="difference">
-<table class="diff">
+UD_TABLE_HEADER = """<table class="diff">
 <colgroup><col class="colines"/><col class="coldiff"/>
 <col class="colines"/><col class="coldiff"/></colgroup>
 <tr style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -212,7 +211,7 @@ UD_TABLE_HEADER = """<div class="difference">
 
 UD_TABLE_FOOTER = """<tr class="ondemand"><td colspan="4">
 ... <a href="%(filename)s" target="_blank">%(text)s</a> ...
-</td></tr></div>
+</td></tr>
 """
 
 UD_TABLE_LIMIT_FOOTER = """<tr class="error"><td colspan="4">

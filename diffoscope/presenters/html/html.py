@@ -505,6 +505,10 @@ class HTMLSideBySidePresenter:
         memory = self.write_memory
         context = spl_file_printer(ctx.directory, filename, self)
         self.spl_print_enter(context, rotation_params)
+
+        # Make sure child pages are embedded in a "difference" div so the
+        # css still works
+        self.spl_print_func('<div class="difference">')
         self.spl_print_func(templates.UD_TABLE_HEADER)
         self.spl_print_func(memory)
         self.write_memory = None
@@ -589,11 +593,16 @@ class HTMLSideBySidePresenter:
             wrote_all = next(it)
             if wrote_all is None:
                 assert self.spl_current_page == 1
+
+                # Close <div class="difference"> added to child pages
+                self.spl_print_func("</div>")
+
                 # now pause the iteration and wait for consumer to give us a
-                # size-limit to write the remaining pages with
+                # size-limit to write the remaining page with
                 # exhaust the iterator and save the last item in wrote_all
                 new_limit = yield PartialString(
-                    PartialString.escape(udiff.getvalue()) + "{0}</table>\n",
+                    PartialString.escape(udiff.getvalue())
+                    + "{0}</table>\n",
                     None,
                 )
                 wrote_all = send_and_exhaust(it, new_limit, wrote_all)
