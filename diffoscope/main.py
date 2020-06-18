@@ -257,23 +257,13 @@ def create_parser():
         default=Config().max_page_size,
     ).completer = RangeCompleter(Config().max_page_size)
     group2.add_argument(
-        "--max-page-size-child",
-        metavar="BYTES",
-        type=int,
-        help="In --html-dir output, this is the maximum bytes of "
-        "each child page (default: %(default)s, remains in "
-        "effect even with --no-default-limits)",
-        default=str(Config().max_page_size_child),
-    ).completer = RangeCompleter(Config().max_page_size_child)
-    group2.add_argument(
         "--max-page-diff-block-lines",
         metavar="LINES",
         type=int,
         help="Maximum number of lines output per unified-diff block "
         "on the top-level (--html-dir) or sole (--html) page, before "
-        "spilling it into child pages (--html-dir) or skipping the "
-        "rest of the diff block. Child pages are limited instead by "
-        "--max-page-size-child. (default: %(default)s, remains in "
+        "spilling it into a child page (--html-dir) or skipping the "
+        "rest of the diff block. (default: %(default)s, remains in "
         "effect even with --no-default-limits)",
         default=Config().max_page_diff_block_lines,
     ).completer = RangeCompleter(Config().max_page_diff_block_lines)
@@ -608,7 +598,6 @@ def configure(parsed_args):
             setattr(Config(), x, float("inf"))
 
     Config().max_page_size = parsed_args.max_page_size
-    Config().max_page_size_child = parsed_args.max_page_size_child
     Config().max_page_diff_block_lines = parsed_args.max_page_diff_block_lines
 
     Config().difftool = parsed_args.difftool

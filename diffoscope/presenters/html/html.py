@@ -384,7 +384,6 @@ class HTMLSideBySidePresenter:
     def __init__(self):
         self.max_lines = Config().max_diff_block_lines  # only for html-dir
         self.max_lines_parent = Config().max_page_diff_block_lines
-        self.max_page_size_child = Config().max_page_size_child
 
     def new_unified_diff(self):
         self.spl_rows = 0
@@ -486,12 +485,7 @@ class HTMLSideBySidePresenter:
                 and self.bytes_written > self.bytes_max_total
             ):
                 raise PrintLimitReached()
-            if self.spl_print_func.bytes_written < self.max_page_size_child:
-                return False
-            logger.debug(
-                "new unified-diff subpage, previous subpage went over %s bytes",
-                self.max_page_size_child,
-            )
+            return False
 
         return True
 
@@ -499,16 +493,7 @@ class HTMLSideBySidePresenter:
         _, rotation_params = self.spl_print_ctrl
         ctx, mainname = rotation_params
         self.spl_current_page += 1
-        filename = "%s-%s.html" % (mainname, self.spl_current_page)
-
-        if self.spl_current_page > 1:
-            # previous page was a child, close it
-            self.spl_print_func(
-                templates.UD_TABLE_FOOTER
-                % {"filename": html.escape(filename), "text": "load diff"}
-            )
-            self.spl_print_func("</table>\n")
-            self.spl_print_exit(None, None, None)
+        filename = "%s.html" % (mainname)
 
         # rotate to the next child page
         context = spl_file_printer(ctx.directory, filename, self)
@@ -627,14 +612,11 @@ class HTMLSideBySidePresenter:
             # on the parent page
             parent_last_row = self.error_row
         else:
-            noun = "pieces" if self.spl_current_page > 1 else "piece"
-            text = "load diff (%s %s%s)" % (
-                self.spl_current_page,
-                noun,
-                (", truncated" if truncated else ""),
-            )
+            text = "show remaining diff"
+            if truncated:
+                text += " (truncated)"
             parent_last_row = templates.UD_TABLE_FOOTER % {
-                "filename": html.escape("%s-1.html" % mainname),
+                "filename": html.escape("%s.html" % mainname),
                 "text": text,
             }
         yield self.bytes_written, parent_last_row
@@ -693,7 +675,6 @@ class HTMLPresenter(Presenter):
 
         return templates.DIFFNODE_LAZY_LOAD % {
             "pagename": pagename,
-            "pagesize": sizeof_fmt(Config().max_page_size_child),
             "size": sizeof_fmt(size),
         }
 
@@ -735,7 +716,7 @@ class HTMLPresenter(Presenter):
                 page_limit = (
                     Config().max_page_size
                     if ancestor is root_difference
-                    else Config().max_page_size_child
+                    else None
                 )
                 page_current = outputs[ancestor].size(placeholder_len)
                 report_current = self.report_printed + sum(
@@ -752,6 +733,8 @@ class HTMLPresenter(Presenter):
                 )
                 if report_current + want_to_add > self.report_limit:
                     make_new_subpage = False
+                elif ancestor is not root_difference:
+                    add_to_existing = True
                 elif page_current + want_to_add < page_limit:
                     add_to_existing = True
                 else:

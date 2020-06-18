@@ -143,38 +143,20 @@ STYLES = """body.diffoscope {
 .diffoscope .diffsize {
   float: right;
 }
+.diffoscope table.diff tr.ondemand td, .diffoscope div.ondemand-details {
+  background: #f99;
+  text-align: center;
+  padding: 0.5em 0;
+}
+.diffoscope table.diff tr.ondemand:hover td, .diffoscope div.ondemand-details:hover {
+  background: #faa;
+  cursor: pointer;
+}
 """
 
 SCRIPTS = r"""<script src="%(jquery_url)s"></script>
 <script type="text/javascript">
 $(function() {
-  // activate "loading" controls
-  var load_cont, load_generic = function(selector, target, getInfo, postLoad) {
-    return function() {
-        var a = $(this).find("a");
-        var filename = a.attr('href');
-        var info = getInfo ? getInfo(a) : null;
-        var button = a.parent();
-        button.text('... loading ...');
-        (target ? target(button) : button).load(filename + " " + selector, function() {
-            // https://stackoverflow.com/a/8452751/946226
-            var elems = $(this).children(':first').unwrap();
-            // set this behaviour for the next link too
-            var td = elems.parent().find(".ondemand td");
-            td.on('click', load_cont);
-            postLoad ? postLoad(td, info) : null;
-        });
-        return false;
-    };
-  };
-  load_cont = load_generic("tr", function(x) { return x.parent(); }, function(a) {
-    var textparts = /^(.*)\((\d+) pieces?(.*)\)$/.exec(a.text());
-    var numleft = Number.parseInt(textparts[2]) - 1;
-    var noun = numleft == 1 ? "piece" : "pieces";
-    return textparts[1] + "(" + numleft + " " + noun + textparts[3] + ")";
-  }, function(td, info) { td.find("a").text(info); });
-  $(".ondemand td").on('click', load_cont);
-  $(".ondemand-details").on('click', load_generic("div.difference > *"));
   // activate [+]/[-] controls
   var diffcontrols = $(".diffcontrol");
   $(".diffheader").on('click', function(evt) {
@@ -201,15 +183,6 @@ $(function() {
 });
 </script>
 <style>
-.diffoscope table.diff tr.ondemand td, .diffoscope div.ondemand-details {
-  background: #f99;
-  text-align: center;
-  padding: 0.5em 0;
-}
-.diffoscope table.diff tr.ondemand:hover td, .diffoscope div.ondemand-details:hover {
-  background: #faa;
-  cursor: pointer;
-}
 .diffoscope .diffheader {
   cursor: pointer;
 }
@@ -223,23 +196,23 @@ $(function() {
 </style>
 """
 
-DIFFNODE_LAZY_LOAD = """<div class="ondemand-details" title="the size refers to the raw diff and includes all children;
-only the top %(pagesize)s of the HTML are loaded at a time">... <a
-href="%(pagename)s.html">load details (total %(size)s)</a> ...</div>
+DIFFNODE_LAZY_LOAD = """<div class="ondemand-details" title="the size refers to the raw diff and includes all children">... <a
+href="%(pagename)s.html" target="_blank">open details (total %(size)s)</a> ...</div>
 """
 
 DIFFNODE_LIMIT = """<div class="error">Max HTML report size reached</div>
 """
 
-UD_TABLE_HEADER = """<table class="diff">
+UD_TABLE_HEADER = """<div class="difference">
+<table class="diff">
 <colgroup><col class="colines"/><col class="coldiff"/>
 <col class="colines"/><col class="coldiff"/></colgroup>
 <tr style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 """
 
 UD_TABLE_FOOTER = """<tr class="ondemand"><td colspan="4">
-... <a href="%(filename)s">%(text)s</a> ...
-</td></tr>
+... <a href="%(filename)s" target="_blank">%(text)s</a> ...
+</td></tr></div>
 """
 
 UD_TABLE_LIMIT_FOOTER = """<tr class="error"><td colspan="4">

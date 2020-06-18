@@ -50,7 +50,6 @@ class Config:
         # structural limits, restricts single-file formats
         # semi-restricts multi-file formats
         self.max_page_size = defaultint(40 * 2 ** 20)  # 4 MB
-        self.max_page_size_child = defaultint(200 * 2 ** 10)  # 200 kB
         self.max_page_diff_block_lines = defaultint(2 ** 7)  # 128 lines
 
         self.max_text_report_size = 0
@@ -94,4 +93,3 @@ class Config:
     def check_constraints(self):
         self.check_ge("max_diff_block_lines", "max_page_diff_block_lines")
         self.check_ge("max_report_size", "max_page_size")
-        self.check_ge("max_report_size", "max_page_size_child")
