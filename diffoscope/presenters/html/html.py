@@ -388,13 +388,19 @@ class HTMLSideBySidePresenter:
     def new_unified_diff(self):
         self.spl_rows = 0
         self.spl_current_page = 0
-        self.spl_print_func = None
+        self._spl_print_func = None
         self.spl_print_ctrl = None
         # the below apply to child pages only, the parent page limit works
         # differently and is controlled by output_difference later below
         self.bytes_max_total = 0
         self.bytes_written = 0
         self.error_row = None
+        self.write_memory = None
+
+    def spl_print_func(self, line):
+        if self.write_memory is not None:
+            self.write_memory += line
+        self._spl_print_func(line)
 
     def output_hunk_header(self, hunk_off1, hunk_size1, hunk_off2, hunk_size2):
         self.spl_print_func('<tr class="diffhunk">')
@@ -438,7 +444,7 @@ class HTMLSideBySidePresenter:
     def spl_print_enter(self, print_context, rotation_params):
         # Takes ownership of print_context
         self.spl_print_ctrl = print_context.__exit__, rotation_params
-        self.spl_print_func = print_context.__enter__()
+        self._spl_print_func = print_context.__enter__()
         ctx, _ = rotation_params
         # Print file and table headers
         self.spl_print_func(
@@ -457,7 +463,7 @@ class HTMLSideBySidePresenter:
             return False
         self.spl_print_func(output_footer())
         _exit, _ = self.spl_print_ctrl
-        self.spl_print_func = None
+        self._spl_print_func = None
         self.spl_print_ctrl = None
         return _exit(*exc_info)
 
@@ -496,9 +502,12 @@ class HTMLSideBySidePresenter:
         filename = "%s.html" % (mainname)
 
         # rotate to the next child page
+        memory = self.write_memory
         context = spl_file_printer(ctx.directory, filename, self)
         self.spl_print_enter(context, rotation_params)
         self.spl_print_func(templates.UD_TABLE_HEADER)
+        self.spl_print_func(memory)
+        self.write_memory = None
 
     def output_limit_reached(self, limit_type, total, bytes_processed):
         logger.debug("%s print limit reached", limit_type)
@@ -519,6 +528,9 @@ class HTMLSideBySidePresenter:
         Yields None for each extra child page, and then True or False depending
         on whether the whole output was truncated.
         """
+        # We need to memorize what is written in case a new page is created,
+        # which will have to host parts of the previous content
+        self.write_memory = ""
         try:
             ydiff = SideBySideDiff(unified_diff)
             for t, args in ydiff.items():
@@ -555,6 +567,7 @@ class HTMLSideBySidePresenter:
         finally:
             # no footer on the last page, just a close tag
             self.spl_print_func("</table>")
+            self.write_memory = None
         yield wrote_all
 
     def output_unified_diff(self, ctx, unified_diff, has_internal_linenos):
@@ -567,7 +580,7 @@ class HTMLSideBySidePresenter:
         try:
             udiff = io.StringIO()
             udiff.write(templates.UD_TABLE_HEADER)
-            self.spl_print_func = udiff.write
+            self._spl_print_func = udiff.write
             self.spl_print_ctrl = None, rotation_params
 
             it = self.output_unified_diff_table(
@@ -603,7 +616,7 @@ class HTMLSideBySidePresenter:
             self.spl_print_exit(None, None, None)
         finally:
             self.spl_print_ctrl = None
-            self.spl_print_func = None
+            self._spl_print_func = None
 
         truncated = not wrote_all
         child_rows_written = self.spl_rows - self.max_lines_parent
@@ -612,7 +625,7 @@ class HTMLSideBySidePresenter:
             # on the parent page
             parent_last_row = self.error_row
         else:
-            text = "show remaining diff"
+            text = "Open expanded diff"
             if truncated:
                 text += " (truncated)"
             parent_last_row = templates.UD_TABLE_FOOTER % {
