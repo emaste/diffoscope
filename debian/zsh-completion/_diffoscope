@@ -26,7 +26,7 @@ _diffoscope() {
     '--max-report-size=[Maximum bytes of a report in a given format, across all of its pages. Note that some formats, such as --html, may be restricted by even smaller limits such as --max-page-size. (0 to disable, default: 41943040)]:' \
     '--max-diff-block-lines=[Maximum number of lines output per unified-diff block, across all pages. (0 to disable, default: 1024)]:' \
     '--max-page-size=[Maximum bytes of the top-level (--html-dir) or sole (--html) page. (default: %(default)s, remains in effect even with --no-default-limits)]:' \
-    '--max-page-diff-block-lines=[Maximum number of lines output per unified-diff block on the top-level (--html-dir) or sole (--html) page, before spilling it into child pages (--html-dir) or skipping the rest of the diff block. Child pages are limited instead by --max-page-size-child. (default: %(default)s, remains in effect even with --no-default-limits)]:' \
+    '--max-page-diff-block-lines=[Maximum number of lines output per unified-diff block on the top-level (--html-dir) or sole (--html) page, before spilling it into a child page (--html-dir) or skipping the rest of the diff block. (default: %(default)s, remains in effect even with --no-default-limits)]:' \
     '--new-file[Treat absent files as empty]' \
     '--exclude=[Exclude files whose names (including any directory part) match %(metavar)s. Use this option to ignore files based on their names.]:' \
     '--exclude-command=[Exclude commands that match %(metavar)s. For example "^readelf.*\s--debug-dump=info" can take a long time and differences here are likely secondary differences caused by something represented elsewhere. Use this option to disable commands that use a lot of resources.]:' \
