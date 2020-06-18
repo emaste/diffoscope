@@ -601,8 +601,7 @@ class HTMLSideBySidePresenter:
                 # size-limit to write the remaining page with
                 # exhaust the iterator and save the last item in wrote_all
                 new_limit = yield PartialString(
-                    PartialString.escape(udiff.getvalue())
-                    + "{0}</table>\n",
+                    PartialString.escape(udiff.getvalue()) + "{0}</table>\n",
                     None,
                 )
                 wrote_all = send_and_exhaust(it, new_limit, wrote_all)
