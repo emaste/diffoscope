@@ -1,8 +1,13 @@
-diffoscope (148) UNRELEASED; urgency=medium
+diffoscope (148) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Daniel Fullmer ]
+  * Fix a regression in the CBFS comparator due to changes in our_check_output.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 11 Jun 2020 13:00:32 +0100
+  [ Chris Lamb ]
+  * Add a remark in the deb822 handling re. potential security issue in the
+    .changes, .dsc, .buildinfo comparator.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 19 Jun 2020 11:38:20 +0100
 
 diffoscope (147) unstable; urgency=medium
 
