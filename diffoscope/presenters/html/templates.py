@@ -217,3 +217,7 @@ UD_TABLE_FOOTER = """<tr class="ondemand"><td colspan="4">
 UD_TABLE_LIMIT_FOOTER = """<tr class="error"><td colspan="4">
 Max %(limit_type)s reached; %(bytes_left)s/%(bytes_total)s bytes (%(percent).2f%%) of diff not shown.
 </td></tr>"""
+
+EXPANDED_UD_HEADER = """<div class="difference">"""
+
+EXPANDED_UD_FOOTER = """</div>"""

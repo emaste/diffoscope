@@ -461,6 +461,7 @@ class HTMLSideBySidePresenter:
     def spl_print_exit(self, *exc_info):
         if not self.spl_had_entered_child():
             return False
+        self.spl_print_func(templates.EXPANDED_UD_FOOTER)
         self.spl_print_func(output_footer())
         _exit, _ = self.spl_print_ctrl
         self._spl_print_func = None
@@ -508,7 +509,7 @@ class HTMLSideBySidePresenter:
 
         # Make sure child pages are embedded in a "difference" div so the
         # css still works
-        self.spl_print_func('<div class="difference">')
+        self.spl_print_func(templates.EXPANDED_UD_HEADER)
         self.spl_print_func(templates.UD_TABLE_HEADER)
         self.spl_print_func(memory)
         self.write_memory = None
@@ -593,9 +594,6 @@ class HTMLSideBySidePresenter:
             wrote_all = next(it)
             if wrote_all is None:
                 assert self.spl_current_page == 1
-
-                # Close <div class="difference"> added to child pages
-                self.spl_print_func("</div>")
 
                 # now pause the iteration and wait for consumer to give us a
                 # size-limit to write the remaining page with
