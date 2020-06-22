@@ -659,7 +659,7 @@ def run_diffoscope(parsed_args):
     ProfileManager().setup(parsed_args)
     PresenterManager().configure(parsed_args)
     if not tlsh and "PYTEST_CURRENT_TEST" not in os.environ:
-        logger.warning(
+        logger.info(
             'Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.'
         )
 
