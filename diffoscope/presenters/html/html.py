@@ -264,10 +264,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
         comments = '{1[1]}<div class="comment {0}">{2}{1[1]}</div>\n'.format(
             "multiline" if len(difference.comments) > 1 else "",
             indent,
-            "\n".join(
-                "{1}".format(indent, html.escape(x))
-                for x in difference.comments
-            ),
+            "\n".join(html.escape(x) for x in difference.comments),
         )
 
     visuals = ""
