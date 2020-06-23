@@ -67,6 +67,7 @@ STYLES = """body.diffoscope {
   border-collapse:collapse;
   font-size:0.75em;
   font-family: 'Lucida Console', monospace;
+  word-break: break-word;
 }
 .diffoscope table.diff tr:hover td {
   background: #FFFF00;

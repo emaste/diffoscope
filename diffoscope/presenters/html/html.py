@@ -64,13 +64,7 @@ from ..utils import (
 
 from . import templates
 
-# minimum line size, we add a zero-sized breakable space every
-# LINESIZE characters
-LINESIZE = 20
 TABSIZE = 8
-
-# Characters we're willing to word wrap on
-WORDBREAK = " \t;.,/):-"
 
 JQUERY_SYSTEM_LOCATIONS = ("/usr/share/javascript/jquery/jquery.js",)
 
@@ -162,13 +156,6 @@ def convert(s, ponct=0, tag=""):
         else:
             t.write(html.escape(c))
             i += 1
-
-        if WORDBREAK.count(c) == 1:
-            t.write("\u200b")
-            i = 0
-        if i > LINESIZE:
-            i = 0
-            t.write("\u200b")
 
     return unicodedata.normalize("NFC", t.getvalue())
 
