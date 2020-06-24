@@ -137,7 +137,6 @@ class Container(metaclass=abc.ABCMeta):
             )
         )
         # TODO: progress could be a bit more accurate here, give more weight to fuzzy-hashed files
-        # TODO: merge DirectoryContainer.comparisons() into this
 
         with Progress(total_size) as p:
 
@@ -189,11 +188,25 @@ class Container(metaclass=abc.ABCMeta):
 
     def compare(self, other, source=None, no_recurse=False):
         from .compare import compare_files
+        from ..directory import compare_meta, is_missing_file
 
         def compare_pair(file1, file2, comment):
             difference = compare_files(
                 file1, file2, source=None, diff_content_only=no_recurse
             )
+
+            if is_missing_file(file1) or is_missing_file(file2):
+                # There is no need to compare metadata with a missing file,
+                # as it doesn't make much sense
+                meta_differences = []
+            else:
+                meta_differences = compare_meta(file1.name, file2.name)
+
+            if meta_differences and not difference:
+                difference = Difference(None, file1.path, file2.path)
+            if difference:
+                difference.add_details(meta_differences)
+
             if comment:
                 if difference is None:
                     difference = Difference(None, file1.name, file2.name)

@@ -67,8 +67,8 @@ def differences(tmpdir):
 
 
 def test_content(differences):
-    assert differences[0].source1 == "dir"
-    assert differences[0].details[0].source1 == "text"
+    assert "/dir" in differences[0].source1
+    assert "/dir/text" in differences[0].details[0].source1
     expected_diff = get_data("text_ascii_expected_diff")
     assert differences[0].details[0].unified_diff == expected_diff
 

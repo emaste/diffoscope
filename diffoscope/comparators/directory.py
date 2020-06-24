@@ -32,8 +32,9 @@ from diffoscope.progress import Progress
 from diffoscope.difference import Difference
 
 from .binary import FilesystemFile
+from .missing_file import MissingFile
 from .utils.command import Command, our_check_output
-from .utils.container import Container
+from .utils.container import Container, MissingContainer
 
 logger = logging.getLogger(__name__)
 
@@ -149,6 +150,10 @@ def xattr(path1, path2):
     )
 
 
+def is_missing_file(file):
+    return isinstance(file, MissingFile) or isinstance(file, MissingContainer)
+
+
 def compare_meta(path1, path2):
     if Config().exclude_directory_metadata in ("yes", "recursive"):
         logger.debug(
@@ -220,6 +225,11 @@ class FilesystemDirectory(Directory):
         return self._path
 
     @property
+    def progress_name(self):
+        x = self.name
+        return x[1:] if x.startswith("./") else x
+
+    @property
     def as_container(self):
         if not hasattr(self, "_as_container"):
             self._as_container = DirectoryContainer(self)
@@ -245,7 +255,8 @@ class FilesystemDirectory(Directory):
         if listing_diff:
             differences.append(listing_diff)
 
-        differences.extend(compare_meta(self.name, other.name))
+        if not is_missing_file(other):
+            differences.extend(compare_meta(self.name, other.name))
 
         my_container = DirectoryContainer(self)
         other_container = DirectoryContainer(other)
@@ -271,37 +282,4 @@ class DirectoryContainer(Container):
 
         return FilesystemFile(
             os.path.join(self.source.path, member_name), container=self
-        )
-
-    def comparisons(self, other):
-        my_members = collections.OrderedDict(self.get_adjusted_members_sizes())
-        other_members = collections.OrderedDict(
-            other.get_adjusted_members_sizes()
-        )
-        total_size = sum(x[1] for x in my_members.values()) + sum(
-            x[1] for x in other_members.values()
-        )
-
-        to_compare = set(my_members.keys()).intersection(other_members.keys())
-        with Progress(total_size) as p:
-            for name in sorted(to_compare):
-                my_file, my_size = my_members[name]
-                other_file, other_size = other_members[name]
-                p.begin_step(my_size + other_size, msg=name)
-                yield my_file, other_file, name
-
-    def compare(self, other, source=None):
-        from .utils.compare import compare_files
-
-        def compare_pair(file1, file2, source):
-            inner_difference = compare_files(file1, file2, source=source)
-            meta_differences = compare_meta(file1.name, file2.name)
-            if meta_differences and not inner_difference:
-                inner_difference = Difference(None, file1.path, file2.path)
-            if inner_difference:
-                inner_difference.add_details(meta_differences)
-            return inner_difference
-
-        return filter(
-            None, itertools.starmap(compare_pair, self.comparisons(other))
         )
