@@ -29,9 +29,9 @@ from diffoscope.config import Config
 from diffoscope.difference import Difference
 
 from .binary import FilesystemFile
-from .missing_file import MissingFile
+from .missing_file import AbstractMissingType
 from .utils.command import Command, our_check_output
-from .utils.container import Container, MissingContainer
+from .utils.container import Container
 
 logger = logging.getLogger(__name__)
 
@@ -147,10 +147,6 @@ def xattr(path1, path2):
     )
 
 
-def is_missing_file(file):
-    return isinstance(file, MissingFile) or isinstance(file, MissingContainer)
-
-
 def compare_meta(path1, path2):
     if Config().exclude_directory_metadata in ("yes", "recursive"):
         logger.debug(
@@ -252,7 +248,7 @@ class FilesystemDirectory(Directory):
         if listing_diff:
             differences.append(listing_diff)
 
-        if not is_missing_file(other):
+        if not isinstance(other, AbstractMissingType):
             differences.extend(compare_meta(self.name, other.name))
 
         my_container = DirectoryContainer(self)

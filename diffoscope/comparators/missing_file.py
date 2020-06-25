@@ -29,7 +29,11 @@ from .utils.file import File
 logger = logging.getLogger(__name__)
 
 
-class MissingFile(File):
+class AbstractMissingType:
+    pass
+
+
+class MissingFile(File, AbstractMissingType):
     """
     Represents a missing file when comparing containers.
     """

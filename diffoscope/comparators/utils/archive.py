@@ -24,7 +24,7 @@ import logging
 from diffoscope.profiling import profile
 from diffoscope.tempfiles import get_temporary_directory
 
-from ..missing_file import MissingFile
+from ..missing_file import MissingFile, AbstractMissingType
 
 from .file import File
 from .container import Container
@@ -121,7 +121,7 @@ class ArchiveMember(File):
         return False
 
 
-class MissingArchiveLikeObject:
+class MissingArchiveLikeObject(AbstractMissingType):
     def getnames(self):
         return []
 
@@ -132,7 +132,7 @@ class MissingArchiveLikeObject:
         pass
 
 
-class MissingArchive(Archive):
+class MissingArchive(Archive, AbstractMissingType):
     @property
     def source(self):
         return None

@@ -29,7 +29,7 @@ from diffoscope.difference import Difference
 from diffoscope.excludes import filter_excludes
 from diffoscope.progress import Progress
 
-from ..missing_file import MissingFile
+from ..missing_file import MissingFile, AbstractMissingType
 
 from .file import path_apparent_size
 from .fuzzy import perform_fuzzy_matching
@@ -188,14 +188,16 @@ class Container(metaclass=abc.ABCMeta):
 
     def compare(self, other, source=None, no_recurse=False):
         from .compare import compare_files
-        from ..directory import compare_meta, is_missing_file
+        from ..directory import compare_meta
 
         def compare_pair(file1, file2, comment):
             difference = compare_files(
                 file1, file2, source=None, diff_content_only=no_recurse
             )
 
-            if is_missing_file(file1) or is_missing_file(file2):
+            if isinstance(file1, AbstractMissingType) or isinstance(
+                file2, AbstractMissingType
+            ):
                 # There is no need to compare metadata with a missing file,
                 # as it doesn't make much sense
                 meta_differences = []
@@ -218,7 +220,7 @@ class Container(metaclass=abc.ABCMeta):
         )
 
 
-class MissingContainer(Container):
+class MissingContainer(Container, AbstractMissingType):
     def get_member_names(self):
         return self.source.other_file.as_container.get_member_names()
 
