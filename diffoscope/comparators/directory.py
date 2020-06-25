@@ -22,13 +22,10 @@ import os
 import re
 import logging
 import subprocess
-import collections
-import itertools
 
 from diffoscope.exc import RequiredToolNotFound
 from diffoscope.tools import python_module_missing, tool_required
 from diffoscope.config import Config
-from diffoscope.progress import Progress
 from diffoscope.difference import Difference
 
 from .binary import FilesystemFile
