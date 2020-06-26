@@ -1,8 +1,33 @@
-diffoscope (149) UNRELEASED; urgency=medium
+diffoscope (149) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Update tests for file 5.39. (Closes: reproducible-builds/diffoscope#179)
+  * Downgrade the tlsh warning message to an "info" level warning.
+    (Closes: #888237, reproducible-builds/diffoscope#29)
+  * Use the CSS "word-break" property over manually adding U+200B zero-width
+    spaces that make copy-pasting cumbersome.
+    (Closes: reproducible-builds/diffoscope!53)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 19 Jun 2020 11:39:15 +0100
+  * Codebase improvements:
+    - Drop some unused imports from the previous commit.
+    - Prevent an unnecessary .format() when rendering difference comments.
+    - Use a semantic "AbstractMissingType" type instead of remembering to check
+      for both "missing" files and missing containers.
+
+  [ Jean-Romain Garnier ]
+  * Allow user to mask/filter reader output via --diff-mask=REGEX.
+    (MR: reproducible-builds/diffoscope!51)
+  * Make --html-dir child pages open in new window to accommodate new web
+    browser content security policies.
+  * Fix the --new-file option when comparing directories by merging
+    DirectoryContainer.compare and Container.compare.
+    (Closes: reproducible-builds/diffoscope#180)
+  * Fix zsh completion for --max-page-diff-block-lines.
+
+  [ Mattia Rizzolo ]
+  * Do not warn about missing tlsh during tests.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 26 Jun 2020 15:57:41 +0100
 
 diffoscope (148) unstable; urgency=medium
 
