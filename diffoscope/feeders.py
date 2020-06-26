@@ -18,10 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import re
 import signal
 import hashlib
 import logging
 import subprocess
+import functools
 
 from .config import Config
 from .profiling import profile
@@ -29,6 +31,39 @@ from .profiling import profile
 logger = logging.getLogger(__name__)
 
 DIFF_CHUNK = 4096
+
+
+@functools.lru_cache(maxsize=128)
+def compile_string_regex(regex_str):
+    return re.compile(regex_str)
+
+
+@functools.lru_cache(maxsize=128)
+def compile_bytes_regex(regex_str):
+    return re.compile(regex_str.encode("utf-8"))
+
+
+def filter_reader(buf, additional_filter=None):
+    # Apply the passed filter first, for example Command.filter
+    if additional_filter:
+        buf = additional_filter(buf)
+
+    # No need to work on empty lines
+    if not buf:
+        return buf
+
+    # Use either str or bytes objects depending on buffer type
+    if isinstance(buf, str):
+        compile_func = compile_string_regex
+        replace = "[filtered]"
+    else:
+        compile_func = compile_bytes_regex
+        replace = b"[filtered]"
+
+    for regex in Config().diff_masks:
+        buf = compile_func(regex).sub(replace, buf)
+
+    return buf
 
 
 def from_raw_reader(in_file, filter=None):
@@ -45,7 +80,7 @@ def from_raw_reader(in_file, filter=None):
 
         for buf in in_file:
             line_count += 1
-            out = buf if filter is None else filter(buf)
+            out = filter_reader(buf, filter)
 
             if h is not None:
                 h.update(out)
@@ -113,7 +148,9 @@ def from_command(command):
 def from_text(content):
     def feeder(f):
         for offset in range(0, len(content), DIFF_CHUNK):
-            f.write(content[offset : offset + DIFF_CHUNK].encode("utf-8"))
+            buf = filter_reader(content[offset : offset + DIFF_CHUNK])
+            f.write(buf.encode("utf-8"))
+
         return content and content[-1] == "\n"
 
     return feeder

@@ -313,6 +313,16 @@ def create_parser():
         "systems.",
     )
     group3.add_argument(
+        "--diff-mask",
+        metavar="REGEX_PATTERN",
+        dest="diff_masks",
+        action="append",
+        default=[],
+        help="Replace/unify substrings that match regular expression "
+        "%(metavar)s from output strings before applying diff. For example, to "
+        "filter out a version number or changed path.",
+    )
+    group3.add_argument(
         "--fuzzy-threshold",
         type=int,
         help="Threshold for fuzzy-matching "
@@ -612,6 +622,7 @@ def configure(parsed_args):
     Config().exclude_directory_metadata = (
         parsed_args.exclude_directory_metadata
     )
+    Config().diff_masks = parsed_args.diff_masks
 
     Config().compute_visual_diffs = PresenterManager().compute_visual_diffs()
 
