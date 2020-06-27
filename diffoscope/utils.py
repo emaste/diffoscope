@@ -63,3 +63,12 @@ def bail_if_non_existing(*paths):
                     "%s: %s: No such file or directory\n" % (sys.argv[0], path)
                 )
         sys.exit(2)
+
+
+def format_class(klass, strip=""):
+    val = "{}.{}".format(klass.__module__, klass.__name__)
+
+    if val.startswith(strip):
+        val = val[len(strip) :]
+
+    return val

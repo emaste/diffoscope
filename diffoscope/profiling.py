@@ -22,6 +22,8 @@ import time
 import contextlib
 import collections
 
+from .utils import format_class
+
 _ENABLED = False
 
 
@@ -53,9 +55,7 @@ class ProfileManager:
 
     def increment(self, start, namespace, key):
         if not isinstance(key, str):
-            key = "{}.{}".format(
-                key.__class__.__module__, key.__class__.__name__
-            )
+            key = format_class(key.__class__)
 
         self.data[namespace][key]["time"] += time.time() - start
         self.data[namespace][key]["count"] += 1

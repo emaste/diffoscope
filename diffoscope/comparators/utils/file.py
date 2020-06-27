@@ -30,7 +30,7 @@ from diffoscope.exc import (
     ContainerExtractionError,
 )
 from diffoscope.tools import tool_required
-from diffoscope.utils import format_cmdline
+from diffoscope.utils import format_cmdline, format_class
 from diffoscope.config import Config
 from diffoscope.profiling import profile
 from diffoscope.difference import Difference
@@ -237,9 +237,6 @@ class File(metaclass=abc.ABCMeta):
                 return self._other_file.__class__.CONTAINER_CLASSES[0](self)
             return None
 
-        def type_name(klass):
-            return "{}.{}".format(klass.__module__, klass.__name__)
-
         if hasattr(self, "_as_container"):
             return self._as_container
 
@@ -248,20 +245,24 @@ class File(metaclass=abc.ABCMeta):
         # Try each container class in turn, returning the first one that
         # instantiates without error.
         for klass in klasses:
+            formatted_class = format_class(
+                klass, strip="diffoscope.comparators."
+            )
+
             logger.debug(
-                "Instantiating a %s for %s", type_name(klass), self.name,
+                "Instantiating a %s for %s", formatted_class, self.name,
             )
             try:
                 self._as_container = klass(self)
 
                 logger.debug(
-                    "Returning a %s for %s", type_name(klass), self.name,
+                    "Returning a %s for %s", formatted_class, self.name,
                 )
                 return self._as_container
             except RequiredToolNotFound as exc:
                 logger.debug(
                     "Cannot instantiate a %s; missing tool %s",
-                    type_name(klass),
+                    formatted_class,
                     exc.command,
                 )
                 try:
