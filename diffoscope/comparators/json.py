@@ -38,10 +38,13 @@ except ImportError:  # noqa
 
 class JSONFile(File):
     DESCRIPTION = "JSON files"
-    FILE_TYPE_RE = re.compile(r"JSON data")  # Requires file 5.35+
+    FILE_TYPE_RE = re.compile(r"^JSON data")  # Requires file 5.35+
 
     @classmethod
     def recognizes(cls, file):
+        if not super().recognizes(file):
+            return False
+
         with open(file.path, "rb") as f:
             try:
                 file.parsed = json.loads(
