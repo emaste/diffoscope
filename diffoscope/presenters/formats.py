@@ -80,7 +80,7 @@ class PresenterManager:
             self.config["text"] = FORMATS["text"]
 
         logger.debug(
-            "Will generate the following formats: %s",
+            "Will generate the following presenter formats: %s",
             ", ".join(self.config.keys()),
         )
 
