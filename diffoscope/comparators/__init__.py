@@ -101,6 +101,7 @@ class ComparatorManager:
         ("openssh.PublicKeyFile",),
         ("gif.GifFile",),
         ("pcap.PcapFile",),
+        ("pe32.Pe32PlusFile",),
         ("pgp.PgpFile",),
         ("pgp.PgpSignature",),
         ("kbx.KbxFile",),
