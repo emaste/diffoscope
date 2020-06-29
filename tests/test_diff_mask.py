@@ -43,29 +43,29 @@ def run(capsys, *args):
 
 def test_none(capsys):
     ret, out = run(capsys)
-    # Make sure the output doesn't contain any [filtered]
-    assert re.search(r"\[filtered\]", out) is None
+    # Make sure the output doesn't contain any [masked]
+    assert re.search(r"\[masked\]", out) is None
     assert ret == 1
 
 
 def test_all(capsys):
     ret, out = run(capsys, "--diff-mask=.*")
 
-    # Make sure the correct sections were filtered
+    # Make sure the correct sections were masked
     assert "file list" not in out
     assert "dir/link" not in out
 
-    # Make sure the output contains only [filtered]
+    # Make sure the output contains only [masked]
     # Lines of content start with "│ ", and then either have a +, a - or a space
     # depending on the type of change
-    # It should then only contain "[filtered]" until the end of the string
-    assert re.search(r"│\s[\s\+\-](?!(\[filtered\])+)", out) is None
+    # It should then only contain "[masked]" until the end of the string
+    assert re.search(r"│\s[\s\+\-](?!(\[masked\])+)", out) is None
     assert ret == 1
 
 
 def test_specific(capsys):
     ret, out = run(capsys, "--diff-mask=^Lorem")
-    # Make sure only the Lorem ipsum at the start of the line was filtered
-    assert "[filtered] ipsum dolor sit amet" in out
+    # Make sure only the Lorem ipsum at the start of the line was masked
+    assert "[masked] ipsum dolor sit amet" in out
     assert '"Lorem ipsum"' in out
     assert ret == 1

@@ -55,10 +55,10 @@ def filter_reader(buf, additional_filter=None):
     # Use either str or bytes objects depending on buffer type
     if isinstance(buf, str):
         compile_func = compile_string_regex
-        replace = "[filtered]"
+        replace = "[masked]"
     else:
         compile_func = compile_bytes_regex
-        replace = b"[filtered]"
+        replace = b"[masked]"
 
     for regex in Config().diff_masks:
         buf = compile_func(regex).sub(replace, buf)
