@@ -119,7 +119,6 @@ class Decompile(Command):
 
     def start(self):
         logger.debug("Executing %s", self.cmdline())
-        print("Executing %s", self.cmdline())
         if not isinstance(self.file, AsmFunction):
             self._stdout = ""
             self._return_code = 0
@@ -168,8 +167,7 @@ class DecompilableContainer(Container):
 
         if r2pipe:
             # Use "-2" flag to silence radare2 warnings
-            #self.r2 = r2pipe.open(self.source.path, flags=["-2"])
-            self.r2 = r2pipe.open(self.source.path, flags=[])
+            self.r2 = r2pipe.open(self.source.path, flags=["-2"])
             self.r2.cmd("aa")  # Analyse all
 
             for f in self.r2.cmdj("aj"):
