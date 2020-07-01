@@ -46,6 +46,13 @@ ignore_readelf_errors1 = load_fixture("test1.debug")
 ignore_readelf_errors2 = load_fixture("test2.debug")
 
 
+@pytest.fixture(scope="function", autouse=True)
+def do_something(request, monkeypatch):
+    # Ignore decompilation output in case radare2 is installed so that tests
+    # don't break
+    monkeypatch.setattr(Config(), "exclude_commands", ["r2ghidra.*"])
+
+
 def readelf_version():
     try:
         out = subprocess.check_output(["readelf", "--version"])
