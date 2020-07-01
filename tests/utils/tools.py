@@ -206,6 +206,29 @@ def skip_unless_file_version_is_at_least(version):
     return skip_unless_tool_is_at_least("file", file_version, version)
 
 
+def radare2_command_is_undefined(x):
+    if tools_missing("radare2"):
+        return True
+
+    try:
+        # Open any file with radare2 and try to execute the given command
+        # If it returns None, then the command doesn't exist
+        import r2pipe
+
+        r2 = r2pipe.open("/dev/null", flags=["-2"])
+        return r2.cmdj(x) is None
+    except ImportError:
+        return True
+
+
+def skip_unless_radare2_command_exists(command):
+    return skipif(
+        radare2_command_is_undefined(command),
+        reason="radare2 didn't recognize {} command".format(command),
+        tools=("{}_radare2_command".format(command)),
+    )
+
+
 def reason(*tools):
     xs = []
 
