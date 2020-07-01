@@ -178,7 +178,7 @@ class DecompilableContainer(Container):
         logger.debug("Creating DecompileContainer for %s", self.source.path)
 
         self._functions = {}
-        if r2pipe:
+        if r2pipe and not command_excluded("r2ghidra"):
             # Use "-2" flag to silence radare2 warnings
             self.r2 = r2pipe.open(self.source.path, flags=["-2"])
             self.r2.cmd("aa")  # Analyse all
