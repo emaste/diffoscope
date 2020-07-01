@@ -34,6 +34,7 @@ from .deb import DebFile, get_build_id_map
 from .utils.file import File
 from .utils.command import Command, our_check_output
 from .utils.container import Container
+from .utils.decompile import DecompilableContainer
 
 DEBUG_SECTION_GROUPS = (
     "rawline",
@@ -425,7 +426,7 @@ def get_debug_link(path):
     return m.group(1)
 
 
-class ElfContainer(Container):
+class ElfContainer(DecompilableContainer):
     auto_diff_metadata = False
 
     SECTION_FLAG_MAPPING = {
@@ -613,10 +614,14 @@ class ElfContainer(Container):
         logger.debug("Installed debug symbols at %s", dest_path)
 
     def get_member_names(self):
-        return self._sections.keys()
+        decompiled_members = super().get_member_names()
+        return list(decompiled_members) + list(self._sections.keys())
 
     def get_member(self, member_name):
-        return self._sections[member_name]
+        try:
+            return self._sections[member_name]
+        except KeyError:
+            return super().get_member(member_name)
 
 
 class Strings(Command):
