@@ -37,6 +37,7 @@ class ComparatorManager:
         ("missing_file.MissingFile",),
         ("symlink.Symlink",),
         ("device.Device",),
+        ("utils.decompile.AsmFunction",),
         ("debian.DotChangesFile", "debian_fallback.DotChangesFile"),
         ("debian.DotDscFile", "debian_fallback.DotDscFile"),
         ("debian.DotBuildinfoFile", "debian_fallback.DotBuildinfoFile"),

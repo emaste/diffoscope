@@ -5,6 +5,9 @@ from functools import cached_property
 try:
     import r2pipe
 except:
+    from diffoscope.tools import python_module_missing
+
+    python_module_missing("r2pipe")
     r2pipe = None
 
 try:
@@ -16,7 +19,7 @@ from .file import File
 from .command import Command
 from .container import Container
 
-from diffoscope.tools import tool_required
+from diffoscope.tools import tool_required, tool_check_installed
 from diffoscope.difference import Difference
 from diffoscope.excludes import command_excluded
 
@@ -131,6 +134,11 @@ class Decompile(Command):
         except KeyError:
             self._stderr = ghidra_output["errors"]
             self._return_code = 1
+            logger.debug(
+                "r2ghidra decompiler error for %s: %s",
+                self.file.signature,
+                self.stderr,
+            )
 
     @tool_required("radare2")
     def cmdline(self):
@@ -152,18 +160,24 @@ class Decompile(Command):
 
     @property
     def stderr(self):
-        return "".join(self._stderr)
+        return ", ".join(self._stderr)
 
 
 class DecompilableContainer(Container):
     auto_diff_metadata = False
 
-    @tool_required("radare2")
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         logger.debug("Creating DecompileContainer for %s", self.source.path)
 
         self._functions = {}
+
+        # Don't use @tool_required here so subclassing DecompilableContainer
+        # doesn't block the new subclass from doing its work if radare2
+        # isn't installed
+        if not tool_check_installed("radare2"):
+            r2pipe = None
+            logger.debug("radare2 not found, skipping")
 
         if r2pipe:
             # Use "-2" flag to silence radare2 warnings
@@ -173,6 +187,7 @@ class DecompilableContainer(Container):
             for f in self.r2.cmdj("aj"):
                 func = AsmFunction(self, f)
                 self._functions[func.signature] = func
+                logger.debug("Adding function %s", func.signature)
 
     def cleanup(self):
         self.r2.quit()
