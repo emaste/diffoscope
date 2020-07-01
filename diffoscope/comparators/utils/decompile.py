@@ -25,6 +25,10 @@ from diffoscope.excludes import command_excluded
 
 logger = logging.getLogger(__name__)
 
+if not tool_check_installed("radare2"):
+    r2pipe = None
+    logger.debug("radare2 not found, disabling decompiler")
+
 
 class AsmFunction(File):
     DESCRIPTION = "ASM Function"
@@ -166,19 +170,14 @@ class Decompile(Command):
 class DecompilableContainer(Container):
     auto_diff_metadata = False
 
+    # Don't use @tool_required here so subclassing DecompilableContainer
+    # doesn't block the new subclass from doing its work if radare2
+    # isn't installed
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         logger.debug("Creating DecompileContainer for %s", self.source.path)
 
         self._functions = {}
-
-        # Don't use @tool_required here so subclassing DecompilableContainer
-        # doesn't block the new subclass from doing its work if radare2
-        # isn't installed
-        if not tool_check_installed("radare2"):
-            r2pipe = None
-            logger.debug("radare2 not found, skipping")
-
         if r2pipe:
             # Use "-2" flag to silence radare2 warnings
             self.r2 = r2pipe.open(self.source.path, flags=["-2"])
@@ -207,4 +206,13 @@ class DecompilableContainer(Container):
 
     def decompile(self, offset):
         self.jump(offset)
-        return self.r2.cmdj("pdgj")
+        output = self.r2.cmdj("pdgj")
+
+        if not output:
+            # Output is None if the pdg command doesn't exist
+            output = {
+                "errors": [
+                    'Missing r2ghidra-dec, install it with "r2pm install r2ghidra-dec"'
+                ]
+            }
+        return output
