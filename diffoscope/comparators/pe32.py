@@ -34,6 +34,7 @@ class Objdump(Command):
             "--all-headers",
             "--disassemble-all",
             "--line-numbers",
+            "--no-show-raw-insn",
             self.path,
         )
 
