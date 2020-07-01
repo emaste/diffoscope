@@ -36,7 +36,7 @@ from ..utils.tools import (
 def init_tests(request, monkeypatch):
     # Ignore readelf and objdump as they are already tested by test_elf.py
     monkeypatch.setattr(
-        Config(), "exclude_commands", ["readelf.*", "objdump.*"]
+        Config(), "exclude_commands", ["^readelf.*", "^objdump.*"]
     )
 
 
