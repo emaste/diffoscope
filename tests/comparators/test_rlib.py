@@ -22,6 +22,7 @@
 import pytest
 import subprocess
 
+from diffoscope.config import Config
 from distutils.version import LooseVersion
 from diffoscope.comparators.ar import ArFile
 
@@ -37,6 +38,13 @@ from ..utils.nonexisting import assert_non_existing
 
 rlib1 = load_fixture("test1.rlib")
 rlib2 = load_fixture("test2.rlib")
+
+
+@pytest.fixture(scope="function", autouse=True)
+def init_tests(request, monkeypatch):
+    # Ignore decompilation output in case radare2 is installed so that tests
+    # don't break
+    monkeypatch.setattr(Config(), "exclude_commands", ["^r2ghidra.*"])
 
 
 def llvm_version():
