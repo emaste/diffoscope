@@ -4,9 +4,9 @@
  
  0000000000000000 <f>:
  f():
-    0:	55                   	push   %rbp
-    1:	48 89 e5             	mov    %rsp,%rbp
--   4:	b8 2a 00 00 00       	mov    $0x2a,%eax
-+   4:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
-    9:	5d                   	pop    %rbp
-    a:	c3                   	retq   
+    0:	push   %rbp
+    1:	mov    %rsp,%rbp
+-   4:	mov    $0x2a,%eax
++   4:	mov    $0xffffffff,%eax
+    9:	pop    %rbp
+    a:	retq   
