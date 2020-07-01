@@ -1,6 +1,5 @@
 import sys
 import logging
-from functools import cached_property
 
 try:
     import r2pipe
@@ -110,10 +109,13 @@ class AsmFunction(File):
     def signature(self):
         return self.data_dict["signature"]
 
-    @cached_property
+    @property
     def asm(self):
-        ops = self.decompiler.disassemble(self.offset)
-        return "\n".join([instr["disasm"] for instr in ops])
+        if not hasattr(self, "_asm"):
+            ops = self.decompiler.disassemble(self.offset)
+            self._asm = "\n".join([instr["disasm"] for instr in ops])
+
+        return self._asm
 
 
 class Decompile(Command):
