@@ -56,6 +56,7 @@ def obj_differences(obj1, obj2):
 @skip_unless_radare2_command_exists("pdgj")
 def test_obj_compare_non_existing(monkeypatch, obj1):
     monkeypatch.setattr(Config(), "new_file", True)
+    monkeypatch.setattr(Config(), "decompiler", "ghidra")
     difference = obj1.compare(MissingFile("/nonexisting", obj1))
     assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0
@@ -64,7 +65,19 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 @skip_unless_tools_exist("radare2")
 @skip_unless_module_exists("r2pipe")
 @skip_unless_radare2_command_exists("pdgj")
-def test_diff(obj_differences):
+def test_diff_ghidra(monkeypatch, obj1, obj2):
+    monkeypatch.setattr(Config(), "decompiler", "ghidra")
+    obj_differences = obj1.compare(obj2).details
     assert len(obj_differences) == 1
-    expected_diff = get_data("elf_obj_decompile_expected_diff")
+    expected_diff = get_data("elf_obj_ghidra_expected_diff")
+    assert obj_differences[0].unified_diff == expected_diff
+
+
+@skip_unless_tools_exist("radare2")
+@skip_unless_module_exists("r2pipe")
+def test_diff_radare2(monkeypatch, obj1, obj2):
+    monkeypatch.setattr(Config(), "decompiler", "radare2")
+    obj_differences = obj1.compare(obj2).details
+    assert len(obj_differences) == 1
+    expected_diff = get_data("elf_obj_radare2_expected_diff")
     assert obj_differences[0].unified_diff == expected_diff

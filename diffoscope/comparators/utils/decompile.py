@@ -1,4 +1,5 @@
 import sys
+import abc
 import logging
 
 try:
@@ -18,19 +19,117 @@ from .file import File
 from .command import Command
 from .container import Container
 
-from diffoscope.tools import tool_required, tool_check_installed
+from diffoscope.config import Config
 from diffoscope.difference import Difference
 from diffoscope.excludes import command_excluded
+from diffoscope.tools import tool_required, tool_check_installed
 
 logger = logging.getLogger(__name__)
+
 
 if not tool_check_installed("radare2"):
     r2pipe = None
     logger.debug("radare2 not found, disabling decompiler")
 
 
+class Decompile(Command, metaclass=abc.ABCMeta):
+    def __init__(self, file, *args, **kwargs):
+        super().__init__(file.path, *args, **kwargs)
+        self.file = file
+        self._stdout = ""
+        self._stderr = ""
+        self._return_code = None
+
+    def start(self):
+        logger.debug("Executing %s", self.cmdline())
+        if not isinstance(self.file, AsmFunction):
+            self._stdout = ""
+            self._return_code = 0
+            return
+
+        self._decompile()
+
+    def _decompile(self):
+        raise NotImplementedError()
+
+    @tool_required("radare2")
+    def cmdline(self):
+        # This command isn't really executed, but we want the user to be able
+        # to filter it out nicely using "--exclude-command"
+        if isinstance(self.file, AsmFunction):
+            return [Config().decompiler, self.file.func_name]
+        else:
+            # Probably an AbstractMissingFile instance
+            return [Config().decompiler]
+
+    @property
+    def returncode(self):
+        return self._return_code
+
+    @property
+    def stdout(self):
+        return self._stdout.encode("utf-8").splitlines(True)
+
+    @property
+    def stderr(self):
+        return ", ".join(self._stderr)
+
+
+class DecompileGhidra(Decompile):
+    def _run_r2_command(self):
+        self.file.decompiler.jump(self.file.offset)
+        output = self.file.decompiler.r2.cmdj("pdgj")
+
+        if not output:
+            # Output is None if the pdg command doesn't exist
+            output = {
+                "errors": [
+                    'Missing r2ghidra-dec, install it with "r2pm install r2ghidra-dec"'
+                ]
+            }
+
+        return output
+
+    @tool_required("radare2")
+    def _decompile(self):
+        ghidra_output = self._run_r2_command()
+        try:
+            self._stdout = ghidra_output["code"].strip()
+            self._return_code = 0
+        except KeyError:
+            self._stderr = ghidra_output["errors"]
+            self._return_code = 1
+            logger.debug(
+                "r2ghidra decompiler error for %s: %s",
+                self.file.signature,
+                self.stderr,
+            )
+
+
+class DecompileRadare2(Decompile):
+    """
+    Significantly faster than the ghidra decompiler, but still outputs assembly
+    code, with add comments making it more readable
+    """
+
+    def _run_r2_command(self):
+        self.file.decompiler.jump(self.file.offset)
+        return self.file.decompiler.r2.cmd("pdc")
+
+    @tool_required("radare2")
+    def _decompile(self):
+        self._stdout = self._run_r2_command().strip()
+        self._return_code = 0
+
+
 class AsmFunction(File):
     DESCRIPTION = "ASM Function"
+
+    # Mapping between the Config().decompiler option and the command class
+    DECOMPILER_COMMAND_MAP = {
+        "ghidra": DecompileGhidra,
+        "radare2": DecompileRadare2,
+    }
 
     def __init__(self, decompiler, data_dict):
         super().__init__(container=decompiler)
@@ -95,7 +194,8 @@ class AsmFunction(File):
         return False
 
     def compare(self, other, source=None):
-        return Difference.from_command(Decompile, self, other)
+        command_class = self.DECOMPILER_COMMAND_MAP[Config().decompiler]
+        return Difference.from_command(command_class, self, other)
 
     @property
     def func_name(self):
@@ -118,57 +218,6 @@ class AsmFunction(File):
         return self._asm
 
 
-class Decompile(Command):
-    def __init__(self, file, *args, **kwargs):
-        super().__init__(file.path, *args, **kwargs)
-        self.file = file
-        self._stdout = ""
-        self._stderr = ""
-        self._return_code = None
-
-    def start(self):
-        logger.debug("Executing %s", self.cmdline())
-        if not isinstance(self.file, AsmFunction):
-            self._stdout = ""
-            self._return_code = 0
-            return
-
-        ghidra_output = self.file.decompiler.decompile(self.file.offset)
-        try:
-            self._stdout = ghidra_output["code"].strip()
-            self._return_code = 0
-        except KeyError:
-            self._stderr = ghidra_output["errors"]
-            self._return_code = 1
-            logger.debug(
-                "r2ghidra decompiler error for %s: %s",
-                self.file.signature,
-                self.stderr,
-            )
-
-    @tool_required("radare2")
-    def cmdline(self):
-        # This command isn't really executed, but we want the user to be able
-        # to filter it out nicely using "--exclude-command"
-        if isinstance(self.file, AsmFunction):
-            return ["r2ghidra", self.file.func_name]
-        else:
-            # Probably an AbstractMissingFile instance
-            return ["r2ghidra"]
-
-    @property
-    def returncode(self):
-        return self._return_code
-
-    @property
-    def stdout(self):
-        return self._stdout.encode("utf-8").splitlines(True)
-
-    @property
-    def stderr(self):
-        return ", ".join(self._stderr)
-
-
 class DecompilableContainer(Container):
     auto_diff_metadata = False
 
@@ -180,7 +229,7 @@ class DecompilableContainer(Container):
         logger.debug("Creating DecompileContainer for %s", self.source.path)
 
         self._functions = {}
-        if r2pipe and not command_excluded("r2ghidra"):
+        if r2pipe and not Config().decompiler == "none":
             # Use "-2" flag to silence radare2 warnings
             self.r2 = r2pipe.open(self.source.path, flags=["-2"])
             self.r2.cmd("aa")  # Analyse all
@@ -205,16 +254,3 @@ class DecompilableContainer(Container):
     def disassemble(self, offset):
         self.jump(offset)
         return self.r2.cmdj("pdfj")["ops"]
-
-    def decompile(self, offset):
-        self.jump(offset)
-        output = self.r2.cmdj("pdgj")
-
-        if not output:
-            # Output is None if the pdg command doesn't exist
-            output = {
-                "errors": [
-                    'Missing r2ghidra-dec, install it with "r2pm install r2ghidra-dec"'
-                ]
-            }
-        return output

@@ -38,6 +38,7 @@ _diffoscope() {
     '--max-container-depth=[Maximum depth to recurse into containers. (Cannot be disabled for security reasons, default: %(default)s)]:' \
     '--max-diff-block-lines-saved=[Maximum number of lines saved per diff block. Most users should not need this, unless you run out of memory. This truncates diff(1) output before emitting it in a report, and affects all types of output, including --text and --json. (0 to disable, default: %(default)s)]:' \
     '--use-dbgsym=[When to automatically use corresponding -dbgsym packages when comparing .deb files. WHEN is one of "never", "auto", "always". Default: auto, meaning yes if two .changes or .buildinfo files are specified, otherwise no.]:--use-dbgsym :(no auto yes)' \
+    '--decompiler=[Which decompiler to use for executables. Note that radare2 and r2pipe must be installed in any case. The appropriate r2pm plugin should also be installed for ghidra. Decompiler is one of "ghidra", "radare2", "none". Default: none.]:--decompiler :(ghidra radare2 none)' \
     '--force-details[Force recursing into the depths of file formats even if files have the same content, only really useful for debugging diffoscope. Default: %(default)s]' \
     '(--help -h)'{--help,-h}'[Show this help and exit]' \
     '--version[Show program"s version number and exit]' \

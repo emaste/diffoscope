@@ -380,6 +380,14 @@ def create_parser():
         "otherwise no.",
     )
     group3.add_argument(
+        "--decompiler",
+        default="none",
+        choices=("ghidra", "radare2", "none"),
+        help="Which decompiler to use for executables. Note that radare2 and "
+        "r2pipe must be installed in any case. The appropriate r2pm plugin "
+        "should also be installed for ghidra. Default: none.",
+    )
+    group3.add_argument(
         "--force-details",
         default=False,
         action="store_true",
@@ -617,6 +625,7 @@ def configure(parsed_args):
     Config().difftool = parsed_args.difftool
     Config().new_file = parsed_args.new_file
     Config().use_dbgsym = parsed_args.use_dbgsym
+    Config().decompiler = parsed_args.decompiler
     Config().force_details = parsed_args.force_details
     Config().fuzzy_threshold = parsed_args.fuzzy_threshold
     Config().max_container_depth = parsed_args.max_container_depth
