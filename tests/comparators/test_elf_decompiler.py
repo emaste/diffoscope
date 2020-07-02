@@ -18,13 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-import re
 import pytest
 
 from diffoscope.config import Config
 from diffoscope.comparators.missing_file import MissingFile
 
-from ..utils.data import data, load_fixture, get_data
+from ..utils.data import load_fixture, get_data
 from ..utils.tools import (
     skip_unless_tools_exist,
     skip_unless_module_exists,
@@ -42,8 +41,6 @@ def init_tests(request, monkeypatch):
 
 obj1 = load_fixture("test1.o")
 obj2 = load_fixture("test2.o")
-ignore_readelf_errors1 = load_fixture("test1.debug")
-ignore_readelf_errors2 = load_fixture("test2.debug")
 
 
 @pytest.fixture
