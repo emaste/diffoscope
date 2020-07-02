@@ -62,7 +62,7 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 @skip_unless_tools_exist("radare2")
 @skip_unless_module_exists("r2pipe")
 @skip_unless_radare2_command_exists("pdgj")
-def test_diff_ghidra(monkeypatch, obj1, obj2):
+def test_ghidra_diff(monkeypatch, obj1, obj2):
     monkeypatch.setattr(Config(), "decompiler", "ghidra")
     obj_differences = obj1.compare(obj2).details
     assert len(obj_differences) == 1
@@ -72,7 +72,7 @@ def test_diff_ghidra(monkeypatch, obj1, obj2):
 
 @skip_unless_tools_exist("radare2")
 @skip_unless_module_exists("r2pipe")
-def test_diff_radare2(monkeypatch, obj1, obj2):
+def test_radare2_diff(monkeypatch, obj1, obj2):
     monkeypatch.setattr(Config(), "decompiler", "radare2")
     obj_differences = obj1.compare(obj2).details
     assert len(obj_differences) == 1

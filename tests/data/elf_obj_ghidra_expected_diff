@@ -1,4 +1,5 @@
-@@ -1,5 +1,5 @@
+@@ -1,6 +1,6 @@
+ 
  undefined8 sym.f(void)
  {
      // [01] -r-x section size 11 named .text
