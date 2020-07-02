@@ -36,15 +36,11 @@ class Decompile(Command, metaclass=abc.ABCMeta):
     def __init__(self, file, *args, **kwargs):
         super().__init__(file.path, *args, **kwargs)
         self.file = file
-        self._stdout = ""
-        self._stderr = ""
-        self._return_code = None
 
     def start(self):
         logger.debug("Executing %s", self.cmdline())
         if not isinstance(self.file, AsmFunction):
             self._stdout = ""
-            self._return_code = 0
             return
 
         self._decompile()
@@ -64,7 +60,7 @@ class Decompile(Command, metaclass=abc.ABCMeta):
 
     @property
     def returncode(self):
-        return self._return_code
+        return 0
 
     @property
     def stdout(self):
@@ -72,7 +68,7 @@ class Decompile(Command, metaclass=abc.ABCMeta):
 
     @property
     def stderr(self):
-        return ", ".join(self._stderr)
+        return ""
 
 
 class DecompileGhidra(Decompile):
@@ -93,16 +89,17 @@ class DecompileGhidra(Decompile):
     @tool_required("radare2")
     def _decompile(self):
         ghidra_output = self._run_r2_command()
+
         try:
-            self._stdout = ghidra_output["code"].strip()
-            self._return_code = 0
+            self._stdout = ghidra_output["code"]
         except KeyError:
-            self._stderr = ghidra_output["errors"]
-            self._return_code = 1
+            # Show errors on stdout so a failed decompilation for 1 function
+            # doesn't stop the diff for the whole file
+            self._stdout = "\n".join(ghidra_output["errors"])
             logger.debug(
                 "r2ghidra decompiler error for %s: %s",
                 self.file.signature,
-                self.stderr,
+                self._stdout,
             )
 
 
@@ -119,7 +116,6 @@ class DecompileRadare2(Decompile):
     @tool_required("radare2")
     def _decompile(self):
         self._stdout = self._run_r2_command().strip()
-        self._return_code = 0
 
 
 class AsmFunction(File):
