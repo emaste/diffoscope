@@ -3,7 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ def list_libarchive(path, ignore_errors=False):
                         major=entry.rdevmajor, minor=entry.rdevminor
                     )
                 else:
-                    size_or_dev = entry.size
+                    size_or_dev = "-" if entry.size is None else entry.size
                 mtime = time.strftime(
                     "%Y-%m-%d %H:%M:%S", time.gmtime(entry.mtime)
                 ) + ".{:06d}".format(entry.mtime_nsec // 1000)
