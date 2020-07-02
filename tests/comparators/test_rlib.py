@@ -42,9 +42,8 @@ rlib2 = load_fixture("test2.rlib")
 
 @pytest.fixture(scope="function", autouse=True)
 def init_tests(request, monkeypatch):
-    # Ignore decompilation output in case radare2 is installed so that tests
-    # don't break
-    monkeypatch.setattr(Config(), "exclude_commands", ["^r2ghidra.*"])
+    # Make sure decompilation is disabled so that tests don't break
+    monkeypatch.setattr(Config(), "decompiler", "none")
 
 
 def llvm_version():

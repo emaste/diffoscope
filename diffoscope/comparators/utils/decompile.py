@@ -109,7 +109,7 @@ class DecompileGhidra(Decompile):
 class DecompileRadare2(Decompile):
     """
     Significantly faster than the ghidra decompiler, but still outputs assembly
-    code, with add comments making it more readable
+    code, with added comments to make it more readable
     """
 
     def _run_r2_command(self):
