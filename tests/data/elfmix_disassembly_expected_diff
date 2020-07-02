@@ -4,9 +4,9 @@
  
  0000000000000000 <return42_or_3>:
  return42_or_3():
-    0:	push   %rbp
-    1:	mov    %rsp,%rbp
--   4:	mov    $0x2a,%eax
-+   4:	mov    $0x2b,%eax
-    9:	pop    %rbp
-    a:	retq   
+ 	push   %rbp
+ 	mov    %rsp,%rbp
+-	mov    $0x2a,%eax
++	mov    $0x2b,%eax
+ 	pop    %rbp
+ 	retq   

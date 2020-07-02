@@ -202,6 +202,9 @@ class ReadelfStringSection(ReadElfSection):
 
 
 class ObjdumpSection(Command):
+    # Remove offsets before instructions (see issue #17)
+    RE_INSTRUCTION_OFFSET = re.compile(rb"^\s*[0-9a-f]+:")
+
     def __init__(self, path, section_name, *args, **kwargs):
         self._path = path
         self._path_bin = path.encode("utf-8")
@@ -226,7 +229,7 @@ class ObjdumpSection(Command):
         if line.startswith(b"In archive"):
             return b""
 
-        return line
+        return ObjdumpSection.RE_INSTRUCTION_OFFSET.sub(b"", line)
 
 
 class ObjdumpDisassembleSection(ObjdumpSection):
@@ -248,8 +251,9 @@ class ObjdumpDisassembleSection(ObjdumpSection):
         ]
 
     def filter(self, line):
-        line = super().filter(line)
-        return ObjdumpDisassembleSection.RE_SYMBOL_COMMENT.sub(r"\1", line)
+        # Apply this filter first as super() removes offsets
+        line = ObjdumpDisassembleSection.RE_SYMBOL_COMMENT.sub(r"\1", line)
+        return super().filter(line)
 
 
 class ObjdumpDisassembleSectionNoLineNumbers(ObjdumpDisassembleSection):
