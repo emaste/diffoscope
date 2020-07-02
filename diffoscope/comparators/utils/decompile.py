@@ -1,3 +1,4 @@
+import re
 import sys
 import abc
 import logging
@@ -72,6 +73,10 @@ class Decompile(Command, metaclass=abc.ABCMeta):
 
 
 class DecompileGhidra(Decompile):
+    # Remove addresses from warnings as they can create a lot of
+    # irrelevant noise
+    _jumptable_warning_re = re.compile(rb"(^\s*// WARNING:.*)(0x[0-9a-f]+)")
+
     def _run_r2_command(self):
         self.file.decompiler.jump(self.file.offset)
         output = self.file.decompiler.r2.cmdj("pdgj")
@@ -101,6 +106,9 @@ class DecompileGhidra(Decompile):
                 self.file.signature,
                 self._stdout,
             )
+
+    def filter(self, line):
+        return self._jumptable_warning_re.sub(rb"\g<1>0xX", line)
 
 
 class DecompileRadare2(Decompile):
@@ -229,6 +237,10 @@ class DecompilableContainer(Container):
             # Use "-2" flag to silence radare2 warnings
             self.r2 = r2pipe.open(self.source.path, flags=["-2"])
             self.r2.cmd("aa")  # Analyse all
+
+            # Hide offset in asm as it serves the same purpose as line numbers,
+            # which shouldn't be diffed
+            self.r2.cmd("e asm.bytes = false")
 
             for f in self.r2.cmdj("aj"):
                 func = AsmFunction(self, f)
