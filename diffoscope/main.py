@@ -696,7 +696,7 @@ def run_diffoscope(parsed_args):
             with profile("main", "outputs"):
                 difference = compare_root_paths(path1, path2)
         ProgressManager().finish()
-    # Generate an empty, dummy diff to write, saving the exit code first.
+    # Generate an empty, null diff to write, saving the exit code first.
     has_differences = bool(difference is not None)
     if difference is None and parsed_args.output_empty:
         difference = Difference(None, path1, path2)
