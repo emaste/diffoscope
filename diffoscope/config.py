@@ -66,6 +66,7 @@ class Config:
         self.max_container_depth = 50
         self.use_dbgsym = "auto"
         self.decompiler = "none"
+        self.decompiler_preprocessing_command = "aa"
         self.force_details = False
 
     def __setattr__(self, k, v):

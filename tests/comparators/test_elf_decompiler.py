@@ -78,3 +78,12 @@ def test_radare2_diff(monkeypatch, obj1, obj2):
     assert len(obj_differences) == 1
     expected_diff = get_data("elf_obj_radare2_expected_diff")
     assert obj_differences[0].unified_diff == expected_diff
+
+
+@skip_unless_tools_exist("radare2")
+@skip_unless_module_exists("r2pipe")
+def test_preprocessing_command(monkeypatch, obj1, obj2):
+    monkeypatch.setattr(Config(), "decompiler", "radare2")
+    monkeypatch.setattr(Config(), "decompiler_preprocessing_command", "")
+    obj_differences = obj1.compare(obj2).details
+    assert len(obj_differences) == 0

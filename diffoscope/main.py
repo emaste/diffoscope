@@ -388,6 +388,14 @@ def create_parser():
         "should also be installed for ghidra. Default: none.",
     )
     group3.add_argument(
+        "--decompiler-preprocessing-command",
+        default="aa",
+        metavar="COMMAND",
+        help="Radare2 command to use for initial executable analysis to detect "
+        'the list of functions (e.g. "aa", "aaa", "aa;aac;aad;aae;a8"). See '
+        "radare2's commands documentation for more details. Default: aa.",
+    )
+    group3.add_argument(
         "--force-details",
         default=False,
         action="store_true",
@@ -626,6 +634,9 @@ def configure(parsed_args):
     Config().new_file = parsed_args.new_file
     Config().use_dbgsym = parsed_args.use_dbgsym
     Config().decompiler = parsed_args.decompiler
+    Config().decompiler_preprocessing_command = (
+        parsed_args.decompiler_preprocessing_command
+    )
     Config().force_details = parsed_args.force_details
     Config().fuzzy_threshold = parsed_args.fuzzy_threshold
     Config().max_container_depth = parsed_args.max_container_depth

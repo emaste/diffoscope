@@ -285,7 +285,10 @@ class DecompilableContainer(Container):
 
         # Use "-2" flag to silence radare2 warnings
         self.r2 = r2pipe.open(self.source.path, flags=["-2"])
-        self.r2.cmd("aa")  # Analyse all
+
+        # Run radare2 command which finds the functions in the executable
+        preprocessing_command = Config().decompiler_preprocessing_command
+        self.r2.cmd(preprocessing_command)
 
         # Hide offset in asm as it serves the same purpose as line numbers,
         # which shouldn't be diffed
@@ -296,7 +299,10 @@ class DecompilableContainer(Container):
             "e hex.offset = false;e hex.header = false;e hex.ascii = false"
         )
 
-        for f in self.r2.cmdj("aj"):
+        # Ask radare2 to return the give of functions
+        # If there aren't any, this returns None
+        functions = self.r2.cmdj("aj") or []
+        for f in functions:
             func = AsmFunction(self, f)
             self._functions[func.signature] = func
             logger.debug("Adding function %s", func.signature)
