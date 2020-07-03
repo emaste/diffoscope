@@ -252,19 +252,31 @@ class DecompilableContainer(Container):
         logger.debug("Creating DecompileContainer for %s", self.source.path)
 
         self._functions = {}
-        if r2pipe and not Config().decompiler == "none":
-            # Use "-2" flag to silence radare2 warnings
-            self.r2 = r2pipe.open(self.source.path, flags=["-2"])
-            self.r2.cmd("aa")  # Analyse all
 
-            # Hide offset in asm as it serves the same purpose as line numbers,
-            # which shouldn't be diffed
-            self.r2.cmd("e asm.bytes = false")
+        # User didn't enable decompiler
+        if Config().decompiler == "none":
+            return
 
-            for f in self.r2.cmdj("aj"):
-                func = AsmFunction(self, f)
-                self._functions[func.signature] = func
-                logger.debug("Adding function %s", func.signature)
+        # If the user asked for a decompiler, but a dependency is missing,
+        # warn them about it
+        if r2pipe is None:
+            logger.warn(
+                'Missing dependency for decompiler, run "diffoscope --list-missing-tools" for a list of missing tools'
+            )
+            return
+
+        # Use "-2" flag to silence radare2 warnings
+        self.r2 = r2pipe.open(self.source.path, flags=["-2"])
+        self.r2.cmd("aa")  # Analyse all
+
+        # Hide offset in asm as it serves the same purpose as line numbers,
+        # which shouldn't be diffed
+        self.r2.cmd("e asm.bytes = false")
+
+        for f in self.r2.cmdj("aj"):
+            func = AsmFunction(self, f)
+            self._functions[func.signature] = func
+            logger.debug("Adding function %s", func.signature)
 
     def cleanup(self):
         self.r2.quit()
