@@ -205,7 +205,7 @@ class AsmFunction(File):
     def has_same_content_as(self, other):
         logger.debug("has_same_content: %s %s", self, other)
         try:
-            return self.asm == other.asm
+            return self.hex_dump == other.hex_dump
         except AttributeError:
             # 'other' is not a function.
             logger.debug("has_same_content: Not an asm function: %s", other)
@@ -229,14 +229,32 @@ class AsmFunction(File):
         return self.data_dict["offset"]
 
     @property
+    def size(self):
+        return self.data_dict["size"]
+
+    @property
     def signature(self):
         return self.data_dict["signature"]
+
+    @property
+    def hex_dump(self):
+        if not hasattr(self, "_hex_dump"):
+            self._hex_dump = self.decompiler.dump(self.offset, self.size)
+
+        return self._hex_dump
 
     @property
     def asm(self):
         if not hasattr(self, "_asm"):
             ops = self.decompiler.disassemble(self.offset)
-            self._asm = "\n".join([instr["disasm"] for instr in ops])
+
+            self._asm = ""
+            for instr in ops:
+                try:
+                    self._asm += instr["disasm"] + "\n"
+                except KeyError:
+                    # Invalid instruction
+                    self._asm += "invalid\n"
 
         return self._asm
 
@@ -273,6 +291,11 @@ class DecompilableContainer(Container):
         # which shouldn't be diffed
         self.r2.cmd("e asm.offset = false")
 
+        # In hex dump of function, hide everything but the hex values
+        self.r2.cmd(
+            "e hex.offset = false;e hex.header = false;e hex.ascii = false"
+        )
+
         for f in self.r2.cmdj("aj"):
             func = AsmFunction(self, f)
             self._functions[func.signature] = func
@@ -289,6 +312,10 @@ class DecompilableContainer(Container):
 
     def jump(self, offset):
         self.r2.cmd("s {}".format(offset))
+
+    def dump(self, offset, size):
+        self.jump(offset)
+        return self.r2.cmd("px {}".format(size)).strip()
 
     def disassemble(self, offset):
         self.jump(offset)
