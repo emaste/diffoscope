@@ -1,8 +1,24 @@
-diffoscope (150) UNRELEASED; urgency=medium
+diffoscope (150) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't crash when listing entries in archives if they don't have a listed
+    size (such as hardlinks in .ISO files).
+    (Closes: reproducible-builds/diffoscope#188)
+  * Dump PE32+ executables (including EFI applications) using objdump.
+    (Closes: reproducible-builds/diffoscope#181)
+  * Tidy detection of JSON files due to missing call to File.recognizes that
+    checks against the output of file(1) which was also causing us to attempt
+    to parse almost every file using json.loads. (Whoops.)
+  * Drop accidentally-duplicated copy of the new --diff-mask tests.
+  * Logging improvements:
+    - Split out formatting of class names into a common method.
+    - Clarify that we are generating presenter formats in the opening logs.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 26 Jun 2020 16:04:16 +0100
+  [ Jean-Romain Garnier ]
+  * Remove objdjump(1) offsets before instructions to reduce diff noise.
+    (Closes: reproducible-builds/diffoscope!57)
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 03 Jul 2020 11:04:46 +0100
 
 diffoscope (149) unstable; urgency=medium
 
