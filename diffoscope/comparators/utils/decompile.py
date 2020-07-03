@@ -271,7 +271,7 @@ class DecompilableContainer(Container):
 
         # Hide offset in asm as it serves the same purpose as line numbers,
         # which shouldn't be diffed
-        self.r2.cmd("e asm.bytes = false")
+        self.r2.cmd("e asm.offset = false")
 
         for f in self.r2.cmdj("aj"):
             func = AsmFunction(self, f)
