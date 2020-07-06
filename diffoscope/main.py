@@ -293,11 +293,10 @@ def create_parser():
         action="append",
         default=[],
         help="Exclude commands that match %(metavar)s. For "
-        "example '^readelf.*\\s--debug-dump=info' can take a "
-        "long time and differences here are likely secondary "
-        "differences caused by something represented "
-        "elsewhere. Use this option to disable commands that "
-        "use a lot of resources.",
+        "example '^readelf.*\\s--debug-dump=info' and '^radare2.*' can take"
+        "a long time and differences here are likely secondary differences "
+        "caused by something represented elsewhere. Use this option to "
+        "disable commands that use a lot of resources.",
     )
     group3.add_argument(
         "--exclude-directory-metadata",
@@ -378,14 +377,6 @@ def create_parser():
         "comparing .deb files. WHEN is one of {%(choices)s}. Default: auto, "
         "meaning yes if two .changes or .buildinfo files are specified, "
         "otherwise no.",
-    )
-    group3.add_argument(
-        "--decompiler",
-        default="none",
-        choices=("ghidra", "radare2", "none"),
-        help="Which decompiler to use for executables. Note that radare2 and "
-        "r2pipe must be installed in any case. The appropriate r2pm plugin "
-        "should also be installed for ghidra. Default: none.",
     )
     group3.add_argument(
         "--force-details",
@@ -625,7 +616,6 @@ def configure(parsed_args):
     Config().difftool = parsed_args.difftool
     Config().new_file = parsed_args.new_file
     Config().use_dbgsym = parsed_args.use_dbgsym
-    Config().decompiler = parsed_args.decompiler
     Config().force_details = parsed_args.force_details
     Config().fuzzy_threshold = parsed_args.fuzzy_threshold
     Config().max_container_depth = parsed_args.max_container_depth

@@ -31,12 +31,16 @@ from ..utils.tools import (
 )
 
 
+def exclude_commands(monkeypatch, patterns):
+    excluded = list(Config().exclude_commands)
+    excluded += patterns
+    monkeypatch.setattr(Config(), "exclude_commands", patterns)
+
+
 @pytest.fixture(scope="function", autouse=True)
 def init_tests(request, monkeypatch):
     # Ignore readelf and objdump as they are already tested by test_elf.py
-    monkeypatch.setattr(
-        Config(), "exclude_commands", ["^readelf.*", "^objdump.*"]
-    )
+    exclude_commands(monkeypatch, ["^readelf.*", "^objdump.*"])
 
 
 obj1 = load_fixture("test1.o")
@@ -53,7 +57,6 @@ def obj_differences(obj1, obj2):
 @skip_unless_radare2_command_exists("pdgj")
 def test_obj_compare_non_existing(monkeypatch, obj1):
     monkeypatch.setattr(Config(), "new_file", True)
-    monkeypatch.setattr(Config(), "decompiler", "ghidra")
     difference = obj1.compare(MissingFile("/nonexisting", obj1))
     assert difference.source2 == "/nonexisting"
     assert len(difference.details) > 0
@@ -63,8 +66,8 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 @skip_unless_module_exists("r2pipe")
 @skip_unless_radare2_command_exists("pdgj")
 def test_ghidra_diff(monkeypatch, obj1, obj2):
-    monkeypatch.setattr(Config(), "decompiler", "ghidra")
-    obj_differences = obj1.compare(obj2).details
+    exclude_commands(monkeypatch, ["disass.*"])
+    obj_differences = obj1.compare(obj2).details[0].details
     assert len(obj_differences) == 1
     expected_diff = get_data("elf_obj_ghidra_expected_diff")
     assert obj_differences[0].unified_diff == expected_diff
@@ -73,8 +76,8 @@ def test_ghidra_diff(monkeypatch, obj1, obj2):
 @skip_unless_tools_exist("radare2")
 @skip_unless_module_exists("r2pipe")
 def test_radare2_diff(monkeypatch, obj1, obj2):
-    monkeypatch.setattr(Config(), "decompiler", "radare2")
-    obj_differences = obj1.compare(obj2).details
+    exclude_commands(monkeypatch, ["r2ghidra.*"])
+    obj_differences = obj1.compare(obj2).details[0].details
     assert len(obj_differences) == 1
     expected_diff = get_data("elf_obj_radare2_expected_diff")
     assert obj_differences[0].unified_diff == expected_diff

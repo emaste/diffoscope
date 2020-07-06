@@ -43,7 +43,7 @@ rlib2 = load_fixture("test2.rlib")
 @pytest.fixture(scope="function", autouse=True)
 def init_tests(request, monkeypatch):
     # Make sure decompilation is disabled so that tests don't break
-    monkeypatch.setattr(Config(), "decompiler", "none")
+    monkeypatch.setattr(Config(), "exclude_commands", ["^radare2.*"])
 
 
 def llvm_version():
