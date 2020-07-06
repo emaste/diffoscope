@@ -70,8 +70,9 @@ class Decompile(Command, metaclass=abc.ABCMeta):
 
     @tool_required("radare2")
     def cmdline(self):
-        # This command isn't really executed, but we want the user to be able
-        # to filter it out nicely using "--exclude-command"
+        # Command instances have to define this method and return a list
+        # containing at least one element, as it is used by profile and as
+        # the name in the output
         if isinstance(self.file, AsmFunction):
             return [Config().decompiler, self.file.func_name]
         else:
@@ -94,7 +95,7 @@ class Decompile(Command, metaclass=abc.ABCMeta):
 class DecompileGhidra(Decompile):
     # Remove addresses from warnings as they can create a lot of
     # irrelevant noise
-    _jumptable_warning_re = re.compile(rb"(^\s*// WARNING:.*)(0x[0-9a-f]+)")
+    _JUMPTABLE_WARNING_RE = re.compile(rb"(^\s*// WARNING:.*)(0x[0-9a-f]+)")
 
     def _run_r2_command(self):
         self.file.decompiler.jump(self.file.offset)
@@ -127,7 +128,7 @@ class DecompileGhidra(Decompile):
             )
 
     def filter(self, line):
-        return self._jumptable_warning_re.sub(rb"\g<1>0xX", line)
+        return self._JUMPTABLE_WARNING_RE.sub(rb"\g<1>0xX", line)
 
 
 class DecompileRadare2(Decompile):
