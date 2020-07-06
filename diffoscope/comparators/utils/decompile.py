@@ -22,19 +22,6 @@ import sys
 import abc
 import logging
 
-try:
-    import r2pipe
-except:
-    from diffoscope.tools import python_module_missing
-
-    python_module_missing("r2pipe")
-    r2pipe = None
-
-try:
-    import tlsh
-except:
-    tlsh = None
-
 from .file import File
 from .command import Command
 from .container import Container
@@ -42,7 +29,23 @@ from .container import Container
 from diffoscope.config import Config
 from diffoscope.difference import Difference
 from diffoscope.excludes import command_excluded
-from diffoscope.tools import tool_required, tool_check_installed
+from diffoscope.tools import (
+    tool_required,
+    tool_check_installed,
+    python_module_missing,
+)
+
+try:
+    import tlsh
+except:
+    tlsh = None
+
+try:
+    import r2pipe
+except:
+    python_module_missing("r2pipe")
+    r2pipe = None
+
 
 logger = logging.getLogger(__name__)
 
