@@ -288,8 +288,7 @@ class DecompilableContainer(Container):
         self.r2 = r2pipe.open(self.source.path, flags=["-2"])
 
         # Run radare2 command which finds the functions in the executable
-        preprocessing_command = Config().decompiler_preprocessing_command
-        self.r2.cmd(preprocessing_command)
+        self.r2.cmd("aa")  # Analyse all
 
         # Hide offset in asm as it serves the same purpose as line numbers,
         # which shouldn't be diffed
