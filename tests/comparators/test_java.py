@@ -25,7 +25,11 @@ from diffoscope.comparators.java import ClassFile, ProcyonDecompiler, Javap
 from diffoscope.comparators.missing_file import MissingFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_tool_is_at_least,
+    skip_unless_tool_is_between,
+)
 
 
 class1 = load_fixture("Test1.class")
@@ -79,7 +83,7 @@ def test_diff_procyon(differences_procyon):
     diff(differences_procyon, "procyon_class_expected_diff")
 
 
-@skip_unless_tool_is_at_least("javap", javap_version, "9.0.4")
+@skip_unless_tool_is_between("javap", javap_version, "9.0.4", "14.0")
 def test_diff_javap(differences_javap):
     """
     Java tests are kept up to date relative to the JDK version bundled in
@@ -88,6 +92,11 @@ def test_diff_javap(differences_javap):
     """
 
     diff(differences_javap, "javap_class_expected_diff")
+
+
+@skip_unless_tool_is_at_least("javap", javap_version, "14.0")
+def test_diff_javap_14(differences_javap):
+    diff(differences_javap, "javap_14_class_expected_diff")
 
 
 @skip_unless_tools_exist("procyon")
