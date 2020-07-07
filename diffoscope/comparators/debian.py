@@ -130,11 +130,11 @@ class DebControlFile(File):
         if isinstance(file, DebControlFile):
             return file._deb822
 
-        class DummyChanges(dict):
+        class NullChanges(dict):
             def get_as_string(self, _):
                 return ""
 
-        return DummyChanges(Files=[], Version="")
+        return NullChanges(Files=[], Version="")
 
     @staticmethod
     def _parse_gpg(file):
