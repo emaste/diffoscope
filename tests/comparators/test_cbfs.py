@@ -126,7 +126,7 @@ def test_listing(differences):
     #
     # As the output of this command keeps changing slightly (see
     # https://salsa.debian.org/reproducible-builds/diffoscope/merge_requests/38/
-    # and the git log of this file), perform only these basic sanity checks.
+    # and the git log of this file), perform only these basic coherence check.
 
     assert differences[0].source1.startswith("cbfstool")
     assert re.search(r"\+text\s.*\sraw\s", differences[0].unified_diff)
