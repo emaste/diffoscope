@@ -217,6 +217,20 @@ class AsmFunction(File):
         # No file should be recognized as an asm function
         return False
 
+    def compare(self, other, source=None):
+        """
+        Override file's compare method to get rid of the binary diff fallback,
+        as it would be redundant with other outputs
+        """
+        details = self.compare_details(other, source)
+        details = [x for x in details if x]
+        if not details:
+            return None
+
+        difference = Difference(None, self.name, other.name, source=source)
+        difference.add_details(details)
+        return difference
+
     def compare_details(self, other, source=None):
         return [
             Difference.from_command(x, self, other)
@@ -303,8 +317,8 @@ class DecompilableContainer(Container):
             "e hex.offset = false;e hex.header = false;e hex.ascii = false"
         )
 
-        # Ask radare2 to return the give of functions
-        # If there aren't any, this returns None
+        # Use radare2 to get the list of functions
+        # If there aren't any, cmdj returns None
         functions = self.r2.cmdj("aj") or []
         for f in functions:
             func = AsmFunction(self, f)
