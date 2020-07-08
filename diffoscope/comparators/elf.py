@@ -622,7 +622,7 @@ class ElfContainer(Container):
 class Strings(Command):
     @tool_required("strings")
     def cmdline(self):
-        return ("strings", "--all", self.path)
+        return ("strings", "--all", "--bytes=8", self.path)
 
 
 class ElfFile(File):
