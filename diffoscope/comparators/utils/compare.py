@@ -87,9 +87,9 @@ def compare_root_paths(path1, path2):
 def compare_files(file1, file2, source=None, diff_content_only=False):
     logger.debug(
         "Comparing %s (%s) and %s (%s)",
-        file1.name,
+        file1.name or "-",
         file1.__class__.__name__,
-        file2.name,
+        file2.name or "-",
         file2.__class__.__name__,
     )
 
