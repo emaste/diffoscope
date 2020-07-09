@@ -269,7 +269,7 @@ class SquashfsContainer(Archive):
                 "-li",
                 "-d",
                 ".",
-                self.source.path,
+                os.path.abspath(self.source.path),
             ),
             stderr=subprocess.PIPE,
             cwd=self._temp_dir,
