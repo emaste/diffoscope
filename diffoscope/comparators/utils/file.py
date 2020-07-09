@@ -412,7 +412,9 @@ class File(metaclass=abc.ABCMeta):
         return difference
 
     def has_same_content_as(self, other):
-        logger.debug("File.has_same_content: %s %s", self, other)
+        logger.debug(
+            "has_same_content(%s, %s)", self.path or "-", other.path or "-"
+        )
         if os.path.isdir(self.path) or os.path.isdir(other.path):
             return False
         # try comparing small files directly first
