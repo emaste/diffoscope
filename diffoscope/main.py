@@ -88,6 +88,7 @@ def create_parser():
         description="Calculate differences between two files or directories",
         add_help=False,
         formatter_class=HelpFormatter,
+        fromfile_prefix_chars="@",
     )
     parser.add_argument(
         "path1",
