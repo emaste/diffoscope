@@ -1,8 +1,29 @@
-diffoscope (151) UNRELEASED; urgency=medium
+diffoscope (151) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb]
 
- -- Chris Lamb <lamby@debian.org>  Fri, 03 Jul 2020 11:15:37 +0100
+  * Improvements and bug fixes:
+
+    - Pass the absolute path when extracting members from SquashFS images as we
+      run the command with our working directory set to the temporary
+      directory. (Closes: #964365, reproducible-builds/diffoscope#189)
+    - Increase the minimum length of the output from strings(1) to 8 characters
+      to avoid unnecessary diff noise. (Re. reproducible-builds/diffoscope#148)
+
+  * Logging improvements:
+
+    - Fix the compare_files message when the file does not have a literal name.
+    - Reduce potential log noise by truncating the has_some_content messages.
+
+  * Codebase changes:
+
+    - Clarify use of a "null" diff in order to remember an exit code.
+    - Don't alias a variable when don't end up it; use "_" instead.
+    - Use a  "NullChanges" file to represent missing data in the Debian package
+      comparator.
+    - Update some miscellaneous terms.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 10 Jul 2020 10:52:56 +0100
 
 diffoscope (150) unstable; urgency=medium
 
