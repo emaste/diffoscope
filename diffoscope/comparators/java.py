@@ -34,13 +34,15 @@ logger = logging.getLogger(__name__)
 
 
 class ProcyonDecompiler(Command):
+    TOOL = "procyon"
+
     def __init__(self, path, *args, **kwargs):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required("procyon")
+    @tool_required(TOOL)
     def cmdline(self):
-        return ["procyon", "-ec", self.path]
+        return [self.TOOL, "-ec", self.path]
 
     def filter(self, line):
         if re.match(r"^(//)", line.decode("utf-8")):
@@ -49,14 +51,16 @@ class ProcyonDecompiler(Command):
 
 
 class Javap(Command):
+    TOOL = "javap"
+
     def __init__(self, path, *args, **kwargs):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required("javap")
+    @tool_required(TOOL)
     def cmdline(self):
         return [
-            "javap",
+            self.TOOL,
             "-verbose",
             "-constants",
             "-s",
@@ -93,10 +97,10 @@ class ClassFile(File):
                     break
             except RequiredToolNotFound:
                 logger.debug(
-                    "Unable to find %s. Falling back...", decompiler.__name__
+                    "Unable to find %s. Falling back...", decompiler.TOOL,
                 )
 
         if not diff:
-            raise RequiredToolNotFound(self.decompilers[-1])
+            raise RequiredToolNotFound(self.decompilers[-1].TOOL)
 
         return diff
