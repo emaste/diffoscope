@@ -28,6 +28,7 @@ import logging
 import threading
 import subprocess
 
+from difflib import Differ
 from multiprocessing.dummy import Queue
 
 from diffoscope.tempfiles import get_temporary_directory
@@ -517,6 +518,7 @@ class SideBySideDiff:
         self.reset()
 
     def reset(self):
+        self.differ = Differ()
         self.buf = []
         self.add_cpt = 0
         self.del_cpt = 0
@@ -532,26 +534,51 @@ class SideBySideDiff:
     def bytes_processed(self):
         return self._bytes_processed
 
+    def match_lines(self, l0, l1):
+        """
+        Given two lists of lines, use python's difflib to make the diff a bit
+        "smarter", as it better detects added lines (see !64)
+        """
+        saved_line = None
+        for line in self.differ.compare(l0, l1):
+            # Skip lines with details as they don't matter to us
+            if line.startswith("? "):
+                continue
+
+            # When we encounter a +, it may either be because a line was
+            # added, or because a line was modified (in that case,
+            # save_line will not be None)
+            if line.startswith("+ "):
+                yield from self.yield_line(saved_line or "", line[2:])
+                saved_line = None
+                continue
+
+            # If saved_line is not None, we need to yield from it before
+            # moving on
+            if saved_line is not None:
+                yield from self.yield_line(saved_line, "")
+                saved_line = None
+
+            # Handle removed and unchanged lines
+            if line.startswith("- "):
+                saved_line = line[2:]
+            elif line.startswith("  "):
+                line = line[2:]
+                yield from self.yield_line(line, line)
+
+        # Make sure we don't forget a line
+        if saved_line is not None:
+            yield from self.yield_line(saved_line, "")
+
     def empty_buffer(self):
         if self.del_cpt == 0 or self.add_cpt == 0:
+            # All lines are unchanged lines
             for l in self.buf:
                 yield from self.yield_line(l[0], l[1])
-
         elif self.del_cpt != 0 and self.add_cpt != 0:
-            l0, l1 = [], []
-            for l in self.buf:
-                if l[0] is not None:
-                    l0.append(l[0])
-                if l[1] is not None:
-                    l1.append(l[1])
-            max_len = (len(l0) > len(l1)) and len(l0) or len(l1)
-            for i in range(max_len):
-                s0, s1 = "", ""
-                if i < len(l0):
-                    s0 = l0[i]
-                if i < len(l1):
-                    s1 = l1[i]
-                yield from self.yield_line(s0, s1)
+            l0 = [pair[0] for pair in self.buf if pair[0] is not None]
+            l1 = [pair[1] for pair in self.buf if pair[1] is not None]
+            yield from self.match_lines(l0, l1)
 
     def yield_line(self, s1, s2):
         orig1 = s1
