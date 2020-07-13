@@ -316,6 +316,8 @@ class SquashfsFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(SquashfsSuperblock, self.path, other.path),
-            Difference.from_command(SquashfsListing, self.path, other.path),
+            Difference.from_operation(
+                SquashfsSuperblock, self.path, other.path
+            ),
+            Difference.from_operation(SquashfsListing, self.path, other.path),
         ]

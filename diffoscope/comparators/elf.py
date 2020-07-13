@@ -330,7 +330,7 @@ class ElfSection(File):
         return False
 
     def compare(self, other, source=None):
-        return Difference.from_command(
+        return Difference.from_operation(
             ReadElfSection, self.path, other.path, operation_args=[self._name]
         )
 
@@ -342,7 +342,7 @@ class ElfCodeSection(ElfSection):
         # only then fallback to a hexdump.
         diff = None
         try:
-            diff, excluded = Difference.from_command_exc(
+            diff, excluded = Difference.from_operation_exc(
                 ObjdumpDisassembleSection,
                 self.path,
                 other.path,
@@ -356,7 +356,7 @@ class ElfCodeSection(ElfSection):
             return diff
 
         try:
-            diff, excluded = Difference.from_command_exc(
+            diff, excluded = Difference.from_operation_exc(
                 ObjdumpDisassembleSectionNoLineNumbers,
                 self.path,
                 other.path,
@@ -373,7 +373,7 @@ class ElfCodeSection(ElfSection):
 
 class ElfStringSection(ElfSection):
     def compare(self, other, source=None):
-        return Difference.from_command(
+        return Difference.from_operation(
             ReadelfStringSection,
             self.path,
             other.path,
@@ -632,14 +632,14 @@ class ElfFile(File):
 
     def compare_details(self, other, source=None):
         differences = [
-            Difference.from_command(
+            Difference.from_operation(
                 x, self.path, other.path, ignore_returncodes={1}
             )
             for x in list(READELF_COMMANDS) + READELF_DEBUG_DUMP_COMMANDS
         ]
 
         differences.append(
-            Difference.from_command(Strings, self.path, other.path)
+            Difference.from_operation(Strings, self.path, other.path)
         )
 
         return differences

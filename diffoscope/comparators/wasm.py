@@ -45,4 +45,4 @@ class WasmFile(File):
         return file.file_header.startswith(WASM_MAGIC)
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Wasm2Wat, self.path, other.path)]
+        return [Difference.from_operation(Wasm2Wat, self.path, other.path)]

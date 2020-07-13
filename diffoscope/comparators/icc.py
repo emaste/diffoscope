@@ -38,4 +38,4 @@ class IccFile(File):
     FILE_TYPE_RE = re.compile(r"\bColorSync (ICC|color) [Pp]rofile")
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Iccdump, self.path, other.path)]
+        return [Difference.from_operation(Iccdump, self.path, other.path)]

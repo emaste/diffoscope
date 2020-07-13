@@ -130,7 +130,7 @@ def test_trim_stderr_in_command():
 
             return r
 
-    difference = Difference.from_command(FillStderr, "dummy1", "dummy2")
+    difference = Difference.from_operation(FillStderr, "dummy1", "dummy2")
     assert (
         "[ truncated after {} lines; 1 ignored ]".format(
             Command.MAX_STDERR_LINES

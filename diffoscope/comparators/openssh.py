@@ -38,4 +38,4 @@ class PublicKeyFile(File):
     FILE_TYPE_RE = re.compile(r"^OpenSSH \S+ public key")
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(SSHKeyList, self.path, other.path)]
+        return [Difference.from_operation(SSHKeyList, self.path, other.path)]

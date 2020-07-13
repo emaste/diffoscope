@@ -108,7 +108,7 @@ class MachoFile(File):
         # Compare common architectures for differences
         for common_arch in set(my_archs) & set(other_archs):
             differences.append(
-                Difference.from_command(
+                Difference.from_operation(
                     OtoolHeaders,
                     self.path,
                     other.path,
@@ -117,7 +117,7 @@ class MachoFile(File):
                 )
             )
             differences.append(
-                Difference.from_command(
+                Difference.from_operation(
                     OtoolLibraries,
                     self.path,
                     other.path,
@@ -127,7 +127,7 @@ class MachoFile(File):
                 )
             )
 
-            x = Difference.from_command(
+            x = Difference.from_operation(
                 OtoolDisassemble,
                 self.path,
                 other.path,
@@ -139,7 +139,7 @@ class MachoFile(File):
             # If the LLVM disassembler does not work, try the internal one.
             if x is None:
                 differences.append(
-                    Difference.from_command(
+                    Difference.from_operation(
                         OtoolDisassembleInternal,
                         self.path,
                         other.path,

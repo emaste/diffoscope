@@ -153,7 +153,7 @@ def compare_binary_files(file1, file2, source=None):
     try:
         if source is None:
             source = [file1.name, file2.name]
-        return Difference.from_command(
+        return Difference.from_operation(
             Xxd,
             file1.path,
             file2.path,

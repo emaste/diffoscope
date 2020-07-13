@@ -120,7 +120,7 @@ def from_text_reader(in_file, filter=None):
     return from_raw_reader(in_file, encoding_filter)
 
 
-def from_command(operation):
+def from_operation(operation):
     def feeder(out_file):
         with profile("command", operation.name):
             feeder = from_raw_reader(operation.output, operation.filter)

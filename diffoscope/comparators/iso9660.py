@@ -100,13 +100,13 @@ class Iso9660File(File):
 
         for klass in (ISO9660PVD, ISO9660Listing):
             differences.append(
-                Difference.from_command(klass, self.path, other.path)
+                Difference.from_operation(klass, self.path, other.path)
             )
 
         for x in ("joliet", "rockridge"):
             try:
                 differences.append(
-                    Difference.from_command(
+                    Difference.from_operation(
                         ISO9660Listing,
                         self.path,
                         other.path,

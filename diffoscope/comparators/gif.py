@@ -71,7 +71,7 @@ class GifFile(File):
     FILE_TYPE_RE = re.compile(r"^GIF image data\b")
 
     def compare_details(self, other, source=None):
-        gifbuild_diff = Difference.from_command(
+        gifbuild_diff = Difference.from_operation(
             Gifbuild, self.path, other.path, source="gifbuild"
         )
 

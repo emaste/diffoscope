@@ -47,7 +47,7 @@ class PgpFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 Pgpdump, self.path, other.path, source="pgpdump"
             )
         ]
@@ -64,7 +64,7 @@ class PgpSignature(TextFile):
         # ... but attach pgpdump of outout
         difference.add_details(
             [
-                Difference.from_command(
+                Difference.from_operation(
                     Pgpdump, self.path, other.path, source="pgpdump"
                 )
             ]

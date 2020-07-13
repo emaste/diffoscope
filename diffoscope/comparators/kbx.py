@@ -43,7 +43,7 @@ class KbxFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 Kbxutil, self.path, other.path, source="kbxutil"
             )
         ]

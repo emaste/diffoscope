@@ -40,5 +40,7 @@ class DeviceTreeFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(DeviceTreeContents, self.path, other.path)
+            Difference.from_operation(
+                DeviceTreeContents, self.path, other.path
+            )
         ]

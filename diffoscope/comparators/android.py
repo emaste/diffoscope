@@ -84,4 +84,4 @@ class AndroidBootImgFile(File):
     CONTAINER_CLASSES = [AndroidBootImgContainer]
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(AbootimgInfo, self.path, other.path)]
+        return [Difference.from_operation(AbootimgInfo, self.path, other.path)]

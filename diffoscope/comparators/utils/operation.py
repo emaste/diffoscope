@@ -49,7 +49,7 @@ class Operation(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     def filter(self, line):
-        # Assume command output is utf-8 by default
+        # Assume operation output is utf-8 by default
         return line
 
     def terminate(self):

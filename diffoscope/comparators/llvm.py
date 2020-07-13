@@ -63,6 +63,8 @@ class LlvmBitCodeFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(LlvmBcAnalyzer, self.path, other.path),
-            Difference.from_command(LlvmBcDisassembler, self.path, other.path),
+            Difference.from_operation(LlvmBcAnalyzer, self.path, other.path),
+            Difference.from_operation(
+                LlvmBcDisassembler, self.path, other.path
+            ),
         ]

@@ -251,13 +251,13 @@ class Difference:
         )
 
     @staticmethod
-    def from_command(klass, path1, path2, *args, **kwargs):
-        return Difference.from_command_exc(
+    def from_operation(klass, path1, path2, *args, **kwargs):
+        return Difference.from_operation_exc(
             klass, path1, path2, *args, **kwargs
         )[0]
 
     @staticmethod
-    def from_command_exc(klass, path1, path2, *args, **kwargs):
+    def from_operation_exc(klass, path1, path2, *args, **kwargs):
         operation_args = kwargs.pop("operation_args", [])
         ignore_returncodes = kwargs.pop("ignore_returncodes", ())
 
@@ -267,7 +267,7 @@ class Difference:
                 feeder = feeders.empty()
             else:
                 operation = klass(path, *operation_args)
-                feeder = feeders.from_command(operation)
+                feeder = feeders.from_operation(operation)
                 if operation_excluded(operation.full_name()):
                     return None, None, True
                 operation.start()

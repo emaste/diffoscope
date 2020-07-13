@@ -38,7 +38,7 @@ class DocxFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 Docx2txt, self.path, other.path, source="docx2txt"
             )
         ]

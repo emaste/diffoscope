@@ -45,7 +45,9 @@ class PsFile(TextFile):
         differences = super().compare(other, *args, **kwargs)
         details = None
         try:
-            details = Difference.from_command(Pstotext, self.path, other.path)
+            details = Difference.from_operation(
+                Pstotext, self.path, other.path
+            )
         except RequiredToolNotFound:  # noqa
             logger.debug("ps2ascii not found")
 

@@ -124,7 +124,7 @@ def zipinfo_differences(file, other):
     """
 
     for x in (Zipinfo, ZipinfoVerbose, BsdtarVerbose):
-        result = Difference.from_command(x, file.path, other.path)
+        result = Difference.from_operation(x, file.path, other.path)
         # We only return the 'best' one
         if result is not None:
             return [result]
@@ -202,7 +202,7 @@ class ZipFile(File):
         if Config().exclude_directory_metadata != "recursive":
             differences.extend(zipinfo_differences(self, other))
         differences.append(
-            Difference.from_command(Zipnote, self.path, other.path)
+            Difference.from_operation(Zipnote, self.path, other.path)
         )
         return differences
 

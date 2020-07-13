@@ -142,7 +142,7 @@ class JPEGImageFile(File):
     FILE_TYPE_RE = re.compile(r"\bJPEG image data\b")
 
     def compare_details(self, other, source=None):
-        content_diff = Difference.from_command(
+        content_diff = Difference.from_operation(
             Img2Txt, self.path, other.path, source="Image content"
         )
         if (
@@ -166,7 +166,7 @@ class JPEGImageFile(File):
                 pass
         return [
             content_diff,
-            Difference.from_command(
+            Difference.from_operation(
                 Identify, self.path, other.path, source="Image metadata"
             ),
         ]
@@ -185,7 +185,7 @@ class ICOImageFile(File):
         except subprocess.CalledProcessError:  # noqa
             pass
         else:
-            content_diff = Difference.from_command(
+            content_diff = Difference.from_operation(
                 Img2Txt, png_a, png_b, source="Image content"
             )
             if (
@@ -208,7 +208,7 @@ class ICOImageFile(File):
             differences.append(content_diff)
 
         differences.append(
-            Difference.from_command(
+            Difference.from_operation(
                 Identify, self.path, other.path, source="Image metadata"
             )
         )
