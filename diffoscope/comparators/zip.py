@@ -201,9 +201,14 @@ class ZipFile(File):
         differences = []
         if Config().exclude_directory_metadata != "recursive":
             differences.extend(zipinfo_differences(self, other))
-        differences.append(
-            Difference.from_command(Zipnote, self.path, other.path)
-        )
+
+        try:
+            differences.append(
+                Difference.from_command(Zipnote, self.path, other.path)
+            )
+        except RequiredToolNotFound:  # noqa
+            pass
+
         return differences
 
 
