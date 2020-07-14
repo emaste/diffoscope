@@ -27,7 +27,7 @@ import zipfile
 from diffoscope.config import Config
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
-from diffoscope.exc import ContainerExtractionError
+from diffoscope.exc import ContainerExtractionError, RequiredToolNotFound
 from diffoscope.tempfiles import get_named_temporary_file
 
 from .utils.file import File
