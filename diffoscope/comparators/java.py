@@ -34,15 +34,13 @@ logger = logging.getLogger(__name__)
 
 
 class ProcyonDecompiler(Command):
-    TOOL = "procyon"
-
     def __init__(self, path, *args, **kwargs):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required(TOOL)
+    @tool_required("procyon")
     def cmdline(self):
-        return [self.TOOL, "-ec", self.path]
+        return ["procyon", "-ec", self.path]
 
     def filter(self, line):
         if re.match(r"^(//)", line.decode("utf-8")):
@@ -51,16 +49,14 @@ class ProcyonDecompiler(Command):
 
 
 class Javap(Command):
-    TOOL = "javap"
-
     def __init__(self, path, *args, **kwargs):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required(TOOL)
+    @tool_required("javap")
     def cmdline(self):
         return [
-            self.TOOL,
+            "javap",
             "-verbose",
             "-constants",
             "-s",
@@ -86,6 +82,7 @@ class ClassFile(File):
 
     def compare_details(self, other, source=None):
         diff = []
+        last_exc = None
 
         for decompiler in self.decompilers:
             try:
@@ -95,12 +92,17 @@ class ClassFile(File):
                 if single_diff:
                     diff.append(single_diff)
                     break
-            except RequiredToolNotFound:
+            except RequiredToolNotFound as exc:
+                # Save our exception
+                last_exc = exc
                 logger.debug(
-                    "Unable to find %s. Falling back...", decompiler.TOOL,
+                    "Unable to find %s. Falling back...", decompiler,
                 )
 
-        if not diff:
-            raise RequiredToolNotFound(self.decompilers[-1].TOOL)
+        # Re-raise the last exception we would have raised from the previous
+        # loop; we want to raise the least-common demoninator from our
+        # `decompilers` list.
+        if last_exc:
+            raise last_exc
 
         return diff
