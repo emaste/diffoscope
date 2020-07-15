@@ -90,7 +90,7 @@ def get_module_path_for_rdb(rdb):
     # If we are not in a container, we will never be able to locate the
     # corresponding .rdx
     if rdb.container is None:
-        return
+        return None
 
     # Calculate location of parallel .rdx file
     rdx_name = "{}.rdx".format(os.path.splitext(rdb.name)[0])
@@ -105,7 +105,7 @@ def get_module_path_for_rdb(rdb):
 
     if not os.path.exists(rdx.path):
         # Corresponding .rdx does not exist
-        return
+        return None
 
     temp_dir = get_temporary_directory().name
     prefix = os.path.join(temp_dir, "temp")
