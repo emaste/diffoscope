@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,24 +17,24 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-import sys
 import contextlib
+import curses
 import logging
+import shutil
+import sys
 
 
 def line_eraser(fd=sys.stderr) -> bytes:
     eraser = b""  # avoid None to avoid 'NoneType + str/bytes' failures
     if fd.isatty():
-        from curses import tigetstr, setupterm
 
-        setupterm(fd=fd.fileno())
-        eraser = tigetstr("el")
+        curses.setupterm(fd=fd.fileno())
+        eraser = curses.tigetstr("el")
 
     if not eraser and fd.isatty():
         # is a tty, but doesn't support the proper escape code, so let's fake it
-        from shutil import get_terminal_size
 
-        width = get_terminal_size().columns
+        width = shutil.get_terminal_size().columns
         eraser = b"\r" + (b" " * width) + b"\r"
 
     return eraser
