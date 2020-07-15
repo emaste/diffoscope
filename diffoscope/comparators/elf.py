@@ -156,7 +156,7 @@ class ReadelfDebugDump(Readelf):
 
 READELF_DEBUG_DUMP_COMMANDS = [
     type(
-        "ReadelfDebugDump_{}".format(x),
+        f"ReadelfDebugDump_{x}",
         (ReadelfDebugDump,),
         {"_debug_section_group": x},
     )

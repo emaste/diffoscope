@@ -107,7 +107,7 @@ class Zipnote(Command):
         if line.startswith(b"@ "):
             filename = line[2:-1].decode()
             self.flag = True
-            return "Filename: {}\nComment: ".format(filename).encode()
+            return f"Filename: {filename}\nComment: ".encode()
 
         return line[:-1] if self.flag else b""
 

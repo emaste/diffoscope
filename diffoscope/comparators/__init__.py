@@ -130,7 +130,7 @@ class ComparatorManager:
 
                 try:
                     mod = importlib.import_module(
-                        "diffoscope.comparators.{}".format(package)
+                        f"diffoscope.comparators.{package}",
                     )
                 except ModuleNotFoundError as e:
                     python_module_missing(e.name)

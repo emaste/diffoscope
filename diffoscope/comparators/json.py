@@ -92,7 +92,7 @@ class JSONFile(File):
 
         similarity = jsondiff.similarity(a, b)
         if similarity:
-            difference.add_comment("Similarity: {}%".format(similarity))
+            difference.add_comment(f"Similarity: {similarity}%")
 
         difference.add_comment(
             "Differences: {}".format(

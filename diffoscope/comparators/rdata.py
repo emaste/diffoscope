@@ -111,8 +111,8 @@ def get_module_path_for_rdb(rdb):
     prefix = os.path.join(temp_dir, "temp")
 
     logger.debug("Copying %s and %s to %s", rdx.path, rdb.path, temp_dir)
-    shutil.copy(rdb.path, "{}.rdb".format(prefix))
-    shutil.copy(rdx.path, "{}.rdx".format(prefix))
+    shutil.copy(rdb.path, f"{prefix}.rdb")
+    shutil.copy(rdx.path, f"{prefix}.rdx")
 
     # Return the "module" path, ie. without an extension
     return os.path.join(temp_dir, "temp")

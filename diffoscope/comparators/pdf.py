@@ -82,7 +82,7 @@ class PdfFile(File):
             pdf = PyPDF2.PdfFileReader(file.path)
             document_info = pdf.getDocumentInfo()
         except PyPDF2.utils.PdfReadError as e:
-            return "(Could not extract metadata: {})".format(e)
+            return f"(Could not extract metadata: {e})"
 
         if document_info is None:
             return ""

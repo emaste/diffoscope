@@ -86,7 +86,7 @@ class ApkContainer(Archive):
                         "-d",
                         self._unpacked,
                         self.source.path,
-                        "classes{}.dex".format(x),
+                        f"classes{x}.dex",
                     ),
                     stderr=subprocess.PIPE,
                     stdout=subprocess.PIPE,
