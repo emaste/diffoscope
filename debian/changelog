@@ -1,8 +1,35 @@
-diffoscope (152) UNRELEASED; urgency=medium
+diffoscope (152) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
 
- -- Chris Lamb <lamby@debian.org>  Fri, 10 Jul 2020 10:54:30 +0100
+  * Bug fixes:
+
+    - Don't require zipnote(1) to determine differences in a .zip file as we
+      can use libarchive directly.
+
+  Reporting improvements:
+
+    - Don't emit "javap not found in path" if it is available in the path but
+      it did not result in any actual difference.
+    - Fix "... not available in path" messages when looking for Java
+      decompilers; we were using the Python class name (eg. "<class
+      'diffoscope.comparators.java.Javap'>") over the actual command we looked
+      for (eg. "javap").
+
+  * Code improvements:
+
+    - Replace some simple usages of str.format with f-strings.
+    - Tidy inline imports in diffoscope.logging.
+    - In the RData comparator, always explicitly return a None value in the
+      failure cases as we return a non-None value in the "success" one.
+
+  [ Jean-Romain Garnier ]
+  * Improve output of side-by-side diffs, detecting added lines better.
+    (MR: reproducible-builds/diffoscope!64)
+  * Allow passing file with list of arguments to ArgumentParser (eg.
+    "diffoscope @args.txt"). (MR: reproducible-builds/diffoscope!62)
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 18 Jul 2020 11:00:13 +0100
 
 diffoscope (151) unstable; urgency=medium
 
