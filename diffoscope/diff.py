@@ -31,10 +31,9 @@ import subprocess
 from difflib import Differ
 from multiprocessing.dummy import Queue
 
-from diffoscope.tempfiles import get_temporary_directory
-
 from .tools import get_tool_name, tool_required
 from .config import Config
+from .tempfiles import get_temporary_directory
 
 DIFF_CHUNK = 4096
 
