@@ -20,13 +20,13 @@
 
 import codecs
 
-from diffoscope.utils import bail_if_non_existing
+from diffoscope.utils import exit_if_paths_do_not_exist
 
 from .json import JSONReaderV1
 
 
 def load_diff_from_path(path):
-    bail_if_non_existing(path)
+    exit_if_paths_do_not_exist(path)
     with open(path, "rb") as fp:
         return load_diff(codecs.getreader("utf-8")(fp), path)
 

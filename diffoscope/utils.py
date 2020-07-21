@@ -55,7 +55,7 @@ def format_bytes(size, decimal_places=2):
     return f"{size:.{decimal_places}f} {unit}"
 
 
-def bail_if_non_existing(*paths):
+def exit_if_paths_do_not_exist(*paths):
     if not all(map(os.path.lexists, paths)):
         for path in paths:
             if not os.path.lexists(path):
