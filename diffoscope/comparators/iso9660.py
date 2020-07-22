@@ -110,7 +110,7 @@ class Iso9660File(File):
                         ISO9660Listing,
                         self.path,
                         other.path,
-                        command_args=(x,),
+                        operation_args=(x,),
                     )
                 )
             except subprocess.CalledProcessError:

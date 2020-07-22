@@ -263,7 +263,7 @@ class File(metaclass=abc.ABCMeta):
                 logger.debug(
                     "Cannot instantiate a %s; missing tool %s",
                     formatted_class,
-                    exc.command,
+                    exc.operation,
                 )
                 try:
                     infix = type(self).DESCRIPTION
@@ -521,7 +521,7 @@ class File(metaclass=abc.ABCMeta):
                     return None
                 difference.add_comment(
                     "Error parsing output of `%s` for %s"
-                    % (e.command, e.object_class)
+                    % (e.operation, e.object_class)
                 )
             except ContainerExtractionError as e:
                 difference = self.compare_bytes(other, source=source)

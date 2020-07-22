@@ -26,11 +26,13 @@ from diffoscope.config import Config
 logger = logging.getLogger(__name__)
 
 
-def command_excluded(command):
+def operation_excluded(operation):
     for y in Config().exclude_commands:
-        if re.search(y, command):
+        if re.search(y, operation):
             logger.debug(
-                "Excluding command '%s' as it matches pattern '%s'", command, y
+                "Excluding command '%s' as it matches pattern '%s'",
+                operation,
+                y,
             )
             return True
     return False

@@ -120,25 +120,25 @@ def from_text_reader(in_file, filter=None):
     return from_raw_reader(in_file, encoding_filter)
 
 
-def from_command(command):
+def from_command(operation):
     def feeder(out_file):
-        with profile("command", command.name):
-            feeder = from_raw_reader(command.output, command.filter)
+        with profile("command", operation.name):
+            feeder = from_raw_reader(operation.output, operation.filter)
             end_nl = feeder(out_file)
 
-        if command.should_show_error():
+        if operation.should_show_error():
             # On error, default to displaying all lines of the error
-            output = command.error_string or ""
-            if not output and command.output:
+            output = operation.error_string or ""
+            if not output and operation.output:
                 # ... but if we don't have, return the first line of the
                 # standard output.
                 output = "{}{}".format(
-                    command.output[0].decode("utf-8", "ignore").strip(),
-                    "\n[…]" if len(command.output) > 1 else "",
+                    operation.output[0].decode("utf-8", "ignore").strip(),
+                    "\n[…]" if len(operation.output) > 1 else "",
                 )
             raise subprocess.CalledProcessError(
-                command.returncode,
-                command.name,
+                operation.returncode,
+                operation.name,
                 output=output.encode("utf-8"),
             )
         return end_nl

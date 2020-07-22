@@ -112,7 +112,7 @@ class MachoFile(File):
                     OtoolHeaders,
                     self.path,
                     other.path,
-                    command_args=[common_arch],
+                    operation_args=[common_arch],
                     comment="Mach-O headers for architecture %s" % common_arch,
                 )
             )
@@ -121,7 +121,7 @@ class MachoFile(File):
                     OtoolLibraries,
                     self.path,
                     other.path,
-                    command_args=[common_arch],
+                    operation_args=[common_arch],
                     comment="Mach-O load commands for architecture %s"
                     % common_arch,
                 )
@@ -131,7 +131,7 @@ class MachoFile(File):
                 OtoolDisassemble,
                 self.path,
                 other.path,
-                command_args=[common_arch],
+                operation_args=[common_arch],
                 comment="Code for architecture %s" % common_arch,
             )
             differences.append(x)
@@ -143,7 +143,7 @@ class MachoFile(File):
                         OtoolDisassembleInternal,
                         self.path,
                         other.path,
-                        command_args=[common_arch],
+                        operation_args=[common_arch],
                         comment="Code for architecture %s (internal disassembler)"
                         % common_arch,
                     )

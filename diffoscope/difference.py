@@ -25,7 +25,7 @@ import subprocess
 from . import feeders
 from .exc import RequiredToolNotFound
 from .diff import diff, reverse_unified_diff, diff_split_lines
-from .excludes import command_excluded
+from .excludes import operation_excluded
 
 logger = logging.getLogger(__name__)
 
@@ -258,29 +258,29 @@ class Difference:
 
     @staticmethod
     def from_command_exc(klass, path1, path2, *args, **kwargs):
-        command_args = kwargs.pop("command_args", [])
+        operation_args = kwargs.pop("operation_args", [])
         ignore_returncodes = kwargs.pop("ignore_returncodes", ())
 
-        def command_and_feeder(path):
-            command = None
+        def operation_and_feeder(path):
+            operation = None
             if path == "/dev/null":
                 feeder = feeders.empty()
             else:
-                command = klass(path, *command_args)
-                feeder = feeders.from_command(command)
-                if command_excluded(command.full_name()):
+                operation = klass(path, *operation_args)
+                feeder = feeders.from_command(operation)
+                if operation_excluded(operation.full_name()):
                     return None, None, True
-                command.start()
-            return feeder, command, False
+                operation.start()
+            return feeder, operation, False
 
-        feeder1, command1, excluded1 = command_and_feeder(path1)
-        feeder2, command2, excluded2 = command_and_feeder(path2)
+        feeder1, operation1, excluded1 = operation_and_feeder(path1)
+        feeder2, operation2, excluded2 = operation_and_feeder(path2)
         if not feeder1 or not feeder2:
             assert excluded1 or excluded2
             return None, True
 
         if "source" not in kwargs:
-            source_op = command1 or command2
+            source_op = operation1 or operation2
             kwargs["source"] = source_op.full_name(truncate=120)
 
         try:
@@ -296,28 +296,28 @@ class Difference:
             return None, False
 
         if (
-            command1
-            and command1.error_string
-            and command2
-            and command2.error_string
-            and command1.full_name() == command2.full_name()
+            operation1
+            and operation1.error_string
+            and operation2
+            and operation2.error_string
+            and operation1.full_name() == operation2.full_name()
         ):
             # Output is the same, so don't repeat the output
             difference.add_comment(
-                "error from `{}`:".format(command1.full_name())
+                "error from `{}`:".format(operation1.full_name())
             )
-            difference.add_comment(command1.error_string)
+            difference.add_comment(operation1.error_string)
         else:
-            if command1 and command1.error_string:
+            if operation1 and operation1.error_string:
                 difference.add_comment(
-                    "error from `{}` (a):".format(command1.full_name())
+                    "error from `{}` (a):".format(operation1.full_name())
                 )
-                difference.add_comment(command1.error_string)
-            if command2 and command2.error_string:
+                difference.add_comment(operation1.error_string)
+            if operation2 and operation2.error_string:
                 difference.add_comment(
-                    "error from `{}` (b):".format(command2.full_name())
+                    "error from `{}` (b):".format(operation2.full_name())
                 )
-                difference.add_comment(command2.error_string)
+                difference.add_comment(operation2.error_string)
 
         return difference, False
 

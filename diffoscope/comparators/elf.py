@@ -331,7 +331,7 @@ class ElfSection(File):
 
     def compare(self, other, source=None):
         return Difference.from_command(
-            ReadElfSection, self.path, other.path, command_args=[self._name]
+            ReadElfSection, self.path, other.path, operation_args=[self._name]
         )
 
 
@@ -346,7 +346,7 @@ class ElfCodeSection(ElfSection):
                 ObjdumpDisassembleSection,
                 self.path,
                 other.path,
-                command_args=[self._name],
+                operation_args=[self._name],
             )
         except subprocess.CalledProcessError as e:
             # eg. When failing to disassemble a different architecture.
@@ -360,7 +360,7 @@ class ElfCodeSection(ElfSection):
                 ObjdumpDisassembleSectionNoLineNumbers,
                 self.path,
                 other.path,
-                command_args=[self._name],
+                operation_args=[self._name],
             )
         except subprocess.CalledProcessError as e:
             logger.error(e)
@@ -377,7 +377,7 @@ class ElfStringSection(ElfSection):
             ReadelfStringSection,
             self.path,
             other.path,
-            command_args=[self._name],
+            operation_args=[self._name],
         )
 
 
