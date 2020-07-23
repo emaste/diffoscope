@@ -64,7 +64,9 @@ comparator:
    `diffoscope/external_tools.py`
 
 
-## Uploading the package
+## Release process
+
+### Uploading to Debian
 
 When uploading diffoscope to the Debian archive, please take extra care
 to make sure the uploaded source package is correct, that is it includes
@@ -74,6 +76,8 @@ dpkg-dev when building the package.
 See [#834315](https://bugs.debian.org/834315) for an example FTBFS bug
 caused by this. (See [#735377](https://bugs.debian.org/735377#44)
 and followups to learn how this happened and how to prevent it)
+
+### Signed tarballs
 
 Please also release a signed tarball:
 
@@ -85,16 +89,23 @@ And commit them to our LFS repository at:
 
     https://salsa.debian.org/reproducible-builds/reproducible-lfs
 
-After uploading, please also update the version on PyPI using:
+### PyPI
+
+You can update the version on PyPI using:
 
     $ python3 setup.py sdist upload --sign
 
-Once the tracker.debian.org entry appears, consider tweeting the release
-on `#reproducible-builds` with:
+### Docker image
 
-    %twitter diffoscope $VERSION has been released. Check out the changelog here: $URL
-
-Finally, update the Docker image using:
+Update the Docker image using:
 
     $ docker build --force-rm --no-cache --pull -t registry.salsa.debian.org/reproducible-builds/diffoscope .
     $ docker push registry.salsa.debian.org/reproducible-builds/diffoscope
+
+### Publicity
+
+To announce the package on the `diffoscope.org` homepage, use the `update`
+script in that repository.
+
+Once live entry appears, consider tweeting the release using the release from
+the `@reprobuilds` Twitter account.
