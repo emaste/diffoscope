@@ -728,13 +728,6 @@ def main(args=None):
         )
         sys.exit(2)
 
-    # Rewrite/support some legacy argument styles
-    for val, repl in (
-        ("--exclude-directory-metadata", "--exclude-directory-metadata=yes"),
-        ("--no-exclude-directory-metadata", "--exclude-directory-metadata=no"),
-    ):
-        args = [repl if x == val else x for x in args]
-
     parsed_args = None
 
     try:
