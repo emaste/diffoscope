@@ -18,17 +18,6 @@ about *Merge Requests*.
 You can also submit bugs about Debian specific issues to the Debian bug
 tracker.
 
-## Git setup
-
-diffoscope's codebase adheres to the output
-[Black](https://black.readthedocs.io/) source code reformatter. Since this was
-not always the case, the default output of `git-blame(1)` is not useful due to
-large changes made when it was adopted.
-
-As an optional step, you can ignore these commits using:
-
-    $ git config blame.ignoreRevsFile .git-blame-ignore-revs
-
 ## Testing
 
 diffoscope's test suite relies on [pytest](https://docs.pytest.org/);
@@ -40,6 +29,18 @@ an example of how to run a (much) smaller subset of tests:
 
 More options are available at `[pytest -h]`.
 
+## Git setup
+
+diffoscope's codebase adheres to the output
+[Black](https://black.readthedocs.io/) source code reformatter. Since this was
+not always the case, the default output of `git-blame(1)` is not useful due to
+large changes made when it was adopted.
+
+As an optional step, you can ignore these commits using:
+
+    $ git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+
 ## Add a comparator
 
 Diffoscope doesn't support a specific file type? Please contribute to
@@ -47,15 +48,20 @@ the project! Each file type is handled by a comparator, and writing a
 new one is usually very easy. Here are the steps to add a new
 comparator:
 
--   Add the new comparator in `diffoscope/comparators/` (have a look at
-    the other comparators in the same directory to have an idea of what
-    to do)
--   Declare the comparator File class in `ComparatorManager` in
-    `diffoscope/comparators/__init__.py`
--   Add a test in `tests/comparators/`
--   If required, update the `Build-Depends` list in `debian/control`
--   If required, update the `EXTERNAL_TOOLS` list in
-    `diffoscope/external_tools.py`
+* Add the new comparator in `diffoscope/comparators`.
+
+* Declare the comparator File class in `ComparatorManager` in
+  `diffoscope/comparators/__init__.py`
+
+* Add a test under `tests/comparators/`
+
+* If required:
+
+  - Update the `Build-Depends` list in `debian/control`
+
+  - Update the `EXTERNAL_TOOLS` list in
+   `diffoscope/external_tools.py`
+
 
 ## Uploading the package
 
