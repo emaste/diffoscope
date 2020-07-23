@@ -40,8 +40,9 @@ As an optional step, you can ignore these commits using:
 
     $ git config blame.ignoreRevsFile .git-blame-ignore-revs
 
+## Common development topics
 
-## Add a comparator
+### Adding a comparator
 
 Diffoscope doesn't support a specific file type? Please contribute to
 the project! Each file type is handled by a comparator, and writing a
@@ -62,6 +63,13 @@ comparator:
 
   - Update the `EXTERNAL_TOOLS` list in
    `diffoscope/external_tools.py`
+
+### Adding a new option
+
+Please try and refrain from adding new command-line options. A brief rationale
+may be found here:
+
+  https://salsa.debian.org/reproducible-builds/diffoscope/-/issues/18#note_183040
 
 
 ## Release process
