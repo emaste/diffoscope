@@ -57,7 +57,8 @@ comparator:
 
 * If required:
 
-  - Update the `Build-Depends` list in `debian/control`
+  - Update the `Build-Depends` list in `debian/control` and regenerate
+    `debian/tests/control` by following the instructions in that file.
 
   - Update the `EXTERNAL_TOOLS` list in
    `diffoscope/external_tools.py`
