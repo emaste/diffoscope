@@ -736,14 +736,20 @@ def main(args=None):
         args = [repl if x == val else x for x in args]
 
     parsed_args = None
+
     try:
         with profile("main", "parse_args"):
             parser, post_parse = create_parser()
             parsed_args = parser.parse_args(args)
+
         log_handler = ProgressManager().setup(parsed_args)
+
         with setup_logging(parsed_args.debug, log_handler) as logger:
             post_parse(parsed_args)
+
+            # Call main entry point
             sys.exit(run_diffoscope(parsed_args))
+
     except OSError as e:
         if e.errno != errno.ENOSPC:
             raise
