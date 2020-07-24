@@ -5,7 +5,7 @@ diffoscope
    :target: http://badge.fury.io/py/diffoscope
 
 .. image:: https://jenkins.debian.net/buildStatus/icon?job=reproducible_diffoscope_from_git_master&plastic=true
-  :target: https://jenkins.debian.net/job/reproducible_diffoscope_from_git_master
+  :target: https://jenkins.debian.net/job/reproducible_diffoscope_from_git
 
 diffoscope will try to get to the bottom of what makes files or
 directories different. It will recursively unpack archives of many kinds
