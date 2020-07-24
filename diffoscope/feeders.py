@@ -123,22 +123,24 @@ def from_text_reader(in_file, filter=None):
 
 def from_command(command):
     def feeder(out_file):
-        with profile("command", command.cmdline()[0]):
-            feeder = from_raw_reader(command.stdout, command.filter)
+        with profile("command", command.name):
+            feeder = from_raw_reader(command.output, command.filter)
             end_nl = feeder(out_file)
-            returncode = command.returncode
-        if returncode not in (0, -signal.SIGTERM):
-            # On error, default to displaying all lines of standard output.
-            output = command.stderr
-            if not output and command.stdout:
+
+        if command.did_fail:
+            # On error, default to displaying all lines of the error
+            output = command.error_string
+            if not output and command.output:
                 # ... but if we don't have, return the first line of the
                 # standard output.
                 output = "{}{}".format(
-                    command.stdout[0].decode("utf-8", "ignore").strip(),
-                    "\n[…]" if len(command.stdout) > 1 else "",
+                    command.output[0].decode("utf-8", "ignore").strip(),
+                    "\n[…]" if len(command.output) > 1 else "",
                 )
             raise subprocess.CalledProcessError(
-                returncode, command.cmdline(), output=output.encode("utf-8")
+                command.returncode,
+                command.description().split(" "),
+                output=output.encode("utf-8"),
             )
         return end_nl
 

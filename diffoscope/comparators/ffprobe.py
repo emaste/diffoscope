@@ -35,7 +35,7 @@ class Ffprobe(Command):
         self.flag = False
 
     @property
-    def stdout(self):
+    def output(self):
         return self._process.stderr.splitlines(True)
 
     @tool_required("ffprobe")

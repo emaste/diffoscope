@@ -18,24 +18,23 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import abc
+import signal
 import logging
 import subprocess
 
+from .operation import Operation
 from ...utils import format_cmdline
 
 logger = logging.getLogger(__name__)
 
 
-class Command(metaclass=abc.ABCMeta):
+class Command(Operation, metaclass=abc.ABCMeta):
     MASK_STDERR = False
     MAX_STDERR_LINES = 25
     VALID_RETURNCODES = {0}
 
-    def __init__(self, path):
-        self._path = path
-
     def start(self):
-        logger.debug("Executing %s", self.shell_cmdline())
+        logger.debug("Executing %s", self.description())
 
         self._stdin = self.stdin()
         # "stdin" used to be a feeder but we didn't need the functionality so
@@ -56,10 +55,6 @@ class Command(metaclass=abc.ABCMeta):
 
         self.stderr = self._read_stderr()
 
-    @property
-    def path(self):
-        return self._path
-
     def stdin(self):
         return None
 
@@ -67,21 +62,18 @@ class Command(metaclass=abc.ABCMeta):
     def cmdline(self):
         raise NotImplementedError()
 
-    def shell_cmdline(self, *args, **kwargs):
+    @property
+    def name(self):
+        return self.cmdline()[0]
+
+    def description(self, *args, **kwargs):
         kwargs.setdefault("replace", (self.path,))
         return format_cmdline(self.cmdline(), *args, **kwargs)
 
     def env(self):
         return None  # inherit parent environment by default
 
-    def filter(self, line):
-        # Assume command output is utf-8 by default
-        return line
-
     def poll(self):
-        pass
-
-    def terminate(self):
         pass
 
     def input(self):
@@ -108,15 +100,23 @@ class Command(metaclass=abc.ABCMeta):
 
     @property
     def returncode(self):
-        val = self._process.returncode
-
-        if val in self.VALID_RETURNCODES:
-            return 0
-
-        return val
+        return self._process.returncode
 
     @property
-    def stdout(self):
+    def did_fail(self):
+        # Handle SIGTERM once here as VALID_RETURNCODES may be overriden by
+        # subclasses, and we don't want them to have to include it each time
+        if self.returncode == -signal.SIGTERM:
+            return False
+
+        return self.returncode not in self.VALID_RETURNCODES
+
+    @property
+    def error_string(self):
+        return self.stderr
+
+    @property
+    def output(self):
         return self._process.stdout.splitlines(True)
 
 

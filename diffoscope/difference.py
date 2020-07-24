@@ -268,7 +268,7 @@ class Difference:
             else:
                 command = klass(path, *command_args)
                 feeder = feeders.from_command(command)
-                if command_excluded(command.shell_cmdline()):
+                if command_excluded(command.description()):
                     return None, None, True
                 command.start()
             return feeder, command, False
@@ -280,8 +280,8 @@ class Difference:
             return None, True
 
         if "source" not in kwargs:
-            source_cmd = command1 or command2
-            kwargs["source"] = source_cmd.shell_cmdline(truncate=120)
+            source_op = command1 or command2
+            kwargs["source"] = source_op.description(truncate=120)
 
         try:
             difference = Difference.from_feeder(
@@ -297,27 +297,27 @@ class Difference:
 
         if (
             command1
-            and command1.stderr
+            and command1.error_string
             and command2
-            and command2.stderr
-            and command1.shell_cmdline() == command2.shell_cmdline()
+            and command2.error_string
+            and command1.description() == command2.description()
         ):
             # Output is the same, so don't repeat the output
             difference.add_comment(
-                "stderr from `{}`:".format(command1.shell_cmdline())
+                "error from `{}`:".format(command1.description())
             )
-            difference.add_comment(command1.stderr)
+            difference.add_comment(command1.error_string)
         else:
-            if command1 and command1.stderr:
+            if command1 and command1.error_string:
                 difference.add_comment(
-                    "stderr from `{}` (a):".format(command1.shell_cmdline())
+                    "error from `{}` (a):".format(command1.description())
                 )
-                difference.add_comment(command1.stderr)
+                difference.add_comment(command1.error_string)
             if command2 and command2.stderr:
                 difference.add_comment(
-                    "stderr from `{}` (b):".format(command2.shell_cmdline())
+                    "error from `{}` (b):".format(command2.description())
                 )
-                difference.add_comment(command2.stderr)
+                difference.add_comment(command2.error_string)
 
         return difference, False
 
