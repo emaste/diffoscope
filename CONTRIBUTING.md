@@ -1,7 +1,7 @@
 # Contributing
 
 The preferred way to report bugs about *diffoscope*, as well as suggest
-fixes and requests for improvements, is to submit reports to the issue
+fixes and requests for improvements is to submit reports to the issue
 tracker at:
 
     https://salsa.debian.org/reproducible-builds/diffoscope/issues

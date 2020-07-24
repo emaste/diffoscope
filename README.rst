@@ -90,9 +90,11 @@ Daroussin, Levente Polyak.
 Contact
 =======
 
-Please report bugs and send patches through the Debian bug tracking
-system against the diffoscope package:
-<https://bugs.debian.org/src:diffoscope>
+The preferred way to report bugs about *diffoscope*, as well as suggest
+fixes and requests for improvements is to submit reports to the issue
+tracker at:
+
+    https://salsa.debian.org/reproducible-builds/diffoscope/issues
 
 For more instructions, see ``CONTRIBUTING.rst`` in this directory.
 
