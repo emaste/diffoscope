@@ -264,7 +264,7 @@ class Changes:
             raise ChangesFileException(
                 "Unknown problem while verifying signature")
 
-        # contains verbose human readable GPG information
+        # contains verbose human-readable GPG information
         gpg_output_stderr = str(gpg_output_stderr, encoding='utf8')
 
         gpg_output = gpg_output.decode(encoding='UTF-8')
