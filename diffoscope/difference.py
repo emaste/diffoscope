@@ -268,7 +268,7 @@ class Difference:
             else:
                 command = klass(path, *command_args)
                 feeder = feeders.from_command(command)
-                if command_excluded(command.description()):
+                if command_excluded(command.full_name()):
                     return None, None, True
                 command.start()
             return feeder, command, False
@@ -281,7 +281,7 @@ class Difference:
 
         if "source" not in kwargs:
             source_op = command1 or command2
-            kwargs["source"] = source_op.description(truncate=120)
+            kwargs["source"] = source_op.full_name(truncate=120)
 
         try:
             difference = Difference.from_feeder(
@@ -300,22 +300,22 @@ class Difference:
             and command1.error_string
             and command2
             and command2.error_string
-            and command1.description() == command2.description()
+            and command1.full_name() == command2.full_name()
         ):
             # Output is the same, so don't repeat the output
             difference.add_comment(
-                "error from `{}`:".format(command1.description())
+                "error from `{}`:".format(command1.full_name())
             )
             difference.add_comment(command1.error_string)
         else:
             if command1 and command1.error_string:
                 difference.add_comment(
-                    "error from `{}` (a):".format(command1.description())
+                    "error from `{}` (a):".format(command1.full_name())
                 )
                 difference.add_comment(command1.error_string)
-            if command2 and command2.stderr:
+            if command2 and command2.error_string:
                 difference.add_comment(
-                    "error from `{}` (b):".format(command2.description())
+                    "error from `{}` (b):".format(command2.full_name())
                 )
                 difference.add_comment(command2.error_string)
 

@@ -25,15 +25,13 @@ logger = logging.getLogger(__name__)
 
 class Operation(metaclass=abc.ABCMeta):
     def __init__(self, path):
-        self._path = path
+        self.path = path
+        self.returncode = None
+        self.error_string = None
 
     @abc.abstractmethod
     def start(self):
         raise NotImplementedError()
-
-    @property
-    def path(self):
-        return self._path
 
     @abc.abstractproperty
     def name(self):
@@ -43,9 +41,9 @@ class Operation(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def description(self, truncate=None):
+    def full_name(self, truncate=None):
         """
-        Full description of the operation, that will be used to call
+        Full name of the operation, that will be used to call
         command_excluded, e.g. "readelf --debug-dump=info"
         """
         raise NotImplementedError()
@@ -57,27 +55,12 @@ class Operation(metaclass=abc.ABCMeta):
     def terminate(self):
         pass
 
-    @property
-    def did_fail(self):
+    def should_show_error(self):
         """
-        Whether or not the operation resulted in an unexpected error
+        Whether or not the operation resulted in an unexpected error which
+        should be displayed rather than output
         """
         return False
-
-    @property
-    def error_string(self):
-        """
-        If did_fail, return a string describing the error
-        Typically, the content of stderr for Command instances
-        """
-        return ""
-
-    @property
-    def returncode(self):
-        """
-        In case of error, the code associated with it
-        """
-        return 0
 
     @abc.abstractproperty
     def output(self):

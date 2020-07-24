@@ -19,7 +19,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
-import signal
 import hashlib
 import logging
 import subprocess
@@ -127,9 +126,9 @@ def from_command(command):
             feeder = from_raw_reader(command.output, command.filter)
             end_nl = feeder(out_file)
 
-        if command.did_fail:
+        if command.should_show_error():
             # On error, default to displaying all lines of the error
-            output = command.error_string
+            output = command.error_string or ""
             if not output and command.output:
                 # ... but if we don't have, return the first line of the
                 # standard output.
@@ -139,7 +138,7 @@ def from_command(command):
                 )
             raise subprocess.CalledProcessError(
                 command.returncode,
-                command.description().split(" "),
+                command.name,
                 output=output.encode("utf-8"),
             )
         return end_nl

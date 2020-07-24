@@ -34,7 +34,7 @@ class Command(Operation, metaclass=abc.ABCMeta):
     VALID_RETURNCODES = {0}
 
     def start(self):
-        logger.debug("Executing %s", self.description())
+        logger.debug("Executing %s", self.full_name())
 
         self._stdin = self.stdin()
         # "stdin" used to be a feeder but we didn't need the functionality so
@@ -53,7 +53,8 @@ class Command(Operation, metaclass=abc.ABCMeta):
             stderr=subprocess.PIPE,
         )
 
-        self.stderr = self._read_stderr()
+        self.error_string = self._read_stderr()
+        self.returncode = self._process.returncode
 
     def stdin(self):
         return None
@@ -66,7 +67,7 @@ class Command(Operation, metaclass=abc.ABCMeta):
     def name(self):
         return self.cmdline()[0]
 
-    def description(self, *args, **kwargs):
+    def full_name(self, *args, **kwargs):
         kwargs.setdefault("replace", (self.path,))
         return format_cmdline(self.cmdline(), *args, **kwargs)
 
@@ -98,22 +99,13 @@ class Command(Operation, metaclass=abc.ABCMeta):
 
         return buf
 
-    @property
-    def returncode(self):
-        return self._process.returncode
-
-    @property
-    def did_fail(self):
+    def should_show_error(self):
         # Handle SIGTERM once here as VALID_RETURNCODES may be overriden by
         # subclasses, and we don't want them to have to include it each time
         if self.returncode == -signal.SIGTERM:
             return False
 
         return self.returncode not in self.VALID_RETURNCODES
-
-    @property
-    def error_string(self):
-        return self.stderr
 
     @property
     def output(self):
