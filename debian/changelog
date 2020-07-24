@@ -1,8 +1,32 @@
-diffoscope (153) UNRELEASED; urgency=medium
+diffoscope (153) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
 
- -- Chris Lamb <lamby@debian.org>  Sat, 18 Jul 2020 11:12:25 +0100
+  * Drop some legacy argument styles; --exclude-directory-metadata and
+    --no-exclude-directory-metadata have been replaced with
+    --exclude-directory-metadata={yes,no}.
+
+  * Code improvements:
+
+    - Make it easier to navigate the main.py entry point.
+    - Use a relative import for get_temporary_directory in diffoscope.diff.
+    - Rename bail_if_non_existing to exit_if_paths_do_not_exist.
+    - Rewrite exit_if_paths_do_not_exist to not check files multiple times.
+
+  * Documentation improvements:
+
+    - CONTRIBUTING.md:
+
+      - Add a quick note about adding/suggesting new options.
+      - Update and expand the release process documentation.
+      - Add a reminder to regenerate debian/tests/control.
+
+    - README.rst:
+
+      - Correct URL to build job on Jenkins.
+      - Clarify and correct contributing info to point to salsa.debian.org.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 24 Jul 2020 12:03:51 +0100
 
 diffoscope (152) unstable; urgency=medium
 
