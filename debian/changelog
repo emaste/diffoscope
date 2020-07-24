@@ -43,7 +43,7 @@ diffoscope (152) unstable; urgency=medium
     - Don't require zipnote(1) to determine differences in a .zip file as we
       can use libarchive directly.
 
-  Reporting improvements:
+  * Reporting improvements:
 
     - Don't emit "javap not found in path" if it is available in the path but
       it did not result in any actual difference.
