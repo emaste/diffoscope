@@ -51,7 +51,9 @@ class FsImageContainer(Archive):
             pass
         self.g.add_drive_opts(self.source.path, format="raw", readonly=1)
         try:
+            logger.debug("Launching guestfs; this may take some time")
             self.g.launch()
+            logger.debug("guestfs successful launched")
         except RuntimeError:
             logger.exception("guestfs failed to launch")
             logger.error(
