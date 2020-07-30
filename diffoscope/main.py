@@ -215,6 +215,9 @@ def create_parser():
         "--profile",
         metavar="OUTPUT_FILE",
         dest="profile_output",
+        nargs="?",
+        const="-",
+        default=None,
         help="Write profiling info to given file (use - for stdout)",
     )
 
