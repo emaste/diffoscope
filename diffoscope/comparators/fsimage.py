@@ -24,6 +24,7 @@ import os.path
 
 from diffoscope.difference import Difference
 from diffoscope.tools import python_module_missing
+from diffoscope.profiling import profile
 
 from .utils.file import File
 from .utils.archive import Archive
@@ -52,7 +53,8 @@ class FsImageContainer(Archive):
         self.g.add_drive_opts(self.source.path, format="raw", readonly=1)
         try:
             logger.debug("Launching guestfs; this may take some time")
-            self.g.launch()
+            with profile("command", "guestfs"):
+                self.g.launch()
             logger.debug("guestfs successful launched")
         except RuntimeError:
             logger.exception("guestfs failed to launch")
