@@ -541,6 +541,9 @@ class File(metaclass=abc.ABCMeta):
             return difference
         return self.compare_bytes(other, source)
 
+    def add_comment(self, msg):
+        self._comments.append(msg)
+
 
 def maybe_decode(s):
     """

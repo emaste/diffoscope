@@ -53,7 +53,7 @@ class PdfFile(File):
         xs = []
 
         if PyPDF2 is None:
-            self._comments.append(
+            self.add_comment(
                 "Installing the 'PyPDF2' package may produce a better output."
             )
         else:
