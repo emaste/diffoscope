@@ -1,8 +1,20 @@
-diffoscope (154) UNRELEASED; urgency=medium
+diffoscope (154) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
 
- -- Chris Lamb <lamby@debian.org>  Fri, 24 Jul 2020 12:05:12 +0100
+  * Add support for F2FS filesystems.
+    (Closes: reproducible-builds/diffoscope#207)
+  * Allow "--profile" as a synonym for "--profile=-".
+  * Add an add_comment helper method so don't mess with our _comments list
+    directly.
+  * Add missing bullet point in a previous changelog entry.
+  * Use "human-readable" over unhyphenated version.
+  * Add a bit more debugging around launching guestfs.
+  * Profile the launch of guestfs filesystems.
+  * Correct adding a comment when we cannot extract a filesystem due to missing
+    guestfs module.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 31 Jul 2020 10:26:15 +0100
 
 diffoscope (153) unstable; urgency=medium
 
