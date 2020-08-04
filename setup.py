@@ -82,4 +82,10 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Topic :: Utilities',
     ],
+
+    # https://packaging.python.org/guides/distributing-packages-using-setuptools/#project-urls
+    project_urls={
+        "Issues": "https://salsa.debian.org/reproducible-builds/diffoscope/-/issues",
+        "Merge requests": "https://salsa.debian.org/reproducible-builds/diffoscope/-/merge_requests",
+    },
 )
