@@ -1,4 +1,4 @@
 [tool.black]
 line-length = 79
-include = '(diffoscope|tests)/.+\.pyi?$'
+include = '(setup|diffoscope/.+|tests/.+)\.pyi?$'
 exclude = "diffoscope/changes.py"
