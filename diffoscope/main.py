@@ -746,6 +746,8 @@ def main(args=None):
             # Call main entry point
             sys.exit(run_diffoscope(parsed_args))
 
+    except BrokenPipeError:
+        sys.exit(2)
     except OSError as e:
         if e.errno != errno.ENOSPC:
             raise
@@ -753,8 +755,6 @@ def main(args=None):
         sys.exit(2)
     except KeyboardInterrupt:
         logger.error("Keyboard Interrupt")
-        sys.exit(2)
-    except BrokenPipeError:
         sys.exit(2)
     except Exception:
         sys.stderr.buffer.write(line_eraser())

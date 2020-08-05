@@ -69,34 +69,34 @@ class File(metaclass=abc.ABCMeta):
     if hasattr(magic, "open"):  # use Magic-file-extensions from file
 
         @classmethod
-        def guess_file_type(self, path):
-            if not hasattr(self, "_mimedb"):
-                self._mimedb = magic.open(magic.NONE)
-                self._mimedb.load()
-            return self._mimedb.file(
+        def guess_file_type(cls, path):
+            if not hasattr(cls, "_mimedb"):
+                cls._mimedb = magic.open(magic.NONE)
+                cls._mimedb.load()
+            return cls._mimedb.file(
                 path.encode("utf-8", errors="surrogateescape")
             )
 
         @classmethod
-        def guess_encoding(self, path):
-            if not hasattr(self, "_mimedb_encoding"):
-                self._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
-                self._mimedb_encoding.load()
-            return self._mimedb_encoding.file(path)
+        def guess_encoding(cls, path):
+            if not hasattr(cls, "_mimedb_encoding"):
+                cls._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
+                cls._mimedb_encoding.load()
+            return cls._mimedb_encoding.file(path)
 
     else:  # use python-magic
 
         @classmethod
-        def guess_file_type(self, path):
-            if not hasattr(self, "_mimedb"):
-                self._mimedb = magic.Magic()
-            return maybe_decode(self._mimedb.from_file(path))
+        def guess_file_type(cls, path):
+            if not hasattr(cls, "_mimedb"):
+                cls._mimedb = magic.Magic()
+            return maybe_decode(cls._mimedb.from_file(path))
 
         @classmethod
-        def guess_encoding(self, path):
-            if not hasattr(self, "_mimedb_encoding"):
-                self._mimedb_encoding = magic.Magic(mime_encoding=True)
-            return maybe_decode(self._mimedb_encoding.from_file(path))
+        def guess_encoding(cls, path):
+            if not hasattr(cls, "_mimedb_encoding"):
+                cls._mimedb_encoding = magic.Magic(mime_encoding=True)
+            return maybe_decode(cls._mimedb_encoding.from_file(path))
 
     def __init__(self, container=None):
         self._comments = []
@@ -353,8 +353,8 @@ class File(metaclass=abc.ABCMeta):
 
         return compare_binary_files(self, other, source)
 
-    @classmethod
-    def _mangle_file_type(self, val):
+    @staticmethod
+    def _mangle_file_type(val):
         # Strip off trailing (eg.) "original size modulo 2^32 671" from
         # gzip compressed data as this is just a symptom of the contents itself
         # changing that will be reflected elsewhere.

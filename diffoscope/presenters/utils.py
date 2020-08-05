@@ -338,8 +338,10 @@ class PartialString:
     def size(self, hole_size=1):
         return self.base_len + hole_size * self.num_holes
 
-    def pformat(self, mapping={}):
+    def pformat(self, mapping=None):
         """Partially apply a mapping, returning a new PartialString."""
+        if mapping is None:
+            mapping = {}
         real_mapping, new_holes = self._pformat(mapping, True)
         return self.__class__(self._format(*real_mapping), *new_holes)
 
@@ -347,8 +349,10 @@ class PartialString:
         """Partially apply a list, implicitly mapped from self.holes."""
         return self.pformat(dict(zip(self.holes, args)))
 
-    def format(self, mapping={}):
+    def format(self, mapping=None):
         """Fully apply a mapping, returning a string."""
+        if mapping is None:
+            mapping = {}
         real_mapping, new_holes = self._pformat(mapping, False)
         if new_holes:
             raise ValueError("not all holes filled: %r" % new_holes)

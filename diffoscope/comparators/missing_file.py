@@ -46,6 +46,7 @@ class MissingFile(File, AbstractMissingType):
         return False
 
     def __init__(self, path, other_file=None):
+        super().__init__()
         self._name = path
         self._other_file = other_file
 

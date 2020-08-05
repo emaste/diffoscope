@@ -23,12 +23,14 @@ from .tools import get_tool_name, get_package_provider
 
 class OutputParsingError(Exception):
     def __init__(self, command, object):
+        super().__init__()
         self.command = command
         self.object_class = object.__class__
 
 
 class RequiredToolNotFound(Exception):
     def __init__(self, command):
+        super().__init__()
         self.command = get_tool_name(command)
 
     def get_comment(self, infix=""):
@@ -50,5 +52,6 @@ class RequiredToolNotFound(Exception):
 
 class ContainerExtractionError(Exception):
     def __init__(self, pathname, wrapped_exc):
+        super().__init__()
         self.pathname = pathname
         self.wrapped_exc = wrapped_exc

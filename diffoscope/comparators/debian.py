@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 class DebControlMember(File):
     def __init__(self, container, member_name):
-        self._container = container
+        super().__init__(container)
         self._name = member_name
         self._path = None
 
