@@ -1,8 +1,22 @@
-diffoscope (155) UNRELEASED; urgency=medium
+diffoscope (155) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Bump Python requirement from 3.6 to 3.7 - most distributions are either
+    shipping3.5 or 3.7, so supporting 3.6 is not somewhat unnecessary and also
+    more difficult to test locally.
+  * Improvements to setup.py:
+    - Apply the Black source code reformatter.
+    - Add some URLs for the site of PyPI.org.
+    - Update "author" and author email.
+  * Explicitly support Python 3.8.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 31 Jul 2020 10:39:36 +0100
+  [ Frazer Clews ]
+  * Move away from the deprecated logger.warn method logger.warning.
+
+  [ Mattia Rizzolo ]
+  * Document ("classify") on PyPI that this project works with Python 3.8.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 07 Aug 2020 12:09:50 +0100
 
 diffoscope (154) unstable; urgency=medium
 
