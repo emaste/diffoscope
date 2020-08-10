@@ -97,7 +97,17 @@ class PpuFile(File):
             except OSError:
                 PpuFile.ppu_version = None
                 logger.debug("Unable to read PPU version")
-        return PpuFile.ppu_version == ppu_version
+
+        if PpuFile.ppu_version != ppu_version:
+            logger.debug(
+                "ppudump version (%s) does not match header of %s (%s)",
+                PpuFile.ppu_version,
+                file.name,
+                ppu_version,
+            )
+            return False
+
+        return True
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Ppudump, self.path, other.path)]
