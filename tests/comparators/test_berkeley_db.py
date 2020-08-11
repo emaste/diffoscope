@@ -21,7 +21,7 @@ import pytest
 
 from diffoscope.comparators.berkeley_db import BerkeleyDBFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
@@ -45,8 +45,7 @@ def test_no_differences(db1):
 
 @skip_unless_tools_exist("db_dump")
 def test_diff(differences):
-    expected_diff = get_data("berkeley_db_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "berkeley_db_expected_diff")
 
 
 @skip_unless_tools_exist("db_dump")

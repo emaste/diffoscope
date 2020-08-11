@@ -24,7 +24,7 @@ import subprocess
 
 from diffoscope.comparators.ppu import PpuFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
@@ -63,8 +63,7 @@ def differences(file1, file2):
 
 @skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.2.0")
 def test_diff(differences):
-    expected_diff = get_data("ppu_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "ppu_expected_diff")
 
 
 @skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.2.0")
