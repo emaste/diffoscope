@@ -47,6 +47,10 @@ def get_data(filename):
         return f.read()
 
 
+def assert_diff(difference, filename):
+    assert difference.unified_diff == get_data(filename)
+
+
 # https://code.activestate.com/recipes/576620-changedirectory-context-manager/#c3
 @contextlib.contextmanager
 def cwd_data():
