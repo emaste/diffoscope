@@ -61,12 +61,12 @@ def differences(file1, file2):
     return file1.compare(file2).details
 
 
-@skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.0.0")
+@skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.2.0")
 def test_diff(differences):
     expected_diff = get_data("ppu_expected_diff")
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.0.0")
+@skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.2.0")
 def test_compare_non_existing(monkeypatch, file1):
     assert_non_existing(monkeypatch, file1, has_null_source=False)
