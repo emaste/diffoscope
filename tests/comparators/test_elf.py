@@ -31,7 +31,7 @@ from diffoscope.comparators.directory import FilesystemDirectory
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, load_fixture, get_data
+from ..utils.data import data, load_fixture, assert_diff
 from ..utils.tools import (
     skip_unless_tools_exist,
     skip_if_binutils_does_not_support_x86,
@@ -91,8 +91,7 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 @skip_if_binutils_does_not_support_x86()
 def test_diff(obj_differences):
     assert len(obj_differences) == 1
-    expected_diff = get_data("elf_obj_expected_diff")
-    assert obj_differences[0].unified_diff == expected_diff
+    assert_diff(obj_differences[0], "elf_obj_expected_diff")
 
 
 TEST_LIB1_PATH = data("test1.a")
@@ -129,11 +128,9 @@ def lib_differences(lib1, lib2):
 def test_lib_differences(lib_differences):
     assert len(lib_differences) == 2
     assert lib_differences[0].source1 == "file list"
-    expected_metadata_diff = get_data("elf_lib_metadata_expected_diff")
-    assert lib_differences[0].unified_diff == expected_metadata_diff
+    assert_diff(lib_differences[0], "elf_lib_metadata_expected_diff")
     assert "objdump" in lib_differences[1].details[0].source1
-    expected_objdump_diff = get_data("elf_lib_objdump_expected_diff")
-    assert lib_differences[1].details[0].unified_diff == expected_objdump_diff
+    assert_diff(lib_differences[1].details[0], "elf_lib_objdump_expected_diff")
 
 
 @skip_unless_tools_exist("readelf", "objdump")
@@ -184,10 +181,10 @@ def test_libmix_differences(libmix_differences):
 
     # Content
     assert "return42_or_3" in file_list.unified_diff
-    assert mach_o.unified_diff == get_data("elfmix_mach_o_expected_diff")
-    assert x86_o.unified_diff == get_data("elfmix_disassembly_expected_diff")
-    assert src_c.unified_diff == get_data("elfmix_src_c_expected_diff")
-    assert x_obj.unified_diff == get_data("elfmix_x_obj_expected_diff")
+    assert_diff(mach_o, "elfmix_mach_o_expected_diff")
+    assert_diff(x86_o, "elfmix_disassembly_expected_diff")
+    assert_diff(src_c, "elfmix_src_c_expected_diff")
+    assert_diff(x_obj, "elfmix_x_obj_expected_diff")
 
 
 TEST_DBGSYM_DEB1_PATH = data("dbgsym/add/test-dbgsym_1_amd64.deb")
@@ -242,8 +239,7 @@ def test_differences_with_dbgsym(dbgsym_differences):
 def test_original_gnu_debuglink(dbgsym_differences):
     bin_details = dbgsym_differences.details[2].details[0].details[0]
     assert ".gnu_debuglink" in bin_details.details[3].source1
-    expected_gnu_debuglink = get_data("gnu_debuglink_expected_diff")
-    assert bin_details.details[3].unified_diff == expected_gnu_debuglink
+    assert_diff(bin_details.details[3], "gnu_debuglink_expected_diff")
 
 
 def test_ignore_readelf_errors1_identify(ignore_readelf_errors1):
@@ -265,5 +261,7 @@ def ignore_readelf_errors_differences(
 @skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
 def test_ignore_readelf_errors(ignore_readelf_errors_differences):
-    expected_diff = get_data("ignore_readelf_errors_expected_diff")
-    assert ignore_readelf_errors_differences[0].unified_diff == expected_diff
+    assert_diff(
+        ignore_readelf_errors_differences[0],
+        "ignore_readelf_errors_expected_diff",
+    )

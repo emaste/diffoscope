@@ -24,7 +24,7 @@ from diffoscope.config import Config
 from diffoscope.comparators.fonts import TtfFile
 from diffoscope.comparators.missing_file import MissingFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 
 
@@ -48,8 +48,7 @@ def differences(ttf1, ttf2):
 
 @skip_unless_tools_exist("showttf")
 def test_diff(differences):
-    expected_diff = get_data("ttf_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "ttf_expected_diff")
 
 
 @skip_unless_tools_exist("showttf")

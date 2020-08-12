@@ -21,7 +21,7 @@ import pytest
 
 from diffoscope.comparators.fontconfig import FontconfigCacheFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 
 cache1 = load_fixture("test1-le64.cache-4")
 cache2 = load_fixture("test2-le64.cache-4")
@@ -42,5 +42,4 @@ def differences(cache1, cache2):
 
 
 def test_diff(differences):
-    expected_diff = get_data("fontconfig_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "fontconfig_expected_diff")

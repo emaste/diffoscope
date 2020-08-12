@@ -25,7 +25,7 @@ from diffoscope.config import Config
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.gettext import MoFile
 
-from ..utils.data import data, load_fixture, get_data
+from ..utils.data import data, load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 
 
@@ -49,8 +49,7 @@ def differences(mo1, mo2):
 
 @skip_unless_tools_exist("msgunfmt")
 def test_diff(differences):
-    expected_diff = get_data("mo_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "mo_expected_diff")
 
 
 mo_no_charset = load_fixture("test_no_charset.mo")
