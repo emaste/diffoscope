@@ -29,12 +29,6 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
 
-# These test files were taken from two different builds of the Debian package
-# fp-units-castle-game-engine (version 5.1.1-2 on amd64) on the Debian
-# reproducible build infrastructure. The files were originally called
-# castletexturefont_dejavusans_10.ppu which are generated during package
-# building of the cge package from dejavusans font in the fonts-dejavu package.
-
 file1 = load_fixture("test1.ppu")
 file2 = load_fixture("test2.ppu")
 
