@@ -46,7 +46,7 @@ def ppudump_version():
     return out.decode("utf-8").splitlines()[0].split()[2].strip()
 
 
-@skip_unless_tools_exist("ppudump")
+@skip_unless_tool_is_at_least("ppudump", ppudump_version, "3.2.0")
 def test_identification(file1):
     assert isinstance(file1, PpuFile)
 
