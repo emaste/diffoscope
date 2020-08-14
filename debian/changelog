@@ -1,8 +1,17 @@
-diffoscope (156) UNRELEASED; urgency=medium
+diffoscope (156) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Update PPU tests for compatibility with Free Pascal versions 3.2.0 or
+    greater. (Closes: #968124)
+  * Emit a debug-level logging message when our ppudump(1) version does not
+    match file header.
+  * Add and use an assert_diff helper that loads and compares a fixture output
+    to avoid a bunch of test boilerplate.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 07 Aug 2020 12:21:26 +0100
+  [ Frazer Clews ]
+  * Apply some pylint suggestions to the codebase.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 14 Aug 2020 10:04:26 +0100
 
 diffoscope (155) unstable; urgency=medium
 
