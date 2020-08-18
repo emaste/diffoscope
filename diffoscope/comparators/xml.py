@@ -27,8 +27,10 @@ from diffoscope.tools import python_module_missing
 from .missing_file import MissingFile
 
 try:
+    defusedxml = True
     from defusedxml import minidom
 except ImportError:
+    defusedxml = False
     python_module_missing("defusedxml")
     from xml.dom import minidom
 
@@ -61,7 +63,12 @@ def _parse(file):
     Returns:
         str: formated string object
     """
-    xml = minidom.parse(file)
+
+    if defusedxml:
+        xml = minidom.parse(file, forbid_entities=False, forbid_external=False)
+    else:
+        xml = minidom.parse(file)
+
     _format(xml)
     xml.normalize()
 
