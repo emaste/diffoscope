@@ -21,7 +21,7 @@ import pytest
 
 from diffoscope.comparators.pgp import PgpFile, PgpSignature
 
-from ..utils.data import load_fixture, get_data, assert_diff
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
@@ -49,8 +49,7 @@ def differences(pgp1, pgp2):
 
 @skip_unless_tools_exist("pgpdump")
 def test_diff(differences):
-    expected_diff = get_data("pgp_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "pgp_expected_diff")
 
 
 @skip_unless_tools_exist("pgpdump")
@@ -66,7 +65,7 @@ def test_pgp_signature_identification(signature1, signature2):
 @skip_unless_tools_exist("pgpdump")
 def test_pgp_signature(signature1, signature2):
     difference = signature1.compare(signature2)
-    assert difference.unified_diff == get_data("pgp_signature_expected_diff")
+    assert_diff(difference, "pgp_signature_expected_diff")
     assert difference.details[0].source1 == "pgpdump"
     assert len(difference.details) == 1
 
