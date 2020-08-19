@@ -44,6 +44,7 @@ class Pgpdump(Command):
 class PgpFile(File):
     DESCRIPTION = "PGP signed/encrypted messages"
     FILE_TYPE_RE = re.compile(r"^PGP message\b")
+    FALLBACK_FILE_TYPE_HEADER_PREFIX = b"\xa3\x01"
 
     def compare_details(self, other, source=None):
         return [
