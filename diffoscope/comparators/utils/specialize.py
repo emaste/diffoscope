@@ -64,7 +64,8 @@ def specialize(file):
             return file
 
     logger.debug(
-        "File not identified by any comparator. Magic says: %s",
+        "%s not identified by any comparator. Magic says: %s",
+        file.name,
         file.magic_file_type,
     )
 
