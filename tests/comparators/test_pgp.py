@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017, 2019-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2019 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ from ..utils.nonexisting import assert_non_existing
 
 pgp1 = load_fixture("test1.pgp")
 pgp2 = load_fixture("test2.pgp")
+signed1 = load_fixture("test1_signed.pgp")
+signed2 = load_fixture("test2_signed.pgp")
 signature1 = load_fixture("test1.asc")
 signature2 = load_fixture("test2.asc")
 
@@ -66,3 +68,17 @@ def test_pgp_signature(signature1, signature2):
     assert_diff(difference, "pgp_signature_expected_diff")
     assert difference.details[0].source1 == "pgpdump"
     assert len(difference.details) == 1
+
+
+def test_signed_identification(signed1):
+    assert isinstance(signed1, PgpFile)
+
+
+@pytest.fixture
+def signed_differences(signed1, signed2):
+    return signed1.compare(signed2).details
+
+
+@skip_unless_tools_exist("pgpdump")
+def test_signed_diff(signed_differences):
+    assert_diff(signed_differences[0], "pgp_signed_expected_diff")

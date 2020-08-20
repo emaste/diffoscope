@@ -2,7 +2,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,13 +18,17 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
+import logging
+import subprocess
 
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 
 from .text import TextFile
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
+
+logger = logging.getLogger(__name__)
 
 
 class Pgpdump(Command):
@@ -44,6 +48,24 @@ class Pgpdump(Command):
 class PgpFile(File):
     DESCRIPTION = "PGP signed/encrypted messages"
     FILE_TYPE_RE = re.compile(r"^PGP message\b")
+    FALLBACK_FILE_EXTENSION_SUFFIX = ".pgp"
+
+    @classmethod
+    def recognizes(cls, file):
+        if file.magic_file_type == "data":
+            try:
+                our_check_output(
+                    ("pgpdump", file.path), stderr=subprocess.DEVNULL
+                )
+            except subprocess.CalledProcessError:
+                pass
+            else:
+                logger.debug("%s is a PGP file", file.path)
+                return True
+
+            logger.debug("%s is not a PGP file", file.path)
+
+        return super().recognizes(file)
 
     def compare_details(self, other, source=None):
         return [
