@@ -31,7 +31,6 @@ Build-Depends:
  ghc <!nocheck>,
  ghostscript <!nocheck>,
  giflib-tools <!nocheck>,
- gnumeric <!nocheck>,
  gnupg-utils <!nocheck>,
  hdf5-tools <!nocheck>,
  help2man,
