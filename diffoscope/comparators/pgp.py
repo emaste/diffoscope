@@ -48,7 +48,7 @@ class Pgpdump(Command):
 class PgpFile(File):
     DESCRIPTION = "PGP signed/encrypted messages"
     FILE_TYPE_RE = re.compile(r"^PGP message\b")
-    FALLBACK_FILE_EXTENSION_SUFFIX = (".pgp",)
+    FALLBACK_FILE_EXTENSION_SUFFIX = {".pgp"}
 
     @classmethod
     def fallback_recognizes(cls, file):

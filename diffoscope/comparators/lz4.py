@@ -58,5 +58,5 @@ class Lz4File(File):
     FILE_TYPE_RE = re.compile(r"^LZ4 compressed data \([^\)]+\)$")
 
     # Work around file(1) Debian bug #876316
-    FALLBACK_FILE_EXTENSION_SUFFIX = ".lz4"
+    FALLBACK_FILE_EXTENSION_SUFFIX = {".lz4"}
     FALLBACK_FILE_TYPE_HEADER_PREFIX = b"\x04\x22M\x18"

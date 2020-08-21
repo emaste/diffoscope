@@ -160,7 +160,7 @@ class RdbReader(Command):
 
 class RdbFile(File):
     DESCRIPTION = "GNU R database files (.rdb)"
-    FILE_EXTENSION_SUFFIX = ".rdb"
+    FILE_EXTENSION_SUFFIX = {".rdb"}
 
     def compare_details(self, other, source=None):
         a = get_module_path_for_rdb(self)

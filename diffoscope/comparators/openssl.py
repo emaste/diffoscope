@@ -64,7 +64,7 @@ class Pkcs7File(File):
 
 class MobileProvisionFile(File):
     DESCRIPTION = "Apple Xcode mobile provisioning files"
-    FILE_EXTENSION_SUFFIX = ".mobileprovision"
+    FILE_EXTENSION_SUFFIX = {".mobileprovision"}
 
     def compare_details(self, other, source=None):
         return [

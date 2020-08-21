@@ -84,7 +84,7 @@ class XMLFile(File):
     """
 
     DESCRIPTION = "XML files"
-    FILE_EXTENSION_SUFFIX = ".xml"
+    FILE_EXTENSION_SUFFIX = {".xml"}
 
     @classmethod
     def recognizes(cls, file):

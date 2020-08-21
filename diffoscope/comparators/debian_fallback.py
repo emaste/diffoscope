@@ -34,14 +34,14 @@ class AbstractDebianFallbackFile(TextFile):
 
 class DotChangesFile(AbstractDebianFallbackFile):
     DESCRIPTION = "Debian .changes files"
-    FILE_EXTENSION_SUFFIX = ".changes"
+    FILE_EXTENSION_SUFFIX = {".changes"}
 
 
 class DotDscFile(AbstractDebianFallbackFile):
     DESCRIPTION = "Debian source packages (.dsc)"
-    FILE_EXTENSION_SUFFIX = ".dsc"
+    FILE_EXTENSION_SUFFIX = {".dsc"}
 
 
 class DotBuildinfoFile(AbstractDebianFallbackFile):
     DESCRIPTION = "Debian .buildinfo files"
-    FILE_EXTENSION_SUFFIX = ".buildinfo"
+    FILE_EXTENSION_SUFFIX = {".buildinfo"}

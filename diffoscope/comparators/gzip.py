@@ -60,5 +60,5 @@ class GzipFile(File):
     FILE_TYPE_RE = re.compile(r"^gzip compressed data\b")
 
     # Work around file(1) Debian bug #876316
-    FALLBACK_FILE_EXTENSION_SUFFIX = ".gz"
+    FALLBACK_FILE_EXTENSION_SUFFIX = {".gz"}
     FALLBACK_FILE_TYPE_HEADER_PREFIX = b"\x1f\x8b"

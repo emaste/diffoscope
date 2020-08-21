@@ -216,7 +216,7 @@ class DebControlFile(File):
 
 class DotChangesFile(DebControlFile):
     DESCRIPTION = "Debian .changes files"
-    FILE_EXTENSION_SUFFIX = ".changes"
+    FILE_EXTENSION_SUFFIX = {".changes"}
     FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text)")
 
     @classmethod
@@ -260,7 +260,7 @@ class DotChangesFile(DebControlFile):
 
 class DotDscFile(DebControlFile):
     DESCRIPTION = "Debian source packages (.dsc)"
-    FILE_EXTENSION_SUFFIX = ".dsc"
+    FILE_EXTENSION_SUFFIX = {".dsc"}
 
     @classmethod
     def recognizes(cls, file):
@@ -295,7 +295,7 @@ class DotBuildinfoContainer(DebControlContainer):
 class DotBuildinfoFile(DebControlFile):
     DESCRIPTION = "Debian .buildinfo files"
     CONTAINER_CLASSES = [DotBuildinfoContainer]
-    FILE_EXTENSION_SUFFIX = ".buildinfo"
+    FILE_EXTENSION_SUFFIX = {".buildinfo"}
     FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text)")
 
     @classmethod

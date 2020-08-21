@@ -35,7 +35,7 @@ class Wasm2Wat(Command):
 
 class WasmFile(File):
     DESCRIPTION = "WebAssembly binary module"
-    FILE_EXTENSION_SUFFIX = ".wasm"
+    FILE_EXTENSION_SUFFIX = {".wasm"}
 
     @classmethod
     def recognizes(cls, file):

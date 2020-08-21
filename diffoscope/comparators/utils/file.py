@@ -166,7 +166,7 @@ class File(metaclass=abc.ABCMeta):
         all_tests = [
             test
             for test in (
-                (cls.FILE_EXTENSION_SUFFIX, str.endswith, file.name),
+                (cls.FILE_EXTENSION_SUFFIX, cls.any_endswith, file.name),
                 (file_type_tests, _run_tests, any),
             )
             if test[0]
@@ -199,8 +199,12 @@ class File(metaclass=abc.ABCMeta):
         all_tests = [
             test
             for test in (
-                (cls.FALLBACK_FILE_EXTENSION_SUFFIX, str.endswith, file.name),
-                (cls.FILE_EXTENSION_SUFFIX, str.endswith, file.name),
+                (
+                    cls.FALLBACK_FILE_EXTENSION_SUFFIX,
+                    cls.any_endswith,
+                    file.name,
+                ),
+                (cls.FILE_EXTENSION_SUFFIX, cls.any_endswith, file.name),
                 (
                     cls.FALLBACK_FILE_TYPE_HEADER_PREFIX,
                     bytes.startswith,
@@ -216,6 +220,19 @@ class File(metaclass=abc.ABCMeta):
         ]  # filter out undefined tests, inc. file_type_tests if it's empty
 
         return _run_tests(all, all_tests) if all_tests else False
+
+    @staticmethod
+    def any_endswith(val, candidates):
+        """
+        Return true iff `val` ends with any string present in `candidates`
+        iterable.
+        """
+
+        for x in candidates:
+            if val.endswith(x):
+                return True
+
+        return False
 
     # This might be different from path and is used to do file extension matching
     @property

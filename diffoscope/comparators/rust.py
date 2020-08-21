@@ -63,7 +63,7 @@ class RustObjectFile(File):
     DESCRIPTION = "Rust object files (.deflate)"
     CONTAINER_CLASSES = [RustObjectContainer]
     FILE_TYPE_HEADER_PREFIX = b"RUST_OBJECT\x01\x00\x00\x00"
-    FILE_EXTENSION_SUFFIX = ".deflate"
+    FILE_EXTENSION_SUFFIX = {".deflate"}
 
     def compare_details(self, other, source=None):
         return [

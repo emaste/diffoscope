@@ -60,5 +60,5 @@ class XzFile(File):
     FILE_TYPE_RE = re.compile(r"^XZ compressed data$")
 
     # Work around file(1) Debian bug #876316
-    FALLBACK_FILE_EXTENSION_SUFFIX = ".xz"
+    FALLBACK_FILE_EXTENSION_SUFFIX = {".xz"}
     FALLBACK_FILE_TYPE_HEADER_PREFIX = b"\xfd7zXZ\x00"

@@ -30,7 +30,7 @@ from .missing_file import MissingFile
 
 class GnumericFile(File):
     DESCRIPTION = "Gnumeric spreadsheets"
-    FILE_EXTENSION_SUFFIX = ".gnumeric"
+    FILE_EXTENSION_SUFFIX = {".gnumeric"}
 
     @tool_required("ssconvert")
     def compare_details(self, other, source=None):
