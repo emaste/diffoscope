@@ -227,7 +227,7 @@ class FIFOFeeder(threading.Thread):
                 except OSError as e:
                     if e.errno != errno.ENXIO:
                         raise
-                    elif self._want_join.is_set():
+                    if self._want_join.is_set():
                         return
                 else:
                     break
