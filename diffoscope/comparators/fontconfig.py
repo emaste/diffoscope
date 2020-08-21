@@ -56,7 +56,7 @@ def describe_cache_file(filename):
 
     with open(filename, "rb") as f:
         data = struct.unpack(fmt, f.read(struct.calcsize(fmt)))
-        kwargs = {x: y for x, y in zip(fields, data)}
+        kwargs = dict(zip(fields, data))
 
         kwargs["dir_name"] = read_null_terminated_string(f, kwargs["dir"])
 
