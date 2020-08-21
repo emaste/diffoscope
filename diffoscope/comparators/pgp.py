@@ -48,10 +48,10 @@ class Pgpdump(Command):
 class PgpFile(File):
     DESCRIPTION = "PGP signed/encrypted messages"
     FILE_TYPE_RE = re.compile(r"^PGP message\b")
-    FALLBACK_FILE_EXTENSION_SUFFIX = ".pgp"
+    FALLBACK_FILE_EXTENSION_SUFFIX = (".pgp",)
 
     @classmethod
-    def recognizes(cls, file):
+    def fallback_recognizes(cls, file):
         if file.magic_file_type == "data":
             try:
                 our_check_output(
@@ -65,7 +65,7 @@ class PgpFile(File):
 
             logger.debug("%s is not a PGP file", file.path)
 
-        return super().recognizes(file)
+        return False
 
     def compare_details(self, other, source=None):
         return [
