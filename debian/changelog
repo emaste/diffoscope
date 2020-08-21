@@ -1,8 +1,25 @@
-diffoscope (157) UNRELEASED; urgency=medium
+diffoscope (157) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
 
- -- Chris Lamb <lamby@debian.org>  Fri, 14 Aug 2020 10:09:26 +0100
+  * Try obsensibly "data" files named .pgp against pgpdump to determine whether
+    they are PGP files. (Closes: reproducible-builds/diffoscope#211)
+  * Don't raise an exception when we encounter XML files with "<!ENTITY>"
+    declarations inside the DTD, or when a DTD or entity references an external
+    resource. (Closes: reproducible-builds/diffoscope#212)
+  * Temporarily drop gnumeric from Build-Depends as it has been removed from
+    testing due to Python 2.x deprecation. (Closes: #968742)
+  * Codebase changes:
+    - Add support for multiple file extension matching; we previously supported
+      only a single extension to match.
+    - Move generation of debian/tests/control.tmp to an external script.
+    - Move to our assert_diff helper entirely in the PGP tests.
+    - Drop some unnecessary control flow, unnecessary dictionary comprehensions
+      and some unused imports found via pylint.
+  * Include the filename in the "... not identified by any comparator"
+    logging message.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 21 Aug 2020 12:24:25 +0100
 
 diffoscope (156) unstable; urgency=medium
 
