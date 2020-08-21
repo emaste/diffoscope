@@ -37,10 +37,6 @@ from ..missing_file import MissingFile
 from .command import Command
 from .specialize import specialize
 
-try:
-    import tlsh
-except ImportError:  # noqa
-    tlsh = None
 
 logger = logging.getLogger(__name__)
 
