@@ -54,14 +54,15 @@ class PgpFile(File):
     def fallback_recognizes(cls, file):
         if file.magic_file_type == "data":
             try:
-                our_check_output(
+                output = our_check_output(
                     ("pgpdump", file.path), stderr=subprocess.DEVNULL
                 )
             except subprocess.CalledProcessError:
                 pass
             else:
-                logger.debug("%s is a PGP file", file.path)
-                return True
+                if b"New: unknown" not in output:
+                    logger.debug("%s is a PGP file", file.path)
+                    return True
 
             logger.debug("%s is not a PGP file", file.path)
 
