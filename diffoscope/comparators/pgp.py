@@ -17,14 +17,17 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
 import re
 import logging
 import subprocess
 
 from diffoscope.tools import tool_required
+from diffoscope.tempfiles import get_temporary_directory
 from diffoscope.difference import Difference
 
 from .text import TextFile
+from .utils.archive import Archive
 from .utils.file import File
 from .utils.command import Command, our_check_output
 
@@ -37,7 +40,6 @@ class Pgpdump(Command):
         return (
             "pgpdump",
             "-i",  # Dump integer packets
-            "-l",  # Dump literal packets
             "-m",  # Dump marker packets
             "-p",  # Dump private packets
             "-u",  # Display UTC time
@@ -45,9 +47,46 @@ class Pgpdump(Command):
         )
 
 
+class PGPContainer(Archive):
+    @tool_required("gpg")
+    def open_archive(self):
+        # Extract to a fresh temporary directory so that we can use the
+        # embedded filename.
+
+        self._temp_dir = get_temporary_directory()
+
+        try:
+            our_check_output(
+                (
+                    "gpg",
+                    "--use-embedded-filename",
+                    "--decrypt",
+                    "--no-keyring",
+                    os.path.abspath(self.source.path),
+                ),
+                cwd=self._temp_dir.name,
+                stderr=subprocess.DEVNULL,
+            )
+        except subprocess.CalledProcessError:
+            return False
+
+        return self
+
+    def close_archive(self):
+        self._temp_dir.cleanup()
+
+    def get_member_names(self):
+        # Will only return one filename, taken from the signature file itself.
+        return os.listdir(self._temp_dir.name)
+
+    def extract(self, member_name, dest_dir):
+        return os.path.join(self._temp_dir.name, member_name)
+
+
 class PgpFile(File):
     DESCRIPTION = "PGP signed/encrypted messages"
     FILE_TYPE_RE = re.compile(r"^PGP message\b")
+    CONTAINER_CLASSES = [PGPContainer]
     FALLBACK_FILE_EXTENSION_SUFFIX = {".pgp", ".asc", ".pub", ".sec", ".gpg"}
 
     @classmethod
