@@ -121,6 +121,6 @@ class Command(metaclass=abc.ABCMeta):
 
 
 def our_check_output(cmd, *args, **kwargs):
-    logger.debug("Calling external command %r", cmd)
+    logger.debug("Calling external command: %s", " ".join(cmd))
 
     return subprocess.check_output(cmd, *args, **kwargs)

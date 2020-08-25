@@ -141,7 +141,7 @@ def call_difftool(file1, file2):
         return
 
     cmd = " ".join((Config().difftool, shlex.quote(a), shlex.quote(b)))
-    logger.debug("Calling external command %r", cmd)
+    logger.debug("Calling external command: %s", " ".join(cmd))
     subprocess.call(cmd, shell=True)
 
 
