@@ -84,7 +84,7 @@ class PgpSignature(TextFile):
         # Don't display signatures as hexdumps; use TextFile's comparisons...
         difference = super().compare(other, source)
 
-        # ... but attach pgpdump of outout
+        # ... but attach pgpdump of output
         difference.add_details(
             [
                 Difference.from_command(
