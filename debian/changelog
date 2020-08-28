@@ -1,8 +1,16 @@
-diffoscope (158) UNRELEASED; urgency=medium
+diffoscope (158) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Improve PGP support:
+    - Support extracting of files within PGP signed data.
+      (Closes: reproducible-builds/diffoscope#214)
+    - pgpdump(1) can successfully parse some unrelated, non-PGP binary files,
+      so check that the parsed output contains something remotely sensible
+      before identifying it as a PGP file.
+  * Don't use Python's repr(...)-style output in "Calling external command"
+    logging output.
+  * Correct a typo of "output" in an internal comment.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 21 Aug 2020 12:34:27 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 28 Aug 2020 11:53:10 +0100
 
 diffoscope (157) unstable; urgency=medium
 
