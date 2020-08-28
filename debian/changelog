@@ -1,3 +1,9 @@
+diffoscope (159) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 28 Aug 2020 12:05:23 +0100
+
 diffoscope (158) unstable; urgency=medium
 
   * Improve PGP support:
