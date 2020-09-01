@@ -309,7 +309,7 @@ class LibarchiveContainer(Archive):
                 # Keep directory sizes small. could be improved but should be
                 # good enough for "ordinary" large archives.
                 dst = os.path.join(tmpdir, str(idx // 4096), str(idx % 4096))
-                root, ext = os.path.splitext(entry.pathname)
+                _, ext = os.path.splitext(entry.pathname)
                 dst += ext
                 # Maintain a mapping of archive path to the extracted path,
                 # avoiding the need to sanitise filenames.

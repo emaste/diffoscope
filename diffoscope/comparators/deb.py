@@ -100,7 +100,7 @@ class DebContainer(LibarchiveContainer):
         other_members = dict(other_members)
 
         for name1 in my_members.keys():
-            main, ext = os.path.splitext(name1)
+            main, _ = os.path.splitext(name1)
             candidates = [
                 name2
                 for name2 in other_members.keys() - matched
