@@ -47,7 +47,7 @@ class BerkeleyDBFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 DbDump, self.path, other.path, source="Berkeley DB file"
             )
         ]

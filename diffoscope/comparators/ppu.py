@@ -110,4 +110,4 @@ class PpuFile(File):
         return True
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Ppudump, self.path, other.path)]
+        return [Difference.from_operation(Ppudump, self.path, other.path)]

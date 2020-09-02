@@ -86,7 +86,7 @@ class ClassFile(File):
 
         for decompiler in self.decompilers:
             try:
-                single_diff = Difference.from_command(
+                single_diff = Difference.from_operation(
                     decompiler, self.path, other.path
                 )
                 if single_diff:

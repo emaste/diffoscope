@@ -25,7 +25,7 @@ import subprocess
 from . import feeders
 from .exc import RequiredToolNotFound
 from .diff import diff, reverse_unified_diff, diff_split_lines
-from .excludes import command_excluded
+from .excludes import operation_excluded
 
 logger = logging.getLogger(__name__)
 
@@ -251,37 +251,37 @@ class Difference:
         )
 
     @staticmethod
-    def from_command(klass, path1, path2, *args, **kwargs):
-        return Difference.from_command_exc(
+    def from_operation(klass, path1, path2, *args, **kwargs):
+        return Difference.from_operation_exc(
             klass, path1, path2, *args, **kwargs
         )[0]
 
     @staticmethod
-    def from_command_exc(klass, path1, path2, *args, **kwargs):
-        command_args = kwargs.pop("command_args", [])
+    def from_operation_exc(klass, path1, path2, *args, **kwargs):
+        operation_args = kwargs.pop("operation_args", [])
         ignore_returncodes = kwargs.pop("ignore_returncodes", ())
 
-        def command_and_feeder(path):
-            command = None
+        def operation_and_feeder(path):
+            operation = None
             if path == "/dev/null":
                 feeder = feeders.empty()
             else:
-                command = klass(path, *command_args)
-                feeder = feeders.from_command(command)
-                if command_excluded(command.shell_cmdline()):
+                operation = klass(path, *operation_args)
+                feeder = feeders.from_operation(operation)
+                if operation_excluded(operation.full_name()):
                     return None, None, True
-                command.start()
-            return feeder, command, False
+                operation.start()
+            return feeder, operation, False
 
-        feeder1, command1, excluded1 = command_and_feeder(path1)
-        feeder2, command2, excluded2 = command_and_feeder(path2)
+        feeder1, operation1, excluded1 = operation_and_feeder(path1)
+        feeder2, operation2, excluded2 = operation_and_feeder(path2)
         if not feeder1 or not feeder2:
             assert excluded1 or excluded2
             return None, True
 
         if "source" not in kwargs:
-            source_cmd = command1 or command2
-            kwargs["source"] = source_cmd.shell_cmdline(truncate=120)
+            source_op = operation1 or operation2
+            kwargs["source"] = source_op.full_name(truncate=120)
 
         try:
             difference = Difference.from_feeder(
@@ -296,28 +296,28 @@ class Difference:
             return None, False
 
         if (
-            command1
-            and command1.stderr
-            and command2
-            and command2.stderr
-            and command1.shell_cmdline() == command2.shell_cmdline()
+            operation1
+            and operation1.error_string
+            and operation2
+            and operation2.error_string
+            and operation1.full_name() == operation2.full_name()
         ):
             # Output is the same, so don't repeat the output
             difference.add_comment(
-                "stderr from `{}`:".format(command1.shell_cmdline())
+                "error from `{}`:".format(operation1.full_name())
             )
-            difference.add_comment(command1.stderr)
+            difference.add_comment(operation1.error_string)
         else:
-            if command1 and command1.stderr:
+            if operation1 and operation1.error_string:
                 difference.add_comment(
-                    "stderr from `{}` (a):".format(command1.shell_cmdline())
+                    "error from `{}` (a):".format(operation1.full_name())
                 )
-                difference.add_comment(command1.stderr)
-            if command2 and command2.stderr:
+                difference.add_comment(operation1.error_string)
+            if operation2 and operation2.error_string:
                 difference.add_comment(
-                    "stderr from `{}` (b):".format(command2.shell_cmdline())
+                    "error from `{}` (b):".format(operation2.full_name())
                 )
-                difference.add_comment(command2.stderr)
+                difference.add_comment(operation2.error_string)
 
         return difference, False
 

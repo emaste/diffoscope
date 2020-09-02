@@ -39,4 +39,4 @@ class MonoExeFile(File):
     FILE_TYPE_RE = re.compile(r"\bPE[0-9]+\b.*\bMono\b")
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Pedump, self.path, other.path)]
+        return [Difference.from_operation(Pedump, self.path, other.path)]

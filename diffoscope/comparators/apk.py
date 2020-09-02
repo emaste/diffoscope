@@ -218,7 +218,7 @@ class ApkFile(File):
     def compare_details(self, other, source=None):
         differences = zipinfo_differences(self, other)
 
-        x = Difference.from_command(Apksigner, self.path, other.path)
+        x = Difference.from_operation(Apksigner, self.path, other.path)
         if x is not None:
             differences.insert(0, x)
 

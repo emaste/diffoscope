@@ -167,4 +167,4 @@ class CbfsFile(File):
             return False
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(CbfsListing, self.path, other.path)]
+        return [Difference.from_operation(CbfsListing, self.path, other.path)]

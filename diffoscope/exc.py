@@ -22,24 +22,24 @@ from .tools import get_tool_name, get_package_provider
 
 
 class OutputParsingError(Exception):
-    def __init__(self, command, object):
+    def __init__(self, operation, object):
         super().__init__()
-        self.command = command
+        self.operation = operation
         self.object_class = object.__class__
 
 
 class RequiredToolNotFound(Exception):
-    def __init__(self, command):
+    def __init__(self, operation):
         super().__init__()
-        self.command = get_tool_name(command)
+        self.operation = get_tool_name(operation)
 
     def get_comment(self, infix=""):
         xs = [
-            "'{}' not available in path.".format(self.command),
+            "'{}' not available in path.".format(self.operation),
             infix,
         ]
 
-        x = get_package_provider(self.command)
+        x = get_package_provider(self.operation)
         if x:
             xs.append(
                 "Installing the '{}' package may produce a better output.".format(

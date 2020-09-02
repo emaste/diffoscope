@@ -66,7 +66,7 @@ class ArFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 ArSymbolTableDumper, self.path, other.path
             ),
             Difference.from_text_readers(

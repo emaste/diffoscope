@@ -144,7 +144,7 @@ class RdsFile(File):
         return False
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(RdsReader, self.path, other.path)]
+        return [Difference.from_operation(RdsReader, self.path, other.path)]
 
 
 class RdbReader(Command):
@@ -169,4 +169,4 @@ class RdbFile(File):
         if a is None or b is None:
             return []
 
-        return [Difference.from_command(RdbReader, a, b)]
+        return [Difference.from_operation(RdbReader, a, b)]

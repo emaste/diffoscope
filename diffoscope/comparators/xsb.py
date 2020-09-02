@@ -41,7 +41,7 @@ class XsbFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 Dumpxsb, self.path, other.path, source="dumpxsb"
             )
         ]

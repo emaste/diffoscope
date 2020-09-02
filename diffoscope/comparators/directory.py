@@ -162,13 +162,13 @@ def compare_meta(path1, path2):
         return differences
 
     try:
-        differences.append(Difference.from_command(Stat, path1, path2))
+        differences.append(Difference.from_operation(Stat, path1, path2))
     except RequiredToolNotFound:
         logger.error("Unable to find 'stat'! Is PATH wrong?")
     if os.path.islink(path1) or os.path.islink(path2):
         return [d for d in differences if d is not None]
     try:
-        differences.append(Difference.from_command(Getfacl, path1, path2))
+        differences.append(Difference.from_operation(Getfacl, path1, path2))
     except RequiredToolNotFound:
         logger.info(
             "Unable to find 'getfacl', some directory metadata differences might not be noticed."

@@ -50,7 +50,7 @@ class PngFile(File):
     FILE_TYPE_RE = re.compile(r"^PNG image data\b")
 
     def compare_details(self, other, source=None):
-        sng_diff = Difference.from_command(
+        sng_diff = Difference.from_operation(
             Sng, self.path, other.path, source="sng"
         )
         differences = [sng_diff]

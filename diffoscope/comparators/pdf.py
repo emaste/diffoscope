@@ -67,12 +67,14 @@ class PdfFile(File):
                 difference.add_comment("Document info")
             xs.append(difference)
 
-        xs.append(Difference.from_command(Pdftotext, self.path, other.path))
+        xs.append(Difference.from_operation(Pdftotext, self.path, other.path))
 
         # Don't include verbose dumppdf output unless we won't see any any
         # differences without it.
         if not any(xs):
-            xs.append(Difference.from_command(Dumppdf, self.path, other.path))
+            xs.append(
+                Difference.from_operation(Dumppdf, self.path, other.path)
+            )
 
         return xs
 

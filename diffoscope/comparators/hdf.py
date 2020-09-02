@@ -37,4 +37,4 @@ class Hdf5File(File):
     FILE_TYPE_RE = re.compile(r"^Hierarchical Data Format \(version 5\) data")
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(H5dump, self.path, other.path)]
+        return [Difference.from_operation(H5dump, self.path, other.path)]

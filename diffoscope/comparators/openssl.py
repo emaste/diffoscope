@@ -53,7 +53,7 @@ class Pkcs7File(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 OpenSSLPKCS7,
                 self.path,
                 other.path,
@@ -68,7 +68,7 @@ class MobileProvisionFile(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(
+            Difference.from_operation(
                 OpenSSLSMIME, self.path, other.path, source="openssl smime"
             )
         ]

@@ -19,7 +19,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
-import signal
 import hashlib
 import logging
 import subprocess
@@ -121,24 +120,26 @@ def from_text_reader(in_file, filter=None):
     return from_raw_reader(in_file, encoding_filter)
 
 
-def from_command(command):
+def from_operation(operation):
     def feeder(out_file):
-        with profile("command", command.cmdline()[0]):
-            feeder = from_raw_reader(command.stdout, command.filter)
+        with profile("command", operation.name):
+            feeder = from_raw_reader(operation.output, operation.filter)
             end_nl = feeder(out_file)
-            returncode = command.returncode
-        if returncode not in (0, -signal.SIGTERM):
-            # On error, default to displaying all lines of standard output.
-            output = command.stderr
-            if not output and command.stdout:
+
+        if operation.should_show_error():
+            # On error, default to displaying all lines of the error
+            output = operation.error_string or ""
+            if not output and operation.output:
                 # ... but if we don't have, return the first line of the
                 # standard output.
                 output = "{}{}".format(
-                    command.stdout[0].decode("utf-8", "ignore").strip(),
-                    "\n[…]" if len(command.stdout) > 1 else "",
+                    operation.output[0].decode("utf-8", "ignore").strip(),
+                    "\n[…]" if len(operation.output) > 1 else "",
                 )
             raise subprocess.CalledProcessError(
-                returncode, command.cmdline(), output=output.encode("utf-8")
+                operation.returncode,
+                operation.name,
+                output=output.encode("utf-8"),
             )
         return end_nl
 

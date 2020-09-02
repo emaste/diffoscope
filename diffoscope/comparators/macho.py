@@ -108,30 +108,30 @@ class MachoFile(File):
         # Compare common architectures for differences
         for common_arch in set(my_archs) & set(other_archs):
             differences.append(
-                Difference.from_command(
+                Difference.from_operation(
                     OtoolHeaders,
                     self.path,
                     other.path,
-                    command_args=[common_arch],
+                    operation_args=[common_arch],
                     comment="Mach-O headers for architecture %s" % common_arch,
                 )
             )
             differences.append(
-                Difference.from_command(
+                Difference.from_operation(
                     OtoolLibraries,
                     self.path,
                     other.path,
-                    command_args=[common_arch],
+                    operation_args=[common_arch],
                     comment="Mach-O load commands for architecture %s"
                     % common_arch,
                 )
             )
 
-            x = Difference.from_command(
+            x = Difference.from_operation(
                 OtoolDisassemble,
                 self.path,
                 other.path,
-                command_args=[common_arch],
+                operation_args=[common_arch],
                 comment="Code for architecture %s" % common_arch,
             )
             differences.append(x)
@@ -139,11 +139,11 @@ class MachoFile(File):
             # If the LLVM disassembler does not work, try the internal one.
             if x is None:
                 differences.append(
-                    Difference.from_command(
+                    Difference.from_operation(
                         OtoolDisassembleInternal,
                         self.path,
                         other.path,
-                        command_args=[common_arch],
+                        operation_args=[common_arch],
                         comment="Code for architecture %s (internal disassembler)"
                         % common_arch,
                     )
