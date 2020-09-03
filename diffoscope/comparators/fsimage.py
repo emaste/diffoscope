@@ -75,8 +75,12 @@ class FsImageContainer(Archive):
     def close_archive(self):
         if not guestfs:
             return None
-        self.g.umount_all()
-        self.g.close()
+
+        try:
+            self.g.umount_all()
+            self.g.close()
+        except Exception:  # noqa
+            pass
 
     def get_member_names(self):
         if not guestfs:
