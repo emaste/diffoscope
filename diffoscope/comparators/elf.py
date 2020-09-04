@@ -638,8 +638,9 @@ class ElfFile(File):
             for x in list(READELF_COMMANDS) + READELF_DEBUG_DUMP_COMMANDS
         ]
 
-        differences.append(
-            Difference.from_operation(Strings, self.path, other.path)
-        )
+        difference = Difference.from_operation(Strings, self.path, other.path)
+        if difference:
+            difference.check_for_ordering_differences()
+        differences.append(difference)
 
         return differences
