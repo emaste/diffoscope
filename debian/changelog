@@ -1,8 +1,16 @@
-diffoscope (159) UNRELEASED; urgency=medium
+diffoscope (159) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Show "ordering differences only" in strings(1) output.
+    (Closes: reproducible-builds/diffoscope#216)
+  * Don't alias output from "os.path.splitext" to variables that we do not end
+    up using.
+  * Don't raise exceptions when cleaning up after a guestfs cleanup failure.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 28 Aug 2020 12:05:23 +0100
+  [ Jean-Romain Garnier ]
+  * Make "Command" subclass a new generic Operation class.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 04 Sep 2020 11:12:52 +0100
 
 diffoscope (158) unstable; urgency=medium
 
