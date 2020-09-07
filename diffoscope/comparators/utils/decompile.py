@@ -23,12 +23,12 @@ import abc
 import logging
 
 from .file import File
-from .command import Command
+from .operation import Operation
 from .container import Container
 
 from diffoscope.config import Config
 from diffoscope.difference import Difference
-from diffoscope.excludes import command_excluded
+from diffoscope.excludes import operation_excluded
 from diffoscope.tools import (
     tool_required,
     tool_check_installed,
@@ -55,13 +55,13 @@ if not tool_check_installed("radare2"):
     logger.debug("radare2 not found, disabling decompiler")
 
 
-class Decompile(Command, metaclass=abc.ABCMeta):
+class Decompile(Operation, metaclass=abc.ABCMeta):
     def __init__(self, file, *args, **kwargs):
         super().__init__(file.path, *args, **kwargs)
         self.file = file
 
     def start(self):
-        logger.debug("Executing %s", self.cmdline())
+        logger.debug("Executing %s", self.full_name())
         if not isinstance(self.file, AsmFunction):
             self._stdout = ""
             return
@@ -72,17 +72,12 @@ class Decompile(Command, metaclass=abc.ABCMeta):
     def _decompile(self):
         raise NotImplementedError()
 
-    @property
-    def returncode(self):
-        return 0
+    def should_show_error(self):
+        return False
 
     @property
-    def stdout(self):
+    def output(self):
         return self._stdout.encode("utf-8").splitlines(True)
-
-    @property
-    def stderr(self):
-        return ""
 
 
 class DecompileGhidra(Decompile):
@@ -119,9 +114,11 @@ class DecompileGhidra(Decompile):
                 self._stdout,
             )
 
-    @tool_required("radare2")
-    def cmdline(self):
-        return ["radare2", "r2ghidra"]
+    def name(self):
+        return "r2ghidra"
+
+    def full_name(self, *args, **kwargs):
+        return "radare2 r2ghidra"
 
     def filter(self, line):
         return self._JUMPTABLE_WARNING_RE.sub(rb"\g<1>0xX", line)
@@ -141,16 +138,18 @@ class DecompileRadare2(Decompile):
     def _decompile(self):
         self._stdout = self._run_r2_command()
 
-    @tool_required("radare2")
-    def cmdline(self):
-        return ["radare2", "disass"]
+    def name(self):
+        return "disass"
+
+    def full_name(self, *args, **kwargs):
+        return "radare2 disass"
 
 
 class AsmFunction(File):
     DESCRIPTION = "ASM Function"
 
     # Mapping between the Config().decompiler option and the command class
-    DECOMPILE_COMMANDS = [
+    DECOMPILE_OPERATIONS = [
         DecompileGhidra,
         DecompileRadare2,
     ]
@@ -233,8 +232,8 @@ class AsmFunction(File):
 
     def compare_details(self, other, source=None):
         return [
-            Difference.from_command(x, self, other)
-            for x in list(self.DECOMPILE_COMMANDS)
+            Difference.from_operation(x, self, other)
+            for x in list(self.DECOMPILE_OPERATIONS)
         ]
 
     @property
@@ -276,10 +275,10 @@ class AsmFunction(File):
         return self._asm
 
 
-def all_decompile_commands_are_excluded(file):
-    for klass in AsmFunction.DECOMPILE_COMMANDS:
-        cmdline = " ".join(klass(file).cmdline())
-        if not command_excluded(cmdline):
+def all_decompile_operations_are_excluded(file):
+    for klass in AsmFunction.DECOMPILE_OPERATIONS:
+        name = " ".join(klass(file).full_name())
+        if not operation_excluded(name):
             return False
 
     return True
@@ -299,7 +298,9 @@ class DecompilableContainer(Container):
 
         # Skip disassembly (and decompilation) if a dependency is missing
         # or if radare2 commands are excluded
-        if r2pipe is None or all_decompile_commands_are_excluded(self.source):
+        if r2pipe is None or all_decompile_operations_are_excluded(
+            self.source
+        ):
             return
 
         # Use "-2" flag to silence radare2 warnings
