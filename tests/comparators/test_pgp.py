@@ -70,6 +70,7 @@ def test_pgp_signature(signature1, signature2):
     assert len(difference.details) == 1
 
 
+@skip_unless_tools_exist("pgpdump")
 def test_signed_identification(signed1):
     assert isinstance(signed1, PgpFile)
 
