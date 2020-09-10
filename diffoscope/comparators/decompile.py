@@ -22,9 +22,9 @@ import sys
 import abc
 import logging
 
-from .file import File
-from .operation import Operation
-from .container import Container
+from .utils.file import File
+from .utils.operation import Operation
+from .utils.container import Container
 
 from diffoscope.config import Config
 from diffoscope.difference import Difference

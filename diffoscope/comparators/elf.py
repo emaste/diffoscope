@@ -31,10 +31,10 @@ from diffoscope.tempfiles import get_named_temporary_file
 from diffoscope.difference import Difference
 
 from .deb import DebFile, get_build_id_map
+from .decompile import DecompilableContainer
 from .utils.file import File
 from .utils.command import Command, our_check_output
 from .utils.container import Container
-from .utils.decompile import DecompilableContainer
 
 DEBUG_SECTION_GROUPS = (
     "rawline",

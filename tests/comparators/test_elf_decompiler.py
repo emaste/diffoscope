@@ -23,12 +23,36 @@ import pytest
 from diffoscope.config import Config
 from diffoscope.comparators.missing_file import MissingFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import (
+    skipif,
+    tools_missing,
     skip_unless_tools_exist,
     skip_unless_module_exists,
-    skip_unless_radare2_command_exists,
 )
+
+
+def radare2_command_is_undefined(x):
+    if tools_missing("radare2"):
+        return True
+
+    try:
+        # Open any file with radare2 and try to execute the given command
+        # If it returns None, then the command doesn't exist
+        import r2pipe
+
+        r2 = r2pipe.open("/dev/null", flags=["-2"])
+        return r2.cmdj(x) is None
+    except ImportError:
+        return True
+
+
+def skip_unless_radare2_command_exists(command):
+    return skipif(
+        radare2_command_is_undefined(command),
+        reason=f"radare2 didn't recognize {command} command",
+        tools=(f"{command}_radare2_command"),
+    )
 
 
 def exclude_commands(monkeypatch, patterns):
@@ -69,8 +93,7 @@ def test_ghidra_diff(monkeypatch, obj1, obj2):
     exclude_commands(monkeypatch, ["disass.*"])
     obj_differences = obj1.compare(obj2).details[0].details
     assert len(obj_differences) == 1
-    expected_diff = get_data("elf_obj_ghidra_expected_diff")
-    assert obj_differences[0].unified_diff == expected_diff
+    assert_diff(obj_differences[0], "elf_obj_ghidra_expected_diff")
 
 
 @skip_unless_tools_exist("radare2")
@@ -79,5 +102,4 @@ def test_radare2_diff(monkeypatch, obj1, obj2):
     exclude_commands(monkeypatch, ["r2ghidra.*"])
     obj_differences = obj1.compare(obj2).details[0].details
     assert len(obj_differences) == 1
-    expected_diff = get_data("elf_obj_radare2_expected_diff")
-    assert obj_differences[0].unified_diff == expected_diff
+    assert_diff(obj_differences[0], "elf_obj_radare2_expected_diff")
