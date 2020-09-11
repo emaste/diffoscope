@@ -51,7 +51,7 @@ def skip_unless_radare2_command_exists(command):
     return skipif(
         radare2_command_is_undefined(command),
         reason=f"radare2 didn't recognize {command} command",
-        tools=(f"{command}_radare2_command"),
+        tools=(f"{command}_radare2_command",),
     )
 
 

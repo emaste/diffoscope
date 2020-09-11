@@ -198,7 +198,7 @@ def skip_unless_module_exists(name):
     return skipif(
         module_is_not_importable(name),
         reason=f"requires {name} Python module",
-        tools=(f"{name}_module"),
+        tools=(f"{name}_module",),
     )
 
 
