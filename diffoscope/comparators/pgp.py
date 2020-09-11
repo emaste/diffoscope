@@ -91,6 +91,11 @@ class PgpFile(File):
 
     @classmethod
     def fallback_recognizes(cls, file):
+        # Ensure we check FALLBACK_FILE_EXTENSION_SUFFIX, otherwise we run
+        # pgpdump against all files that are recognised by file(1) as "data"
+        if not super().fallback_recognizes(file):
+            return False
+
         if file.magic_file_type == "data":
             try:
                 output = our_check_output(
