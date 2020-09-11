@@ -1,3 +1,9 @@
+diffoscope (161) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 11 Sep 2020 10:17:31 +0100
+
 diffoscope (160) unstable; urgency=medium
 
   * Check that pgpdump is actually installed before attempting to run it.
