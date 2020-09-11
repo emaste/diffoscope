@@ -22,7 +22,7 @@ import re
 import logging
 import subprocess
 
-from diffoscope.tools import tool_required
+from diffoscope.tools import tool_required, tool_check_installed
 from diffoscope.tempfiles import get_temporary_directory
 from diffoscope.difference import Difference
 
@@ -96,7 +96,7 @@ class PgpFile(File):
         if not super().fallback_recognizes(file):
             return False
 
-        if file.magic_file_type == "data":
+        if file.magic_file_type == "data" and tool_check_installed("pgpdump"):
             try:
                 output = our_check_output(
                     ("pgpdump", file.path), stderr=subprocess.DEVNULL
