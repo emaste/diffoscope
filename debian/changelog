@@ -1,8 +1,12 @@
-diffoscope (160) UNRELEASED; urgency=medium
+diffoscope (160) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Check that pgpdump is actually installed before attempting to run it.
+    Thanks to Gianfranco Costamagna (locutusofborg). (Closes: #969753)
+  * Add some documentation for the EXTERNAL_TOOLS dictionary.
+  * Ensure we check FALLBACK_FILE_EXTENSION_SUFFIX, otherwise we run pgpdump
+    against all files that are recognised by file(1) as "data".
 
- -- Chris Lamb <lamby@debian.org>  Fri, 04 Sep 2020 11:25:57 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 11 Sep 2020 10:08:38 +0100
 
 diffoscope (159) unstable; urgency=medium
 
