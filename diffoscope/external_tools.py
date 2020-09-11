@@ -17,6 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+"""
+The keys of this dictionary are filenames of executables (eg. `abootimg`)
+that might resolve to, for example, `/usr/bin/abootimg`.
+"""
+
 EXTERNAL_TOOLS = {
     "abootimg": {"debian": "abootimg", "guix": "abootimg"},
     "apktool": {"debian": "apktool"},
