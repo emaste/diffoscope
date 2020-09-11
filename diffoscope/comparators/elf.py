@@ -621,6 +621,8 @@ class ElfContainer(DecompilableContainer):
         try:
             return self._sections[member_name]
         except KeyError:
+            # Raised when the member name is not one of ours, which means
+            # it was part of the decompiler's output (aka super)
             return super().get_member(member_name)
 
 
