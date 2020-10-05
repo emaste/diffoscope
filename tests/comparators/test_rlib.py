@@ -22,6 +22,7 @@
 import pytest
 import subprocess
 
+from diffoscope.config import Config
 from distutils.version import LooseVersion
 from diffoscope.comparators.ar import ArFile
 
@@ -37,6 +38,12 @@ from ..utils.nonexisting import assert_non_existing
 
 rlib1 = load_fixture("test1.rlib")
 rlib2 = load_fixture("test2.rlib")
+
+
+@pytest.fixture(scope="function", autouse=True)
+def init_tests(request, monkeypatch):
+    # Make sure decompilation is disabled so that tests don't break
+    monkeypatch.setattr(Config(), "exclude_commands", ["^radare2.*"])
 
 
 def llvm_version():

@@ -46,6 +46,13 @@ ignore_readelf_errors1 = load_fixture("test1.debug")
 ignore_readelf_errors2 = load_fixture("test2.debug")
 
 
+@pytest.fixture(scope="function", autouse=True)
+def init_tests(request, monkeypatch):
+    # Ignore radare2 commands so decompiling is skipped
+    # See test_elf_decompiler.py for tests related to decompiler
+    monkeypatch.setattr(Config(), "exclude_commands", ["^radare2.*"])
+
+
 def readelf_version():
     try:
         out = subprocess.check_output(["readelf", "--version"])

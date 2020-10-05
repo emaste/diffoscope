@@ -1,0 +1,15 @@
+@@ -1,13 +1,13 @@
+ function sym.f () {
+     //  1 basic blocks
+ 
+     loc_0x8000040:
+ 
+        push rbp                 //[01] -r-x section size 11 named .text
+        rbp = rsp
+-       eax = 0x2a               //'*' ; 42
++       eax = 0xffffffff         //-1
+                                 //rsp ; rsp
+        return
+ (break)
+ 
+ }

@@ -42,6 +42,7 @@ class ComparatorManager:
         ("debian.DotBuildinfoFile", "debian_fallback.DotBuildinfoFile"),
         ("deb.Md5sumsFile",),
         ("deb.DebDataTarFile",),
+        ("decompile.AsmFunction",),
         ("elf.ElfSection",),
         ("binwalk.BinwalkFile",),
         ("ps.PsFile",),

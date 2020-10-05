@@ -165,6 +165,7 @@ EXTERNAL_TOOLS = {
         "FreeBSD": "ghostscript9-base",
         "guix": "ghostscript",
     },
+    "radare2": {"debian": "radare2", "arch": "radare2", "guix": "radare2"},
     "readelf": {
         "debian": "binutils-multiarch",
         "arch": "binutils",

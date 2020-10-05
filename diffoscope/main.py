@@ -293,11 +293,10 @@ def create_parser():
         action="append",
         default=[],
         help="Exclude commands that match %(metavar)s. For "
-        "example '^readelf.*\\s--debug-dump=info' can take a "
-        "long time and differences here are likely secondary "
-        "differences caused by something represented "
-        "elsewhere. Use this option to disable commands that "
-        "use a lot of resources.",
+        "example '^readelf.*\\s--debug-dump=info' and '^radare2.*' can take"
+        "a long time and differences here are likely secondary differences "
+        "caused by something represented elsewhere. Use this option to "
+        "disable commands that use a lot of resources.",
     )
     group3.add_argument(
         "--exclude-directory-metadata",
