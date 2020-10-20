@@ -1,8 +1,18 @@
-diffoscope (161) UNRELEASED; urgency=medium
+diffoscope (161) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Fix failing testsuite: (Closes: #972518)
+    - Update testsuite to support OCaml 4.11.1. (Closes: #972518)
+    - Reapply Black and bump minimum version to 20.8b1.
+  * Move the OCaml tests to the assert_diff helper.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 11 Sep 2020 10:17:31 +0100
+  [ Jean-Romain Garnier ]
+  * Add support for radare2 as a disassembler.
+
+  [ Paul Spooren ]
+  * Automatically deploy Docker images in the continuous integration pipeline.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 20 Oct 2020 15:52:28 +0100
 
 diffoscope (160) unstable; urgency=medium
 
