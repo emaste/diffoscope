@@ -24,7 +24,7 @@ from diffoscope.comparators.ocaml import OcamlInterfaceFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import get_data
+from ..utils.data import assert_diff
 from ..utils.tools import skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
@@ -75,8 +75,7 @@ def test_no_differences(cmi1):
 
 @skip_unless_tool_is_at_least("ocamlobjinfo", ocaml_version, "4.11.1")
 def test_diff(differences):
-    expected_diff = get_data("ocaml_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "ocaml_expected_diff")
 
 
 @skip_unless_tool_is_at_least("ocamlobjinfo", ocaml_version, "4.11.1")
