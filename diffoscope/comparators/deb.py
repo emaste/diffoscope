@@ -137,8 +137,10 @@ class DebFile(File):
             return None
 
         if not hasattr(self, "_control"):
-            control_file = self.as_container.control_tar.as_container.lookup_file(
-                "./control"
+            control_file = (
+                self.as_container.control_tar.as_container.lookup_file(
+                    "./control"
+                )
             )
             if control_file:
                 with open(control_file.path, "rb") as f:

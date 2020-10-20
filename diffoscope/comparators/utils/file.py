@@ -267,13 +267,17 @@ class File(metaclass=abc.ABCMeta):
             )
 
             logger.debug(
-                "Instantiating a %s for %s", formatted_class, self.name,
+                "Instantiating a %s for %s",
+                formatted_class,
+                self.name,
             )
             try:
                 self._as_container = klass(self)
 
                 logger.debug(
-                    "Returning a %s for %s", formatted_class, self.name,
+                    "Returning a %s for %s",
+                    formatted_class,
+                    self.name,
                 )
                 return self._as_container
             except RequiredToolNotFound as exc:
@@ -286,8 +290,10 @@ class File(metaclass=abc.ABCMeta):
                     infix = type(self).DESCRIPTION
                 except AttributeError:
                     infix = "this file format"
-                msg = "Format-specific differences are supported for {}.".format(
-                    infix
+                msg = (
+                    "Format-specific differences are supported for {}.".format(
+                        infix
+                    )
                 )
                 self._comments.append(exc.get_comment(msg))
 
@@ -460,7 +466,8 @@ class File(metaclass=abc.ABCMeta):
     def cmp_external(self, other):
         return (
             subprocess.call(
-                ("cmp", "-s", self.path, other.path), close_fds=True,
+                ("cmp", "-s", self.path, other.path),
+                close_fds=True,
             )
             == 0
         )

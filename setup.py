@@ -47,8 +47,13 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     tests_require=["pytest"],
     cmdclass={"test": PyTest},
-    entry_points={"console_scripts": ["diffoscope=diffoscope.main:main"],},
-    install_requires=["python-magic", "libarchive-c",],
+    entry_points={
+        "console_scripts": ["diffoscope=diffoscope.main:main"],
+    },
+    install_requires=[
+        "python-magic",
+        "libarchive-c",
+    ],
     extras_require={
         "distro_detection": ["distro"],
         "cmdline": ["argcomplete", "progressbar"],

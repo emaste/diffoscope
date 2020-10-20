@@ -47,7 +47,9 @@ class ZstContainer(Archive):
         logger.debug("zstd extracting to %s", dest_path)
         with open(dest_path, "wb") as fp:
             subprocess.check_call(
-                ["zstd", "-d", "-c", self.source.path], stdout=fp, stderr=None,
+                ["zstd", "-d", "-c", self.source.path],
+                stdout=fp,
+                stderr=None,
             )
         return dest_path
 

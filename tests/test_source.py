@@ -242,7 +242,7 @@ def black_version():
     return out.decode("utf-8").rsplit(" ", 1)[-1]
 
 
-@skip_unless_tool_is_at_least("black", black_version, "19.10b0")
+@skip_unless_tool_is_at_least("black", black_version, "20.8b1")
 def test_code_is_black_clean():
     output = subprocess.check_output(
         ("black", "--diff", "."), stderr=subprocess.PIPE

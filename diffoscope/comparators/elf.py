@@ -554,8 +554,10 @@ class ElfContainer(DecompilableContainer):
         debug_file_path = "./usr/lib/debug/.build-id/{0}/{1}.debug".format(
             build_id[:2], build_id[2:]
         )
-        debug_file = dbgsym_package.as_container.data_tar.as_container.lookup_file(
-            debug_file_path
+        debug_file = (
+            dbgsym_package.as_container.data_tar.as_container.lookup_file(
+                debug_file_path
+            )
         )
         if not debug_file:
             logger.debug(

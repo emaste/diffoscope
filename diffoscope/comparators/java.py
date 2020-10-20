@@ -96,7 +96,8 @@ class ClassFile(File):
                 # Save our exception
                 last_exc = exc
                 logger.debug(
-                    "Unable to find %s. Falling back...", decompiler,
+                    "Unable to find %s. Falling back...",
+                    decompiler,
                 )
 
         # Re-raise the last exception we would have raised from the previous
