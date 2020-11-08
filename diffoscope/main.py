@@ -681,7 +681,7 @@ def run_diffoscope(parsed_args):
             except json.JSONDecodeError:
                 traceback.print_exc()
                 print(
-                    "E: Could not parse diff from '{}'. (Are you sure you"
+                    "E: Could not parse diff from '{}'. (Are you sure you "
                     "only meant to specify a single file?)".format(path1),
                     file=sys.stderr,
                 )
