@@ -527,7 +527,7 @@ class File(metaclass=abc.ABCMeta):
 
                 difference.add_comment(
                     "Command `{}` failed with exit code {}.{}".format(
-                        format_cmdline([e.cmd]),
+                        format_cmdline(e.cmd),
                         e.returncode,
                         suffix or " (No output)",
                     )
