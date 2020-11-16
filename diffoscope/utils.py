@@ -23,6 +23,10 @@ import tempfile
 
 
 def format_cmdline(cmd, replace=(), truncate=None):
+    """
+    NB. Takes a list of strings, not a string.
+    """
+
     prefix = tempfile.gettempdir()
 
     def fn(x):
