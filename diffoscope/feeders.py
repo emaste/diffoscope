@@ -138,7 +138,7 @@ def from_operation(operation):
                 )
             raise subprocess.CalledProcessError(
                 operation.returncode,
-                operation.name,
+                [operation.name],
                 output=output.encode("utf-8"),
             )
         return end_nl
