@@ -239,3 +239,23 @@ REMAPPED_TOOL_NAMES = {}
 # If we only use POSIX CLI options and the output is identical to the system
 # version (so that our tests don't break) then it's unnecessary to add it here.
 GNU_TOOL_NAMES = {"diff", "readelf", "objcopy", "objdump"}
+
+# Set of tools considered "large" their installation size, or too niche in
+# their target users.  To be easily excluded from installation if not
+# specifically required.
+# These are the names of the tools, not package names.
+HUGE_TOOLS = {
+    "ghc",
+    "ocamlobjinfo",
+    "llvm-bcanalyzer",
+    "llvm-config",
+    "llvm-dis",
+    "ppudump",
+    "javap",
+    "ssconvert",
+    "apktool",
+    "apksigner",
+    "pedump",
+    "radare2",
+    "dumpxsb",
+}
