@@ -99,7 +99,7 @@ Architecture: all
 Suggests:
  libjs-jquery,
 Depends:
- python3-distutils | libpython3.6-stdlib (<< 3.6.5~rc1-2),
+ python3-distutils,
  python3-pkg-resources,
  ${misc:Depends},
  ${python3:Depends},
