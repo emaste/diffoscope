@@ -49,7 +49,7 @@ from .profiling import ProfileManager, profile
 from .tempfiles import clean_all_temp_files, get_tempdir_free_space
 from .difference import Difference
 from .comparators import ComparatorManager
-from .external_tools import EXTERNAL_TOOLS
+from .external_tools import EXTERNAL_TOOLS, HUGE_TOOLS
 from .presenters.html import JQUERY_SYSTEM_LOCATIONS
 from .presenters.formats import PresenterManager
 from .comparators.utils.compare import compare_root_paths
@@ -573,15 +573,20 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         tools.update(tool_required.all)
 
         packages = set()
+        packages_basic = set()
         for x in tools:
             try:
-                packages.add(EXTERNAL_TOOLS[x]["debian"])
+                pkg = EXTERNAL_TOOLS[x]["debian"]
             except KeyError:
                 pass
+            packages.add(pkg)
+            if x not in HUGE_TOOLS:
+                packages_basic.add(pkg)
 
         # Exclude "Required" packages
         for x in ("gzip", "tar", "coreutils", "diffutils", "findutils"):
             packages.discard(x)
+            packages_basic.discard(x)
 
         description = "File formats supported include: {}".format(
             ComparatorManager().format_descriptions(),
@@ -591,6 +596,12 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         print("diffoscope:Description={}".format(wrapped))
 
         print("diffoscope:Recommends={}".format(", ".join(sorted(packages))))
+        print(
+            "diffoscope-minimal:Recommends={}".format(
+                ", ".join(sorted(packages_basic))
+            )
+        )
+
         sys.exit(0)
 
 

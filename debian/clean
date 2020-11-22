@@ -1,5 +1,5 @@
 debian/diffoscope.1
-debian/diffoscope.bash-completion
+debian/diffoscope-minimal.bash-completion
 diffoscope.egg-info/
 .cache/
 .pytest_cache/

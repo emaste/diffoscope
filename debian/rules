@@ -18,7 +18,7 @@ ifneq ($(DEB_VERSION),$(PY_VERSION))
 endif
 
 export PATH := $(CURDIR)/bin:$(PATH)
-export PYBUILD_DESTDIR = debian/diffoscope
+export PYBUILD_DESTDIR = debian/diffoscope-minimal
 export PYBUILD_TEST_ARGS = -vv -r sxX -l --cov=diffoscope --cov-report=term-missing --cov-report=html
 export PYBUILD_BEFORE_TEST = flake8 --config=/dev/null --select=F821
 export PYBUILD_AFTER_TEST = debian/tests/basic-command-line
@@ -37,20 +37,29 @@ endif
 doc/%.1:
 	$(MAKE) -C doc $*.1
 
-debian/diffoscope.bash-completion:
+debian/diffoscope-minimal.bash-completion:
 	register-python-argcomplete3 diffoscope > $@
 
-execute_after_dh_auto_build: debian/diffoscope.bash-completion
+execute_after_dh_auto_build: debian/diffoscope-minimal.bash-completion
 	dh_auto_build -O--buildsystem=makefile -Ddoc
 
 override_dh_python3:
-	dh_python3 -p diffoscope \
+	# dh_python3 will only work on binaries shipping files
+	dh_python3 -p diffoscope-minimal \
 		--depends-section=distro_detection \
 		--recommends-section=cmdline \
-		--recommends-section=comparators \
+		--recommends-section=comparators
+	grep Recommends debian/diffoscope-minimal.substvars >> debian/diffoscope.substvars
+	# Remove big Recommends from the -minimal package, leaving them only in the full one
+	sed -i 's/python3-guestfs,//' debian/diffoscope-minimal.substvars
+	sed -i 's/python3-binwalk,//' debian/diffoscope-minimal.substvars
 
 execute_before_dh_gencontrol:
-	bin/diffoscope --list-debian-substvars >> debian/diffoscope.substvars
+	bin/diffoscope --list-debian-substvars | tee -a \
+		debian/diffoscope.substvars \
+		debian/diffoscope-minimal.substvars \
+		> /dev/null
+	head debian/*.substvars
 
 diffoscope/presenters/icon.py: favicon.png
 	(echo '# Generated from $@'; \

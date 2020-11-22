@@ -94,24 +94,52 @@ Homepage: https://diffoscope.org
 Vcs-Git: https://salsa.debian.org/reproducible-builds/diffoscope.git
 Vcs-Browser: https://salsa.debian.org/reproducible-builds/diffoscope
 
-Package: diffoscope
+Package: diffoscope-minimal
 Architecture: all
-Suggests:
- libjs-jquery,
 Depends:
  python3-distutils,
  python3-pkg-resources,
  ${misc:Depends},
  ${python3:Depends},
 Recommends:
- ${diffoscope:Recommends},
+ ${diffoscope-minimal:Recommends},
  ${python3:Recommends},
+Breaks: diffoscope (<< 162~)
+Replaces: diffoscope (<< 162~)
 Description: in-depth comparison of files, archives, and directories
  diffoscope will try to get to the bottom of what makes files or directories
  different. It will recursively unpack archives of many kinds and transform
  various binary formats into more human-readable form to compare them. It can
  compare two tarballs, ISO images, or PDF just as easily. The differences can
  be shown in a text or HTML report.
+ .
+ This package only recommends a partial set of the supported 3rd party tools
+ needed to produce file-format-specific comparisons, excluding those that are
+ considered too large or too niche for the general use.
+ .
+ diffoscope is developed as part of the “reproducible builds” project.
+
+Package: diffoscope
+Architecture: all
+Suggests:
+ libjs-jquery,
+Depends:
+ diffoscope-minimal,
+ ${misc:Depends},
+Recommends:
+ ${diffoscope:Recommends},
+ ${python3:Recommends},
+Enhances:
+ diffoscope-core,
+Description: in-depth comparison of files, archives, and directories
+ diffoscope will try to get to the bottom of what makes files or directories
+ different. It will recursively unpack archives of many kinds and transform
+ various binary formats into more human-readable form to compare them. It can
+ compare two tarballs, ISO images, or PDF just as easily. The differences can
+ be shown in a text or HTML report.
+ .
+ This is a dependency package that recommends the full set of external tools,
+ to support as many type of files as possible.
  .
  ${diffoscope:Description}
  .
