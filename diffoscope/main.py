@@ -564,7 +564,7 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         ComparatorManager().reload()
 
         # ... however for the generated substvar to be effective/deterministic
-        # regardless of the currently installed packages we special-case some
+        # regardless of the currently installed packages, we special-case some
         # tools (NB. not package names) as their modules may not have been
         # imported by the `ComparatorManager().reload()` call above. (#908072)
         tools = set(
