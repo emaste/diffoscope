@@ -75,9 +75,7 @@ class BooleanAction(argparse.Action):
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         if nargs is not None:
             raise ValueError("nargs not allowed for BooleanAction")
-        super(BooleanAction, self).__init__(
-            option_strings, dest, nargs=0, **kwargs
-        )
+        super().__init__(option_strings, dest, nargs=0, **kwargs)
 
     def __call__(self, parser, namespace, values, option_string=None):
         setattr(namespace, self.dest, not option_string.startswith("--no"))
