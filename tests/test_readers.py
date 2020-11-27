@@ -29,7 +29,7 @@ from .utils.data import cwd_data, get_data
 
 def run_read_write(capsys, diff, *args):
     with pytest.raises(SystemExit) as exc, cwd_data():
-        main(args + (diff,))
+        main(args + (f"--load-existing-diff={diff}",))
 
     out, err = capsys.readouterr()
 

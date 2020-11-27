@@ -191,7 +191,7 @@ def test_html_regression_875281(tmpdir, capsys):
         "--html",
         report_path,
         "--max-page-size=5000",
-        pair=(diff_path,),
+        f"--load-existing-diff={diff_path}",
     )
     assert out == ""
 

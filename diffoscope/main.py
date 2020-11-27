@@ -22,7 +22,6 @@
 
 import os
 import sys
-import json
 import errno
 import signal
 import logging
@@ -90,17 +89,9 @@ def create_parser():
     )
     parser.add_argument(
         "path1",
-        help='First file or directory to compare. Specify "-" to read a '
-        "diffoscope diff from stdin.",
+        help="First file or directory to compare.",
     )
-    parser.add_argument(
-        "path2",
-        nargs="?",
-        help="Second file or directory to "
-        "compare. If omitted, no comparison is done but instead we read a "
-        "diffoscope diff from path1 and will output this in the formats "
-        "specified by the rest of the command line.",
-    )
+    parser.add_argument("path2", help="Second file or directory to compare.")
     parser.add_argument(
         "--debug",
         action="store_true",
@@ -217,6 +208,13 @@ def create_parser():
         const="-",
         default=None,
         help="Write profiling info to given file (use - for stdout)",
+    )
+    parser.add_argument(
+        "--load-existing-diff",
+        metavar="INPUT_FILE",
+        action=LoadExistingDiffAction,
+        dest="load_existing_diff",
+        help='Load existing diff from file. Specify "-" to read a diffoscope diff from stdin.',
     )
 
     group2 = parser.add_argument_group("output limits")
@@ -444,7 +442,7 @@ def create_parser():
         sys.exit(1)
 
     def post_parse(parsed_args):
-        if parsed_args.path2 is None:
+        if parsed_args.load_existing_diff is not None:
             # warn about unusual flags in this mode
             ineffective_flags = [
                 f
@@ -505,6 +503,19 @@ class RangeCompleter:
 
     def __call__(self, prefix, **kwargs):
         return (str(i) for i in self.choices if str(i).startswith(prefix))
+
+
+class LoadExistingDiffAction(argparse._StoreAction):
+    def __call__(self, parser, *args, **kwargs):
+        actions_by_dest = {x.dest: x for x in parser._actions}
+
+        # If we have passed a value for --load_existing_diff we don't require
+        # path1 or path2 anymore.
+        actions_by_dest["path1"].required = False
+        actions_by_dest["path2"].required = False
+
+        # Actually store the value.
+        super().__call__(parser, *args, **kwargs)
 
 
 class ListToolsAction(argparse.Action):
@@ -678,23 +689,21 @@ def run_diffoscope(parsed_args):
     configure(parsed_args)
     set_path()
     normalize_environment()
+
     path1, path2 = parsed_args.path1, parsed_args.path2
-    if path2 is None:
-        if path1 == "-":
+
+    # Should we be loading an existing diff from a file
+    if parsed_args.load_existing_diff:
+        x = parsed_args.load_existing_diff
+
+        if x == "-":
             logger.debug("Loading diff from stdin")
             difference = load_diff(sys.stdin, "stdin")
         else:
-            logger.debug("Loading diff from %s", path1)
-            try:
-                difference = load_diff_from_path(path1)
-            except json.JSONDecodeError:
-                traceback.print_exc()
-                print(
-                    "E: Could not parse diff from '{}'. (Are you sure you "
-                    "only meant to specify a single file?)".format(path1),
-                    file=sys.stderr,
-                )
-                return 1
+            logger.debug(
+                "Loading diff from %s", parsed_args.load_existing_diff
+            )
+            difference = load_diff_from_path(x)
     else:
         if Config().exclude_directory_metadata in ("auto", None):
             # Default to ignoring metadata directory...
