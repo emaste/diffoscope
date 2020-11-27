@@ -108,6 +108,7 @@ class ComparatorManager:
         ("kbx.KbxFile",),
         ("dtb.DeviceTreeFile",),
         ("ogg.OggFile",),
+        ("uimage.UimageFile",),
         ("xsb.XsbFile",),
         ("berkeley_db.BerkeleyDBFile",),
         ("zst.ZstFile",),
