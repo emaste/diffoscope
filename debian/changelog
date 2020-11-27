@@ -1,8 +1,29 @@
-diffoscope (162) UNRELEASED; urgency=medium
+diffoscope (162) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't depends on radare2 in the Debian autopkgtests as it will not be in
+    bullseye due to security considerations (#950372). (Closes: #975313)
+  * Avoid "Command `s p a c e d o u t` failed" messages when creating an
+    artificial CalledProcessError instance in our generic from_operation
+    feeder creator.
+  * Overhaul long and short descriptions.
+  * Use the operation's full name so that "command failed" messages include
+    its arguments.
+  * Add a missing comma in a comment.
 
- -- Chris Lamb <lamby@debian.org>  Tue, 20 Oct 2020 15:56:14 +0100
+  [ Jelmer Vernooĳ ]
+  * Add missing space to the error message when only one argument is passed to
+    diffoscope.
+
+  [ Holger Levsen ]
+  * Update Standards-Version to 4.5.1.
+
+  [ Mattia Rizzolo ]
+  * Split the diffoscope package into a diffoscope-minimal package that
+    excludes the larger packages from Recommends. (Closes: #975261)
+  * Drop support for Python 3.6.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 27 Nov 2020 09:41:32 +0000
 
 diffoscope (161) unstable; urgency=medium
 
