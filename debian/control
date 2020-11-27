@@ -106,18 +106,22 @@ Recommends:
  ${python3:Recommends},
 Breaks: diffoscope (<< 162~)
 Replaces: diffoscope (<< 162~)
-Description: in-depth comparison of files, archives, and directories
- diffoscope will try to get to the bottom of what makes files or directories
- different. It will recursively unpack archives of many kinds and transform
- various binary formats into more human-readable form to compare them. It can
- compare two tarballs, ISO images, or PDF just as easily. The differences can
- be shown in a text or HTML report.
+Description: in-depth visual diff tool for files, archives and directories
+ diffoscope is a visual diff tool that attempts try to get to the bottom of
+ what makes files or directories actually different.
  .
- This package only recommends a partial set of the supported 3rd party tools
- needed to produce file-format-specific comparisons, excluding those that are
- considered too large or too niche for the general use.
+ It can recursively unpack archives of many kinds, transforming various binary
+ formats into more human-readable form to compare them in a human-readable way.
+ It can compare two tarballs, ISO images or PDFs just as easily. The
+ differences can be displayed on the console or in a HTML report.
  .
- diffoscope is developed as part of the “reproducible builds” project.
+ ${diffoscope:Description}
+ .
+ This -minimal package only recommends a partial set of the supported 3rd party
+ tools needed to produce file-format-specific comparisons, excluding those that
+ are considered too large or niche for general use.
+ .
+ diffoscope is developed as part of the Reproducible Builds project.
 
 Package: diffoscope
 Architecture: all
@@ -131,16 +135,18 @@ Recommends:
  ${python3:Recommends},
 Enhances:
  diffoscope-core,
-Description: in-depth comparison of files, archives, and directories
- diffoscope will try to get to the bottom of what makes files or directories
- different. It will recursively unpack archives of many kinds and transform
- various binary formats into more human-readable form to compare them. It can
- compare two tarballs, ISO images, or PDF just as easily. The differences can
- be shown in a text or HTML report.
+Description: in-depth visual diff tool for files, archives and directories
+ diffoscope is a visual diff tool that attempts try to get to the bottom of
+ what makes files or directories actually different.
+ .
+ It can recursively unpack archives of many kinds, transforming various binary
+ formats into more human-readable form to compare them in a human-readable way.
+ It can compare two tarballs, ISO images or PDFs just as easily. The
+ differences can be displayed on the console or in a HTML report.
  .
  This is a dependency package that recommends the full set of external tools,
  to support as many type of files as possible.
  .
  ${diffoscope:Description}
  .
- diffoscope is developed as part of the “reproducible builds” project.
+ diffoscope is developed as part of the Reproducible Builds project.
