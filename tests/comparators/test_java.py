@@ -82,6 +82,12 @@ def test_diff_procyon(differences_procyon):
 
 @skip_unless_tool_is_at_least("javap", javap_version, "9.0.4")
 def test_diff_javap(differences_javap):
+    """
+    Java tests are kept up to date relative to the JDK version bundled in
+    Debian's `default-jdk` package. The output may vary depending on the JDK
+    version installed on your system, rendering the tests inaccurate.
+    """
+
     diff(differences_javap, "javap_class_expected_diff")
 
 
