@@ -105,6 +105,7 @@ class ComparatorManager:
         ("pgp.PgpFile",),
         ("pgp.PgpSignature",),
         ("kbx.KbxFile",),
+        ("fit.FlattenedImageTreeFile",),
         ("dtb.DeviceTreeFile",),
         ("ogg.OggFile",),
         ("uimage.UimageFile",),

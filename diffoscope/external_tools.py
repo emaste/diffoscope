@@ -51,6 +51,11 @@ EXTERNAL_TOOLS = {
     "cpio": {"debian": "cpio", "arch": "cpio", "guix": "cpio"},
     "diff": {"debian": "diffutils", "arch": "diffutils", "guix": "diffutils"},
     "docx2txt": {"debian": "docx2txt", "arch": "docx2txt", "guix": "docx2txt"},
+    "dumpimage": {
+        "debian": "u-boot-tools",
+        "arch": "uboot-tools",
+        "guix": "u-boot-tools",
+    },
     "enjarify": {"debian": "enjarify", "arch": "enjarify", "guix": "enjarify"},
     "fdtdump": {
         "debian": "device-tree-compiler",
