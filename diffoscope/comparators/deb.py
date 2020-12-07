@@ -230,7 +230,7 @@ class DebTarContainer(TarContainer):
                 and my_md5sums.get(my_member.name, "my")
                 == other_md5sums.get(other_member.name, "other")
             ):
-                logger.debug("Skip %s: identical md5sum", my_member.name)
+                logger.debug("Skipping %s: identical md5sum", my_member.name)
                 continue
             yield my_member, other_member, comment
 
