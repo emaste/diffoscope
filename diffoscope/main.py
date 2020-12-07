@@ -582,7 +582,7 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         tools.update(tool_required.all)
 
         packages = set()
-        packages_basic = set()
+        packages_minimal = set()
         for x in tools:
             try:
                 pkg = EXTERNAL_TOOLS[x]["debian"]
@@ -590,12 +590,12 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
                 pass
             packages.add(pkg)
             if x not in HUGE_TOOLS:
-                packages_basic.add(pkg)
+                packages_minimal.add(pkg)
 
         # Exclude "Required" packages
         for x in ("gzip", "tar", "coreutils", "diffutils", "findutils"):
             packages.discard(x)
-            packages_basic.discard(x)
+            packages_minimal.discard(x)
 
         description = "File formats supported include: {}".format(
             ComparatorManager().format_descriptions(),
@@ -607,7 +607,7 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         print("diffoscope:Recommends={}".format(", ".join(sorted(packages))))
         print(
             "diffoscope-minimal:Recommends={}".format(
-                ", ".join(sorted(packages_basic))
+                ", ".join(sorted(packages_minimal))
             )
         )
 
