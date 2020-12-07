@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #

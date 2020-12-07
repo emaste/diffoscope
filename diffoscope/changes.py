@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 #   changes.py — .changes file handling class
 #
