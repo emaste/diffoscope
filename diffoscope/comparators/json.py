@@ -19,6 +19,7 @@
 
 import re
 import json
+import pprint
 import logging
 import collections
 
@@ -95,9 +96,7 @@ class JSONFile(File):
             difference.add_comment(f"Similarity: {similarity}%")
 
         difference.add_comment(
-            "Differences: {}".format(
-                json.dumps(diff, indent=2, sort_keys=True)
-            )
+            "Differences: {}".format(pprint.pformat(diff, width=100))
         )
 
     @staticmethod
