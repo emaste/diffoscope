@@ -3,7 +3,7 @@
 #
 # Copyright © 2016 Emanuel Bronshtein <e3amn2l@gmx.com>
 # Copyright © 2016 Vagrant Cascadian <vagrant@debian.org>
-# Copyright © 2018-2019 Chris Lamb <lamby@debian.org>
+# Copyright © 2018-2020 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
