@@ -37,7 +37,7 @@ def zst_fixture(prefix):
         with open(input_, "w") as f:
             f.write(prefix)
 
-        subprocess.check_call(("zstd", input_))
+        subprocess.check_call(("zstd", "--quiet", "--no-progress", input_))
 
         return specialize(FilesystemFile(output))
 
