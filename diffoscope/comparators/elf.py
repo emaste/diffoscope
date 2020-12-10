@@ -77,12 +77,17 @@ class Readelf(Command):
 
     def filter(self, line):
         try:
-            # we don't care about the name of the archive
-            line = self._archive_re.sub("File: lib.a(", line.decode("utf-8"))
-            # the full path can appear in the output, we need to remove it
-            return self._path_re.sub("/", line).encode("utf-8")
+            val = line.decode("utf-8")
         except UnicodeDecodeError:
             return line
+
+        # we don't care about the name of the archive
+        val = self._archive_re.sub("File: lib.a(", val)
+
+        # the full path can appear in the output, we need to remove it
+        val = self._path_re.sub("/", val)
+
+        return val.encode("utf-8")
 
     @staticmethod
     def should_skip_section(section_name, section_type):
