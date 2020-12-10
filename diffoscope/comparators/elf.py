@@ -234,7 +234,14 @@ class ObjdumpSection(Command):
         if line.startswith(b"In archive"):
             return b""
 
-        return ObjdumpSection.RE_INSTRUCTION_OFFSET.sub(b"", line)
+        line = ObjdumpSection.RE_INSTRUCTION_OFFSET.sub(b"", line)
+
+        # objdump (from approximately 2.35.50.20201125-1 onwards) returns "ret"
+        # instead of "retq"; lets normalise them to "retq" for now.
+        if line == b"\tret    \n":
+            return b"\tretq   \n"
+
+        return line
 
 
 class ObjdumpDisassembleSection(ObjdumpSection):
