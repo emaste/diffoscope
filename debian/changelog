@@ -1,8 +1,41 @@
-diffoscope (163) UNRELEASED; urgency=medium
+diffoscope (163) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Bug fixes & new features:
+    - Normalise "ret" to "retq" in objdump output to support multiple versions
+      of obdump(1). (Closes: #976760, reproducible-builds/diffoscope#227)
+    - Don't show progress indicators when running zstd(1).
+      (Closes: reproducible-builds/diffoscope#226)
+    - Move the slightly-confusing behaviour of loading an "existing diff" if a
+      single file is passed to diffoscope to the new --load-existing-diff
+      command.
+  * Output improvements:
+    - Use pprint.pformat in the JSON comparator to serialise the differences
+      from jsondiff to make the output render better.
+    - Correct tense in --debug log output.
+  * Code quality:
+    * Don't use an old-style "super" call.
+    - Rewrite the filter routine for post-processing output from readelf(1).
+    - Update my copyright years.
+    - Remove unncessary PEP 263 encoding lines (replaced via PEP 3120).
+    - Use "minimal" instead of "basic" as a variable name to match the
+      underlying package name.
+    - Add comment regarding Java tests for diffoscope contributors who are not
+      using Debian. (Re: reproducible-builds/diffoscope!58)
+  * Debian packaging:
+    - Update debian/copyright to match copyright notices in source-tree.
+      (Closes: reproducible-builds/diffoscope#224)
+    - Ensure the new "diffoscope-minimal" package has a different short
+      description from the main "diffoscope" one.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 27 Nov 2020 10:01:37 +0000
+  [ Jean-Romain Garnier ]
+  * Add tests for OpenJDK 14.
+
+  [ Conrad Ratschan ]
+  * Add comparator for "legacy" uboot uImage files.
+    (MR: reproducible-builds/diffoscope!69)
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 11 Dec 2020 10:07:28 +0000
 
 diffoscope (162) unstable; urgency=medium
 
