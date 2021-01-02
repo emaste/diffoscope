@@ -586,7 +586,8 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
             try:
                 pkg = EXTERNAL_TOOLS[x]["debian"]
             except KeyError:
-                pass
+                continue
+
             packages.add(pkg)
             if x not in HUGE_TOOLS:
                 packages_minimal.add(pkg)
