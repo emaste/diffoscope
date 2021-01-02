@@ -103,6 +103,7 @@ EXTERNAL_TOOLS = {
         "guix": "python-jsbeautifier",
     },
     "kbxutil": {"debian": "gnupg-utils", "guix": "gnupg"},
+    "lipo": {},
     "llvm-bcanalyzer": {"debian": "llvm", "arch": "llvm", "guix": "llvm"},
     "llvm-config": {"debian": "llvm", "arch": "llvm"},
     "llvm-dis": {"debian": "llvm", "arch": "llvm", "guix": "llvm"},
@@ -144,6 +145,7 @@ EXTERNAL_TOOLS = {
     "odt2txt": {"debian": "odt2txt", "arch": "odt2txt", "guix": "odt2txt"},
     "oggDump": {"debian": "oggvideotools"},
     "openssl": {"debian": "openssl", "guix": "openssl"},
+    "otool": {},
     "pgpdump": {"debian": "pgpdump", "arch": "pgpdump", "guix": "pgpdump"},
     "pdftotext": {
         "debian": "poppler-utils",

@@ -42,3 +42,17 @@ def test_required_tool_not_found():
 
     with pytest.raises(RequiredToolNotFound):
         fn()
+
+
+def test_all_tools_are_listed():
+    from diffoscope.comparators import ComparatorManager
+    from diffoscope.external_tools import EXTERNAL_TOOLS
+    from diffoscope.tools import tool_required
+
+    ComparatorManager().reload()
+
+    tools = set(tool_required.all)
+
+    for x in tools:
+        if x not in EXTERNAL_TOOLS:
+            pytest.fail(f"{x} is not present in EXTERNAL_TOOLS")
