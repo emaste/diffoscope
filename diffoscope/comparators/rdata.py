@@ -113,7 +113,7 @@ def get_module_path_for_rdb(rdb, temp_dir):
     shutil.copy(rdx.path, f"{prefix}.rdx")
 
     # Return the "module" path, ie. without an extension
-    return os.path.join(temp_dir, "temp")
+    return prefix
 
 
 class RdsReader(Command):
