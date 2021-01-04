@@ -37,6 +37,21 @@ def get_named_temporary_file(*args, **kwargs):
 
 
 def get_temporary_directory(*args, **kwargs):
+    """
+    Create and return a TemporaryDirectory
+
+    Preferably use a "with" statement to control its lifetime:
+        with get_temporary_directory() as tmpdir:
+
+    The temporary directory is cleaned up at the end of the "with"
+    statement. Otherwise it's cleaned up when the object is garbage collected.
+
+    WARNING, don't do this:
+        tmpdir = get_temporary_directory().name
+
+    This will result to immediate removal of the directory, as there is no
+    reference pointing to the TemporaryDirectory object.
+    """
     kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
