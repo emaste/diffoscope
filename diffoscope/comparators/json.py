@@ -95,6 +95,8 @@ class JSONFile(File):
             difference.add_comment(f"Similarity: {similarity}%")
 
         differences = pprint.pformat(diff, width=100)
+        if len(differences) > 512:
+            differences = f"{differences[:512]} […]"
         difference.add_comment(f"Differences: {differences}")
 
     @staticmethod
