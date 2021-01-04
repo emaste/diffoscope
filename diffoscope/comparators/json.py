@@ -94,9 +94,8 @@ class JSONFile(File):
         if similarity:
             difference.add_comment(f"Similarity: {similarity}%")
 
-        difference.add_comment(
-            "Differences: {}".format(pprint.pformat(diff, width=100))
-        )
+        differences = pprint.pformat(diff, width=100)
+        difference.add_comment(f"Differences: {differences}")
 
     @staticmethod
     def dumps(file, sort_keys=True):
