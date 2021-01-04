@@ -21,6 +21,7 @@ import pytest
 
 
 def test_all_tools_are_listed():
+    # Note the ordering of this test (see: f1d744da16)
     from diffoscope.comparators import ComparatorManager
     from diffoscope.external_tools import EXTERNAL_TOOLS
     from diffoscope.tools import tool_required
