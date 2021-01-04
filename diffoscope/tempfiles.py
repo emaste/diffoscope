@@ -57,24 +57,6 @@ def clean_all_temp_files():
     _FILES.clear()
 
     logger.debug("Cleaning %d temporary directories", len(_DIRS))
-
-    # Reverse so we delete the top-level directory last.
-    for x in reversed(_DIRS):
-        try:
-            x.cleanup()
-        except PermissionError:
-            # Recursively reset the permissions of temporary directories prior
-            # to deletion to ensure that non-writable permissions such as 0555
-            # are removed and do not cause a traceback. (#891363)
-            for dirpath, ys, _ in os.walk(x.name):
-                for y in ys:
-                    os.chmod(os.path.join(dirpath, y), 0o777)
-            # try removing it again now
-            x.cleanup()
-        except FileNotFoundError:
-            pass
-        except:  # noqa
-            logger.exception("Unable to delete %s", x)
     _DIRS.clear()
 
 
