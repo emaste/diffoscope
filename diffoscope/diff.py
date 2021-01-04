@@ -213,6 +213,7 @@ class FIFOFeeder(threading.Thread):
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
+        os.remove(self.fifo_path)
         self.join()
 
     def run(self):
