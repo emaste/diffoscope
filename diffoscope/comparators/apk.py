@@ -46,8 +46,9 @@ class ApkContainer(Archive):
     @tool_required("zipinfo")
     def open_archive(self):
         self._members = []
+        self._tmpdir = get_temporary_directory()
         self._unpacked = os.path.join(
-            get_temporary_directory().name, os.path.basename(self.source.name)
+            self._tmpdir.name, os.path.basename(self.source.name)
         )
         self._andmanifest = None
         self._andmanifest_orig = None

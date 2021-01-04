@@ -320,14 +320,15 @@ def make_feeder_from_raw_reader(in_file, filterfn=None):
 
 
 def diff(feeder1, feeder2):
-    tmpdir = get_temporary_directory().name
-
-    fifo1_path = os.path.join(tmpdir, "fifo1")
-    fifo2_path = os.path.join(tmpdir, "fifo2")
-    with FIFOFeeder(feeder1, fifo1_path) as fifo1, FIFOFeeder(
-        feeder2, fifo2_path
-    ) as fifo2:
-        return run_diff(fifo1_path, fifo2_path, fifo1.end_nl_q, fifo2.end_nl_q)
+    with get_temporary_directory() as tmpdir:
+        fifo1_path = os.path.join(tmpdir, "fifo1")
+        fifo2_path = os.path.join(tmpdir, "fifo2")
+        with FIFOFeeder(feeder1, fifo1_path) as fifo1, FIFOFeeder(
+            feeder2, fifo2_path
+        ) as fifo2:
+            return run_diff(
+                fifo1_path, fifo2_path, fifo1.end_nl_q, fifo2.end_nl_q
+            )
 
 
 def diff_split_lines(diff, keepends=True):

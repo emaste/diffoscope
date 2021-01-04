@@ -73,7 +73,7 @@ def check_rds_extension(f):
     return f.name.endswith(".rds") or f.name.endswith(".rdx")
 
 
-def get_module_path_for_rdb(rdb):
+def get_module_path_for_rdb(rdb, temp_dir):
     """
     R's lazyLoad method does not take a filename directly to an .rdb file (eg.
     `/path/to/foo.rdb`) but rather the path without any extension (eg.
@@ -106,7 +106,6 @@ def get_module_path_for_rdb(rdb):
         # Corresponding .rdx does not exist
         return None
 
-    temp_dir = get_temporary_directory().name
     prefix = os.path.join(temp_dir, "temp")
 
     logger.debug("Copying %s and %s to %s", rdx.path, rdb.path, temp_dir)
@@ -162,10 +161,11 @@ class RdbFile(File):
     FILE_EXTENSION_SUFFIX = {".rdb"}
 
     def compare_details(self, other, source=None):
-        a = get_module_path_for_rdb(self)
-        b = get_module_path_for_rdb(other)
+        with get_temporary_directory() as tmpdir:
+            a = get_module_path_for_rdb(self, tmpdir)
+            b = get_module_path_for_rdb(other, tmpdir)
 
-        if a is None or b is None:
-            return []
+            if a is None or b is None:
+                return []
 
-        return [Difference.from_operation(RdbReader, a, b)]
+            return [Difference.from_operation(RdbReader, a, b)]

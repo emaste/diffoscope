@@ -290,7 +290,8 @@ class LibarchiveContainer(Archive):
         if hasattr(self, "_members"):
             return
 
-        tmpdir = get_temporary_directory().name
+        self._tmpdir_object = get_temporary_directory()
+        tmpdir = self._tmpdir_object.name
         self._members = collections.OrderedDict()
 
         logger.debug("Extracting %s to %s", self.source.path, tmpdir)

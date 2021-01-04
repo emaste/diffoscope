@@ -21,7 +21,8 @@ import os
 import logging
 import tempfile
 
-_DIRS, _FILES = [], []
+_BASEDIR = None
+_FILES = []
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +40,6 @@ def get_temporary_directory(*args, **kwargs):
     kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
-    _DIRS.append(d)
 
     return d
 
@@ -56,21 +56,18 @@ def clean_all_temp_files():
             logger.exception("Unable to delete %s", x)
     _FILES.clear()
 
-    logger.debug("Cleaning %d temporary directories", len(_DIRS))
-    _DIRS.clear()
-
 
 def _get_base_temporary_directory():
-    if not _DIRS:
-        d = tempfile.TemporaryDirectory(
+    global _BASEDIR
+    if _BASEDIR is None:
+        _BASEDIR = tempfile.TemporaryDirectory(
             dir=tempfile.gettempdir(), prefix="diffoscope_"
         )
+        logger.debug(
+            "Created top-level temporary directory: %s", _BASEDIR.name
+        )
 
-        logger.debug("Created top-level temporary directory: %s", d.name)
-
-        _DIRS.append(d)
-
-    return _DIRS[0].name
+    return _BASEDIR.name
 
 
 def get_tempdir_free_space():

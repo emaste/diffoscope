@@ -255,7 +255,8 @@ class SquashfsContainer(Archive):
             return
 
         self._members = collections.OrderedDict()
-        self._temp_dir = get_temporary_directory().name
+        self._temp_dir_object = get_temporary_directory()
+        self._temp_dir = self._temp_dir_object.name
 
         logger.debug("Extracting %s to %s", self.source.path, self._temp_dir)
 

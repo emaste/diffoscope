@@ -42,8 +42,8 @@ else:
     # ensure it does not create (!) unnecessary directories, etc. (re. #903444)
     def fn(self):
         if not hasattr(fn, "_temp_dir"):
-            fn._temp_dir = get_temporary_directory("binwalk").name
-        return fn._temp_dir
+            fn._temp_dir = get_temporary_directory("binwalk")
+        return fn._temp_dir.name
 
     binwalk.core.settings.Settings._get_user_config_dir = fn
 
