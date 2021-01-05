@@ -475,13 +475,10 @@ class File(metaclass=abc.ABCMeta):
 
     @tool_required("cmp")
     def cmp_external(self, other):
-        return (
-            subprocess.call(
-                ("cmp", "-s", self.path, other.path),
-                close_fds=True,
-            )
-            == 0
-        )
+        cmdline = ("cmp", "-s", self.path, other.path)
+        logger.debug("Executing: %s", " ".join(cmdline))
+
+        return subprocess.call(cmdline, close_fds=True) == 0
 
     # To be specialized directly, or by implementing compare_details
     def compare(self, other, source=None):
