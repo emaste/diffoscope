@@ -146,10 +146,17 @@ def from_operation(operation):
 
 
 def from_text(content):
+    """
+    Works for both bytes and str objects.
+    """
+
     def feeder(f):
         for offset in range(0, len(content), DIFF_CHUNK):
             buf = filter_reader(content[offset : offset + DIFF_CHUNK])
-            f.write(buf.encode("utf-8"))
+            if isinstance(buf, str):
+                f.write(buf.encode("utf-8"))
+            else:
+                f.write(buf)
 
         return content and content[-1] == "\n"
 

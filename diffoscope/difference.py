@@ -18,6 +18,7 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import heapq
+import io
 import logging
 import subprocess
 
@@ -224,6 +225,12 @@ class Difference:
 
     @staticmethod
     def from_text(content1, content2, *args, **kwargs):
+        """
+        Works for both bytes and str objects.
+        """
+        # Avoid spawning diff if buffers have same contents
+        if content1 == content2:
+            return None
         return Difference.from_feeder(
             feeders.from_text(content1),
             feeders.from_text(content2),
@@ -283,9 +290,26 @@ class Difference:
             kwargs["source"] = source_op.full_name(truncate=120)
 
         try:
-            difference = Difference.from_feeder(
-                feeder1, feeder2, path1, path2, *args, **kwargs
-            )
+            short = kwargs.pop("short", False)
+            # If the outputs are expected to be short, store them in memory
+            # and do a direct comparison, and only spawn diff if needed.
+            if short:
+                memfile1 = io.BytesIO()
+                feeder1(memfile1)
+                memfile2 = io.BytesIO()
+                feeder2(memfile2)
+                bytes1 = memfile1.getbuffer().tobytes()
+                bytes2 = memfile2.getbuffer().tobytes()
+                # Check if the buffers are the same before invoking diff
+                if bytes1 == bytes2:
+                    return None, True
+                difference = Difference.from_text(
+                    bytes1, bytes2, path1, path2, *args, **kwargs
+                )
+            else:
+                difference = Difference.from_feeder(
+                    feeder1, feeder2, path1, path2, *args, **kwargs
+                )
         except subprocess.CalledProcessError as exc:
             if exc.returncode in ignore_returncodes:
                 return None, False
