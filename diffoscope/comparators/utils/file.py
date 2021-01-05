@@ -447,18 +447,30 @@ class File(metaclass=abc.ABCMeta):
             # files not readable (e.g. broken symlinks) or something else,
             # just assume they are different
             return False
-        if my_size == other_size and my_size <= SMALL_FILE_THRESHOLD:
-            try:
-                with profile("command", "cmp (internal)"):
-                    with open(self.path, "rb") as file1, open(
-                        other.path, "rb"
-                    ) as file2:
-                        return file1.read() == file2.read()
-            except OSError:
-                # one or both files could not be opened for some reason,
-                # assume they are different
-                return False
+        if my_size != other_size:
+            return False
 
+        # Compare from python the first bytes, and only if they are
+        # identical then call external command.
+        assert my_size == other_size
+        try:
+            with profile("command", "cmp (internal)"):
+                with open(self.path, "rb") as file1, open(
+                    other.path, "rb"
+                ) as file2:
+                    content1 = file1.read(SMALL_FILE_THRESHOLD)
+                    content2 = file2.read(SMALL_FILE_THRESHOLD)
+        except OSError:
+            # one or both files could not be opened for some reason,
+            # assume they are different
+            return False
+
+        if content1 != content2:
+            return False
+        if my_size <= SMALL_FILE_THRESHOLD:
+            return True
+
+        # Big files, same size, same first bytes
         return self.cmp_external(other)
 
     @tool_required("cmp")
