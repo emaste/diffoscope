@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -478,7 +478,8 @@ class File(metaclass=abc.ABCMeta):
         cmdline = ("cmp", "-s", self.path, other.path)
         logger.debug("Executing: %s", " ".join(cmdline))
 
-        return subprocess.call(cmdline, close_fds=True) == 0
+        with profile("command", "cmp (external)"):
+            return subprocess.call(cmdline, close_fds=True) == 0
 
     # To be specialized directly, or by implementing compare_details
     def compare(self, other, source=None):
