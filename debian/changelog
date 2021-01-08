@@ -1,8 +1,31 @@
-diffoscope (164) UNRELEASED; urgency=medium
+diffoscope (164) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Truncate jsondiff differences at 512 bytes lest they consume the entire page.
+  * Wrap our external call to cmp(1) with a profile (to match the internal
+    profiling).
+  * Add a note regarding the specific ordering of the new
+    all_tools_are_listed test.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 11 Dec 2020 10:19:15 +0000
+  [ Dimitrios Apostolou ]
+  * Performance improvements:
+    - Improve speed of has_same_content by spawning cmp(1) less frequently.
+    - Log whenever the external cmp(1) command is spawn.ed
+    - Avoid invoking external diff for identical, short outputs.
+  * Rework handling of temporary files:
+    - Clean up temporary directories as we go along, instead of at the end.
+    - Delete FIFO files when the FIFO feeder's context manager exits.
+
+  [ Mattia Rizzolo ]
+  * Fix a number of potential crashes in --list-debian-substvars, including
+    explicitly listing lipo and otool as external tools.
+   - Remove redundant code and let object destructors clean up after themselves.
+
+  [ Conrad Ratschan ]
+  * Add a comparator for Flattened Image Trees (FIT) files, a boot image format
+    used by U-Boot.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 08 Jan 2021 13:00:55 +0000
 
 diffoscope (163) unstable; urgency=medium
 
