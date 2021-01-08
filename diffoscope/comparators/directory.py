@@ -193,27 +193,32 @@ def compare_meta(path1, path2):
 
     if os.path.islink(path1) or os.path.islink(path2):
         return [d for d in differences if d is not None]
-    try:
-        differences.append(
-            Difference.from_operation(Getfacl, path1, path2, short=True)
-        )
-    except RequiredToolNotFound:
-        logger.info(
-            "Unable to find 'getfacl', some directory metadata differences might not be noticed."
-        )
-    try:
-        lsattr1 = lsattr(path1)
-        lsattr2 = lsattr(path2)
-        differences.append(
-            Difference.from_text(
-                lsattr1, lsattr2, path1, path2, source="lsattr"
+
+    if Config().acl:
+        try:
+            differences.append(
+                Difference.from_operation(Getfacl, path1, path2, short=True)
             )
-        )
-    except RequiredToolNotFound:
-        logger.info(
-            "Unable to find 'lsattr', some directory metadata differences might not be noticed."
-        )
-    differences.append(xattr(path1, path2))
+        except RequiredToolNotFound:
+            logger.info(
+                "Unable to find 'getfacl', some directory metadata differences might not be noticed."
+            )
+
+    if Config().xattr:
+        try:
+            lsattr1 = lsattr(path1)
+            lsattr2 = lsattr(path2)
+            differences.append(
+                Difference.from_text(
+                    lsattr1, lsattr2, path1, path2, source="lsattr"
+                )
+            )
+        except RequiredToolNotFound:
+            logger.info(
+                "Unable to find 'lsattr', some directory metadata differences might not be noticed."
+            )
+        differences.append(xattr(path1, path2))
+
     return [d for d in differences if d is not None]
 
 

@@ -311,6 +311,20 @@ def create_parser():
         "systems.",
     )
     group3.add_argument(
+        "--acl",
+        "--no-acl",
+        action=BooleanAction,
+        default=True,
+        help="Examine POSIX ACLs (default: True)",
+    )
+    group3.add_argument(
+        "--xattr",
+        "--no-xattr",
+        action=BooleanAction,
+        default=True,
+        help="Examine extended attributes (default: True)",
+    )
+    group3.add_argument(
         "--diff-mask",
         metavar="REGEX_PATTERN",
         dest="diff_masks",
@@ -645,6 +659,8 @@ def configure(parsed_args):
     Config().exclude_directory_metadata = (
         parsed_args.exclude_directory_metadata
     )
+    Config().acl = parsed_args.acl
+    Config().xattr = parsed_args.xattr
     Config().diff_masks = parsed_args.diff_masks
 
     Config().compute_visual_diffs = PresenterManager().compute_visual_diffs()
