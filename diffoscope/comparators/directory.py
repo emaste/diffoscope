@@ -89,6 +89,20 @@ else:
             return line.encode("utf-8")
 
 
+# compare only what matters
+def stat_results_same(stat1, stat2):
+    return all(
+        getattr(stat1, i) == getattr(stat2, i)
+        for i in [
+            "st_mode",
+            "st_uid",
+            "st_gid",
+            "st_size",
+            "st_mtime",
+        ]
+    )
+
+
 @tool_required("lsattr")
 def lsattr(path):
     """
@@ -154,18 +168,29 @@ def compare_meta(path1, path2):
         return []
 
     logger.debug("compare_meta(%r, %r)", path1, path2)
-    differences = []
 
     # Don't run any commands if any of the paths do not exist
-    if not os.path.exists(path1) or not os.path.exists(path2):
-        return differences
-
+    # or have other issues.
     try:
-        differences.append(
-            Difference.from_operation(Stat, path1, path2, short=True)
+        stat1 = os.lstat(path1)
+        stat2 = os.lstat(path2)
+    except Exception as e:
+        logger.warning(
+            f'Unable to stat file "{path1}" or "{path2}" ({str(e)})'
         )
-    except RequiredToolNotFound:
-        logger.error("Unable to find 'stat'! Is PATH wrong?")
+        return []
+
+    differences = []
+    if stat_results_same(stat1, stat2):
+        logger.debug("Stat structs are identical, moving on!")
+    else:
+        try:
+            differences.append(
+                Difference.from_operation(Stat, path1, path2, short=True)
+            )
+        except RequiredToolNotFound:
+            logger.error("Unable to find 'stat'! Is PATH wrong?")
+
     if os.path.islink(path1) or os.path.islink(path2):
         return [d for d in differences if d is not None]
     try:
