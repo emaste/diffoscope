@@ -304,9 +304,9 @@ def create_parser():
         "Metadata of archive members remain un-excluded "
         'except if "recursive" choice is set. '
         "Use this option to ignore permissions, timestamps, "
-        "xattrs etc. Default: False if comparing two "
-        'directories, else True. Note that "file" metadata '
-        "actually a property of its containing directory, "
+        "xattrs etc. Default: 'no' if comparing two "
+        "directories, else 'yes'. Note that \"file\" metadata is "
+        "actually a property of its containing directory "
         "and is not relevant when distributing the file across "
         "systems.",
     )
