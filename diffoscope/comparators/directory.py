@@ -194,7 +194,7 @@ def compare_meta(path1, path2):
     if os.path.islink(path1) or os.path.islink(path2):
         return [d for d in differences if d is not None]
 
-    if Config().acl:
+    if Config().extended_filesystem_attributes:
         try:
             differences.append(
                 Difference.from_operation(Getfacl, path1, path2, short=True)
@@ -204,7 +204,6 @@ def compare_meta(path1, path2):
                 "Unable to find 'getfacl', some directory metadata differences might not be noticed."
             )
 
-    if Config().xattr:
         try:
             lsattr1 = lsattr(path1)
             lsattr2 = lsattr(path2)
