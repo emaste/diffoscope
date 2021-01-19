@@ -316,8 +316,8 @@ def create_parser():
         action=BooleanAction,
         default=False,
         help="Check potentially-expensive filesystem extended "
-        "attributes such as POSIX ACLs, lsattr(1) attributes etc. "
-        "(default: False)",
+        "attributes such as POSIX ACLs, lsattr(1)/chattr(1) "
+        "attributes etc. (default: False)",
     )
     group3.add_argument(
         "--diff-mask",
