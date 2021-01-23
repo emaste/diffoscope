@@ -1,8 +1,24 @@
-diffoscope (165) UNRELEASED; urgency=medium
+diffoscope (165) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Dimitrios Apostolou ]
+  * Introduce the --no-acl and --no-xattr arguments [later collapsed to
+    --extended-filesystem-attributes] to improve performance.
+  * Avoid calling the external stat command.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 08 Jan 2021 16:44:09 +0000
+  [ Chris Lamb ]
+  * Collapse --acl and --xattr into --extended-filesystem-attributes to cover
+    all of these extended attributes, defaulting the new option to false (ie.
+    to not check these very expensive external calls).
+
+  [ Mattia Rizzolo ]
+  * Override several lintian warnings regarding prebuilt binaries in the
+  * source.
+  * Add a pytest.ini file to explicitly use Junit's xunit2 format.
+  * Ignore the Python DeprecationWarning message regarding the `imp` module
+    deprecation as it comes from a third-party library.
+  * debian/rules: filter the content of the d/*.substvars files
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 23 Jan 2021 08:57:13 +0000
 
 diffoscope (164) unstable; urgency=medium
 
