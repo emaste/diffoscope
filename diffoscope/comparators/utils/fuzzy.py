@@ -53,16 +53,22 @@ def perform_fuzzy_matching(members1, members2):
                 (tlsh.diff(file1.fuzzy_hash, file2.fuzzy_hash), name2)
             )
 
-        if comparisons:
-            comparisons.sort(key=operator.itemgetter(0))
-            score, name2 = comparisons[0]
-            logger.debug(
-                "fuzzy top match %s %s: %d difference score",
-                name1,
-                name2,
-                score,
-            )
-            if score < threshold:
-                yield name1, name2, score
+        if not comparisons:
+            continue
 
-                seen.add(name2)
+        comparisons.sort(key=operator.itemgetter(0))
+        score, name2 = comparisons[0]
+
+        suffix = "will not compare files"
+        if score < threshold:
+            seen.add(name2)
+            yield name1, name2, score
+            suffix = "will compare files"
+
+        logger.debug(
+            "Fuzzy matching %s %s (score: %d/400): %s",
+            name1,
+            name2,
+            score,
+            suffix,
+        )
