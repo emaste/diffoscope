@@ -31,26 +31,28 @@ logger = logging.getLogger(__name__)
 
 
 def perform_fuzzy_matching(members1, members2):
-    if tlsh is None or Config().fuzzy_threshold == 0:
+    threshold = Config().fuzzy_threshold
+
+    if tlsh is None or threshold == 0:
         return
-    already_compared = set()
+
     # Create local copies because they will be modified by consumer
     members1 = dict(members1)
     members2 = dict(members2)
+
+    seen = set()
     for name1, (file1, _) in members1.items():
         if file1.is_directory() or not file1.fuzzy_hash:
             continue
+
         comparisons = []
         for name2, (file2, _) in members2.items():
-            if (
-                name2 in already_compared
-                or file2.is_directory()
-                or not file2.fuzzy_hash
-            ):
+            if name2 in seen or file2.is_directory() or not file2.fuzzy_hash:
                 continue
             comparisons.append(
                 (tlsh.diff(file1.fuzzy_hash, file2.fuzzy_hash), name2)
             )
+
         if comparisons:
             comparisons.sort(key=operator.itemgetter(0))
             score, name2 = comparisons[0]
@@ -60,6 +62,7 @@ def perform_fuzzy_matching(members1, members2):
                 name2,
                 score,
             )
-            if score < Config().fuzzy_threshold:
+            if score < threshold:
                 yield name1, name2, score
-                already_compared.add(name2)
+
+                seen.add(name2)
