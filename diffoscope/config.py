@@ -56,7 +56,7 @@ class Config:
         self.difftool = None
         self.diff_masks = ()
         self.new_file = False
-        self.fuzzy_threshold = 120
+        self.fuzzy_threshold = 110
         self.enforce_constraints = True
         self.excludes = ()
         self.exclude_commands = ()
