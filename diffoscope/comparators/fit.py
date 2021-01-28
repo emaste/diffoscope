@@ -96,12 +96,13 @@ class FlattenedImageTreeFile(File):
     """
 
     DESCRIPTION = "Flattened Image Tree blob files"
-    FILE_TYPE_RE = re.compile(r"^Device Tree Blob")
     CONTAINER_CLASSES = [FitContainer]
 
     @classmethod
     def recognizes(cls, file):
-        if not cls.FILE_TYPE_RE.search(file.magic_file_type):
+        # Detect file magic manually to workaround incorrect detection of devicetree
+        # by libmagic when the devicetree structure section is larger than 1MB
+        if file.file_header[:4] != b"\xd0\x0d\xfe\xed":
             return False
 
         if not tool_check_installed("fdtdump"):
