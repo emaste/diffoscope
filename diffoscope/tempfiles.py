@@ -85,8 +85,8 @@ def _get_base_temporary_directory():
             "Created top-level temporary directory: %s", _BASEDIR.name
         )
 
-        with open(os.path.join(_BASEDIR.name, 'argv'), 'w') as f:
-            print('\n'.join(sys.argv), file=f)
+        with open(os.path.join(_BASEDIR.name, "argv"), "w") as f:
+            print("\n".join(sys.argv), file=f)
 
     return _BASEDIR.name
 
