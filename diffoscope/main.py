@@ -38,13 +38,12 @@ from .tools import (
     OS_NAMES,
     get_current_os,
 )
-from .utils import format_bytes
 from .config import Config
 from .environ import normalize_environment
 from .logging import line_eraser, setup_logging
 from .progress import ProgressManager, Progress
 from .profiling import ProfileManager, profile
-from .tempfiles import clean_all_temp_files, get_tempdir_free_space
+from .tempfiles import clean_all_temp_files
 from .difference import Difference
 from .comparators import ComparatorManager
 from .external_tools import EXTERNAL_TOOLS, HUGE_TOOLS
@@ -686,10 +685,6 @@ def run_diffoscope(parsed_args):
     """
 
     logger.debug("Starting diffoscope %s", VERSION)
-    logger.debug(
-        "Free space in temporary directory: %s",
-        format_bytes(get_tempdir_free_space()),
-    )
 
     ProfileManager().setup(parsed_args)
     PresenterManager().configure(parsed_args)

@@ -19,8 +19,11 @@
 
 import os
 import sys
+import shutil
 import logging
 import tempfile
+
+from .utils import format_bytes
 
 _BASEDIR = None
 _FILES = []
@@ -87,7 +90,9 @@ def _get_base_temporary_directory():
             dir=tempfile.gettempdir(), prefix="diffoscope_"
         )
         logger.debug(
-            "Created top-level temporary directory: %s", _BASEDIR.name
+            "Created top-level temporary directory: %s (free space: %s)",
+            _BASEDIR.name,
+            format_bytes(get_tempdir_free_space()),
         )
 
         with open(os.path.join(_BASEDIR.name, "argv"), "w") as f:
