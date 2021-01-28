@@ -47,10 +47,12 @@ def get_temporary_directory(*args, **kwargs):
     statement. Otherwise it's cleaned up when the object is garbage collected.
 
     WARNING, don't do this:
+
         tmpdir = get_temporary_directory().name
 
-    This will result in the immediate removal of the directory, as there is no
-    reference pointing to the TemporaryDirectory object.
+    ... as this may result in the removal of the directory at some unexpected
+    time in the future. (Or not at all, depending on whether there are other,
+    unexpected, references to this instance.)
     """
     kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
 
