@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2021 Chris Lamb <lamby@debian.org>
 # Copyright © 2018 Mattia Rizzolo <mattia@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import sys
 import logging
 import tempfile
 
@@ -83,6 +84,9 @@ def _get_base_temporary_directory():
         logger.debug(
             "Created top-level temporary directory: %s", _BASEDIR.name
         )
+
+        with open(os.path.join(_BASEDIR.name, 'argv'), 'w') as f:
+            print('\n'.join(sys.argv), file=f)
 
     return _BASEDIR.name
 
