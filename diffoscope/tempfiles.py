@@ -74,6 +74,11 @@ def clean_all_temp_files():
             logger.exception("Unable to delete %s", x)
     _FILES.clear()
 
+    if _BASEDIR is not None:
+        logger.debug("Cleaning top-level temporary directory %s", _BASEDIR)
+
+        shutil.rmtree(_BASEDIR, ignore_errors=True)
+
 
 def _get_base_temporary_directory():
     global _BASEDIR
