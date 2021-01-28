@@ -65,7 +65,21 @@ def _run_tests(fold, tests):
 
 
 class File(metaclass=abc.ABCMeta):
-    if hasattr(magic, "open"):  # use Magic-file-extensions from file
+    if hasattr(magic, "Magic"):  # use python-magic
+
+        @classmethod
+        def guess_file_type(cls, path):
+            if not hasattr(cls, "_mimedb"):
+                cls._mimedb = magic.Magic()
+            return maybe_decode(cls._mimedb.from_file(path))
+
+        @classmethod
+        def guess_encoding(cls, path):
+            if not hasattr(cls, "_mimedb_encoding"):
+                cls._mimedb_encoding = magic.Magic(mime_encoding=True)
+            return maybe_decode(cls._mimedb_encoding.from_file(path))
+
+    else:  # use Magic-file-extensions from file
 
         @classmethod
         def guess_file_type(cls, path):
@@ -82,20 +96,6 @@ class File(metaclass=abc.ABCMeta):
                 cls._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
                 cls._mimedb_encoding.load()
             return cls._mimedb_encoding.file(path)
-
-    else:  # use python-magic
-
-        @classmethod
-        def guess_file_type(cls, path):
-            if not hasattr(cls, "_mimedb"):
-                cls._mimedb = magic.Magic()
-            return maybe_decode(cls._mimedb.from_file(path))
-
-        @classmethod
-        def guess_encoding(cls, path):
-            if not hasattr(cls, "_mimedb_encoding"):
-                cls._mimedb_encoding = magic.Magic(mime_encoding=True)
-            return maybe_decode(cls._mimedb_encoding.from_file(path))
 
     def __init__(self, container=None):
         self._comments = []
