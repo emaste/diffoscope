@@ -49,7 +49,7 @@ def get_temporary_directory(*args, **kwargs):
     WARNING, don't do this:
         tmpdir = get_temporary_directory().name
 
-    This will result to immediate removal of the directory, as there is no
+    This will result in the immediate removal of the directory, as there is no
     reference pointing to the TemporaryDirectory object.
     """
     kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
