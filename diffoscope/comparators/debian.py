@@ -24,6 +24,7 @@ import logging
 from debian.deb822 import Dsc, Deb822
 
 from diffoscope.changes import Changes
+from diffoscope.changes import ChangesFileException
 from diffoscope.difference import Difference
 
 from .utils.file import File
@@ -223,7 +224,10 @@ class DotChangesFile(DebControlFile):
         if not super().recognizes(file):
             return False
 
-        file._deb822 = Changes(filename=file.path)
+        try:
+            file._deb822 = Changes(filename=file.path)
+        except ChangesFileException:
+            return False
 
         try:
             file._deb822.validate("sha256", check_signature=False)
