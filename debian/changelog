@@ -1,8 +1,37 @@
-diffoscope (166) UNRELEASED; urgency=medium
+diffoscope (166) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * New features and bugfixes:
+    - Explicitly remove our top-level temporary directory.
+      (Closes: #981123, reproducible-builds/diffoscope#234)
+    - Increase fuzzy matching threshold to 130 ensure that we show more
+      differences. (Closes: reproducible-builds/diffoscope#232)
+    - Save our sys.argv in our top-level temporary directory in case it
+      helps debug current/errant temporary directories.
+    - Prefer to use "magic.Magic" over the "magic.open" compatibility
+      interface. (Closes: reproducible-builds/diffoscope#236)
+    - Reduce fuzzy threshold to 110 to prevent some test failures.
+      (Closes: reproducible-builds/diffoscope#233)
 
- -- Chris Lamb <lamby@debian.org>  Sat, 23 Jan 2021 08:58:22 +0000
+  * Output improvements:
+    - Show fuzzyness amount in percentage terms, not out of the
+      rather-arbitrary "400".
+    - Improve the logging of fuzzy matching.
+    - Print the free space in our temporary directory when we create it, not
+      from within diffoscope.main.
+
+  * Codebase improvements:
+    - Tidy the diffoscopecomparators.utils.fuzzy module.
+    - Update my copyright years.
+    - Clarify the grammar of a comment.
+    - Clarify in a comment that __del__ is not always called, so temporary
+      directories are not neccessary removed the *moment* they go out of scope.
+
+  [ Conrad Ratschan ]
+  * Fix U-Boot Flattened Image Tree ("FIT") image detection for larger image
+    files. (MR: reproducible-builds/diffoscope!75)
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 30 Jan 2021 12:31:22 +0000
 
 diffoscope (165) unstable; urgency=medium
 
