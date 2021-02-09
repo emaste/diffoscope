@@ -81,6 +81,7 @@ Build-Depends:
  sqlite3 <!nocheck>,
  squashfs-tools <!nocheck>,
  tcpdump <!nocheck>,
+ u-boot-tools <!nocheck>,
  unzip <!nocheck>,
  wabt <!nocheck>,
  xmlbeans <!nocheck>,
