@@ -18,6 +18,7 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import re
 import sys
 import shutil
 import logging
@@ -86,8 +87,22 @@ def clean_all_temp_files():
 def _get_base_temporary_directory():
     global _BASEDIR
     if _BASEDIR is None:
+        try:
+            # Try and generate a potentially-useful suffix to our temporary directory
+            suffix = "_{}".format(
+                re.sub(
+                    r"[^\w]",
+                    "",
+                    os.path.basename(os.path.dirname(sys.argv[-1])),
+                )[-10:]
+            )
+        except IndexError:
+            suffix = ""
+
         _BASEDIR = tempfile.TemporaryDirectory(
-            dir=tempfile.gettempdir(), prefix="diffoscope_"
+            dir=tempfile.gettempdir(),
+            prefix="diffoscope_",
+            suffix=suffix,
         )
         logger.debug(
             "Created top-level temporary directory: %s (free space: %s)",
