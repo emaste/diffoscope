@@ -79,9 +79,11 @@ def clean_all_temp_files():
     _FILES.clear()
 
     if _BASEDIR is not None:
-        logger.debug("Cleaning top-level temporary directory %s", _BASEDIR)
+        logger.debug(
+            "Cleaning top-level temporary directory %s", _BASEDIR.name
+        )
 
-        shutil.rmtree(_BASEDIR, ignore_errors=True)
+        shutil.rmtree(_BASEDIR.name, ignore_errors=True)
 
 
 def _get_base_temporary_directory():
@@ -99,6 +101,8 @@ def _get_base_temporary_directory():
         except IndexError:
             suffix = ""
 
+        # Alias the TemporaryDirectory instance (not the .name instance) as the
+        # directory may be reference-counted away.
         _BASEDIR = tempfile.TemporaryDirectory(
             dir=tempfile.gettempdir(),
             prefix="diffoscope_",
