@@ -61,8 +61,6 @@ class Config:
         self.excludes = ()
         self.exclude_commands = ()
         self.exclude_directory_metadata = "no"
-        self.acl = True
-        self.xattr = True
         self.extended_filesystem_attributes = False
         self.compute_visual_diffs = False
         self.max_container_depth = 50
