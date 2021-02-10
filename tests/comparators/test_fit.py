@@ -25,7 +25,7 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.fit import FlattenedImageTreeFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, get_data, load_fixture
+from ..utils.data import data, assert_diff, load_fixture
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
@@ -101,16 +101,14 @@ def nested_differences(uboot_fit1, uboot_fit2):
 @skip_unless_tools_exist("dumpimage")
 @skip_unless_tools_exist("fdtdump")
 def test_file_differences(differences):
-    expected_diff = get_data("fit_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "fit_expected_diff")
 
 
 @skip_unless_tools_exist("cpio")
 @skip_unless_tools_exist("dumpimage")
 @skip_unless_tools_exist("fdtdump")
 def test_nested_listing(nested_differences):
-    expected_diff = get_data("cpio_listing_expected_diff")
-    assert nested_differences[0].unified_diff == expected_diff
+    assert_diff(nested_differences[0], "cpio_listing_expected_diff")
 
 
 @skip_unless_tools_exist("cpio")
@@ -119,8 +117,7 @@ def test_nested_listing(nested_differences):
 def test_nested_symlink(nested_differences):
     assert nested_differences[1].source1 == "dir/link"
     assert nested_differences[1].comment == "symlink"
-    expected_diff = get_data("symlink_expected_diff")
-    assert nested_differences[1].unified_diff == expected_diff
+    assert_diff(nested_differences[1], "symlink_expected_diff")
 
 
 @skip_unless_tools_exist("cpio")
@@ -129,8 +126,7 @@ def test_nested_symlink(nested_differences):
 def test_nested_compressed_files(nested_differences):
     assert nested_differences[2].source1 == "dir/text"
     assert nested_differences[2].source2 == "dir/text"
-    expected_diff = get_data("text_ascii_expected_diff")
-    assert nested_differences[2].unified_diff == expected_diff
+    assert_diff(nested_differences[2], "text_ascii_expected_diff")
 
 
 @skip_unless_tools_exist("cpio")
