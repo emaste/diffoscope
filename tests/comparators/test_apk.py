@@ -23,7 +23,7 @@ import subprocess
 
 from diffoscope.comparators.apk import ApkFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
@@ -68,8 +68,7 @@ def test_compare_non_existing(monkeypatch, apk1):
 def test_zipinfo(differences):
     assert differences[0].source1 == "zipinfo {}"
     assert differences[0].source2 == "zipinfo {}"
-    expected_diff = get_data("apk_zipinfo_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "apk_zipinfo_expected_diff")
 
 
 @skip_unless_tools_exist("zipinfo")
@@ -80,8 +79,7 @@ def test_zipinfo(differences):
 def test_android_manifest(differences):
     assert differences[1].source1 == "AndroidManifest.xml (decoded)"
     assert differences[1].source2 == "AndroidManifest.xml (decoded)"
-    expected_diff = get_data("apk_manifest_expected_diff")
-    assert differences[1].details[0].unified_diff == expected_diff
+    assert_diff(differences[1].details[0], "apk_manifest_expected_diff")
 
 
 @skip_unless_tools_exist("apktool", "zipinfo")
