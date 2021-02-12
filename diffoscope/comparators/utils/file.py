@@ -65,21 +65,17 @@ def _run_tests(fold, tests):
 
 
 class File(metaclass=abc.ABCMeta):
-    if hasattr(magic, "Magic"):  # use python-magic
+    """
+    There are two Python modules named 'magic'. One of these ships with the
+    file upstream under the python/ directory and PyPI's `python-magic` and
+    they have slightly different interfaces despite attempts at a compatibility
+    layer.
+    """
 
-        @classmethod
-        def guess_file_type(cls, path):
-            if not hasattr(cls, "_mimedb"):
-                cls._mimedb = magic.Magic()
-            return maybe_decode(cls._mimedb.from_file(path))
-
-        @classmethod
-        def guess_encoding(cls, path):
-            if not hasattr(cls, "_mimedb_encoding"):
-                cls._mimedb_encoding = magic.Magic(mime_encoding=True)
-            return maybe_decode(cls._mimedb_encoding.from_file(path))
-
-    else:  # use Magic-file-extensions from file
+    # Try and detect the instance of the libmagic shared library (loaded via
+    # ctypes) used by the magic.py shipped with file.
+    #
+    if hasattr(magic, "_libraries"):
 
         @classmethod
         def guess_file_type(cls, path):
@@ -96,6 +92,21 @@ class File(metaclass=abc.ABCMeta):
                 cls._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
                 cls._mimedb_encoding.load()
             return cls._mimedb_encoding.file(path)
+
+    else:
+        # Assume we are using python-magic
+
+        @classmethod
+        def guess_file_type(cls, path):
+            if not hasattr(cls, "_mimedb"):
+                cls._mimedb = magic.Magic()
+            return maybe_decode(cls._mimedb.from_file(path))
+
+        @classmethod
+        def guess_encoding(cls, path):
+            if not hasattr(cls, "_mimedb_encoding"):
+                cls._mimedb_encoding = magic.Magic(mime_encoding=True)
+            return maybe_decode(cls._mimedb_encoding.from_file(path))
 
     def __init__(self, container=None):
         self._comments = []
