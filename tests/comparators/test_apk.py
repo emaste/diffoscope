@@ -71,6 +71,7 @@ def test_zipinfo(differences):
     assert_diff(differences[0], "apk_zipinfo_expected_diff")
 
 
+@pytest.mark.xfail(strict=False)
 @skip_unless_tools_exist("zipinfo")
 @skip_unless_tool_is_at_least("apktool", apktool_version, "2.5.0")
 @pytest.mark.skipif(
