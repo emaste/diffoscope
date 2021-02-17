@@ -88,6 +88,7 @@ def clean_all_temp_files():
 
 def _get_base_temporary_directory():
     global _BASEDIR
+
     if _BASEDIR is None or not os.path.exists(_BASEDIR.name):
         try:
             # Try and generate a potentially-useful suffix to our temporary directory
