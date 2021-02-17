@@ -238,7 +238,7 @@ def black_version():
         out = subprocess.check_output(("black", "--version"))
     except subprocess.CalledProcessError as e:
         out = e.output
-    return out.decode("utf-8").rsplit(" ", 1)[-1]
+    return out.strip().decode("utf-8").rsplit(" ", 1)[-1]
 
 
 @skip_unless_tool_is_at_least("black", black_version, "20.8b1")
