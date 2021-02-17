@@ -85,6 +85,19 @@ def clean_all_temp_files():
 
         shutil.rmtree(_BASEDIR.name, ignore_errors=True)
 
+    if sys.version_info < (3, 8):
+        # Some change in tempfile or weakref handling happened after Python
+        # 3.7, resulting in us trying to delete our temporary files multiple
+        # times. Unfortunately, the cleanup for TemporaryDirectory does not set
+        # "ignore_errors", so we do that here.
+        import tempfile
+
+        def _rmtree(*args, **kwargs):
+            kwargs.setdefault("ignore_errors", True)
+            return shutil.rmtree(*args, **kwargs)
+
+        tempfile._rmtree = _rmtree
+
 
 def _get_base_temporary_directory():
     global _BASEDIR
