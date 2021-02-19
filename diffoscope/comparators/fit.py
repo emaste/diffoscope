@@ -16,15 +16,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
-import logging
+
 import os
 import re
+import logging
 
 from diffoscope.tools import tool_required, tool_check_installed
 from diffoscope.difference import Difference
+
 from .utils import command
 from .utils.archive import Archive
-
 from .utils.file import File
 from .utils.command import Command
 
