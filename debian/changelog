@@ -1,8 +1,40 @@
-diffoscope (167) UNRELEASED; urgency=medium
+diffoscope (167) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Temporary directory handling:
+    - Ensure we cleanup our temporary directory by avoiding confusion between
+      the TemporaryDirectory instance and the underlying directory.
+      (Closes: #981123)
+    - Use a potentially-useful suffix to our temporary directory based on the
+      command-line passed to diffoscope.
+    - Fix some tempfile/weakref interaction in Python 3.7 (ie. Debian buster).
+      (Closes: reproducible-builds/diffoscope#239)
+    - If our temporary directory does not exist anymore (eg. it has been
+      cleaned up in tests, signal handling or reference counting),  make sure
+      we recreate it.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 30 Jan 2021 12:40:15 +0000
+  * Bug fixes:
+    - Don't rely on magic.Magic(...) to have an identical API between file's
+      magic.py and PyPI's "python-magic" library.
+      (Closes: reproducible-builds/diffoscope#238)
+    - Don't rely on dumpimage returning an appropriate exit code; check that
+      the file actually exists after we call it.
+
+  * Codebase changes:
+    - Set a default Config.extended_filesystem_attributes.
+    - Drop unused Config.acl and Config.xattr attributes.
+    - Tidy imports in diffoscope/comparators/fit.py.
+
+  * Tests:
+    - Add u-boot-tools to test dependencies so that salsa.debian.org pipelines
+      actually test the new FIT comparator.
+    - Strip newlines when determining Black version to avoid "requires black
+      >= 20.8b1 (18.9b0\n detected)" in test output (NB. embedded newline).
+    - Gnumeric is back in testing so re-add to test dependencies.
+    - Use assert_diff (over get_data, etc.) in the FIT and APK comparators.
+    - Mark test_apk.py::test_android_manifest as being allowed to fail for now.
+    - Fix the FIT tests in buster and unstable.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 19 Feb 2021 09:06:42 +0000
 
 diffoscope (166) unstable; urgency=medium
 
