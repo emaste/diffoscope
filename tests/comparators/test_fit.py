@@ -26,11 +26,20 @@ from diffoscope.comparators.fit import FlattenedImageTreeFile
 from diffoscope.comparators.utils.specialize import specialize
 
 from ..utils.data import data, assert_diff, load_fixture
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
 cpio1 = load_fixture("test1.cpio")
 cpio2 = load_fixture("test2.cpio")
+
+
+def dumpimage_version():
+    return (
+        subprocess.check_output(("dumpimage", "-V"))
+        .decode("utf-8")
+        .strip()
+        .split(" ")[-1]
+    )
 
 
 def fit_fixture(prefix, entrypoint):
@@ -98,21 +107,21 @@ def nested_differences(uboot_fit1, uboot_fit2):
     return uboot_fit1.compare(uboot_fit2).details[1].details
 
 
-@skip_unless_tools_exist("dumpimage")
+@skip_unless_tool_is_at_least("dumpimage", dumpimage_version, "2021.01")
 @skip_unless_tools_exist("fdtdump")
 def test_file_differences(differences):
     assert_diff(differences[0], "fit_expected_diff")
 
 
 @skip_unless_tools_exist("cpio")
-@skip_unless_tools_exist("dumpimage")
+@skip_unless_tool_is_at_least("dumpimage", dumpimage_version, "2021.01")
 @skip_unless_tools_exist("fdtdump")
 def test_nested_listing(nested_differences):
     assert_diff(nested_differences[0], "cpio_listing_expected_diff")
 
 
 @skip_unless_tools_exist("cpio")
-@skip_unless_tools_exist("dumpimage")
+@skip_unless_tool_is_at_least("dumpimage", dumpimage_version, "2021.01")
 @skip_unless_tools_exist("fdtdump")
 def test_nested_symlink(nested_differences):
     assert nested_differences[1].source1 == "dir/link"
@@ -121,7 +130,7 @@ def test_nested_symlink(nested_differences):
 
 
 @skip_unless_tools_exist("cpio")
-@skip_unless_tools_exist("dumpimage")
+@skip_unless_tool_is_at_least("dumpimage", dumpimage_version, "2021.01")
 @skip_unless_tools_exist("fdtdump")
 def test_nested_compressed_files(nested_differences):
     assert nested_differences[2].source1 == "dir/text"
@@ -130,7 +139,7 @@ def test_nested_compressed_files(nested_differences):
 
 
 @skip_unless_tools_exist("cpio")
-@skip_unless_tools_exist("dumpimage")
+@skip_unless_tool_is_at_least("dumpimage", dumpimage_version, "2021.01")
 @skip_unless_tools_exist("fdtdump")
 def test_compare_non_existing(monkeypatch, uboot_fit1):
     assert_non_existing(monkeypatch, uboot_fit1)
