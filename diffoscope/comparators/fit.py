@@ -20,6 +20,7 @@
 import os
 import re
 import logging
+import subprocess
 
 from diffoscope.tools import tool_required, tool_check_installed
 from diffoscope.difference import Difference
@@ -59,6 +60,7 @@ class FitContainer(Archive):
             # Save mapping of name -> position as dumpimage takes position as an argument
             self._members[member_name] = pos
             members.append(member_name)
+
         return members
 
     @tool_required("dumpimage")
@@ -67,18 +69,23 @@ class FitContainer(Archive):
         dest_path = os.path.join(dest_dir, os.path.basename(member_name))
         logger.debug("fit image extracting %s to %s", member_name, dest_path)
 
-        command.our_check_output(
-            [
-                "dumpimage",
-                "-T",
-                "flat_dt",
-                "-p",
-                pos,
-                self.source.path,
-                "-o",
-                dest_path,
-            ],
+        cmd = (
+            "dumpimage",
+            "-T",
+            "flat_dt",
+            "-p",
+            pos,
+            self.source.path,
+            "-o",
+            dest_path,
         )
+
+        output = command.our_check_output(cmd)
+
+        # Cannot rely on dumpimage returning a non-zero exit code on failure.
+        if not os.path.exists(dest_path):
+            raise subprocess.CalledProcessError(1, cmd)
+
         return dest_path
 
 
