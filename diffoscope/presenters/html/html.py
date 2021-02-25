@@ -861,7 +861,7 @@ class HTMLPresenter(Presenter):
             if os.path.exists(path):
                 os.symlink(path, check_path)
                 logger.debug(
-                    "jquery found at %s and symlinked to %s", path, check_path
+                    "jQuery found at %s and symlinked to %s", path, check_path
                 )
                 return url.path
 
