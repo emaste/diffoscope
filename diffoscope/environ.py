@@ -30,7 +30,7 @@ def normalize_environment():
     """
 
     logger.debug(
-        "Normalising locale, timezone, etc. Inheriting PATH of %s",
+        "Normalising locale, timezone, etc. PATH is %s",
         os.environ.get("PATH", "(none)"),
     )
 
