@@ -539,6 +539,17 @@ class SideBySideDiff:
         Given two lists of lines, use python's difflib to make the diff a bit
         "smarter", as it better detects added lines (see !64)
         """
+
+        if len(l0) + len(l1) > 750:
+            # difflib.Differ.compare is at least O(n^2), so don't call it if
+            # our inputs are too large.
+            logger.debug(
+                "Not calling difflib.Differ.compare(x, y) with len(x) == %d and len(y) == %d",
+                len(l0),
+                len(l1),
+            )
+            return
+
         saved_line = None
         for line in self.differ.compare(l0, l1):
             # Skip lines with details as they don't matter to us
