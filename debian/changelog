@@ -1,8 +1,12 @@
-diffoscope (168) UNRELEASED; urgency=medium
+diffoscope (168) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Don't call difflib.Differ.compare with very large inputs; it is at least
+    O(n^2) and makes diffoscope appear to hang.
+    (Closes: reproducible-builds/diffoscope#240)
+  * Don't use "Inheriting PATH of X" in debug log message; use "PATH is X".
+  * Correct the capitalisation of jQuery.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 19 Feb 2021 09:07:49 +0000
+ -- Chris Lamb <lamby@debian.org>  Sat, 27 Feb 2021 09:34:37 +0000
 
 diffoscope (167) unstable; urgency=medium
 
