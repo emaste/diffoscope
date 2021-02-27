@@ -1,3 +1,9 @@
+diffoscope (169) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 27 Feb 2021 11:17:14 +0000
+
 diffoscope (168) unstable; urgency=medium
 
   * Don't call difflib.Differ.compare with very large inputs; it is at least
