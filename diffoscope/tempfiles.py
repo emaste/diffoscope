@@ -105,11 +105,13 @@ def _get_base_temporary_directory():
     if _BASEDIR is None or not os.path.exists(_BASEDIR.name):
         try:
             # Try and generate a potentially-useful suffix to our temporary directory
+            filtered_argv = [x for x in sys.argv if not x.startswith("-")]
+
             suffix = "_{}".format(
                 re.sub(
                     r"[^\w]",
                     "",
-                    os.path.basename(os.path.dirname(sys.argv[-1])),
+                    os.path.basename(os.path.dirname(filtered_argv[-1])),
                 )[-10:]
             )
         except IndexError:
