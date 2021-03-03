@@ -80,7 +80,7 @@ def check_dex_differences(differences, expected_diff):
     assert expected_diff == found_diff
 
 
-@skip_unless_tools_exist("enjarify", "zipinfo", "javap")
+@skip_unless_tools_exist("enjarify", "zipinfo", "javap", "procyon")
 @skip_unless_tool_is_between("javap", javap_version, "9.0.4", "14.0")
 @skip_unless_tool_is_at_least("enjarify", enjarify_version, "1.0.3")
 def test_differences(differences):
