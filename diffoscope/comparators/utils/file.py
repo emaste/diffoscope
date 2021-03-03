@@ -284,11 +284,6 @@ class File(metaclass=abc.ABCMeta):
             try:
                 self._as_container = klass(self)
 
-                logger.debug(
-                    "Returning a %s for %s",
-                    formatted_class,
-                    self.name,
-                )
                 return self._as_container
             except RequiredToolNotFound as exc:
                 logger.debug(
