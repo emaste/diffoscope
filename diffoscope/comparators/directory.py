@@ -175,9 +175,7 @@ def compare_meta(path1, path2):
         stat1 = os.lstat(path1)
         stat2 = os.lstat(path2)
     except Exception as e:
-        logger.warning(
-            f'Unable to stat file "{path1}" or "{path2}" ({str(e)})'
-        )
+        logger.debug(f'Unable to stat file "{path1}" or "{path2}" ({str(e)})')
         return []
 
     differences = []
