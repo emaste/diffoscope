@@ -290,7 +290,9 @@ class LibarchiveContainer(Archive):
         if hasattr(self, "_members"):
             return
 
-        self._tmpdir_object = get_temporary_directory(suffix=self.__class__.__name__)
+        self._tmpdir_object = get_temporary_directory(
+            suffix=self.__class__.__name__
+        )
         tmpdir = self._tmpdir_object.name
         self._members = collections.OrderedDict()
 

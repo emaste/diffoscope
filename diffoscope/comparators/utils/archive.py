@@ -92,7 +92,9 @@ class ArchiveMember(File):
                 "Unpacking %s from %s", self._name, self.container.source.name
             )
             assert self._temp_dir is None
-            self._temp_dir = get_temporary_directory()
+            self._temp_dir = get_temporary_directory(
+                suffix=self.container.__class__.__name__
+            )
             with profile("container_extract", self.container):
                 self._path = self.container.extract(
                     self._name, self._temp_dir.name

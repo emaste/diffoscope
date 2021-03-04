@@ -52,7 +52,7 @@ class PGPContainer(Archive):
         # Extract to a fresh temporary directory so that we can use the
         # embedded filename.
 
-        self._temp_dir = get_temporary_directory()
+        self._temp_dir = get_temporary_directory(suffix="pgp")
 
         try:
             our_check_output(

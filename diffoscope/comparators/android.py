@@ -51,7 +51,7 @@ class AndroidBootImgContainer(Archive):
     @tool_required("abootimg")
     def open_archive(self):
         self._members = []
-        self._unpacked = get_temporary_directory()
+        self._unpacked = get_temporary_directory(suffix="android")
 
         logger.debug(
             "Extracting Android boot image to %s", self._unpacked.name

@@ -161,7 +161,7 @@ class RdbFile(File):
     FILE_EXTENSION_SUFFIX = {".rdb"}
 
     def compare_details(self, other, source=None):
-        with get_temporary_directory() as tmpdir:
+        with get_temporary_directory(suffix="rdb") as tmpdir:
             a = get_module_path_for_rdb(self, tmpdir)
             b = get_module_path_for_rdb(other, tmpdir)
 
