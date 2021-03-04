@@ -302,7 +302,7 @@ class LibarchiveContainer(Archive):
                 if entry.isdir:
                     continue
 
-                # Save extracting excluded files
+                # Don't extract excluded files
                 if any_excluded(entry.pathname):
                     continue
 
