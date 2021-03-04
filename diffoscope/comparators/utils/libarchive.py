@@ -290,7 +290,7 @@ class LibarchiveContainer(Archive):
         if hasattr(self, "_members"):
             return
 
-        self._tmpdir_object = get_temporary_directory()
+        self._tmpdir_object = get_temporary_directory(suffix=self.__class__.__name__)
         tmpdir = self._tmpdir_object.name
         self._members = collections.OrderedDict()
 
@@ -311,6 +311,7 @@ class LibarchiveContainer(Archive):
                 dst = os.path.join(tmpdir, str(idx // 4096), str(idx % 4096))
                 _, ext = os.path.splitext(entry.pathname)
                 dst += ext
+
                 # Maintain a mapping of archive path to the extracted path,
                 # avoiding the need to sanitise filenames.
                 self._members[entry.pathname] = dst
