@@ -743,10 +743,10 @@ class HTMLPresenter(Presenter):
                 want_to_add = node_output.size(placeholder_len)
                 logger.debug(
                     "report size: %s/%s, page size: %s/%s, want to add %s)",
-                    report_current,
-                    self.report_limit,
-                    page_current,
-                    page_limit,
+                    format(report_current, ","),
+                    format(self.report_limit, ","),
+                    format(page_current, ","),
+                    format(page_limit, ","),
                     want_to_add,
                 )
                 if report_current + want_to_add > self.report_limit:
