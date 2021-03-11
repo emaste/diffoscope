@@ -97,7 +97,7 @@ STYLES = """body.diffoscope {
   background: #E0C880;
   text-decoration: none
 }
-.diffoscope .diffponct {
+.diffoscope .dp {
   color: #B08080
 }
 .diffoscope .comment {

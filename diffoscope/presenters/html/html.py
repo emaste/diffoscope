@@ -143,11 +143,11 @@ def convert(s, ponct=0, tag=""):
             n = TABSIZE - (i % TABSIZE)
             if n == 0:
                 n = TABSIZE
-            t.write('<span class="diffponct">\xbb</span>' + "\xa0" * (n - 1))
+            t.write('<span class="dp">\xbb</span>' + "\xa0" * (n - 1))
         elif c == " " and ponct == 1:
-            t.write('<span class="diffponct">\xb7</span>')
+            t.write('<span class="dp">\xb7</span>')
         elif c == "\n" and ponct == 1:
-            t.write('<br/><span class="diffponct">\\</span>')
+            t.write('<br/><span class="dp">\\</span>')
         elif ord(c) < 32:
             conv = "\\x%x" % ord(c)
             t.write("<em>%s</em>" % conv)
