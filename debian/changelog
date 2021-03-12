@@ -1,8 +1,33 @@
-diffoscope (169) UNRELEASED; urgency=medium
+diffoscope (169) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Optimisations:
+    - Use larger buffer/block sizes when extracting files from libarchive-
+      based archives.
+    - Use a much-shorter CSS class (instead of "diffponct") to dramatically
+      reduce uncompressed HTML output.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 27 Feb 2021 11:17:14 +0000
+  * Logging improvements:
+    - Don't emit "Unable to stat file" warning/debug messages; we have
+      entirely-artificial directory entries such as ELF sections which, of
+      course, never exist as filesystem files.
+    - Don't emit a "Returning a FooContainer" logging message - we already emit
+      "Instantiating a FooContainer" one and are unlikely to fail in the
+      middle.
+    - Format the report size logging messages when generating HTML reports.
+    - Add the target directory when logging which directory we are extracting
+      containers to.
+
+  * Miscellaneous:
+    - Ignore "--debug" and similar arguments when creating a (hopefully useful)
+      temporary directory.
+    - Ensure all internal temporary directories have useful names.
+    - Clarify a comment regarding diffoscope not extracting excluded files.
+
+  [ Vagrant Cascadian ]
+  * Skip a DEX-related test if the "procyon" tool is unavailable.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 12 Mar 2021 15:33:54 +0000
 
 diffoscope (168) unstable; urgency=medium
 
