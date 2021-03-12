@@ -35,6 +35,23 @@ def test_all_tools_are_listed():
             pytest.fail(f"{x} is not present in EXTERNAL_TOOLS")
 
 
+def test_get_tools():
+    # Note the ordering of this test (see: f1d744da16)
+    from diffoscope.comparators import ComparatorManager
+    from diffoscope.tools import get_tools
+
+    ComparatorManager().reload()
+
+    tools = get_tools()
+    missing_tools = get_tools(only_missing=True)
+    k = "External-Tools-Required"
+    for x in missing_tools[k]:
+        if x not in tools[k]:
+            pytest.fail(
+                f"{x} must be present for {k} in tools and only_missing"
+            )
+
+
 def test_sbin_added_to_path():
     from diffoscope.tools import tool_required
 

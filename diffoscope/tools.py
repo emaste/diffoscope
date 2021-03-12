@@ -46,6 +46,36 @@ OS_NAMES = collections.OrderedDict(
 )
 
 
+def get_tools(only_missing=False):
+    """Return the tool configuration in a dict"""
+
+    d = {}
+
+    external_tools = sorted(tool_required.all)
+    if only_missing:
+        external_tools = [
+            tool for tool in external_tools if not tool_check_installed(tool)
+        ]
+    d["External-Tools-Required"] = tuple(external_tools)
+
+    current_os = get_current_os()
+    os_list = [current_os] if (current_os in OS_NAMES) else iter(OS_NAMES)
+    for os_ in os_list:
+        tools = set()
+        for x in external_tools:
+            try:
+                tools.add(EXTERNAL_TOOLS[x][os_])
+            except KeyError:
+                pass
+        d["Available-in-{}-packages".format(OS_NAMES[os_])] = tuple(
+            sorted(tools)
+        )
+
+    d["Missing-Python-Modules"] = tuple(sorted(python_module_missing.modules))
+
+    return d
+
+
 def get_tool_name(tool):
     return REMAPPED_TOOL_NAMES.get(tool, tool)
 
