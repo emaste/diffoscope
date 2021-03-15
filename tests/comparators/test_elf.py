@@ -182,15 +182,22 @@ def test_libmix_differences(libmix_differences):
     x86_o = x86_o.details[0]
     assert x86_o.source1.startswith("objdump ")
     assert src_c.source1.endswith(".c")
-    x_obj = x_obj.details[0]
-    assert x_obj.source1.startswith("readelf ")
 
     # Content
     assert "return42_or_3" in file_list.unified_diff
     assert_diff(mach_o, "elfmix_mach_o_expected_diff")
     assert_diff(x86_o, "elfmix_disassembly_expected_diff")
     assert_diff(src_c, "elfmix_src_c_expected_diff")
-    assert_diff(x_obj, "elfmix_x_obj_expected_diff")
+
+    x_obj = x_obj.details[0]
+    if x_obj.source1.startswith("readelf "):
+        assert_diff(x_obj, "elfmix_x_obj_expected_diff")
+    elif x_obj.source1.startswith("objdump "):
+        assert_diff(x_obj, "elfmix_x_obj_objdump_expected_diff")
+    else:
+        pytest.fail(
+            f"x_obj is neither readelf or objdump: {repr(x_obj.source1)}"
+        )
 
 
 TEST_DBGSYM_DEB1_PATH = data("dbgsym/add/test-dbgsym_1_amd64.deb")
