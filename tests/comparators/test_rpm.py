@@ -23,7 +23,13 @@ from diffoscope.comparators import ComparatorManager
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import load_fixture, data, get_data, normalize_zeros
+from ..utils.data import (
+    load_fixture,
+    data,
+    get_data,
+    normalize_zeros,
+    assert_diff,
+)
 from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
 from ..utils.nonexisting import assert_non_existing
 
@@ -55,8 +61,7 @@ def differences(rpm1, rpm2):
 @skip_unless_tools_exist("rpm2cpio")
 def test_header(differences):
     assert differences[0].source1 == "header"
-    expected_diff = get_data("rpm_header_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "rpm_header_expected_diff")
 
 
 @skip_unless_module_exists("rpm")
@@ -64,8 +69,7 @@ def test_header(differences):
 def test_listing(differences):
     assert differences[1].source1 == "content"
     assert differences[1].details[0].source1 == "file list"
-    expected_diff = get_data("rpm_listing_expected_diff")
-    assert differences[1].details[0].unified_diff == expected_diff
+    assert_diff(differences[1].details[0], "rpm_listing_expected_diff")
 
 
 @skip_unless_module_exists("rpm")
@@ -73,8 +77,7 @@ def test_listing(differences):
 def test_content(differences):
     assert differences[1].source1 == "content"
     assert differences[1].details[1].source1 == "./dir/text"
-    expected_diff = get_data("text_ascii_expected_diff")
-    assert differences[1].details[1].unified_diff == expected_diff
+    assert_diff(differences[1].details[1], "text_ascii_expected_diff")
 
 
 @skip_unless_module_exists("rpm")
