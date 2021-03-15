@@ -23,6 +23,7 @@ import rpm
 import os.path
 import logging
 import binascii
+import textwrap
 import subprocess
 
 from diffoscope.tools import tool_required
@@ -40,19 +41,22 @@ def convert_header_field(io, header):
         if len(header) == 0:
             io.write(u"[]")
         else:
-            io.write(u"\n")
             for item in header:
-                io.write(u" - ")
+                io.write(u"\n - ")
                 convert_header_field(io, item)
-    elif isinstance(header, str):
-        io.write(header)
+        return
+
+    if isinstance(header, str):
+        val = header
     elif isinstance(header, bytes):
         try:
-            io.write(header.decode("utf-8"))
+            val = header.decode("utf-8")
         except UnicodeDecodeError:
-            io.write(binascii.hexlify(header).decode("us-ascii"))
+            val = binascii.hexlify(header).decode("us-ascii")
     else:
-        io.write(repr(header))
+        val = repr(header)
+
+    io.write(textwrap.fill(val, 100))
 
 
 def get_rpm_header(path, ts):
