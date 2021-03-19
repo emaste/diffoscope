@@ -1,8 +1,20 @@
-diffoscope (170) UNRELEASED; urgency=medium
+diffoscope (170) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Avoid frequent long lines in RPM header outputs that cause very very slow
+    HTML outputs. (Closes: reproducible-builds/diffoscope#245)
+  * Fix test_libmix_differences on openSUSE Tumbleweed.
+    (Closes: #reproducible-builds/diffoscope#244)
+  * Move test_rpm to use the assert_diff utility helper.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 12 Mar 2021 15:36:35 +0000
+  [ Hans-Christoph Steiner ]
+  * Add a diffoscope.tools.get_tools() method to support programmatically
+    fetching Diffoscope's config.
+
+  [ Roland Clobus ]
+  * Become tolerant of malformed Debian .changes files.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 19 Mar 2021 10:30:53 +0000
 
 diffoscope (169) unstable; urgency=medium
 
