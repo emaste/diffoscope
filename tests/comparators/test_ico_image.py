@@ -74,7 +74,7 @@ def test_diff_meta2(differences_meta):
     assert differences_meta[-1].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist("img2txt", "compose", "convert", "identify")
+@skip_unless_tools_exist("img2txt", "convert", "identify")
 def test_has_visuals(monkeypatch, image1, image2):
     monkeypatch.setattr(Config(), "compute_visual_diffs", True)
     ico_diff = image1.compare(image2)

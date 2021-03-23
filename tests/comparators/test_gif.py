@@ -55,7 +55,7 @@ def test_compare_non_existing(monkeypatch, gif1):
     assert_non_existing(monkeypatch, gif1, has_null_source=False)
 
 
-@skip_unless_tools_exist("gifbuild", "compose", "convert", "identify")
+@skip_unless_tools_exist("gifbuild", "convert", "identify")
 def test_has_visuals(monkeypatch, gif3, gif4):
     monkeypatch.setattr(Config(), "compute_visual_diffs", True)
     gif_diff = gif3.compare(gif4)
@@ -65,7 +65,7 @@ def test_has_visuals(monkeypatch, gif3, gif4):
     assert gif_diff.details[1].visuals[1].data_type == "image/gif;base64"
 
 
-@skip_unless_tools_exist("gifbuild", "compose", "convert", "identify")
+@skip_unless_tools_exist("gifbuild", "convert", "identify")
 def test_no_visuals_different_size(monkeypatch, gif1, gif2):
     monkeypatch.setattr(Config(), "compute_visual_diffs", True)
     gif_diff = gif1.compare(gif2)
