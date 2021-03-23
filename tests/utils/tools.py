@@ -209,6 +209,8 @@ def reason(*tools):
     xs = []
 
     for x in tools:
+        if not tools_missing(x):
+            continue
         provider = get_package_provider(x)
         if provider is None:
             xs.append(x)
