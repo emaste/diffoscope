@@ -1,8 +1,11 @@
-diffoscope (171) UNRELEASED; urgency=medium
+diffoscope (171) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Mattia Rizzolo ]
+  * Do not list as a "skipping reason" tools that do exist.
+  * Drop the "compose" tool from the list of required tools for these tests,
+    since it doesn't seem to be required.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 19 Mar 2021 10:32:14 +0000
+ -- Chris Lamb <lamby@debian.org>  Fri, 26 Mar 2021 09:35:37 +0000
 
 diffoscope (170) unstable; urgency=medium
 
