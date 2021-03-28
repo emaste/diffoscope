@@ -19,7 +19,7 @@ diffoscope (170) unstable; urgency=medium
   * Avoid frequent long lines in RPM header outputs that cause very very slow
     HTML outputs. (Closes: reproducible-builds/diffoscope#245)
   * Fix test_libmix_differences on openSUSE Tumbleweed.
-    (Closes: #reproducible-builds/diffoscope#244)
+    (Closes: reproducible-builds/diffoscope#244)
   * Move test_rpm to use the assert_diff utility helper.
 
   [ Hans-Christoph Steiner ]
