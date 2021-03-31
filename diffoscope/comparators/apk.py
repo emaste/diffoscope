@@ -31,7 +31,7 @@ from .utils.file import File
 from .utils.archive import Archive
 from .utils.command import Command
 from .utils.compare import compare_files
-from .zip import ZipContainer, zipinfo_differences
+from .zip import ZipContainer, zipinfo_differences, ZipFileBase
 from .missing_file import MissingFile
 
 logger = logging.getLogger(__name__)
@@ -208,7 +208,7 @@ class Apksigner(Command):
         ]
 
 
-class ApkFile(File):
+class ApkFile(ZipFileBase):
     DESCRIPTION = "Android APK files"
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
     FILE_TYPE_RE = re.compile(r"^((Java|Zip) archive data|Dalvik dex file)\b")

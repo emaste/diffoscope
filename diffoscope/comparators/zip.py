@@ -189,7 +189,34 @@ class ZipContainer(Archive):
         return ArchiveMember(self, member_name)
 
 
-class ZipFile(File):
+class ZipFileBase(File):
+    def compare(self, other, source=None):
+        x = super().compare(other, source)
+
+        if x is None:
+            return None
+
+        # If we have two or more differences, then we have observed differences
+        # within a nested file. If not, there is likely some difference in
+        # the metadata that zipinfo cannot discover, so we manually fallback to
+        # a binary diff.
+        if len(x.details) >= 2:
+            return x
+
+        x.add_comment(
+            "Archive contents identical but files differ, possibly due "
+            "to different compression levels. Falling back to binary "
+            "comparison."
+        )
+
+        details = self.compare_bytes(other, source=source)
+        if details is not None:
+            x.add_details([details])
+
+        return x
+
+
+class ZipFile(ZipFileBase):
     DESCRIPTION = "ZIP archives"
     CONTAINER_CLASSES = [ZipContainer]
     FILE_TYPE_RE = re.compile(
