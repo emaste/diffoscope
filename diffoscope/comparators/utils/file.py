@@ -568,9 +568,7 @@ class File(metaclass=abc.ABCMeta):
                     return None
                 difference.add_comment(
                     "Error extracting '{}', falling back to "
-                    "binary comparison ('{}')".format(
-                        e.pathname, e.wrapped_exc
-                    )
+                    'binary comparison: "{}"'.format(e.pathname, e.wrapped_exc)
                 )
 
             # Append any miscellaneous comments for this file.
