@@ -1,8 +1,12 @@
-diffoscope (172) UNRELEASED; urgency=medium
+diffoscope (172) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * If zipinfo(1) shows a difference but we cannot uncover a difference within
+    the underlying .zip or .apk file, add a comment and show the binary
+    comparison. (Closes: reproducible-builds/diffoscope#246)
+  * Make "error extracting X, falling back to binary comparison E" error
+    message nicer.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 26 Mar 2021 09:38:12 +0000
+ -- Chris Lamb <lamby@debian.org>  Fri, 02 Apr 2021 08:49:24 +0100
 
 diffoscope (171) unstable; urgency=medium
 
