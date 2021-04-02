@@ -1,3 +1,9 @@
+diffoscope (173) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 02 Apr 2021 08:50:38 +0100
+
 diffoscope (172) unstable; urgency=medium
 
   * If zipinfo(1) shows a difference but we cannot uncover a difference within
