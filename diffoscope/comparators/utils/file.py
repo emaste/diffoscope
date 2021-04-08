@@ -395,7 +395,7 @@ class File(metaclass=abc.ABCMeta):
 
     def _compare_using_details(self, other, source):
         details = []
-        difference = Difference(None, self.name, other.name, source=source)
+        difference = Difference(self.name, other.name, source=source)
 
         if hasattr(self, "compare_details"):
             details.extend(self.compare_details(other, source))

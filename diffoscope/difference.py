@@ -33,7 +33,6 @@ logger = logging.getLogger(__name__)
 class Difference:
     def __init__(
         self,
-        unified_diff,
         path1,
         path2,
         source=None,
@@ -41,6 +40,7 @@ class Difference:
         has_internal_linenos=False,
         details=None,
         visuals=None,
+        unified_diff=None,
     ):
         self._unified_diff = unified_diff
 
@@ -84,10 +84,9 @@ class Difference:
 
     def map_lines(self, f_diff, f_comment):
         unified_diff = self.unified_diff
+        if unified_diff is not None:
+            unified_diff = "".join(map(f_diff, diff_split_lines(unified_diff)))
         return self.__class__(
-            "".join(map(f_diff, diff_split_lines(unified_diff)))
-            if unified_diff is not None
-            else None,
             self.source1,
             self.source2,
             comment=[
@@ -97,18 +96,19 @@ class Difference:
             has_internal_linenos=self.has_internal_linenos,
             details=self._details[:],
             visuals=self._visuals[:],
+            unified_diff=unified_diff,
         )
 
     def fmap(self, f):
         return f(
             self.__class__(
-                self.unified_diff,
                 self.source1,
                 self.source2,
                 comment=self._comments[:],
                 has_internal_linenos=self.has_internal_linenos,
                 details=[d.fmap(f) for d in self._details],
                 visuals=self._visuals[:],
+                unified_diff=self.unified_diff,
             )
         )
 
@@ -118,15 +118,18 @@ class Difference:
             raise NotImplementedError(
                 "_reverse_self on VisualDifference is not yet implemented"
             )
-        return self.__class__(
+        unified_diff = (
             reverse_unified_diff(self.unified_diff)
             if self.unified_diff is not None
-            else None,
+            else None
+        )
+        return self.__class__(
             self.source2,
             self.source1,
             comment=self._comments,  # already copied by fmap in get_reverse
             has_internal_linenos=self.has_internal_linenos,
             details=self._details,  # already reversed by fmap in get_reverse, no need to copy
+            unified_diff=unified_diff,
         )
 
     def get_reverse(self):
@@ -214,10 +217,15 @@ class Difference:
             if not unified_diff:
                 return None
             return Difference(
-                unified_diff, path1, path2, source, comment, **kwargs
+                path1,
+                path2,
+                source,
+                comment,
+                unified_diff=unified_diff,
+                **kwargs,
             )
         except RequiredToolNotFound:
-            difference = Difference(None, path1, path2, source)
+            difference = Difference(path1, path2, source)
             difference.add_comment("diff is not available")
             if comment:
                 difference.add_comment(comment)
@@ -368,6 +376,10 @@ class Difference:
     @property
     def unified_diff(self):
         return self._unified_diff
+
+    @unified_diff.setter
+    def unified_diff(self, value):
+        self._unified_diff = value
 
     @property
     def has_internal_linenos(self):

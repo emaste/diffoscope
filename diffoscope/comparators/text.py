@@ -49,9 +49,7 @@ class TextFile(File):
                 )
                 if my_encoding != other_encoding:
                     if difference is None:
-                        difference = Difference(
-                            None, self.path, other.path, source
-                        )
+                        difference = Difference(self.path, other.path, source)
                     difference.add_details(
                         [
                             Difference.from_text(

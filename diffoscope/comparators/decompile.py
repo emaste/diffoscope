@@ -226,7 +226,7 @@ class AsmFunction(File):
         if not details:
             return None
 
-        difference = Difference(None, self.name, other.name, source=source)
+        difference = Difference(self.name, other.name, source=source)
         difference.add_details(details)
         return difference
 

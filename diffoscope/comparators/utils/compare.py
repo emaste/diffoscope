@@ -74,7 +74,7 @@ def compare_root_paths(path1, path2):
             # Create an "empty" difference so we have something to attach file
             # metadata to.
             if difference is None:
-                difference = Difference(None, file1.name, file2.name)
+                difference = Difference(file1.name, file2.name)
             difference.add_details(meta)
     return difference
 
@@ -109,7 +109,7 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         if diff_content_only:
             return None
     elif diff_content_only:
-        return Difference(None, file1.name, file2.name, comment="Files differ")
+        return Difference(file1.name, file2.name, comment="Files differ")
 
     call_difftool(file1, file2)
 

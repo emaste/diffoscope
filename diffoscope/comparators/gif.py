@@ -88,7 +88,7 @@ class GifFile(File):
                     other.path,
                 )
                 content_diff = Difference(
-                    None, self.path, other.path, source="Image content"
+                    self.path, other.path, source="Image content"
                 )
                 content_diff.add_visuals(
                     [

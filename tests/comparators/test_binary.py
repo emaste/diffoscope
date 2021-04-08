@@ -112,7 +112,7 @@ def test_compare_without_xxd(xxd_not_found, binary1, binary2):
 
 
 def test_with_compare_details():
-    d = Difference("diff", TEST_FILE1_PATH, TEST_FILE2_PATH, source="source")
+    d = Difference(TEST_FILE1_PATH, TEST_FILE2_PATH, source="source")
 
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):

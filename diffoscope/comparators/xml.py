@@ -121,7 +121,6 @@ class XMLFile(File):
         if isinstance(other, MissingFile):
             return [
                 Difference(
-                    None,
                     self.name,
                     other.name,
                     comment="Trying to compare two non-existing files.",

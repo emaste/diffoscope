@@ -702,7 +702,7 @@ def run_diffoscope(parsed_args):
     # Generate an empty, null diff to write, saving the exit code first.
     has_differences = bool(difference is not None)
     if difference is None and parsed_args.output_empty:
-        difference = Difference(None, path1, path2)
+        difference = Difference(path1, path2)
     with profile("main", "outputs"):
         PresenterManager().output(difference, parsed_args, has_differences)
     return 1 if has_differences else 0

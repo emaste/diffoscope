@@ -287,7 +287,7 @@ class FilesystemDirectory(Directory):
         if not differences:
             return None
 
-        difference = Difference(None, self.path, other.path, source)
+        difference = Difference(self.path, other.path, source)
         difference.add_details(differences)
         return difference
 
