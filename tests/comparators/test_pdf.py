@@ -21,7 +21,7 @@ import pytest
 
 from diffoscope.comparators.pdf import PdfFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
 from ..utils.nonexisting import assert_non_existing
 
@@ -54,8 +54,7 @@ def differences(pdf1, pdf2):
 
 @skip_unless_tools_exist("pdftotext")
 def test_text_diff(differences):
-    expected_diff = get_data("pdf_text_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "pdf_text_expected_diff")
 
 
 @skip_unless_tools_exist("pdftotext")
@@ -71,5 +70,4 @@ def differences_metadata(pdf1, pdf1a):
 @skip_unless_tools_exist("pdftotext")
 @skip_unless_module_exists("PyPDF2")
 def test_metadata(differences_metadata):
-    expected_diff = get_data("pdf_metadata_expected_diff")
-    assert differences_metadata[0].unified_diff == expected_diff
+    assert_diff(differences_metadata[0], "pdf_metadata_expected_diff")
