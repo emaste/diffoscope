@@ -28,6 +28,8 @@ from ..utils.nonexisting import assert_non_existing
 
 pdf1 = load_fixture("test1.pdf")
 pdf2 = load_fixture("test2.pdf")
+pdf3 = load_fixture("test3.pdf")
+pdf4 = load_fixture("test4.pdf")
 pdf1a = load_fixture("test_weird_non_unicode_chars1.pdf")
 pdf2a = load_fixture("test_weird_non_unicode_chars2.pdf")
 
@@ -71,3 +73,16 @@ def differences_metadata(pdf1, pdf1a):
 @skip_unless_module_exists("PyPDF2")
 def test_metadata(differences_metadata):
     assert_diff(differences_metadata[0], "pdf_metadata_expected_diff")
+
+
+@pytest.fixture
+def differences_annotations(pdf3, pdf4):
+    return pdf3.compare(pdf4).details
+
+
+@skip_unless_tools_exist("pdftotext")
+@skip_unless_module_exists("PyPDF2")
+def test_annotations(differences_annotations):
+    with open("tests/data/pdf_annotations_expected_diff", "w") as f:
+        f.write(differences_annotations[0].unified_diff)
+    assert_diff(differences_annotations[0], "pdf_annotations_expected_diff")

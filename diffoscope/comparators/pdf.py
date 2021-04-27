@@ -66,6 +66,16 @@ class PdfFile(File):
                 difference.add_comment("Document info")
             xs.append(difference)
 
+            difference = Difference.from_text(
+                self.dump_pypdf2_annotations(self),
+                self.dump_pypdf2_annotations(other),
+                self.path,
+                other.path,
+            )
+            if difference:
+                difference.add_comment("Annotations")
+            xs.append(difference)
+
         xs.append(Difference.from_operation(Pdftotext, self.path, other.path))
 
         # Don't include verbose dumppdf output unless we won't see any any
@@ -91,5 +101,26 @@ class PdfFile(File):
         xs = []
         for k, v in sorted(document_info.items()):
             xs.append("{}: {!r}".format(k.lstrip("/"), v))
+
+        return "\n".join(xs)
+
+    @staticmethod
+    def dump_pypdf2_annotations(file):
+        try:
+            pdf = PyPDF2.PdfFileReader(file.path)
+        except PyPDF2.utils.PdfReadError as e:
+            return f"(Could not open file: {e})"
+
+        xs = []
+        for x in range(pdf.getNumPages()):
+            page = pdf.getPage(x)
+
+            try:
+                for annot in page["/Annots"]:
+                    subtype = annot.getObject()["/Subtype"]
+                    if subtype == "/Text":
+                        xs.append(annot.getObject()["/Contents"])
+            except:
+                pass
 
         return "\n".join(xs)
