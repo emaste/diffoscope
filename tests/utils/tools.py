@@ -39,6 +39,14 @@ def file_version():
     )
 
 
+def file_version_is_lt(version):
+    return file_version() < version
+
+
+def file_version_is_ge(version):
+    return file_version() >= version
+
+
 def tools_missing(*required):
     return not required or any(find_executable(x) is None for x in required)
 

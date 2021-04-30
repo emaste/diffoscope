@@ -23,7 +23,10 @@ from diffoscope.comparators.zip import ZipFile
 from diffoscope.comparators.gzip import GzipFile
 
 from .utils.data import load_fixture, get_data
-from .utils.tools import skip_unless_file_version_is_at_least
+from .utils.tools import (
+    skip_unless_file_version_is_at_least,
+    file_version_is_ge,
+)
 
 quine1 = load_fixture("quine.gz")
 quine2 = load_fixture("quine.zip")
@@ -54,6 +57,9 @@ def differences(quine1, quine2):
 @skip_unless_file_version_is_at_least("5.37")
 def test_difference(differences):
     expected_diff = get_data("quine_expected_diff")
+    if file_version_is_ge("5.40"):
+        expected_diff = expected_diff[:-1]
+        expected_diff += ", compression method=deflate\n"
     assert differences[0].unified_diff == expected_diff
 
 

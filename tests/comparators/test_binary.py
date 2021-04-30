@@ -33,7 +33,11 @@ from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.compare import Xxd
 
 from ..utils.data import data, init_fixture, get_data, normalize_zeros
-from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_module_exists,
+    file_version_is_lt,
+)
 
 
 TEST_FILE1_PATH = data("binary1")
@@ -56,7 +60,10 @@ def test_not_same_content(binary1, binary2):
 
 
 def test_guess_file_type():
-    assert File.guess_file_type(TEST_FILE1_PATH) == "data"
+    if file_version_is_lt("5.40"):
+        assert File.guess_file_type(TEST_FILE1_PATH) == "data"
+    else:
+        assert File.guess_file_type(TEST_FILE1_PATH) == "OpenPGP Public Key"
 
 
 def test_guess_encoding_binary():
