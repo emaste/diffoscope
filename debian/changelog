@@ -1,8 +1,14 @@
-diffoscope (173) UNRELEASED; urgency=medium
+diffoscope (173) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Add support for showing annotations in PDF files.
+    (Closes: reproducible-builds/diffoscope#249)
+  * Move to assert_diff in test_pdf.py.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 02 Apr 2021 08:50:38 +0100
+  [ Zachary T Welch ]
+  * Difference.__init__: Demote unified_diff argument to a Python "kwarg".
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 30 Apr 2021 08:51:21 +0100
 
 diffoscope (172) unstable; urgency=medium
 
