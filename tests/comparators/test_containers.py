@@ -24,6 +24,7 @@ import itertools
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import (
     skip_unless_tools_exist,
+    file_version_is_ge,
     skip_unless_file_version_is_at_least,
 )
 
@@ -53,8 +54,13 @@ def expected_magic_diff(ext1, ext2):
     magic = {
         "bzip2": "bzip2 compressed data, block size = 900k\n",
         "gzip": "gzip compressed data, last modified: Sun Sep 10 22:19:44 2017, from Unix\n",
-        "xz": "XZ compressed data\n",
+        "xz": "XZ compressed data",
     }
+    if "xz" in (ext1, ext2):
+        if file_version_is_ge("5.40"):
+            magic["xz"] += ", checksum CRC64\n"
+        else:
+            magic["xz"] += "\n"
 
     return "@@ -1 +1 @@\n" + "-" + magic[ext1] + "+" + magic[ext2]
 

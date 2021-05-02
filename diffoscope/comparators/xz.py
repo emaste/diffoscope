@@ -56,7 +56,7 @@ class XzContainer(Archive):
 class XzFile(File):
     DESCRIPTION = "XZ compressed files"
     CONTAINER_CLASSES = [XzContainer]
-    FILE_TYPE_RE = re.compile(r"^XZ compressed data$")
+    FILE_TYPE_RE = re.compile(r"^XZ compressed data\b")
 
     # Work around file(1) Debian bug #876316
     FALLBACK_FILE_EXTENSION_SUFFIX = {".xz"}
