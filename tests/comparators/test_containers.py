@@ -50,9 +50,13 @@ def set2(gzip2, bzip2, xz2):
 
 
 def expected_magic_diff(ext1, ext2):
-    meta1 = get_data("containers/magic_%s" % ext1)
-    meta2 = get_data("containers/magic_%s" % ext2)
-    return "@@ -1 +1 @@\n" + "-" + meta1 + "+" + meta2
+    magic = {
+        "bzip2": "bzip2 compressed data, block size = 900k\n",
+        "gzip": "gzip compressed data, last modified: Sun Sep 10 22:19:44 2017, from Unix\n",
+        "xz": "XZ compressed data\n",
+    }
+
+    return "@@ -1 +1 @@\n" + "-" + magic[ext1] + "+" + magic[ext2]
 
 
 def expected_type_diff(ext1, ext2):
