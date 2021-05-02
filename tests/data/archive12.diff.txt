@@ -11,5 +11,5 @@
 │ │ +gzip compressed data, was "compressed", last modified: Sun Mar 19 22:27:42 2017, max compression, from Unix, truncated
 │ ├── compressed
 │ │ @@ -1 +1 @@
-│ │ -00000000: 610a                                     a.
-│ │ +00000000: 620a                                     b.
+│ │ -a
+│ │ +b
