@@ -312,4 +312,10 @@ class DotBuildinfoFile(DebControlFile):
         with open(file.path, "rb") as f:
             file._deb822 = Dsc(f)
 
+        # Check we have a *Debian* .buildinfo file
+        if not (
+            "Format" in file._deb822 and "Checksums-Sha256" in file._deb822
+        ):
+            return False
+
         return True
