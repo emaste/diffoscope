@@ -1,8 +1,18 @@
-diffoscope (174) UNRELEASED; urgency=medium
+diffoscope (174) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Check that we are parsing an actual Debian .buildinfo file, not just
+    a file with that extension.
+    (Closes: #987994, reproducible-builds/diffoscope#254)
+  * Support signed .buildinfo files again -- file(1) reports them as
+    "PGP signed message".
 
- -- Chris Lamb <lamby@debian.org>  Fri, 30 Apr 2021 08:52:50 +0100
+  [ Mattia Rizzolo ]
+  * Make the testsuite pass with file(1) version 5.40.
+  * Embed some short test fixtures in the test code itself.
+  * Fix recognition of compressed .xz files with file(1) 5.40.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 07 May 2021 10:48:54 +0100
 
 diffoscope (173) unstable; urgency=medium
 
