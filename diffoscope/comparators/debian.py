@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -299,7 +299,9 @@ class DotBuildinfoFile(DebControlFile):
     DESCRIPTION = "Debian .buildinfo files"
     CONTAINER_CLASSES = [DotBuildinfoContainer]
     FILE_EXTENSION_SUFFIX = {".buildinfo"}
-    FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text)")
+    FILE_TYPE_RE = re.compile(
+        r"^(ASCII text|UTF-8 Unicode text|PGP signed message)"
+    )
 
     @classmethod
     def recognizes(cls, file):
