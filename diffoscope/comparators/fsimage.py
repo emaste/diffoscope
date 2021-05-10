@@ -54,7 +54,7 @@ class FsImageContainer(Archive):
             logger.debug("Launching guestfs; this may take some time")
             with profile("command", "guestfs"):
                 self.g.launch()
-            logger.debug("guestfs successful launched")
+            logger.debug("guestfs successfully launched")
         except RuntimeError:
             logger.exception("guestfs failed to launch")
             logger.error(
