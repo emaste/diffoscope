@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2016 Reiner Herrmann <reiner@reiner-h.de>
-# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ class ApkContainer(Archive):
                 # reproducibility.
                 if filename == "apktool.yml":
                     abspath = filter_apk_metadata(
-                        abspath, os.path.basename(self.source.name)
+                        abspath, os.path.basename(self.source.path)
                     )
                     relpath = abspath[len(self._unpacked) + 1 :]
                     current_dir.insert(0, relpath)
