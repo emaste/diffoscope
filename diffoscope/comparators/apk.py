@@ -230,9 +230,10 @@ def filter_apk_metadata(filepath, archive_name):
 
     logger.debug("Moving APK metadata from %s to %s", filepath, new_filename)
 
-    re_filename = re.compile(
-        r"^apkFileName: %s" % re.escape(archive_name)
-    )
+    # Strip the filename that was passed to apktool as its embedded in the
+    # output. (It is unclear why this is conditional - see comments on
+    # reproducible-builds/diffoscope#255)
+    re_filename = re.compile(r"^apkFileName: %s" % re.escape(archive_name))
 
     with open(filepath) as in_, open(new_filename, "w") as out:
         out.writelines(x for x in in_ if not re_filename.match(x))
