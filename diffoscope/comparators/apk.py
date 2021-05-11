@@ -231,7 +231,7 @@ def filter_apk_metadata(filepath, archive_name):
     logger.debug("Moving APK metadata from %s to %s", filepath, new_filename)
 
     re_filename = re.compile(
-        r"^apkFileName: %s" % re.escape(os.path.basename(archive_name))
+        r"^apkFileName: %s" % re.escape(archive_name)
     )
 
     with open(filepath) as in_, open(new_filename, "w") as out:
