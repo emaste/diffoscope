@@ -1,8 +1,14 @@
-diffoscope (175) UNRELEASED; urgency=medium
+diffoscope (175) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Use the actual filesystem path name (instead of diffoscope's concept of the
+    source name) to correct APK filename filtering when an APK file is in
+    another container -- we need to filter the auto-generated "1.apk" instead
+    of "original-filename.apk". (Closes: reproducible-builds/diffoscope#255)
+  * Don't call os.path.basename twice.
+  * Correct grammar in a fsimage.py debug message.
+  * Add a comment about stripping filenames.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 07 May 2021 11:03:12 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 14 May 2021 10:43:10 +0100
 
 diffoscope (174) unstable; urgency=medium
 
