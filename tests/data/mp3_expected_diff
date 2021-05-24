@@ -14,4 +14,4 @@
 +    album           : Example track title 2
 +    date            : 2222
    Duration: 00:00:00.22, start: 0.000000, bitrate: 17 kb/s
-     Stream #0:0: Audio: mp3, 8000 Hz, mono, fltp, 8 kb/s
+   Stream #0:0: Audio: mp3, 8000 Hz, mono, fltp, 8 kb/s
