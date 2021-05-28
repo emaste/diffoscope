@@ -1,8 +1,9 @@
-diffoscope (176) UNRELEASED; urgency=medium
+diffoscope (176) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Update ffmpeg tests to work with ffmpeg 4.4.
+    (Closes: reproducible-builds/diffoscope#258)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 14 May 2021 10:44:42 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 28 May 2021 10:52:25 +0100
 
 diffoscope (175) unstable; urgency=medium
 
