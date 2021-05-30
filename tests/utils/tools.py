@@ -177,11 +177,14 @@ def skip_if_binutils_does_not_support_x86():
 
 @functools.lru_cache()
 def get_supported_elf_formats():
-    return set(
-        subprocess.check_output(("objdump", "--info"))
-        .decode("utf-8")
-        .splitlines()
-    )
+    try:
+        return set(
+            subprocess.check_output(("objdump", "--info"))
+            .decode("utf-8")
+            .splitlines()
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return set()
 
 
 def module_is_not_importable(x):
