@@ -16,34 +16,19 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import plistlib
+
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 
 from .utils.file import File
-from .utils.command import Command
+from .utils.command import Command, our_check_output
 
 
 class OpenSSLPKCS7(Command):
     @tool_required("openssl")
     def cmdline(self):
         return ("openssl", "pkcs7", "-print", "-noout", "-in", self.path)
-
-
-class OpenSSLSMIME(Command):
-    MASK_STDERR = True
-
-    @tool_required("openssl")
-    def cmdline(self):
-        return (
-            "openssl",
-            "smime",
-            "-inform",
-            "der",
-            "-verify",
-            "-noverify",
-            "-in",
-            self.path,
-        )
 
 
 class Pkcs7File(File):
@@ -65,9 +50,36 @@ class MobileProvisionFile(File):
     DESCRIPTION = "Apple Xcode mobile provisioning files"
     FILE_EXTENSION_SUFFIX = {".mobileprovision"}
 
+    @staticmethod
+    @tool_required("openssl")
+    def _get_structured_profile_text(path):
+        openssl_output = our_check_output(
+            [
+                "openssl",
+                "smime",
+                "-inform",
+                "der",
+                "-verify",
+                "-noverify",
+                "-in",
+                path,
+            ]
+        )
+        return plistlib.dumps(plistlib.loads(openssl_output), sort_keys=True)
+
     def compare_details(self, other, source=None):
+        my_content = MobileProvisionFile._get_structured_profile_text(
+            self.path
+        )
+        other_content = MobileProvisionFile._get_structured_profile_text(
+            other.path
+        )
         return [
-            Difference.from_operation(
-                OpenSSLSMIME, self.path, other.path, source="openssl smime"
+            Difference.from_text(
+                my_content,
+                other_content,
+                self.name,
+                other.name,
+                source="openssl smime",
             )
         ]
