@@ -1,8 +1,10 @@
-diffoscope (177) UNRELEASED; urgency=medium
+diffoscope (177) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Keith Smiley ]
+  * Improve support for Apple "provisioning profiles".
+  * Fix ignoring objdump tests on MacOS.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 28 May 2021 10:53:41 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 04 Jun 2021 10:03:04 +0100
 
 diffoscope (176) unstable; urgency=medium
 
