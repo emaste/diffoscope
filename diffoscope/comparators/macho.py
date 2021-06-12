@@ -142,7 +142,7 @@ class OtoolReadobj(Command):
         # Strip filename
         prefix = f"{self._path}:".encode("utf-8")
         if line.startswith(prefix):
-            return line[len(prefix):].strip()
+            return line[len(prefix) :].strip()
         return line
 
 
@@ -182,7 +182,7 @@ class OtoolObjdump(Command):
         # Strip filename
         prefix = f"{self._path}:".encode("utf-8")
         if line.startswith(prefix):
-            return line[len(prefix):].strip()
+            return line[len(prefix) :].strip()
         return line
 
 
@@ -224,6 +224,10 @@ class LlvmReadobj(Command):
     def __init__(self, path, *args, **kwargs):
         self._path = path
         super().__init__(path, *args, **kwargs)
+
+    @staticmethod
+    def fallback():
+        return None
 
     @tool_required("llvm-readobj")
     def cmdline(self):
@@ -300,18 +304,32 @@ class LlvmObjdump(Command):
         self._section = section
         super().__init__(path, *args, **kwargs)
 
+    @staticmethod
+    def fallback():
+        return None
+
     @tool_required("llvm-objdump")
     def cmdline(self):
         return ["llvm-objdump"] + self.objdump_options() + [self._path]
 
     def objdump_options(self):
-        return ["-arch", self._arch, "-section", self._section, "-macho", "-demangle", "-no-leading-addr", "-no-show-raw-insn"]
+        return [
+            "-arch",
+            self._arch,
+            "-section",
+            self._section,
+            "-macho",
+            "-demangle",
+            "-no-leading-addr",
+            "-no-show-raw-insn",
+            "-line-numbers",
+        ]
 
     def filter(self, line):
         # Strip filename
         prefix = f"{self._path}:".encode("utf-8")
         if line.startswith(prefix):
-            return line[len(prefix):].strip()
+            return line[len(prefix) :].strip()
         return line
 
 
@@ -334,10 +352,7 @@ class MachoBackend:
         differences = []
 
         diff = Difference.from_operation(
-            cmd,
-            path1,
-            path2,
-            operation_args=[arch, section_name],
+            cmd, path1, path2, operation_args=[arch, section_name]
         )
         differences.append(diff)
 
@@ -395,11 +410,7 @@ class LlvmBackend(MachoBackend):
 
     @staticmethod
     def sections(path, arch):
-        cmd = [
-            "llvm-readobj",
-            "-sections",
-            path,
-        ]
+        cmd = ["llvm-readobj", "-sections", path]
         output = our_check_output(cmd, shell=False)
         output = output.decode("utf-8")
 
@@ -447,10 +458,7 @@ class LlvmBackend(MachoBackend):
         return sections
 
 
-MACHO_BACKENDS = [
-    OtoolBackend,
-    LlvmBackend,
-]
+MACHO_BACKENDS = [OtoolBackend, LlvmBackend]
 
 
 ######################
@@ -567,11 +575,7 @@ class MachoArchitecture(MachoContainerFile):
             logger.debug("MachoArchitecture.compare_details is missing tools?")
 
         return [
-            Difference.from_operation(
-                x,
-                self.path,
-                other.path,
-            )
+            Difference.from_operation(x, self.path, other.path)
             for x in commands
         ]
 
@@ -644,4 +648,3 @@ class MachoFile(File):
             difference.check_for_ordering_differences()
 
         return [difference]
-
