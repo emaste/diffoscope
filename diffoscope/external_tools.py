@@ -2,6 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2021 Jean-Romain Garnier <salsa@jean-romain.com>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -112,6 +113,8 @@ EXTERNAL_TOOLS = {
     "llvm-bcanalyzer": {"debian": "llvm", "arch": "llvm", "guix": "llvm"},
     "llvm-config": {"debian": "llvm", "arch": "llvm"},
     "llvm-dis": {"debian": "llvm", "arch": "llvm", "guix": "llvm"},
+    "llvm-readobj": {"debian": "llvm", "arch": "llvm", "guix": "llvm"},
+    "llvm-objdump": {"debian": "llvm", "arch": "llvm", "guix": "llvm"},
     "ls": {"debian": "coreutils", "arch": "coreutils", "guix": "coreutils"},
     "lsattr": {
         "debian": "e2fsprogs",
@@ -256,6 +259,8 @@ HUGE_TOOLS = {
     "llvm-bcanalyzer",
     "llvm-config",
     "llvm-dis",
+    "llvm-readobj",
+    "llvm-objdump",
     "ppudump",
     "javap",
     "ssconvert",
