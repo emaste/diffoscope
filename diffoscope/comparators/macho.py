@@ -4,7 +4,7 @@
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
 # Copyright © 2015 Clemens Lang <cal@macports.org>
 # Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
-# Copyright © 2021 Jean-Romain Garnuer <salsa@jean-romain.com>
+# Copyright © 2021 Jean-Romain Garnier <salsa@jean-romain.com>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -557,22 +557,16 @@ class MachoArchitecture(MachoContainerFile):
         return self._macho_container
 
     def _macho_compare_details(self, other, source=None):
-        logger.debug("Called MachoArchitecture._macho_compare_details")
-
         if tool_check_installed("lipo"):
             commands = OTOOL_COMMANDS
-            logger.debug(
-                "MachoArchitecture.compare_details using lipo backend"
-            )
         elif tool_check_installed("llvm-readobj"):
             commands = LLVM_COMMANDS
-            logger.debug(
-                "MachoArchitecture.compare_details using llvm backend"
-            )
         else:
-            # No need to add a warning, the container will take care of it
+            # No need to add a warning, the container should take care of it
             commands = []
-            logger.debug("MachoArchitecture.compare_details is missing tools?")
+            logger.debug(
+                "MachoArchitecture.compare_details found no available backend"
+            )
 
         return [
             Difference.from_operation(x, self.path, other.path)
