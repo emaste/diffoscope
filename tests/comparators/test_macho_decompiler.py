@@ -1,8 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2020 Chris Lamb <lamby@debian.org>
-# Copyright © 2020 Jean-Romain Garnier <salsa@jean-romain.com>
+# Copyright © 2021 Jean-Romain Garnier <salsa@jean-romain.com>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -62,12 +61,12 @@ def exclude_commands(monkeypatch, patterns):
 
 @pytest.fixture(scope="function", autouse=True)
 def init_tests(request, monkeypatch):
-    # Ignore readelf and objdump as they are already tested by test_elf.py
-    exclude_commands(monkeypatch, ["^readelf.*", "^objdump.*"])
+    # Ignore Mach-O tools that are already tested in test_macho.py
+    exclude_commands(monkeypatch, ["^llvm-readobj.*", "^llvm-objdump.*", "^lipo.*", "^otool.*", "^strings.*"])
 
 
-obj1 = load_fixture("test1.o")
-obj2 = load_fixture("test2.o")
+obj1 = load_fixture("test1.macho")
+obj2 = load_fixture("test2.macho")
 
 
 @pytest.fixture
@@ -92,7 +91,12 @@ def test_ghidra_diff(monkeypatch, obj1, obj2):
     exclude_commands(monkeypatch, ["^radare2 disass.*"])
     obj_differences = obj1.compare(obj2).details[0].details
     assert len(obj_differences) == 1
-    assert_diff(obj_differences[0], "elf_obj_ghidra_expected_diff")
+
+    filenames = [
+        "macho_obj_ghidra_expected_diff_main",
+    ]
+    for idx, diff in enumerate(obj_differences):
+        assert_diff(diff.details[0], filenames[idx])
 
 
 @skip_unless_tools_exist("radare2")
@@ -100,5 +104,12 @@ def test_ghidra_diff(monkeypatch, obj1, obj2):
 def test_radare2_diff(monkeypatch, obj1, obj2):
     exclude_commands(monkeypatch, ["^radare2 r2ghidra.*"])
     obj_differences = obj1.compare(obj2).details[0].details
-    assert len(obj_differences) == 1
-    assert_diff(obj_differences[0], "elf_obj_radare2_expected_diff")
+    assert len(obj_differences) == 2
+
+    filenames = [
+        "macho_obj_radare2_expected_diff_main",
+        "macho_obj_radare2_expected_diff_printf",
+    ]
+    for idx, diff in enumerate(obj_differences):
+        assert_diff(diff.details[0], filenames[idx])
+
