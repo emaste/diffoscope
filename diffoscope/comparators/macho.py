@@ -302,7 +302,6 @@ class LlvmObjdump(Command):
             "-demangle",
             "-no-leading-addr",
             "-no-show-raw-insn",
-            "-line-numbers",
         ]
 
     def filter(self, line):

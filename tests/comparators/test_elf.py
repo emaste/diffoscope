@@ -30,7 +30,7 @@ from diffoscope.comparators.directory import FilesystemDirectory
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, load_fixture, get_data, assert_diff
+from ..utils.data import data, load_fixture, assert_diff
 from ..utils.tools import (
     skip_unless_tools_exist,
     skip_if_binutils_does_not_support_x86,
@@ -194,8 +194,6 @@ def test_libmix_differences(libmix_differences):
 
     mach_o_filenames = [
         "elfmix_mach_o_expected_diff__text",
-        "elfmix_mach_o_expected_diff__compact_unwind",
-        "elfmix_mach_o_expected_diff__eh_frame",
     ]
     for idx, diff in enumerate(mach_o.details):
         assert_diff(diff, mach_o_filenames[idx])
