@@ -43,6 +43,8 @@ class ComparatorManager:
         ("deb.DebDataTarFile",),
         ("decompile.AsmFunction",),
         ("elf.ElfSection",),
+        ("macho.MachoSection",),
+        ("macho.MachoArchitecture",),
         ("binwalk.BinwalkFile",),
         ("ps.PsFile",),
         ("javascript.JavaScriptFile",),

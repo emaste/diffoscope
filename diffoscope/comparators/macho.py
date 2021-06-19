@@ -24,7 +24,6 @@ import abc
 import logging
 import collections
 
-from diffoscope.config import Config
 from diffoscope.difference import Difference
 from diffoscope.exc import RequiredToolNotFound
 from diffoscope.tools import tool_required, tool_check_installed
@@ -81,41 +80,6 @@ class MachoContainerFile(File, metaclass=abc.ABCMeta):
         # No file should be recognized as a Mach-O container
         return False
 
-    @abc.abstractmethod
-    def _macho_compare_details(self, other, source=None):
-        raise NotImplementedError()
-
-    @property
-    def macho_container(self):
-        return None
-
-    def _compare_using_details(self, other, source):
-        difference = Difference(self.name, other.name, source=source)
-        details = self._macho_compare_details(other, source)
-
-        if self.macho_container:
-            # Don't recurse forever on archive quines, etc.
-            depth = self.macho_container.depth
-            no_recurse = depth >= Config().max_container_depth
-
-            if no_recurse:
-                msg = "Reached max container depth ({})".format(depth)
-                logger.debug(msg)
-                difference.add_comment(msg)
-
-            details.extend(
-                self.macho_container.compare(
-                    other.macho_container, no_recurse=no_recurse
-                )
-            )
-
-        details = [x for x in details if x]
-        if not details:
-            return None
-        difference.add_details(details)
-
-        return difference
-
 
 ##################
 # Otool Commands #
@@ -123,8 +87,9 @@ class MachoContainerFile(File, metaclass=abc.ABCMeta):
 
 
 class OtoolReadobj(Command):
-    def __init__(self, path, *args, **kwargs):
+    def __init__(self, path, arch, *args, **kwargs):
         self._path = path
+        self._arch = arch
         super().__init__(path, *args, **kwargs)
 
     @staticmethod
@@ -136,7 +101,7 @@ class OtoolReadobj(Command):
         return ["otool"] + self.otool_options() + [self._path]
 
     def otool_options(self):
-        return []
+        return ["-arch", self._arch]
 
     def filter(self, line):
         # Strip filename
@@ -156,8 +121,23 @@ class OtoolLibraries(OtoolReadobj):
         return super().otool_options() + ["-L"]
 
 
+class OtoolRelocations(OtoolReadobj):
+    def otool_options(self):
+        return super().otool_options() + ["-r"]
+
+
+class OtoolIndirectSymbols(OtoolReadobj):
+    def otool_options(self):
+        return super().otool_options() + ["-I"]
+
+
 # List otool of commands to run on the base file
-OTOOL_COMMANDS = [OtoolHeaders, OtoolLibraries]
+OTOOL_COMMANDS = [
+    OtoolHeaders,
+    OtoolLibraries,
+    OtoolRelocations,
+    OtoolIndirectSymbols,
+]
 
 
 class OtoolObjdump(Command):
@@ -480,9 +460,6 @@ class MachoSection(MachoContainerFile):
     def name(self):
         return self._name
 
-    def _macho_compare_details(self, other, source=None):
-        return None
-
     def compare(self, other, source=None):
         diff = Difference.from_operation(
             self._cmd,
@@ -540,6 +517,8 @@ class MachoArchitecture(MachoContainerFile):
     Class representing an architecture contained in a Mach-O file
     """
 
+    CONTAINER_CLASSES = [MachoSectionsContainer]
+
     def __init__(self, macho_container, architecture):
         super().__init__(container=macho_container)
         self._name = architecture
@@ -548,30 +527,17 @@ class MachoArchitecture(MachoContainerFile):
     def name(self):
         return self._name
 
-    @property
-    def macho_container(self):
-        if hasattr(self, "_macho_container"):
-            return self._macho_container
+    def compare_details(self, other, source=None):
+        # Run available architecture-specific commands
+        if tool_check_installed("otool"):
+            return [
+                Difference.from_operation(
+                    x, self.path, other.path, operation_args=[self._name]
+                )
+                for x in OTOOL_COMMANDS
+            ]
 
-        self._macho_container = MachoSectionsContainer(self)
-        return self._macho_container
-
-    def _macho_compare_details(self, other, source=None):
-        if tool_check_installed("lipo"):
-            commands = OTOOL_COMMANDS
-        elif tool_check_installed("llvm-readobj"):
-            commands = LLVM_COMMANDS
-        else:
-            # No need to add a warning, the container should take care of it
-            commands = []
-            logger.debug(
-                "MachoArchitecture.compare_details found no available backend"
-            )
-
-        return [
-            Difference.from_operation(x, self.path, other.path)
-            for x in commands
-        ]
+        return []
 
 
 class MachoArchitecturesContainer(Container):
@@ -628,7 +594,8 @@ class MachoArchitecturesContainer(Container):
 class Strings(Command):
     @tool_required("strings")
     def cmdline(self):
-        return ("strings", "--all", "--bytes=8", self.path)
+        # macOS' strings does not support the "--all" and "--bytes" syntax
+        return ("strings", "-a", "-n", "8", self.path)
 
 
 class MachoFile(File):
@@ -637,8 +604,25 @@ class MachoFile(File):
     FILE_TYPE_RE = re.compile(r"^Mach-O ")
 
     def compare_details(self, other, source=None):
+        differences = []
+
+        # llvm-readobj does not have an architecture filter, so output them
+        # at the top-level
+        # At the contrary, otool can display headers separately for each
+        # architecture, so these commands are run in MachoArchitecture
+        # We don't want to run both to avoid duplicating output, so only run
+        # llvm-readobj if otool is unavailable
+        if tool_check_installed("llvm-readobj") and not tool_check_installed(
+            "otool"
+        ):
+            differences += [
+                Difference.from_operation(x, self.path, other.path)
+                for x in LLVM_COMMANDS
+            ]
+
         difference = Difference.from_operation(Strings, self.path, other.path)
         if difference:
             difference.check_for_ordering_differences()
+        differences.append(difference)
 
-        return [difference]
+        return differences
