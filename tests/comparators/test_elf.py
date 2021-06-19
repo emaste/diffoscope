@@ -3,6 +3,7 @@
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
 # Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2021 Jean-Romain Garnier <salsa@jean-romain.com>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -192,9 +193,7 @@ def test_libmix_differences(libmix_differences):
     assert_diff(x86_o, "elfmix_disassembly_expected_diff")
     assert_diff(src_c, "elfmix_src_c_expected_diff")
 
-    mach_o_filenames = [
-        "elfmix_mach_o_expected_diff__text",
-    ]
+    mach_o_filenames = ["elfmix_mach_o_expected_diff__text"]
     for idx, diff in enumerate(mach_o.details):
         assert_diff(diff, mach_o_filenames[idx])
 
