@@ -62,7 +62,16 @@ def exclude_commands(monkeypatch, patterns):
 @pytest.fixture(scope="function", autouse=True)
 def init_tests(request, monkeypatch):
     # Ignore Mach-O tools that are already tested in test_macho.py
-    exclude_commands(monkeypatch, ["^llvm-readobj.*", "^llvm-objdump.*", "^lipo.*", "^otool.*", "^strings.*"])
+    exclude_commands(
+        monkeypatch,
+        [
+            "^llvm-readobj.*",
+            "^llvm-objdump.*",
+            "^lipo.*",
+            "^otool.*",
+            "^strings.*",
+        ],
+    )
 
 
 obj1 = load_fixture("test1.macho")
@@ -92,9 +101,7 @@ def test_ghidra_diff(monkeypatch, obj1, obj2):
     obj_differences = obj1.compare(obj2).details[0].details
     assert len(obj_differences) == 1
 
-    filenames = [
-        "macho_obj_ghidra_expected_diff_main",
-    ]
+    filenames = ["macho_obj_ghidra_expected_diff_main"]
     for idx, diff in enumerate(obj_differences):
         assert_diff(diff.details[0], filenames[idx])
 
@@ -112,4 +119,3 @@ def test_radare2_diff(monkeypatch, obj1, obj2):
     ]
     for idx, diff in enumerate(obj_differences):
         assert_diff(diff.details[0], filenames[idx])
-
