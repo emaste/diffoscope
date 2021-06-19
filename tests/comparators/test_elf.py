@@ -30,7 +30,7 @@ from diffoscope.comparators.directory import FilesystemDirectory
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, load_fixture, assert_diff
+from ..utils.data import data, load_fixture, get_data, assert_diff
 from ..utils.tools import (
     skip_unless_tools_exist,
     skip_if_binutils_does_not_support_x86,
@@ -169,6 +169,7 @@ def libmix_differences(libmix1, libmix2):
 
 
 @skip_unless_tools_exist("xxd")
+@skip_unless_tools_exist("llvm-readobj", "llvm-objdump")
 @skip_unless_tools_exist("readelf", "objdump")
 @skip_if_tool_version_is("readelf", readelf_version, "2.29")
 @skip_if_binutils_does_not_support_x86()
@@ -178,16 +179,26 @@ def test_libmix_differences(libmix_differences):
 
     # Check order and basic identification
     assert file_list.source1 == "file list"
-    assert "Falling back to binary" in mach_o.comments[0]
     x86_o = x86_o.details[0]
     assert x86_o.source1.startswith("objdump ")
     assert src_c.source1.endswith(".c")
 
+    mach_o = mach_o.details[0]
+    for diff in mach_o.details:
+        assert diff.source1.startswith("llvm-objdump ")
+
     # Content
     assert "return42_or_3" in file_list.unified_diff
-    assert_diff(mach_o, "elfmix_mach_o_expected_diff")
     assert_diff(x86_o, "elfmix_disassembly_expected_diff")
     assert_diff(src_c, "elfmix_src_c_expected_diff")
+
+    mach_o_filenames = [
+        "elfmix_mach_o_expected_diff__text",
+        "elfmix_mach_o_expected_diff__compact_unwind",
+        "elfmix_mach_o_expected_diff__eh_frame",
+    ]
+    for idx, diff in enumerate(mach_o.details):
+        assert_diff(diff, mach_o_filenames[idx])
 
     x_obj = x_obj.details[0]
     if x_obj.source1.startswith("readelf "):
