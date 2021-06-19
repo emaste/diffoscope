@@ -227,42 +227,42 @@ class LlvmFileHeaders(LlvmReadobj):
     """ Display file headers """
 
     def readobj_options(self):
-        return super().readobj_options() + ["-file-headers"]
+        return super().readobj_options() + ["--file-headers"]
 
 
 class LlvmNeededLibs(LlvmReadobj):
     """ Display the needed libraries """
 
     def readobj_options(self):
-        return super().readobj_options() + ["-needed-libs"]
+        return super().readobj_options() + ["--needed-libs"]
 
 
 class LlvmSymbols(LlvmReadobj):
     """ Display the symbol table """
 
     def readobj_options(self):
-        return super().readobj_options() + ["-symbols"]
+        return super().readobj_options() + ["--symbols"]
 
 
 class LlvmDynSymbols(LlvmReadobj):
     """ Display the dynamic symbol table """
 
     def readobj_options(self):
-        return super().readobj_options() + ["-dyn-symbols"]
+        return super().readobj_options() + ["--dyn-symbols"]
 
 
 class LlvmRelocations(LlvmReadobj):
     """ Display the relocation entries in the fil """
 
     def readobj_options(self):
-        return super().readobj_options() + ["-relocations"]
+        return super().readobj_options() + ["--relocations"]
 
 
 class LlvmDynRelocations(LlvmReadobj):
     """ Display the dynamic relocation entries in the file """
 
     def readobj_options(self):
-        return super().readobj_options() + ["-dyn-relocations"]
+        return super().readobj_options() + ["--dyn-relocations"]
 
 
 # List llvm of commands to run on the base file
@@ -294,21 +294,21 @@ class LlvmObjdump(Command):
 
     def objdump_options(self):
         return [
-            "-arch",
+            "--arch-name",
             self._arch,
-            "-section",
+            "--section",
             self._section,
-            "-macho",
-            "-demangle",
-            "-no-leading-addr",
-            "-no-show-raw-insn",
+            "--macho",
+            "--demangle",
+            "--no-leading-addr",
+            "--no-show-raw-insn",
         ]
 
     def filter(self, line):
         # Strip filename
-        prefix = f"{self._path}:".encode("utf-8")
+        prefix = f"{self._path}".encode("utf-8")
         if line.startswith(prefix):
-            return line[len(prefix) :].strip()
+            return line[len(prefix) :].strip().strip(b":")
         return line
 
 
@@ -389,7 +389,7 @@ class LlvmBackend(MachoBackend):
 
     @staticmethod
     def sections(path, arch):
-        cmd = ["llvm-readobj", "-sections", path]
+        cmd = ["llvm-readobj", "--sections", path]
         output = our_check_output(cmd, shell=False)
         output = output.decode("utf-8")
 
@@ -598,7 +598,7 @@ class Strings(Command):
 
 
 class MachoFile(File):
-    DESCRIPTION = "MacOS binaries"
+    DESCRIPTION = "macOS binaries"
     CONTAINER_CLASSES = [MachoArchitecturesContainer]
     FILE_TYPE_RE = re.compile(r"^Mach-O ")
 
