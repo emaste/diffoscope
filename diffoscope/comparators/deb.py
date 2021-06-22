@@ -62,8 +62,8 @@ def get_build_id_map(container):
 
 
 class DebContainer(LibarchiveContainer):
-    RE_DATA_TAR = re.compile(r"^data\.tar(\.gz|\.xz|\.bz2|\.lzma)?$")
-    RE_CONTROL_TAR = re.compile(r"^control\.tar(\.gz|\.xz)?$")
+    RE_DATA_TAR = re.compile(r"^data\.tar(\.gz|\.xz|\.zst|\.bz2|\.lzma)?$")
+    RE_CONTROL_TAR = re.compile(r"^control\.tar(\.gz|\.xz|\.zst)?$")
 
     @property
     def data_tar(self):
