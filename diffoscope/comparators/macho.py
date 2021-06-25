@@ -306,7 +306,7 @@ class LlvmObjdump(Command):
 
     def filter(self, line):
         # Strip filename
-        prefix = f"{self._path}".encode("utf-8")
+        prefix = self._path.encode("utf-8")
         if line.startswith(prefix):
             return line[len(prefix) :].strip().strip(b":")
         return line
@@ -491,7 +491,7 @@ class MachoSectionsContainer(DecompilableContainer):
         # Find out which backend to use
         available_backends = [b for b in MACHO_BACKENDS if b.is_available()]
         if not available_backends:
-            raise RequiredToolNotFound(operation="otool | llvm-objdump")
+            raise RequiredToolNotFound(operation="llvm-objdump")
 
         self._sections = available_backends[0].sections(
             self.source.path, self.arch
