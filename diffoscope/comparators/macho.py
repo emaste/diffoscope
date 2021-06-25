@@ -323,7 +323,7 @@ class MachoBackend:
         return False
 
     @staticmethod
-    def sections(self, path, arch):
+    def sections(path, arch):
         return None
 
     @staticmethod
@@ -335,7 +335,7 @@ class MachoBackend:
         )
         differences.append(diff)
 
-        if diff is None and cmd.fallback() is not None:
+        if diff is None and cmd.fallback():
             differences.append(
                 Difference.from_operation(
                     cmd.fallback(),
@@ -528,6 +528,11 @@ class MachoArchitecture(MachoContainerFile):
 
     def compare_details(self, other, source=None):
         # Run available architecture-specific commands
+        # Make sure we don't raise a RequiredToolNotFound error, even if otool
+        # is unavalailable, otherwise we would interrupt the compare for cases
+        # where llvm in installed
+        # If no tool is available, MachoArchitecturesContainer will take care
+        # of raising a RequiredToolNotFound error
         if tool_check_installed("otool"):
             return [
                 Difference.from_operation(
@@ -571,16 +576,17 @@ class MachoArchitecturesContainer(Container):
 
         # Find out which tool we can use to get the architecures included in
         # the Macho-O binary
+        archs = None
         if tool_check_installed("lipo"):
-            get_arch_from_macho = self.lipo_get_arch_from_macho
+            archs = self.lipo_get_arch_from_macho(self.source.path)
         elif tool_check_installed("llvm-readobj"):
-            get_arch_from_macho = self.llvm_get_arch_from_macho
+            archs = self.llvm_get_arch_from_macho(self.source.path)
         else:
-            raise RequiredToolNotFound(operation="lipo | llvm-readobj")
+            raise RequiredToolNotFound(operation="llvm-readobj")
 
         # Check for fat binaries
         self._architectures = collections.OrderedDict()
-        for arch in get_arch_from_macho(self.source.path):
+        for arch in archs:
             self._architectures[arch] = MachoArchitecture(self, arch)
 
     def get_member_names(self):
@@ -605,23 +611,36 @@ class MachoFile(File):
     def compare_details(self, other, source=None):
         differences = []
 
-        # llvm-readobj does not have an architecture filter, so output them
-        # at the top-level
-        # At the contrary, otool can display headers separately for each
-        # architecture, so these commands are run in MachoArchitecture
-        # We don't want to run both to avoid duplicating output, so only run
-        # llvm-readobj if otool is unavailable
-        if tool_check_installed("llvm-readobj") and not tool_check_installed(
-            "otool"
-        ):
-            differences += [
-                Difference.from_operation(x, self.path, other.path)
-                for x in LLVM_COMMANDS
-            ]
-
+        # Show string differences first, if there are any
         difference = Difference.from_operation(Strings, self.path, other.path)
         if difference:
             difference.check_for_ordering_differences()
         differences.append(difference)
+
+        # Next, compute differences in the file's headers
+        if tool_check_installed("otool"):
+            # otool can display headers separately for each architecture, so
+            # run commands in MachoArchitecture instead
+            pass
+        elif tool_check_installed("llvm-readobj"):
+            # llvm-readobj does not have an architecture filter, so output the
+            # differences at the file level
+            differences += [
+                Difference.from_operation(x, self.path, other.path)
+                for x in LLVM_COMMANDS
+            ]
+        else:
+            # If no tool is available, MachoArchitecturesContainer will raise a
+            # RequiredToolNotFound error. Use the binary comparator here to
+            # make sure we don't miss any differences
+            difference = self.compare_bytes(other, source=source)
+            if difference is None:
+                difference = Difference(self.path, other.path, source)
+
+            difference.add_comment(
+                "Neither otool nor llvm-readobj was found in path, falling "
+                "back to binary comparison."
+            )
+            differences.append(difference)
 
         return differences

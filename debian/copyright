@@ -27,7 +27,7 @@ Copyright:
  © 2018 Xavier Briand <xavierbriand@gmail.com>
  © 2019 Jelle van der Waa <jelle@archlinux.org>
  © 2020 Conrad Ratschan <ratschance@gmail.com>
- © 2020 Jean-Romain Garnier <salsa@jean-romain.com>
+ © 2020-2021 Jean-Romain Garnier <salsa@jean-romain.com>
 License: GPL-3+
 
 Files: diffoscope/changes.py

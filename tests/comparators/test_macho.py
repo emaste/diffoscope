@@ -95,13 +95,13 @@ def test_llvm_diff(obj_differences):
     # Headers
     assert len(obj_differences) == 8
     filenames = [
+        "macho_llvm_expected_diff_strings",
         "macho_llvm_expected_diff_file_headers",
         "macho_llvm_expected_diff_needed_libs",
         "macho_llvm_expected_diff_symbols",
         "macho_llvm_expected_diff_dyn_symbols",
         "macho_llvm_expected_diff_relocations",
         "macho_llvm_expected_diff_dyn_relocations",
-        "macho_llvm_expected_diff_strings",
     ]
     for idx, diff in enumerate(obj_differences[:-1]):
         assert_diff(diff, filenames[idx])
