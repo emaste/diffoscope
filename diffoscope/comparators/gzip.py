@@ -45,8 +45,11 @@ class GzipContainer(Archive):
         dest_path = self.get_path_name(dest_dir)
         logger.debug("gzip extracting to %s", dest_path)
         with open(dest_path, "wb") as fp:
+            # Use the short options (-d and -c) instead of the long options
+            # (--decompress and --stdout) to support the gzip implementation
+            # present in busybox, which doesn't support the long options.
             subprocess.check_call(
-                ["gzip", "--decompress", "--stdout", self.source.path],
+                ["gzip", "-d", "-c", self.source.path],
                 stdout=fp,
                 stderr=None,
             )
