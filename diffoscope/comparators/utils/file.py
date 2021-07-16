@@ -353,7 +353,7 @@ class File(metaclass=abc.ABCMeta):
                 h.final()
 
                 try:
-                    self._fuzzy_hash = h.hexdigest()
+                    return h.hexdigest()
                 except ValueError:
                     # File must contain a certain amount of randomness.
                     return None
