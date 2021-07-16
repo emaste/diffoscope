@@ -1,8 +1,28 @@
-diffoscope (178) UNRELEASED; urgency=medium
+diffoscope (178) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't traceback on an broken symlink in a directory.
+    (Closes: reproducible-builds/diffoscope#269)
+  * Rewrite the calculation of a file's "fuzzy hash" to make the control
+    flow cleaner.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 04 Jun 2021 10:05:19 +0100
+  [ Balint Reczey ]
+  * Support .deb package members compressed with the Zstandard algorithm.
+    (LP: #1923845)
+
+  [ Jean-Romain Garnier ]
+  * Overhaul the Mach-O executable file comparator.
+  * Implement tests for the Mach-O comparator.
+  * Switch to new argument format for the LLVM compiler.
+  * Fix test_libmix_differences in testsuite for the ELF format.
+  * Improve macOS compatibility for the Mach-O comparator.
+  * Add llvm-readobj and llvm-objdump to the internal EXTERNAL_TOOLS data
+    structure.
+
+  [ Mattia Rizzolo ]
+  * Invoke gzip(1) with the short option variants to support Busybox's gzip.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 16 Jul 2021 15:37:59 +0100
 
 diffoscope (177) unstable; urgency=medium
 
