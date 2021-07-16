@@ -337,21 +337,25 @@ class File(metaclass=abc.ABCMeta):
 
         @property
         def fuzzy_hash(self):
-            if not hasattr(self, "_fuzzy_hash"):
+            def calc():
                 # tlsh is not meaningful with files smaller than 512 bytes
-                if os.stat(self.path).st_size >= 512:
-                    h = tlsh.Tlsh()
-                    with open(self.path, "rb") as f:
-                        for buf in iter(lambda: f.read(32768), b""):
-                            h.update(buf)
-                    h.final()
-                    try:
-                        self._fuzzy_hash = h.hexdigest()
-                    except ValueError:
-                        # File must contain a certain amount of randomness.
-                        self._fuzzy_hash = None
-                else:
-                    self._fuzzy_hash = None
+                if os.stat(self.path).st_size < 512:
+                    return None
+
+                h = tlsh.Tlsh()
+                with open(self.path, "rb") as f:
+                    for buf in iter(lambda: f.read(32768), b""):
+                        h.update(buf)
+                h.final()
+
+                try:
+                    self._fuzzy_hash = h.hexdigest()
+                except ValueError:
+                    # File must contain a certain amount of randomness.
+                    return None
+
+            if not hasattr(self, "_fuzzy_hash"):
+                self._fuzzy_hash = calc()
             return self._fuzzy_hash
 
     @abc.abstractmethod
