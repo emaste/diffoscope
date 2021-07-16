@@ -339,7 +339,11 @@ class File(metaclass=abc.ABCMeta):
         def fuzzy_hash(self):
             def calc():
                 # tlsh is not meaningful with files smaller than 512 bytes
-                if os.stat(self.path).st_size < 512:
+                try:
+                    if os.stat(self.path).st_size < 512:
+                        return None
+                except FileNotFoundError:
+                    # eg. invalid symlink
                     return None
 
                 h = tlsh.Tlsh()
