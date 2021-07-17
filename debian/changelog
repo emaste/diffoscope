@@ -27,6 +27,7 @@ diffoscope (178) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
   * Invoke gzip(1) with the short option variants to support Busybox's gzip.
+    (Closes: reproducible-builds/diffoscope#268)
 
  -- Chris Lamb <lamby@debian.org>  Fri, 16 Jul 2021 15:37:59 +0100
 
