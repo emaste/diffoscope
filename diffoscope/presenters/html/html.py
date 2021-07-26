@@ -7,7 +7,7 @@
 # Copyright ©      2012 Alan De Smet <adesmet@cs.wisc.edu>
 # Copyright ©      2012 Sergey Satskiy <sergey.satskiy@gmail.com>
 # Copyright ©      2012 scito <info@scito.ch>
-# Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
