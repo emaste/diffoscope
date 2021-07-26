@@ -44,6 +44,7 @@ def test_obj_identification(obj1):
     assert isinstance(obj1, MachoFile)
 
 
+@skip_unless_tools_exist("llvm-readobj", "llvm-objdump")
 def test_obj_no_differences(obj1):
     difference = obj1.compare(obj1)
     assert difference is None
