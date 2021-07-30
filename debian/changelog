@@ -1,8 +1,10 @@
-diffoscope (179) UNRELEASED; urgency=medium
+diffoscope (179) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Ensure that various LLVM tools are installed, even when testing whether
+    a MacOS binary has zero differences when compared to itself.
+    (Closes: reproducible-builds/diffoscope#270)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 16 Jul 2021 16:01:36 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 30 Jul 2021 09:05:01 +0100
 
 diffoscope (178) unstable; urgency=medium
 
