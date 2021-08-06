@@ -640,9 +640,28 @@ class ElfContainer(DecompilableContainer):
 
 
 class Strings(Command):
+    re_debug_line = re.compile(r"^\s?\w{38,40}\.debug\n$")
+
     @tool_required("strings")
     def cmdline(self):
         return ("strings", "--all", "--bytes=8", self.path)
+
+    def filter(self, line):
+        val = line.decode("utf-8")
+
+        # Don't include specific ".debug"-like lines in the output, as it
+        # invariably a duplicate of the debug ID that exists better in the
+        # readelf(1) differences for this file.
+        #
+        # For example:
+        #
+        #   b'0684311d738d2555027e737d5846e7478561fa.debug\n'
+        #   b'·Xu94356212e19a62aadc4db9c3c93076ac997706.debug\n'
+        #
+        if self.re_debug_line.match(val):
+            return b""
+
+        return line
 
 
 class ElfFile(File):

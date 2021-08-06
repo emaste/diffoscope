@@ -245,12 +245,10 @@ def test_differences_with_dbgsym(dbgsym_differences):
     assert dbgsym_differences.details[2].source1 == "data.tar.xz"
     bin_details = dbgsym_differences.details[2].details[0].details[0]
     assert bin_details.source1 == "./usr/bin/test"
-    assert bin_details.details[1].source1.startswith("strings --all")
-    assert "shstrtab" in bin_details.details[1].unified_diff
-    assert bin_details.details[2].source1.startswith("objdump")
+    assert bin_details.details[1].source1.startswith("objdump")
     assert (
         "test-cases/dbgsym/package/test.c:2"
-        in bin_details.details[2].unified_diff
+        in bin_details.details[1].unified_diff
     )
 
 
@@ -259,8 +257,8 @@ def test_differences_with_dbgsym(dbgsym_differences):
 @skip_unless_module_exists("debian.deb822")
 def test_original_gnu_debuglink(dbgsym_differences):
     bin_details = dbgsym_differences.details[2].details[0].details[0]
-    assert ".gnu_debuglink" in bin_details.details[3].source1
-    assert_diff(bin_details.details[3], "gnu_debuglink_expected_diff")
+    assert ".gnu_debuglink" in bin_details.details[2].source1
+    assert_diff(bin_details.details[2], "gnu_debuglink_expected_diff")
 
 
 def test_ignore_readelf_errors1_identify(ignore_readelf_errors1):
