@@ -28,7 +28,7 @@ from .utils.command import Command
 class Odt2txt(Command):
     @tool_required("odt2txt")
     def cmdline(self):
-        return ("odt2txt", "--encoding=UTF-8", self.path)
+        return ("odt2txt", "--stdout", self.path)
 
 
 class OdtFile(File):
