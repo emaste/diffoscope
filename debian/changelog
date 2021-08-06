@@ -1,8 +1,16 @@
-diffoscope (180) UNRELEASED; urgency=medium
+diffoscope (180) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Don't include specific ".debug"-like lines in the output, as it invariably
+    a duplicate of the debug ID that exists in a better form in the readelf(1)
+    differences for this file.
+  * Also ignore include short "GCC" lines that differs on a single prefix byte
+    too. These are distracting, not very useful and are simply the strings(1)
+    command's idea of the build ID, which, again, is displayed nearby in the
+    file's diff.
+  * Update the invocation arguments and tests for the latest version of
+    odt2txt.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 30 Jul 2021 09:08:41 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 06 Aug 2021 13:57:31 +0100
 
 diffoscope (179) unstable; urgency=medium
 
