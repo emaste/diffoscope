@@ -641,6 +641,7 @@ class ElfContainer(DecompilableContainer):
 
 class Strings(Command):
     re_debug_line = re.compile(r"^\s?\w{38,40}\.debug\n$")
+    re_gcc_line = re.compile(r"^.?GCC: \([^\)]+\)")
 
     @tool_required("strings")
     def cmdline(self):
@@ -660,6 +661,19 @@ class Strings(Command):
         #
         if self.re_debug_line.match(val):
             return b""
+
+        # Don't include short "GCC" lines that differs on a single prefix byte
+        # either. These are distracting, not very useful and are simply the
+        # strings(1) command's idea of the build ID, which is displayed
+        # elsewhere in the diff.
+        #
+        # For example:
+        #
+        #   │ -GCC: (Debian 10.2.1-6) 10.2.1 20210110
+        #   │ +QGCC: (Debian 10.2.1-6) 10.2.1 20210110
+        #
+        if self.re_gcc_line.match(val):
+            return line
 
         return line
 
