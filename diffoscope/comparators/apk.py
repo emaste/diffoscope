@@ -24,6 +24,7 @@ import itertools
 import subprocess
 
 from diffoscope.difference import Difference
+from diffoscope.exc import RequiredToolNotFound
 from diffoscope.tools import tool_required, find_executable
 from diffoscope.tempfiles import get_temporary_directory
 
@@ -218,9 +219,13 @@ class ApkFile(ZipFileBase):
     def compare_details(self, other, source=None):
         differences = zipinfo_differences(self, other)
 
-        x = Difference.from_operation(Apksigner, self.path, other.path)
-        if x is not None:
-            differences.insert(0, x)
+        try:
+            x = Difference.from_operation(Apksigner, self.path, other.path)
+            if x is not None:
+                differences.insert(0, x)
+        except RequiredToolNotFound:  # noqa
+            # Don't require apksigner
+            pass
 
         return differences
 
