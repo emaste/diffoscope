@@ -387,7 +387,7 @@ def color_unified_diff(diff):
 DIFFON = "\x01"
 DIFFOFF = "\x02"
 MAX_WAGNER_FISCHER_SIZE = (
-    1024  # any higher, and linediff takes >1 second and >200MB RAM
+    256  # any higher, and linediff takes >1 second and >200MB RAM
 )
 
 
