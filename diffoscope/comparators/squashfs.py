@@ -35,7 +35,7 @@ from .device import Device
 from .symlink import Symlink
 from .directory import Directory
 from .utils.archive import Archive, ArchiveMember
-from .utils.command import Command, our_check_output
+from .utils.command import Command
 
 logger = logging.getLogger(__name__)
 
@@ -260,20 +260,47 @@ class SquashfsContainer(Archive):
 
         logger.debug("Extracting %s to %s", self.source.path, self._temp_dir)
 
-        output = our_check_output(
-            (
-                "unsquashfs",
-                "-n",
-                "-f",
-                "-no",
-                "-li",
-                "-d",
-                ".",
-                os.path.abspath(self.source.path),
-            ),
+        cmd = (
+            "unsquashfs",
+            "-n",
+            "-f",
+            "-no",
+            "-li",
+            "-d",
+            ".",
+            os.path.abspath(self.source.path),
+        )
+
+        p = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=self._temp_dir,
         )
+        output, stderr = p.communicate()
+
+        if p.returncode != 0:
+            # unsquashfs(1) exits with 1 (with a suitable logging messages that
+            # we can check for) if it could not extract, for example, character
+            # devices that require superuser privileges. In this case, don't
+            # treat this as a failure that requires reverting to xxd(1), but do
+            # let the user know via a comment.
+            if (
+                p.returncode == 1
+                and b"because you're not superuser" in stderr
+                and b"\n\ncreated " in output
+            ):
+                logger.debug("Ignoring unsquashfs return code")
+
+                self.source.add_comment(
+                    "Differences may be incomplete: {}".format(
+                        stderr.decode("utf-8")
+                    )
+                )
+            else:
+                raise subprocess.CalledProcessError(
+                    p.returncode, cmd, output, stderr
+                )
 
         output = iter(output.decode("utf-8").rstrip("\n").split("\n"))
 

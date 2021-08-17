@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2017, 2019-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2017, 2019-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import subprocess
 
 from diffoscope.comparators.squashfs import SquashfsFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
@@ -63,25 +63,38 @@ def differences(squashfs1, squashfs2):
 
 @skip_unless_tool_is_at_least("unsquashfs", unsquashfs_version, "4.4")
 def test_superblock(differences):
-    expected_diff = get_data("squashfs_superblock_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "squashfs_superblock_expected_diff")
 
 
 @skip_unless_tools_exist("unsquashfs")
 def test_symlink(differences):
     assert differences[2].comment == "symlink"
-    expected_diff = get_data("symlink_expected_diff")
-    assert differences[2].unified_diff == expected_diff
+    assert_diff(differences[2], "symlink_expected_diff")
 
 
 @skip_unless_tools_exist("unsquashfs")
 def test_compressed_files(differences):
     assert differences[3].source1 == "/text"
     assert differences[3].source2 == "/text"
-    expected_diff = get_data("text_ascii_expected_diff")
-    assert differences[3].unified_diff == expected_diff
+    assert_diff(differences[3], "text_ascii_expected_diff")
 
 
 @skip_unless_tools_exist("unsquashfs")
 def test_compare_non_existing(monkeypatch, squashfs1):
     assert_non_existing(monkeypatch, squashfs1)
+
+
+# Test things that require root
+
+squashfs1_root = load_fixture("test1_root.squashfs")
+squashfs2_root = load_fixture("test2_root.squashfs")
+
+
+@pytest.fixture
+def differences_root(squashfs1_root, squashfs2_root):
+    return squashfs1_root.compare(squashfs2_root).details
+
+
+@skip_unless_tools_exist("unsquashfs")
+def test_symlink_root(differences_root):
+    assert_diff(differences_root[1], "squashfs_root_expected_diff")
