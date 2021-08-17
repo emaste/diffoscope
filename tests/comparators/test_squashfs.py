@@ -22,7 +22,7 @@ import subprocess
 
 from diffoscope.comparators.squashfs import SquashfsFile
 
-from ..utils.data import load_fixture, assert_diff
+from ..utils.data import load_fixture, assert_diff, get_data
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
@@ -97,4 +97,7 @@ def differences_root(squashfs1_root, squashfs2_root):
 
 @skip_unless_tools_exist("unsquashfs")
 def test_symlink_root(differences_root):
-    assert_diff(differences_root[1], "squashfs_root_expected_diff")
+    assert (
+        get_data("squashfs_root_expected_diff")
+        in differences_root[1].unified_diff
+    )
