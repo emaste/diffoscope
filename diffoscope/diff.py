@@ -32,6 +32,7 @@ from multiprocessing.dummy import Queue
 
 from .tools import get_tool_name, tool_required
 from .config import Config
+from .profiling import profile
 from .tempfiles import get_temporary_directory
 
 DIFF_CHUNK = 4096
@@ -450,6 +451,7 @@ def linediff_wagnerfischer(s, t):
     for j in range(1, n + 1):
         d[0][j] = (j, (0, j - 1))
 
+    # NB. This loop is O(len(s) * len(t))
     for i in range(1, m + 1):
         for j in range(1, n + 1):
             if s[i - 1] == t[j - 1]:
@@ -611,7 +613,8 @@ class SideBySideDiff:
             type_name = "unmodified"
         else:
             type_name = "changed"
-            s1, s2 = linediff(s1, s2, self.diffon, self.diffoff)
+            with profile("diff", "linediff"):
+                s1, s2 = linediff(s1, s2, self.diffon, self.diffoff)
 
         yield "L", (type_name, s1, self.line1, s2, self.line2)
 
