@@ -16,9 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
 import logging
 
 from ..profiling import profile
+from ..utils import format_bytes
 
 from .text import TextPresenter
 from .json import JSONPresenter
@@ -101,6 +103,17 @@ class PresenterManager:
 
             with profile("output", name):
                 data["klass"].run(data, difference, parsed_args)
+
+            size = "n/a"
+            if os.path.isfile(data["target"]):
+                size = format_bytes(os.path.getsize(data["target"]))
+
+            logger.debug(
+                "Generated %r output at %r (size: %s)",
+                name,
+                data["target"],
+                size,
+            )
 
     def compute_visual_diffs(self):
         """
