@@ -250,7 +250,8 @@ def test_code_is_black_clean():
     ).decode("utf-8")
 
     # Display diff in "captured stdout call"
-    print(output)
+    if output:
+        print(output)
 
     assert not output, output
 
