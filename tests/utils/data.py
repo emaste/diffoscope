@@ -47,7 +47,11 @@ def get_data(filename):
 
 
 def assert_diff(difference, filename):
-    assert difference.unified_diff == get_data(filename)
+    # Assign seen and expected values to local variables to improve contextual
+    # information in failed tests.
+    seen = difference.unified_diff
+    expected = get_data(filename)
+    assert seen == expected
 
 
 # https://code.activestate.com/recipes/576620-changedirectory-context-manager/#c3
