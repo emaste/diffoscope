@@ -739,9 +739,8 @@ def main(args=None):
 
         log_handler = ProgressManager().setup(parsed_args)
 
-        with setup_logging(parsed_args.debug, log_handler) as logger:
+        with setup_logging(parsed_args.debug, log_handler) as _:
             post_parse(parsed_args)
-
             # Call main entry point
             sys.exit(run_diffoscope(parsed_args))
 
