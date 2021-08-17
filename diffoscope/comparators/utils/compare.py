@@ -93,8 +93,9 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
 
     # Specialize the files first so "has_same_content_as" can be overridden
     # by subclasses
-    specialize(file1)
-    specialize(file2)
+    with profile("specialize", "specialize"):
+        specialize(file1)
+        specialize(file2)
 
     force_details = Config().force_details
     with profile("has_same_content_as", file1):
