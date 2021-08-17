@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2017, 2019-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2017, 2019-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import contextlib
 import collections
 
 from .utils import format_class
+from .logging import setup_logging
 
 _ENABLED = False
 
@@ -50,7 +51,7 @@ class ProfileManager:
 
     def setup(self, parsed_args):
         global _ENABLED
-        _ENABLED = parsed_args.profile_output is not None
+        _ENABLED = parsed_args.profile_output is not None or parsed_args.debug
 
     def increment(self, start, namespace, key):
         if not isinstance(key, str):
@@ -62,11 +63,13 @@ class ProfileManager:
     def finish(self, parsed_args):
         from .presenters.utils import make_printer
 
+        # Include profiling in --debug output if --profile is not set.
         if parsed_args.profile_output is None:
-            return
-
-        with make_printer(parsed_args.profile_output) as fn:
-            self.output(fn)
+            with setup_logging(parsed_args.debug, None) as logger:
+                self.output(lambda x: logger.debug(x.strip("\n")))
+        else:
+            with make_printer(parsed_args.profile_output) as fn:
+                self.output(fn)
 
     def output(self, print_fn):
         title = "# Profiling output for: {}".format(" ".join(sys.argv))
