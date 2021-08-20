@@ -280,13 +280,16 @@ class SquashfsContainer(Archive):
         output, stderr = p.communicate()
 
         if p.returncode != 0:
-            # unsquashfs(1) exits with 1 (with a suitable logging messages that
-            # we can check for) if it could not extract, for example, character
-            # devices that require superuser privileges. In this case, don't
-            # treat this as a failure that requires reverting to xxd(1), but do
-            # let the user know via a comment.
+            # unsquashfs(1) exits with 1 (with a suitable logging messages
+            # that we can check for) if it could not extract, for example,
+            # character devices that require superuser privileges. In this
+            # case, don't treat this as a failure that requires reverting to
+            # xxd(1), but do let the user know via a comment. After 4.5, this
+            # return code can also be 2, to distinguish between fatal and
+            # non-fatal errors (see upstream commit
+            # 06fc061ef426672576075f2989f52acd873c0141)
             if (
-                p.returncode == 1
+                p.returncode in {1, 2}
                 and b"because you're not superuser" in stderr
                 and b"\n\ncreated " in output
             ):
