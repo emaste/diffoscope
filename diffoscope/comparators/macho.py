@@ -224,42 +224,42 @@ class LlvmReadobj(Command):
 
 
 class LlvmFileHeaders(LlvmReadobj):
-    """ Display file headers """
+    """Display file headers"""
 
     def readobj_options(self):
         return super().readobj_options() + ["--file-headers"]
 
 
 class LlvmNeededLibs(LlvmReadobj):
-    """ Display the needed libraries """
+    """Display the needed libraries"""
 
     def readobj_options(self):
         return super().readobj_options() + ["--needed-libs"]
 
 
 class LlvmSymbols(LlvmReadobj):
-    """ Display the symbol table """
+    """Display the symbol table"""
 
     def readobj_options(self):
         return super().readobj_options() + ["--symbols"]
 
 
 class LlvmDynSymbols(LlvmReadobj):
-    """ Display the dynamic symbol table """
+    """Display the dynamic symbol table"""
 
     def readobj_options(self):
         return super().readobj_options() + ["--dyn-symbols"]
 
 
 class LlvmRelocations(LlvmReadobj):
-    """ Display the relocation entries in the fil """
+    """Display the relocation entries in the fil"""
 
     def readobj_options(self):
         return super().readobj_options() + ["--relocations"]
 
 
 class LlvmDynRelocations(LlvmReadobj):
-    """ Display the dynamic relocation entries in the file """
+    """Display the dynamic relocation entries in the file"""
 
     def readobj_options(self):
         return super().readobj_options() + ["--dyn-relocations"]
