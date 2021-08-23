@@ -641,7 +641,7 @@ class ElfContainer(DecompilableContainer):
 
 class Strings(Command):
     re_debug_line = re.compile(r"^\s?\w{38,40}\.debug\n$")
-    re_gcc_line = re.compile(r"^.?GCC: \([^\)]+\)")
+    re_gcc_line = re.compile(r"^.{1,4}GCC: \([^\)]+\)")
 
     @tool_required("strings")
     def cmdline(self):
