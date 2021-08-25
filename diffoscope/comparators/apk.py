@@ -223,9 +223,9 @@ class ApkFile(ZipFileBase):
             x = Difference.from_operation(Apksigner, self.path, other.path)
             if x is not None:
                 differences.insert(0, x)
-        except RequiredToolNotFound:  # noqa
+        except RequiredToolNotFound as exc:  # noqa
             # Don't require apksigner
-            pass
+            self.add_comment(exc.get_comment())
 
         return differences
 
