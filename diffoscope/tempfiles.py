@@ -35,6 +35,9 @@ logger = logging.getLogger(__name__)
 def get_named_temporary_file(*args, **kwargs):
     kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
 
+    if not kwargs.get("suffix", "_").startswith("_"):
+        kwargs["suffix"] = "_{}".format(kwargs["suffix"])
+
     f = tempfile.NamedTemporaryFile(*args, **kwargs)
     _FILES.append(f.name)
 
@@ -60,6 +63,9 @@ def get_temporary_directory(*args, **kwargs):
     unexpected, references to this instance.)
     """
     kwargs["dir"] = kwargs.pop("dir", _get_base_temporary_directory())
+
+    if not kwargs.get("suffix", "_").startswith("_"):
+        kwargs["suffix"] = "_{}".format(kwargs["suffix"])
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
 
