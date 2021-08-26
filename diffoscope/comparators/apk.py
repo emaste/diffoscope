@@ -192,15 +192,18 @@ class Apksigner(Command):
 
     @tool_required("apksigner")
     def cmdline(self):
-        # In Debian, the `apksigner` binary is a symbolic link to the .jar file
-        # itself, requiring binfmt_misc support to execute directly. We
-        # therefore resolve its location and pass that to `java -jar`.
-        apksigner_jar = find_executable("apksigner")
+        # Older versions of the `apksigner` binary under /usr/bin (or similar)
+        # are a symbolic link to the apksigner .jar file. If we detect a .jar
+        # we resolve its 'real' location and pass that to `java -jar`, so we
+        # don't need kernel binfmt_misc to execute. We can't do this in all
+        # situations as later versions of apksigner use a wrapper script and
+        # will therefore fail to run at all if we use `java -jar`.
+        apksigner = os.path.realpath(find_executable("apksigner"))
 
-        return [
-            "java",
-            "-jar",
-            apksigner_jar,
+        prefix = ["java", "-jar"] if apksigner.endswith(".jar") else []
+
+        return prefix + [
+            apksigner,
             "verify",
             "--verbose",
             "--print-certs",
