@@ -28,7 +28,6 @@ from diffoscope.exc import RequiredToolNotFound
 from diffoscope.tools import tool_required, find_executable
 from diffoscope.tempfiles import get_temporary_directory
 
-from .utils.file import File
 from .utils.archive import Archive
 from .utils.command import Command
 from .utils.compare import compare_files
