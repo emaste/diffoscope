@@ -100,9 +100,9 @@ class ApkContainer(Archive):
             for filename in files:
                 abspath = os.path.join(root, filename)
 
-                # apktool.yml is a file created by apktool and containing
-                # metadata information. Rename it to clarify and always make it
-                # appear at the beginning of the directory listing for
+                # apktool.yml is a file created by apktool which contains
+                # metadata information. We eename it for clarity and always
+                # make it appear at the beginning of the directory listing for
                 # reproducibility.
                 if filename == "apktool.yml":
                     abspath = filter_apk_metadata(
