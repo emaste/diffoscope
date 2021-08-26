@@ -47,22 +47,22 @@ class ApkContainer(Archive):
     def open_archive(self):
         self._members = []
         self._tmpdir = get_temporary_directory(suffix="apk")
-        self._unpacked = os.path.join(
-            self._tmpdir.name, os.path.basename(self.source.name)
-        )
         self._andmanifest = None
         self._andmanifest_orig = None
 
-        logger.debug("Extracting %s to %s", self.source.name, self._unpacked)
+        logger.debug(
+            "Extracting %s to %s", self.source.name, self._tmpdir.name
+        )
 
         subprocess.check_call(
             (
                 "apktool",
                 "d",
+                "-f",
                 "-k",
                 "-m",
                 "-o",
-                self._unpacked,
+                self._tmpdir.name,
                 self.source.path,
             ),
             stderr=None,
@@ -72,7 +72,7 @@ class ApkContainer(Archive):
         # Optionally extract a few files that apktool does not
         for x in ("classes.dex", "resources.arsc"):
             subprocess.call(
-                ("unzip", "-d", self._unpacked, self.source.path, x),
+                ("unzip", "-d", self._tmpdir.name, self.source.path, x),
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
@@ -84,7 +84,7 @@ class ApkContainer(Archive):
                     (
                         "unzip",
                         "-d",
-                        self._unpacked,
+                        self._tmpdir.name,
                         self.source.path,
                         f"classes{x}.dex",
                     ),
@@ -94,7 +94,7 @@ class ApkContainer(Archive):
             except subprocess.CalledProcessError:
                 break
 
-        for root, _, files in os.walk(self._unpacked):
+        for root, _, files in os.walk(self._tmpdir.name):
             current_dir = []
 
             for filename in files:
@@ -108,14 +108,14 @@ class ApkContainer(Archive):
                     abspath = filter_apk_metadata(
                         abspath, os.path.basename(self.source.path)
                     )
-                    relpath = abspath[len(self._unpacked) + 1 :]
+                    relpath = abspath[len(self._tmpdir.name) + 1 :]
                     current_dir.insert(0, relpath)
                     continue
 
-                relpath = abspath[len(self._unpacked) + 1 :]
+                relpath = abspath[len(self._tmpdir.name) + 1 :]
 
                 if filename == "AndroidManifest.xml":
-                    containing_dir = root[len(self._unpacked) + 1 :]
+                    containing_dir = root[len(self._tmpdir.name) + 1 :]
                     if containing_dir == "original":
                         self._andmanifest_orig = relpath
                     if containing_dir == "":
@@ -145,7 +145,7 @@ class ApkContainer(Archive):
         return self._members
 
     def extract(self, member_name, dest_dir):
-        return os.path.join(self._unpacked, member_name)
+        return os.path.join(self._tmpdir.name, member_name)
 
     def compare_manifests(self, other):
         my_android_manifest = self.get_android_manifest()
