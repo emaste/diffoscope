@@ -1,8 +1,23 @@
-diffoscope (182) UNRELEASED; urgency=medium
+diffoscope (182) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Also ignore, for example, spurious "fwGCC: (Debian ... )" lines in output
+    from strings(1).
+  * Only use "java -jar /path/to/apksigner.jar" if we have a .jar as newer
+    versions of apksigner use a shell wrapper script which will obviously be
+    rejected by the JVM. Also mention in the diff if apksigner is missing.
+  * Pass "-f" to apktool to avoid creating a strangely-named subdirectory and
+    to simplify code.
+  * If we specify a suffix for temporary file or directory, ensure it starts
+    with a "_" to make the generated filenames more human-readable.
+  * Drop an unused File import.
+  * Update the minimum version of the Black source code formatter.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 20 Aug 2021 10:04:49 +0100
+  [ Santiago Torres Arias ]
+  * Support parsing the return value of squashfs versions which discriminate
+    between fatal and non-fatal errors.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 27 Aug 2021 09:11:44 +0100
 
 diffoscope (181) unstable; urgency=medium
 
