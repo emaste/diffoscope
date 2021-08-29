@@ -251,7 +251,7 @@ class ApkFile(ZipFileBase):
                 get_v2_signing_keys(other.path),
                 self.path,
                 other.path,
-                source="Android V2 signing keys",
+                source="APK Signing Block",
             )
             if x is not None:
                 differences.insert(0, x)
@@ -273,7 +273,7 @@ def get_v2_signing_keys(path):
 
     output = []
     for k, v in sorted(instance._v2_blocks.items()):
-        output.append("Key 0x{}:\n{}\n".format(hex(k), format_key(v)))
+        output.append("Key {}:\n{}\n".format(hex(k), format_key(v)))
 
     return "\n".join(output)
 
