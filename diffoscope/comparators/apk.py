@@ -18,6 +18,8 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
+import binascii
+import textwrap
 import os.path
 import logging
 import itertools
@@ -25,7 +27,11 @@ import subprocess
 
 from diffoscope.difference import Difference
 from diffoscope.exc import RequiredToolNotFound
-from diffoscope.tools import tool_required, find_executable
+from diffoscope.tools import (
+    tool_required,
+    find_executable,
+    python_module_missing,
+)
 from diffoscope.tempfiles import get_temporary_directory
 
 from .utils.archive import Archive
@@ -35,6 +41,12 @@ from .zip import ZipContainer, zipinfo_differences, ZipFileBase
 from .missing_file import MissingFile
 
 logger = logging.getLogger(__name__)
+
+try:
+    import androguard
+except ImportError:
+    python_module_missing("androguard")
+    androguard = None
 
 
 class ApkContainer(Archive):
@@ -229,7 +241,41 @@ class ApkFile(ZipFileBase):
             # Don't require apksigner
             self.add_comment(exc.get_comment())
 
+        if androguard is None:
+            self.add_comment(
+                "'androguard' Python package not installed; cannot extract V2 signing keys."
+            )
+        else:
+            x = Difference.from_text_readers(
+                get_v2_signing_keys(self.path),
+                get_v2_signing_keys(other.path),
+                self.path,
+                other.path,
+                source="Android V2 signing keys",
+            )
+            if x is not None:
+                differences.insert(0, x)
+
         return differences
+
+
+def get_v2_signing_keys(path):
+    from androguard.core.bytecodes import apk
+
+    try:
+        instance = apk.APK(path)
+        instance.parse_v2_signing_block()
+    except Exception:
+        return ""
+
+    def format_key(x):
+        return "\n".join(textwrap.wrap(binascii.hexlify(x).decode("utf-8")))
+
+    output = []
+    for k, v in sorted(instance._v2_blocks.items()):
+        output.append("Key 0x{}:\n{}\n".format(hex(k), format_key(v)))
+
+    return "\n".join(output)
 
 
 def filter_apk_metadata(filepath, archive_name):

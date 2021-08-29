@@ -8,6 +8,7 @@ Uploaders:
  Mattia Rizzolo <mattia@debian.org>,
 Build-Depends:
  abootimg <!nocheck>,
+ androguard <!nocheck>,
  apksigner <!nocheck>,
  apktool [!ppc64el !s390x] <!nocheck>,
  bash-completion,

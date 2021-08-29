@@ -58,6 +58,7 @@ setup(
         "distro_detection": ["distro"],
         "cmdline": ["argcomplete", "progressbar"],
         "comparators": [
+            "androguard",
             "binwalk",
             "defusedxml",
             "guestfs",

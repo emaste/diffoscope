@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017-2021 Chris Lamb <lamby@debian.org>
 # Copyright © 2021 Jean-Romain Garnier <salsa@jean-romain.com>
 #
 # diffoscope is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ that might resolve to, for example, `/usr/bin/abootimg`.
 
 EXTERNAL_TOOLS = {
     "abootimg": {"debian": "abootimg", "guix": "abootimg"},
+    "androguard": {"debian": "androguard"},
     "apktool": {"debian": "apktool"},
     "apksigner": {"debian": "apksigner"},
     "db_dump": {"debian": "db-util", "guix": "bdb"},
