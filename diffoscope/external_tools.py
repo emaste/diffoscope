@@ -250,10 +250,10 @@ REMAPPED_TOOL_NAMES = {}
 # version (so that our tests don't break) then it's unnecessary to add it here.
 GNU_TOOL_NAMES = {"diff", "readelf", "objcopy", "objdump"}
 
-# Set of tools considered "large" their installation size, or too niche in
-# their target users.  To be easily excluded from installation if not
-# specifically required.
-# These are the names of the tools, not package names.
+# Set of tools considered "large" in their installation size or too niche in
+# their target users. This is so they can easily be excluded from installation
+# if not required in most cases. Note that these are the names of the tools
+# (ie. the keys in the EXTERNAL_TOOLS dict), not the package names.
 HUGE_TOOLS = {
     "ghc",
     "ocamlobjinfo",
