@@ -491,7 +491,12 @@ class ElfContainer(DecompilableContainer):
                 ][0]
 
                 logger.debug(
-                    "Adding section %s (%s) as %s", name, type, elf_class
+                    "Adding section %s (%s) as %s",
+                    name,
+                    type,
+                    format_class(
+                        elf_class, strip="diffoscope.comparators.elf."
+                    ),
                 )
                 self._sections[name] = elf_class(self, name)
 
