@@ -28,6 +28,7 @@ from diffoscope.tools import get_tool_name, tool_required
 from diffoscope.config import Config
 from diffoscope.tempfiles import get_named_temporary_file
 from diffoscope.difference import Difference
+from diffoscope.utils import format_class
 
 from .deb import DebFile, get_build_id_map
 from .decompile import DecompilableContainer
