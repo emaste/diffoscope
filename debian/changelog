@@ -1,8 +1,17 @@
-diffoscope (183) UNRELEASED; urgency=medium
+diffoscope (183) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Add support for extracting Android signing blocks.
+    (Closes: reproducible-builds/diffoscope#246)
+  * Format debug messages for elf sections using our
+    diffoscope.utils.format_class utility.
+  * Clarify a comment about the HUGE_TOOLS dict in diffoscope.external_tools.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 27 Aug 2021 09:14:20 +0100
+  [ Felix C. Stegerman ]
+  * Clarify output around APK Signing Blocks and remove an accidental duplicate
+    "0x" prefix.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 03 Sep 2021 11:14:32 +0100
 
 diffoscope (182) unstable; urgency=medium
 
