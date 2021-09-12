@@ -21,10 +21,9 @@ import sys
 import json
 import pytest
 
-from distutils.version import LooseVersion
-
 from diffoscope.main import main
 from diffoscope.progress import ProgressManager, StatusFD
+from diffoscope.versions import Version
 
 from .utils.tools import skip_unless_module_exists
 
@@ -56,7 +55,7 @@ def progressbar_err():
     actual_ver = progressbar_version()
 
     for k, v in expected_err.items():
-        if LooseVersion(actual_ver) < LooseVersion(k):
+        if Version(actual_ver) < Version(k):
             return v
 
     return ""

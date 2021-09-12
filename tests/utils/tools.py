@@ -24,9 +24,8 @@ import functools
 import importlib.util
 import subprocess
 
-from distutils.version import LooseVersion
-
 from diffoscope.tools import get_package_provider, find_executable
+from diffoscope.versions import Version
 
 
 def file_version():
@@ -104,7 +103,7 @@ def skip_unless_tools_exist(*required):
     )
 
 
-def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
+def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=Version):
     if tools_missing(tool):
         return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
@@ -118,7 +117,7 @@ def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
     )
 
 
-def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
+def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=Version):
     if tools_missing(tool) and module_is_not_importable(tool):
         return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
@@ -132,7 +131,7 @@ def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
     )
 
 
-def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
+def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=Version):
     if tools_missing(tool) and module_is_not_importable(tool):
         return skipif(True, reason=reason(tool), tools=(tool,))
     if callable(actual_ver):
@@ -147,7 +146,7 @@ def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
 
 
 def skip_unless_tool_is_between(
-    tool, actual_ver, min_ver, max_ver, vcls=LooseVersion
+    tool, actual_ver, min_ver, max_ver, vcls=Version
 ):
     if tools_missing(tool):
         return skipif(True, reason=reason(tool), tools=(tool,))
