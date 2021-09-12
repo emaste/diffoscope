@@ -19,6 +19,7 @@
 
 import pytest
 import subprocess
+import re
 
 from diffoscope.config import Config
 from diffoscope.comparators.openssh import PublicKeyFile
@@ -36,7 +37,7 @@ opensshpubkey2 = load_fixture("test_openssh_pub_key2.pub")
 
 def openssh_version():
     out = subprocess.check_output(("ssh", "-V"), stderr=subprocess.STDOUT)
-    return out.decode().split()[0].split("_")[1]
+    return re.match(r"OpenSSH_([a-zA-Z0-9._+-]+)", out.decode()).group(1)
 
 
 def test_identification(opensshpubkey1):
