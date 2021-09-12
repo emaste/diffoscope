@@ -2,7 +2,7 @@
 -Unit name: Test1
 +Unit name: Test2
  Interfaces imported:
--	3e47d8b00458748ef1a9311764531b2c	Test1
-+	de7049745527b20997c517c338bb83cb	Test2
- 	c21c5d26416461b543321872a551ea0d	Stdlib
- 	3a3ca1838627f7762f49679ce0278ad1	CamlinternalFormatBasics
+-	69a7449a2ee894ef85f1a4d8645e8051	Test1
++	187969740b6c403b926a8d81613601ae	Test2
+ 	4b04b4eda19aa722df365141895fb347	Stdlib
+ 	b6c6694955e10001aed267571104a961	CamlinternalFormatBasics
