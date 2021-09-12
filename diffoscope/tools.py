@@ -19,20 +19,18 @@
 import collections
 import functools
 import platform
+import shutil
 
 try:
     import distro
 except ImportError:
     distro = None
 
-from distutils.spawn import find_executable
-
 from .profiling import profile
 from .external_tools import EXTERNAL_TOOLS, REMAPPED_TOOL_NAMES, GNU_TOOL_NAMES
 
-# Memoize calls to ``distutils.spawn.find_executable`` to avoid excessive stat
-# calls
-find_executable = functools.lru_cache()(find_executable)
+# Memoize calls to ``which`` to avoid excessive stat calls
+find_executable = functools.lru_cache()(shutil.which)
 
 # The output of --help and --list-tools will use the order of this dict.
 # Please keep it alphabetized.

@@ -24,10 +24,9 @@ import functools
 import importlib.util
 import subprocess
 
-from distutils.spawn import find_executable
 from distutils.version import LooseVersion
 
-from diffoscope.tools import get_package_provider
+from diffoscope.tools import get_package_provider, find_executable
 
 
 def file_version():
