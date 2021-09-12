@@ -38,11 +38,11 @@ def file_version():
 
 
 def file_version_is_lt(version):
-    return file_version() < version
+    return Version(file_version()) < Version(version)
 
 
 def file_version_is_ge(version):
-    return file_version() >= version
+    return Version(file_version()) >= Version(version)
 
 
 def tools_missing(*required):
