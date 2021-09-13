@@ -46,7 +46,7 @@ def init_tests(request, monkeypatch):
 
 
 def llvm_version():
-    return (
+    return Version(
         subprocess.check_output(["llvm-config", "--version"])
         .decode("utf-8")
         .strip()
@@ -69,7 +69,7 @@ def differences(rlib1, rlib2):
 
 @pytest.fixture
 def rlib_dis_expected_diff():
-    actual_ver = Version(llvm_version())
+    actual_ver = llvm_version()
 
     if actual_ver >= "3.8":
         diff_file = "rlib_llvm_dis_expected_diff"

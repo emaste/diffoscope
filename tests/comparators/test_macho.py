@@ -27,6 +27,7 @@ from diffoscope.comparators.missing_file import MissingFile
 
 from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
+from .test_rlib import llvm_version
 
 
 obj1 = load_fixture("test1.macho")
@@ -93,13 +94,18 @@ def test_llvm_obj_compare_non_existing(monkeypatch, obj1):
 
 @skip_unless_tools_exist("llvm-readobj", "llvm-objdump")
 def test_llvm_diff(obj_differences):
+    if llvm_version() < "13":
+        diff_symbols = "macho_llvm_expected_diff_symbols_llvm_11"
+    else:
+        diff_symbols = "macho_llvm_expected_diff_symbols"
+
     # Headers
     assert len(obj_differences) == 8
     filenames = [
         "macho_llvm_expected_diff_strings",
         "macho_llvm_expected_diff_file_headers",
         "macho_llvm_expected_diff_needed_libs",
-        "macho_llvm_expected_diff_symbols",
+        diff_symbols,
         "macho_llvm_expected_diff_dyn_symbols",
         "macho_llvm_expected_diff_relocations",
         "macho_llvm_expected_diff_dyn_relocations",
