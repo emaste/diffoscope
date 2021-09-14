@@ -33,6 +33,7 @@ import binascii
 RDS_HEADERS = {
     binascii.a2b_hex("580a000000020003"),
     binascii.a2b_hex("580a000000030003"),
+    binascii.a2b_hex("580a000000030004"),
 }
 
 DUMP_RDB = rb"""
