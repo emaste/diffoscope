@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2017 Ximin Luo <infinity0@debian.org>
-# Copyright © 2017, 2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2020-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import pytest
 
 from diffoscope.comparators.gzip import GzipFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, get_data, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 
 
@@ -52,5 +52,4 @@ def test_num_items(differences):
 def test_item_rds(differences):
     assert differences[0].source1 == "test1.rdx-content"
     assert differences[0].source2 == "test2.rdx-content"
-    expected_diff = get_data("rds_expected_diff")
-    assert differences[0].details[0].unified_diff == expected_diff
+    assert_diff(differences[0].details[0], "rds_expected_diff")
