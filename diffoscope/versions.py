@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2021      Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
+# Copyright © 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,10 +20,16 @@ import itertools
 import functools
 import string
 
+
 @functools.total_ordering
 class Version(str):
-    CHARS = string.ascii_letters + string.digits + '~^'
-    _ALPHA_ORD = { '~': -1, '^': +1, None: 0, **{c:ord(c) for c in string.ascii_letters}}
+    CHARS = string.ascii_letters + string.digits + "~^"
+    _ALPHA_ORD = {
+        "~": -1,
+        "^": +1,
+        None: 0,
+        **{c: ord(c) for c in string.ascii_letters},
+    }
 
     @staticmethod
     def _len_prefix(s, chars, matching=True):
@@ -34,8 +40,8 @@ class Version(str):
 
     @classmethod
     def _cmp_alphabetical(cls, string_a, string_b):
-        len_a = cls._len_prefix(string_a, string.ascii_letters + '~^')
-        len_b = cls._len_prefix(string_b, string.ascii_letters + '~^')
+        len_a = cls._len_prefix(string_a, string.ascii_letters + "~^")
+        len_b = cls._len_prefix(string_b, string.ascii_letters + "~^")
 
         for i in range(max(len_a, len_b)):
             a = string_a[i] if i < len_a else None
@@ -59,7 +65,9 @@ class Version(str):
 
             # print(f'{i=} {j=} {self[i:]=!r} {other[j:]=!r}')
 
-            if (i < I and self[i] in string.digits) or (j < J and other[j] in string.digits):
+            if (i < I and self[i] in string.digits) or (
+                j < J and other[j] in string.digits
+            ):
                 ii = i + self._len_prefix(self[i:], string.digits)
                 jj = j + self._len_prefix(other[j:], string.digits)
 
