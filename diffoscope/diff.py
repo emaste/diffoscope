@@ -172,7 +172,13 @@ class DiffParser:
 
 @tool_required("diff")
 def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
-    cmd = [get_tool_name("diff"), "-aU7", fifo1, fifo2]
+    cmd = [
+        get_tool_name("diff"),
+        "-a",
+        "-U" + str(Config().diff_context),
+        fifo1,
+        fifo2,
+    ]
 
     logger.debug("Running %s", " ".join(cmd))
 

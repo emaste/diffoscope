@@ -39,6 +39,8 @@ class Config:
             self.reset()
 
     def reset(self):
+        self.diff_context = 7
+
         # GNU diff cannot process arbitrary large files :(
         self.max_diff_input_lines = 2 ** 22
         self.max_diff_block_lines_saved = float("inf")

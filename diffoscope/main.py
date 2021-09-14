@@ -219,6 +219,14 @@ def create_parser():
     group2 = parser.add_argument_group("output limits")
     # everything marked with default=None below is affected by no-default-limits
     group2.add_argument(
+        "--diff-context",
+        metavar="LINES",
+        type=int,
+        help="Lines of unified diff context to show. (default: %d)"
+        % Config().diff_context,
+        default=Config().diff_context,
+    )
+    group2.add_argument(
         "--max-text-report-size",
         metavar="BYTES",
         type=int,
@@ -613,6 +621,7 @@ def configure(parsed_args):
         elif parsed_args.no_default_limits:
             setattr(Config(), x, float("inf"))
 
+    Config().diff_context = parsed_args.diff_context
     Config().max_page_size = parsed_args.max_page_size
     Config().max_page_diff_block_lines = parsed_args.max_page_diff_block_lines
 

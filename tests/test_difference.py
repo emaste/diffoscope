@@ -133,3 +133,13 @@ def test_non_str_arguments_to_source1_source2():
 
         with pytest.raises(TypeError):
             Difference.from_text_readers(a, b, *x)
+
+
+def test_adjust_diff_context(monkeypatch):
+    monkeypatch.setattr(Config(), "diff_context", 2)
+    a = io.StringIO("".join(str(i) + "\n" for i in range(20)))
+    b = io.StringIO(
+        "".join(str(i if i != 10 else "x") + "\n" for i in range(20))
+    )
+    difference = Difference.from_text_readers(a, b, "a", "b")
+    assert difference.unified_diff.count("\n") == 7
