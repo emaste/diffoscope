@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-from diffoscope.versions import Version
+from .utils.versions import Version
 
 import pytest
 

@@ -23,7 +23,6 @@ import subprocess
 
 from diffoscope.config import Config
 from diffoscope.comparators.ar import ArFile
-from diffoscope.versions import Version
 
 from ..utils import diff_ignore_line_numbers
 from ..utils.data import load_fixture, get_data
@@ -33,6 +32,7 @@ from ..utils.tools import (
     skip_if_binutils_does_not_support_x86,
 )
 from ..utils.nonexisting import assert_non_existing
+from ..utils.versions import Version
 
 
 rlib1 = load_fixture("test1.rlib")

@@ -25,7 +25,8 @@ import importlib.util
 import subprocess
 
 from diffoscope.tools import get_package_provider, find_executable
-from diffoscope.versions import Version
+
+from ..utils.versions import Version
 
 
 def file_version():
