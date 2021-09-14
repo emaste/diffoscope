@@ -24,6 +24,7 @@ import re
 import pytest
 
 from diffoscope.comparators.binary import FilesystemFile
+from diffoscope.comparators.directory import FilesystemDirectory
 from diffoscope.comparators.utils.specialize import specialize
 
 re_normalize_zeros = re.compile(
@@ -31,8 +32,17 @@ re_normalize_zeros = re.compile(
 )
 
 
+def init_file(filename):
+    # Ensure that any (specialized) FilesystemFile in tests have a
+    # corresponding Container for any comparator that needs to know which
+    # directory the file came from (eg. rdata)
+    container = FilesystemDirectory(os.path.dirname(filename)).as_container
+
+    return specialize(FilesystemFile(filename, container))
+
+
 def init_fixture(filename):
-    return pytest.fixture(lambda: specialize(FilesystemFile(filename)))
+    return pytest.fixture(lambda: init_file(filename))
 
 
 def data(filename):

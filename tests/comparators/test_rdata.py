@@ -20,36 +20,56 @@
 import pytest
 
 from diffoscope.comparators.gzip import GzipFile
+from diffoscope.comparators.rdata import RdbFile
 
 from ..utils.data import load_fixture, get_data, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 
 
-file1 = load_fixture("test1.rdx")
-file2 = load_fixture("test2.rdx")
+rdb1 = load_fixture("test1.rdb")
+rdb2 = load_fixture("test2.rdb")
+rdx1 = load_fixture("test1.rdx")
+rdx2 = load_fixture("test2.rdx")
 
 
-def test_identification(file1):
-    assert isinstance(file1, GzipFile)
+def test_identification(rdb1, rdx1):
+    assert isinstance(rdb1, RdbFile)
+    assert isinstance(rdx1, GzipFile)
 
 
-def test_no_differences(file1):
-    difference = file1.compare(file1)
-    assert difference is None
+def test_no_differences(rdb1, rdx1):
+    assert rdx1.compare(rdx1) is None
+    assert rdx1.compare(rdx1) is None
 
 
 @pytest.fixture
-def differences(file1, file2):
-    return file1.compare(file2).details
+def differences_rdb(rdb1, rdb2):
+    return rdb1.compare(rdb2).details
+
+
+@pytest.fixture
+def differences_rdx(rdx1, rdx2):
+    return rdx1.compare(rdx2).details
 
 
 @skip_unless_tools_exist("Rscript")
-def test_num_items(differences):
-    assert len(differences) == 1
+def test_num_items_rdb(differences_rdb):
+    assert len(differences_rdb) == 1
 
 
 @skip_unless_tools_exist("Rscript")
-def test_item_rds(differences):
-    assert differences[0].source1 == "test1.rdx-content"
-    assert differences[0].source2 == "test2.rdx-content"
-    assert_diff(differences[0].details[0], "rds_expected_diff")
+def test_item_rdb(differences_rdb):
+    assert differences_rdb[0].source1.startswith("Rscript")
+    assert_diff(differences_rdb[0], "rdb_expected_diff")
+
+
+@skip_unless_tools_exist("Rscript")
+def test_num_items_rdx(differences_rdx):
+    assert len(differences_rdx) == 1
+
+
+@skip_unless_tools_exist("Rscript")
+def test_item_rdx(differences_rdx):
+    assert differences_rdx[0].source1 == "test1.rdx-content"
+    assert differences_rdx[0].source2 == "test2.rdx-content"
+    assert_diff(differences_rdx[0].details[0], "rds_expected_diff")
