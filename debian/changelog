@@ -1,8 +1,26 @@
-diffoscope (184) UNRELEASED; urgency=medium
+diffoscope (184) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Fix the semantic comparison of R's .rdb files after a refactoring of
+    temporary directory handling in a previous version.
+  * Support a newer format version of R's .rds files.
+  * Update tests for OCaml 4.12. (Closes: reproducible-builds/diffoscope#274)
+  * Move diffoscope.versions to diffoscope.tests.utils.versions.
+  * Use assert_diff in tests/comparators/test_rdata.py.
+  * Reformat various modules with Black.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 03 Sep 2021 11:16:04 +0100
+  [ Zbigniew Jędrzejewski-Szmek ]
+  * Stop using the deprecated distutils module by adding a version
+    comparison class based on the RPM version rules.
+  * Update invocations of llvm-objdump for the latest version of LLVM.
+  * Adjust a test with one-byte text file for file(1) version 5.40.
+  * Improve the parsing of the version of OpenSSH.
+
+  [ Benjamin Peterson ]
+  * Add a --diff-context option to control the unified diff context size.
+    (reproducible-builds/diffoscope!88)
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 17 Sep 2021 09:10:38 +0100
 
 diffoscope (183) unstable; urgency=medium
 
