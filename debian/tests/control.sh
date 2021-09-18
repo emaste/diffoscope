@@ -2,9 +2,11 @@
 
 echo "Generating the debian/tests/control file..."
 
-echo "# DON'T MANUALLY MODIFY!" > debian/tests/control.tmp
-echo "# EDIT debian/tests/control.in INSTEAD!" >> debian/tests/control.tmp
-echo "#" >> debian/tests/control.tmp
+cat > debian/tests/control.tmp << EOF
+# DON'T MANUALLY MODIFY!
+# EDIT debian/tests/control.in INSTEAD!
+#
+EOF
 
 cat debian/tests/control.in >> debian/tests/control.tmp
 
