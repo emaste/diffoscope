@@ -1,8 +1,15 @@
-diffoscope (185) UNRELEASED; urgency=medium
+diffoscope (185) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Mattia Rizzolo ]
+  * Fix the autopkgtest in order to fix testing migration: the androguard
+    Python module is not in the python3-androguard Debian package
+  * Ignore a warning in the tests from the h5py package that doesn't concern
+    diffoscope.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 17 Sep 2021 09:12:20 +0100
+  [ Chris Lamb ]
+  * Bump Standards-Version to 4.6.0.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 21 Sep 2021 16:15:17 +0100
 
 diffoscope (184) unstable; urgency=medium
 
