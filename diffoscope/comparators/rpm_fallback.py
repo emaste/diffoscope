@@ -27,6 +27,8 @@ class AbstractRpmFile(File):
 
 
 class RpmFile(AbstractRpmFile):
+    DESCRIPTION = "RPM archives"
+
     def compare(self, other, source=None):
         difference = self.compare_bytes(other)
         if not difference:
