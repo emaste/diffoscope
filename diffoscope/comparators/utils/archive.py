@@ -41,10 +41,22 @@ class Archive(Container, metaclass=abc.ABCMeta):
         super().__init__(*args, **kwargs)
         with profile("open_archive", self):
             self._archive = self.open_archive()
+        self._opened = True
 
     def __del__(self):
-        with profile("close_archive", self):
-            self.close_archive()
+        """
+        __del__ can be called even if __init__ did not fully complete. This
+        becomes an issue if an `open_archive` call fails (due to a faulty
+        archive, missing dependency, etc.), and close_archive then assumes that
+        it was opened successfully.
+
+        We therefore track whether open_archive actually worked, and only call
+        close_archive if that was the case. (#276)
+        """
+
+        if hasattr(self, "_opened"):
+            with profile("close_archive", self):
+                self.close_archive()
 
     @property
     def archive(self):
