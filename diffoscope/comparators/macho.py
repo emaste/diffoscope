@@ -294,7 +294,7 @@ class LlvmObjdump(Command):
 
     def objdump_options(self):
         return [
-            f"--arch-name={self._arch}",
+            f"--arch={self._arch}",
             f"--section={self._section}",
             "--macho",
             "--demangle",
