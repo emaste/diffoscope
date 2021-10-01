@@ -1,8 +1,18 @@
-diffoscope (186) UNRELEASED; urgency=medium
+diffoscope (186) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't call close_archive when garbage-collecting Archive instances unless
+    open_archive returned successfully. This prevents, amongst others, an
+    AttributeError traceback due to PGPContainer's cleanup routines assuming
+    that its temporary directory had been created.
+    (Closes: reproducible-builds/diffoscope#276)
+  * Ensure that the string "RPM archives" exists in the package description,
+    regardless of whether python3-rpm is installed or not at build time.
 
- -- Chris Lamb <lamby@debian.org>  Tue, 21 Sep 2021 16:16:26 +0100
+  [ Jean-Romain Garnier ]
+  * Fix the LVM Macho comparator for non-x86-64 architectures.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 01 Oct 2021 09:02:48 +0100
 
 diffoscope (185) unstable; urgency=medium
 
