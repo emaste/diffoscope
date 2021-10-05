@@ -106,6 +106,7 @@ class ComparatorManager:
         ("pe32.Pe32PlusFile",),
         ("pgp.PgpFile",),
         ("pgp.PgpSignature",),
+        ("python.PycFile",),
         ("kbx.KbxFile",),
         ("fit.FlattenedImageTreeFile",),
         ("dtb.DeviceTreeFile",),
