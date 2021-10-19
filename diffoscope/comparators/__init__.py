@@ -107,6 +107,7 @@ class ComparatorManager:
         ("pgp.PgpFile",),
         ("pgp.PgpSignature",),
         ("python.PycFile",),
+        ("sphinx.SphinxInventoryFile",),
         ("kbx.KbxFile",),
         ("fit.FlattenedImageTreeFile",),
         ("dtb.DeviceTreeFile",),
