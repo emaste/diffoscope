@@ -1,3 +1,9 @@
+diffoscope (189) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 22 Oct 2021 09:12:31 +0100
+
 diffoscope (188) unstable; urgency=medium
 
   * Add support for Python Sphinx inventory files, usually named objects.inv.
