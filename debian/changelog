@@ -1,8 +1,10 @@
-diffoscope (188) UNRELEASED; urgency=medium
+diffoscope (188) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Add support for Python Sphinx inventory files, usually named objects.inv.
+  * Fix Python bytecode decompilation tests with Python 3.10+.
+    (Closes: reproducible-builds/diffoscope#278)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 08 Oct 2021 09:03:36 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 22 Oct 2021 09:08:55 +0100
 
 diffoscope (187) unstable; urgency=medium
 
