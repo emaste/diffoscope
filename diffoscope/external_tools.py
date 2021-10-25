@@ -168,7 +168,12 @@ EXTERNAL_TOOLS = {
         "FreeBSD": "mono",
         "guix": "mono",
     },
-    "ppudump": {"debian": "fp-utils", "arch": "fpc", "FreeBSD": "fpc"},
+    "ppudump": {
+        "debian": "fp-utils",
+        "arch": "fpc",
+        "FreeBSD": "fpc",
+        "guix": "fpc",
+    },
     "ps2ascii": {
         "debian": "ghostscript",
         "arch": "ghostscript",
