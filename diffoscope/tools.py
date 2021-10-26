@@ -29,9 +29,6 @@ except ImportError:
 from .profiling import profile
 from .external_tools import EXTERNAL_TOOLS, REMAPPED_TOOL_NAMES, GNU_TOOL_NAMES
 
-# Memoize calls to ``which`` to avoid excessive stat calls
-find_executable = functools.lru_cache()(shutil.which)
-
 # The output of --help and --list-tools will use the order of this dict.
 # Please keep it alphabetized.
 OS_NAMES = collections.OrderedDict(
@@ -42,6 +39,18 @@ OS_NAMES = collections.OrderedDict(
         ("guix", "GNU Guix"),
     ]
 )
+
+
+@functools.lru_cache()
+def find_executable(cmd):
+    """
+    Given a command name (eg. `dumppdf`), return the absolute path to that
+    command.
+
+    Returns an empy string (``) if no command is found.
+    """
+
+    return shutil.which(f"{cmd}{suffix}")
 
 
 def get_tools(only_missing=False):
