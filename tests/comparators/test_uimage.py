@@ -98,8 +98,13 @@ def nested_differences(uboot_cpio1, uboot_cpio2):
 
 
 def test_file_differences(differences):
+    # file-5.41 slightly changed output format by dropping leading 0x.
+    expected_diff_pre_5_41 = get_data("uimage_expected_diff_pre_5_41")
     expected_diff = get_data("uimage_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert differences[0].unified_diff in (
+        expected_diff,
+        expected_diff_pre_5_41,
+    )
 
 
 @skip_unless_tools_exist("cpio")
