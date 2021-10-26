@@ -48,15 +48,13 @@ def find_executable(cmd):
     command. Will also try the command with some common suffixes (eg.
     `dumppdf.py`) to support distributions that strip or retain them.
 
-    Returns an empy string (``) if no command is found.
+    Returns `None` if no command is found.
     """
 
     for suffix in ("", ".py"):
         val = shutil.which(f"{cmd}{suffix}")
         if val:
             return val
-
-    return ""
 
 
 def get_tools(only_missing=False):
