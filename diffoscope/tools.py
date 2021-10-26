@@ -45,12 +45,18 @@ OS_NAMES = collections.OrderedDict(
 def find_executable(cmd):
     """
     Given a command name (eg. `dumppdf`), return the absolute path to that
-    command.
+    command. Will also try the command with some common suffixes (eg.
+    `dumppdf.py`) to support distributions that strip or retain them.
 
     Returns an empy string (``) if no command is found.
     """
 
-    return shutil.which(f"{cmd}{suffix}")
+    for suffix in ("", ".py"):
+        val = shutil.which(f"{cmd}{suffix}")
+        if val:
+            return val
+
+    return ""
 
 
 def get_tools(only_missing=False):
