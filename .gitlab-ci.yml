@@ -32,6 +32,18 @@ ubuntu-devel:
   image: ubuntu:devel
   allow_failure: true
 
+arch:
+  stage: test
+  allow_failure: true
+  image: archlinux:latest
+  script:
+    - > 
+      pacman -Syu --noconfirm file python-pytest python-pytest-cov python-distro python-libarchive-c python-progressbar
+      python-magic python-setuptools binutils
+    - "pacman -S --noconfirm $(./bin/diffoscope --list-tools|cut -d: -f2 | head -n1 | sed s/,//g)"
+    - mount -o remount,rw /dev
+    - py.test -vv -k 'not test_diff_meta' -l -r a --cov=diffoscope --cov-report=term-missing
+
 .deploy:
   image: docker:latest
   stage: deploy
