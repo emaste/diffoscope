@@ -21,7 +21,7 @@ import sys
 
 from diffoscope.comparators.python import PycFile
 
-from ..utils.data import assert_diff, load_fixture
+from ..utils.data import assert_diff_startswith, load_fixture
 
 
 pyc1 = load_fixture("test1.pyc-renamed")
@@ -47,8 +47,7 @@ def differences(pyc1, pyc2):
 
 
 def test_diff(differences):
-    assert_diff(
+    assert_diff_startswith(
         differences[0],
         "pyc_expected_diff",
-        lambda haystack, needle: haystack.startswith(needle),
     )

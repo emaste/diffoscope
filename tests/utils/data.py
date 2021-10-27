@@ -56,12 +56,18 @@ def get_data(filename):
         return f.read()
 
 
-def assert_diff(difference, filename, cmp=lambda x, y: x == y):
+def assert_diff(difference, filename):
     # Assign seen and expected values to local variables to improve contextual
     # information in failed tests.
     seen = difference.unified_diff
     expected = get_data(filename)
-    assert cmp(seen, expected)
+    assert seen == expected
+
+
+def assert_diff_startswith(difference, filename):
+    haystack = difference.unified_diff
+    needle = get_data(filename)
+    assert needle.startswith(haystack)
 
 
 # https://code.activestate.com/recipes/576620-changedirectory-context-manager/#c3
