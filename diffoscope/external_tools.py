@@ -64,7 +64,7 @@ EXTERNAL_TOOLS = {
         "arch": "dtc",
         "guix": "dtc",
     },
-    "ffprobe": {"debian": "ffmpeg", "guix": "ffmpeg"},
+    "ffprobe": {"debian": "ffmpeg", "arch": "ffmpeg", "guix": "ffmpeg"},
     "file": {"debian": "file", "arch": "file", "guix": "file"},
     "find": {"debian": "findutils", "arch": "findutils", "guix": "findutils"},
     "getfacl": {"debian": "acl", "arch": "acl", "guix": "acl"},
