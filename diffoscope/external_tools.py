@@ -150,7 +150,7 @@ EXTERNAL_TOOLS = {
         "arch": "binutils",
         "guix": "binutils",
     },
-    "ocamlobjinfo": {"debian": "ocaml-nox", "guix": "ocaml"},
+    "ocamlobjinfo": {"debian": "ocaml-nox", "arch": "ocaml", "guix": "ocaml"},
     "odt2txt": {"debian": "odt2txt", "arch": "odt2txt", "guix": "odt2txt"},
     "oggDump": {"debian": "oggvideotools"},
     "openssl": {"debian": "openssl", "arch": "openssl", "guix": "openssl"},
