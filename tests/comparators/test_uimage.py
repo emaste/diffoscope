@@ -23,8 +23,8 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.uimage import UimageFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.data import load_fixture, get_data, assert_diff
+from ..utils.tools import skip_unless_tools_exist, file_version_is_lt
 from ..utils.nonexisting import assert_non_existing
 
 cpio1 = load_fixture("test1.cpio")
@@ -98,13 +98,12 @@ def nested_differences(uboot_cpio1, uboot_cpio2):
 
 
 def test_file_differences(differences):
-    # file-5.41 slightly changed output format by dropping leading 0x.
-    expected_diff_pre_5_41 = get_data("uimage_expected_diff_pre_5_41")
-    expected_diff = get_data("uimage_expected_diff")
-    assert differences[0].unified_diff in (
-        expected_diff,
-        expected_diff_pre_5_41,
-    )
+    filename = "uimage_expected_diff"
+    # file-5.41 slightly changed the output format by dropping leading 0x.
+    if file_version_is_lt("5.41"):
+        filename = "uimage_expected_diff_pre_5_41"
+
+    assert_diff(differences[0], filename)
 
 
 @skip_unless_tools_exist("cpio")
