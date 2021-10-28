@@ -22,6 +22,7 @@ import sys
 from diffoscope.comparators.python import PycFile
 
 from ..utils.data import assert_diff_startswith, load_fixture
+from ..utils.tools import skipif
 
 
 pyc1 = load_fixture("test1.pyc-renamed")
@@ -33,12 +34,12 @@ def test_identification(pyc1, pyc2):
     assert isinstance(pyc2, PycFile)
 
 
+@skipif(sys.version_info >= (3, 10), reason="Unstable on 3.10+")
 def test_no_differences(pyc1):
     # Disassembling bytecode prior to Python 3.10 is stable when applied to
     # itself, otherwise various memory offsets (or memory addresses?) are
     # non-deterministic.
-    if sys.version_info < (3, 10):
-        assert pyc1.compare(pyc1) is None
+    assert pyc1.compare(pyc1) is None
 
 
 @pytest.fixture
