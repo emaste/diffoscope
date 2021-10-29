@@ -1,8 +1,25 @@
-diffoscope (189) UNRELEASED; urgency=medium
+diffoscope (189) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Try some alternative suffixes (eg. ".py") to support distributions that
+    strip or retain them. (Closes: reproducible-builds/diffoscope#283)
+  * Skip Python bytecode testing where we do not have an expected diff.
+    (Closes: reproducible-builds/diffoscope#284)
+  * Refactor the find_executable utility into an explicit method.
+  * Split out a custom call to assert_diff to support a .startswith equivalent.
+  * Use skipif instead of manual conditionals in some tests.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 22 Oct 2021 09:12:31 +0100
+  [ Vagrant Cascadian ]
+  * Add an external tool reference for Guix to support ppudump and dumppdf.
+
+  [ Sergei Trofimovich ]
+  * Update uImage test output for file(1) version 5.41.
+
+  [ Jelle van der Waa ]
+  * Add Arch Linux as CI test target.
+  * Add external tools on Arch Linux for ffmpeg, openssl and ocalobjinfo.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 29 Oct 2021 09:47:04 +0100
 
 diffoscope (188) unstable; urgency=medium
 
