@@ -47,10 +47,6 @@ def differences(pyc1, pyc2):
     return pyc1.compare(pyc2).details
 
 
-@skipif(
-    sys.version_info < (3, 9),
-    reason="pyc_expected_diff generated on Python 3.9",
-)
 def test_diff(differences):
     assert_diff_startswith(
         differences[0],
