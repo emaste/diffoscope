@@ -22,6 +22,7 @@ import re
 import logging
 import subprocess
 import collections
+import hashlib
 
 from diffoscope.exc import OutputParsingError
 from diffoscope.tools import get_tool_name, tool_required
@@ -460,6 +461,7 @@ class ElfContainer(DecompilableContainer):
         ]
         output = our_check_output(cmd, shell=False, stderr=subprocess.DEVNULL)
         has_debug_symbols = False
+        has_build_id = False
 
         try:
             output = output.decode("utf-8").split("\n")
@@ -480,6 +482,9 @@ class ElfContainer(DecompilableContainer):
 
                 if name.startswith(".debug") or name.startswith(".zdebug"):
                     has_debug_symbols = True
+
+                if name == '.note.gnu.build-id' and type == "NOTE":
+                    has_build_id = True
 
                 if _should_skip_section(name, type):
                     continue
@@ -514,6 +519,13 @@ class ElfContainer(DecompilableContainer):
 
         if not has_debug_symbols:
             self._install_debug_symbols()
+
+        if has_build_id:
+            try:
+                self._verify_build_id()
+            except Exception:
+                # It is fine to skip the verification of the build_id
+                pass
 
     @tool_required("objcopy")
     def _install_debug_symbols(self):
@@ -631,6 +643,30 @@ class ElfContainer(DecompilableContainer):
         objcopy("--add-gnu-debuglink={}".format(dest_path), self.source.path)
 
         logger.debug("Installed debug symbols at %s", dest_path)
+
+    def _verify_build_id(self):
+        """
+        Verify whether the NT_GNU_BUILD_ID field contains a sha1 checksum
+        that matches the binary. (#260)
+        """
+
+        with open(self.source.path, 'rb') as f:
+            blob = f.read()
+
+        # Magic valid: section ID=0x14 NT_GNU_BUILD_ID, Owner='GNU', followed by the sha1 checksum
+        m = re.search(b'\x14\x00\x00\x00\x03\x00\x00\x00\x47\x4e\x55\x00.{20}', blob)
+        build_id = blob[m.end()-20:m.end()].hex()
+        blob_with_reset_build_id = blob[:m.end()-20] + b'\x00' * 20 + blob[m.end():]
+
+        if hashlib.sha1(blob_with_reset_build_id).hexdigest() != build_id:
+            logger.warning(
+                'The file (%s) has been modified after NT_GNU_BUILD_ID has been applied',
+                self.source.path)
+            logger.debug(
+                'Expected value: %s Current value: %s',
+                hashlib.sha1(blob_with_reset_build_id).hexdigest(),
+                build_id)
+        return
 
     def get_member_names(self):
         decompiled_members = super().get_member_names()
