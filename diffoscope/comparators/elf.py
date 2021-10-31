@@ -483,7 +483,7 @@ class ElfContainer(DecompilableContainer):
                 if name.startswith(".debug") or name.startswith(".zdebug"):
                     has_debug_symbols = True
 
-                if name == '.note.gnu.build-id' and type == "NOTE":
+                if name == ".note.gnu.build-id" and type == "NOTE":
                     has_build_id = True
 
                 if _should_skip_section(name, type):
@@ -650,22 +650,28 @@ class ElfContainer(DecompilableContainer):
         that matches the binary. (#260)
         """
 
-        with open(self.source.path, 'rb') as f:
+        with open(self.source.path, "rb") as f:
             blob = f.read()
 
-        # Magic valid: section ID=0x14 NT_GNU_BUILD_ID, Owner='GNU', followed by the sha1 checksum
-        m = re.search(b'\x14\x00\x00\x00\x03\x00\x00\x00\x47\x4e\x55\x00.{20}', blob)
-        build_id = blob[m.end()-20:m.end()].hex()
-        blob_with_reset_build_id = blob[:m.end()-20] + b'\x00' * 20 + blob[m.end():]
+        # Magic value: length=0x14, owner length=3, owner='GNU', followed by the sha1 checksum
+        m = re.search(
+            b"\x14\x00\x00\x00\x03\x00\x00\x00\x47\x4e\x55\x00.{20}", blob
+        )
+        build_id = blob[m.end() - 20 : m.end()].hex()
+        blob_with_reset_build_id = (
+            blob[: m.end() - 20] + b"\x00" * 20 + blob[m.end() :]
+        )
 
         if hashlib.sha1(blob_with_reset_build_id).hexdigest() != build_id:
             logger.warning(
-                'The file (%s) has been modified after NT_GNU_BUILD_ID has been applied',
-                self.source.path)
+                "The file (%s) has been modified after NT_GNU_BUILD_ID has been applied",
+                self.source.path,
+            )
             logger.debug(
-                'Expected value: %s Current value: %s',
+                "Expected value: %s Current value: %s",
                 hashlib.sha1(blob_with_reset_build_id).hexdigest(),
-                build_id)
+                build_id,
+            )
         return
 
     def get_member_names(self):
