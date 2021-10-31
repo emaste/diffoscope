@@ -22,13 +22,16 @@ import sys
 from diffoscope.comparators.python import PycFile
 
 from ..utils.data import assert_diff_startswith, load_fixture
-from ..utils.tools import skipif
-
+from ..utils.tools import (
+    skipif,
+    skip_unless_file_version_is_at_least,
+)
 
 pyc1 = load_fixture("test1.pyc-renamed")
 pyc2 = load_fixture("test2.pyc-renamed")
 
 
+@skip_unless_file_version_is_at_least("5.39")
 def test_identification(pyc1, pyc2):
     assert isinstance(pyc1, PycFile)
     assert isinstance(pyc2, PycFile)
@@ -47,6 +50,7 @@ def differences(pyc1, pyc2):
     return pyc1.compare(pyc2).details
 
 
+@skip_unless_file_version_is_at_least("5.39")
 def test_diff(differences):
     assert_diff_startswith(
         differences[0],
