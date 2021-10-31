@@ -38,15 +38,19 @@ class PycFile(File):
     FILE_TYPE_RE = re.compile(r"^python .*byte-compiled$")
 
     def compare_details(self, other, source=None):
-        return [
-            Difference.from_text(
-                describe_pyc(self.path),
-                describe_pyc(other.path),
-                self.path,
-                other.path,
-                source="Python bytecode",
-            )
-        ]
+        try:
+            return [
+                Difference.from_text(
+                    describe_pyc(self.path),
+                    describe_pyc(other.path),
+                    self.path,
+                    other.path,
+                    source="Python bytecode",
+                )
+            ]
+        except ValueError as exc:
+            self.add_comment("Could not decombile bytecode: {}".format(exc))
+            return []
 
 
 def describe_pyc(filename):
