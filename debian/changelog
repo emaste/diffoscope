@@ -1,8 +1,18 @@
-diffoscope (190) UNRELEASED; urgency=medium
+diffoscope (190) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't raise a traceback if we cannot de-marshal Python bytecode to support
+    Python 3.7 loading newer .pyc files.
+    (Closes: reproducible-builds/diffoscope#284)
+  * Fix Python tests under Python 3.7 with file 5.39+.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 29 Oct 2021 09:48:38 +0100
+  [ Vagrant Cascadian ]
+  * Skip Python bytecode testing when "file" is older than 5.39.
+
+  [ Roland Clobus ]
+  * Detect whether the GNU_BUILD_ID field has been modified.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 05 Nov 2021 08:47:27 +0000
 
 diffoscope (189) unstable; urgency=medium
 
