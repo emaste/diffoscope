@@ -229,7 +229,10 @@ class DotChangesFile(DebControlFile):
 
         try:
             file._deb822 = Changes(filename=file.path)
-        except ChangesFileException:
+        except ChangesFileException as exc:
+            logger.warning(
+                f"Rejecting {file.path} as a Debian .changes file: {exc}"
+            )
             return False
 
         try:
