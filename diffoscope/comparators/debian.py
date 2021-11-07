@@ -236,9 +236,12 @@ class DotChangesFile(DebControlFile):
             return False
 
         try:
+            file.validation_msg = None
             file._deb822.validate("sha256", check_signature=False)
-        except FileNotFoundError:
-            return False
+        except FileNotFoundError as exc:
+            # Continue even though this .changes file may be invalid
+            file.validation_msg = f"{os.path.basename(file.path)} is missing referenced files: {exc}"
+            logger.warning(file.validation_msg)
 
         return True
 
@@ -247,6 +250,10 @@ class DotChangesFile(DebControlFile):
 
         if differences is None:
             return None
+
+        for x in (self, other):
+            if x.validation_msg:
+                differences.add_comment(x.validation_msg)
 
         other_deb822 = self._get_deb822(other)
 

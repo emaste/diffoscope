@@ -113,7 +113,8 @@ def test_dot_changes_invalid(tmpdir):
     shutil.copy(TEST_DOT_CHANGES_FILE1_PATH, dot_changes_path)
     # we don't copy the referenced .deb
     identified = specialize(FilesystemFile(dot_changes_path))
-    assert not isinstance(identified, DotChangesFile)
+    # ... but it is identified regardless
+    assert isinstance(identified, DotChangesFile)
 
 
 def test_dot_changes_no_differences(dot_changes1):
