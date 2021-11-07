@@ -67,7 +67,7 @@ def assert_diff(difference, filename):
 def assert_diff_startswith(difference, filename):
     haystack = difference.unified_diff
     needle = get_data(filename)
-    assert needle.startswith(haystack)
+    assert haystack.startswith(needle)
 
 
 # https://code.activestate.com/recipes/576620-changedirectory-context-manager/#c3
