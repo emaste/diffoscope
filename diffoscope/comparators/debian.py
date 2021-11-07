@@ -217,7 +217,10 @@ class DebControlFile(File):
 class DotChangesFile(DebControlFile):
     DESCRIPTION = "Debian .changes files"
     FILE_EXTENSION_SUFFIX = {".changes"}
-    FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text)")
+
+    # .changes files can be identified "data" if they contain non-printable
+    # characters (Re: reproducible-builds/diffoscope#286)
+    FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text|data)")
 
     @classmethod
     def recognizes(cls, file):
