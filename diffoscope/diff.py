@@ -28,6 +28,7 @@ import threading
 import subprocess
 
 from difflib import Differ
+from itertools import zip_longest
 from multiprocessing.dummy import Queue
 
 from .tools import get_tool_name, tool_required
@@ -551,11 +552,9 @@ class SideBySideDiff:
         if len(l0) + len(l1) > 750:
             # difflib.Differ.compare is at least O(n^2), so don't call it if
             # our inputs are too large.
-            logger.debug(
-                "Not calling difflib.Differ.compare(x, y) with len(x) == %d and len(y) == %d",
-                len(l0),
-                len(l1),
-            )
+            yield "C", "Diff chunk too large, falling back to line-by-line diff ({} lines added, {} lines removed)".format(self.add_cpt, self.del_cpt)
+            for line0, line1 in zip_longest(l0, l1, fillvalue=""):
+                yield from self.yield_line(line0, line1)
             return
 
         saved_line = None
