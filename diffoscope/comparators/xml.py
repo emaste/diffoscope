@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2017 Juliana Rodrigues <juliana.orod@gmail.com>
-# Copyright © 2017-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017-2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
+
+import re
 
 from xml.parsers.expat import ExpatError
 
@@ -83,7 +85,7 @@ class XMLFile(File):
     """
 
     DESCRIPTION = "XML files"
-    FILE_EXTENSION_SUFFIX = {".xml"}
+    FILE_TYPE_RE = re.compile(r"^XML \S+ document")
 
     @classmethod
     def recognizes(cls, file):
@@ -96,7 +98,8 @@ class XMLFile(File):
         Returns:
             False if file is not a XML File, True otherwise
         """
-        if not super().recognizes(file):
+
+        if not super().recognizes(file) and not file.name.endswith(".xml"):
             return False
 
         with open(file.path) as f:
