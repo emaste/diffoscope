@@ -1,8 +1,19 @@
-diffoscope (191) UNRELEASED; urgency=medium
+diffoscope (191) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Detect XML files as XML files if either file(1) claims if they are XML
+    files, or if they are named .xml.
+    (Closes: #999438, reproducible-builds/diffoscope#287)
+  * Don't reject Debian .changes files if they contain non-printable
+    characters. (Closes: reproducible-builds/diffoscope#286)
+  * Continue loading a .changes file even if the referenced files inside it do
+    not exist, but include a comment in the diff as a result.
+  * Log the reason if we cannot load a Debian .changes file.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 05 Nov 2021 08:49:27 +0000
+  [ Zbigniew Jędrzejewski-Szmek ]
+  * Fix inverted logic in the assert_diff_startswith() utility.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 12 Nov 2021 06:43:57 -0800
 
 diffoscope (190) unstable; urgency=medium
 
