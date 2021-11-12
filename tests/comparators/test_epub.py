@@ -55,8 +55,18 @@ def test_differences(differences):
     assert differences[2].source2 == "toc.ncx"
     assert differences[3].source1 == "ch001.xhtml"
     assert differences[3].source2 == "ch001.xhtml"
-    expected_diff = get_data("epub_expected_diffs")
-    assert expected_diff == "".join(map(lambda x: x.unified_diff, differences))
+
+    # Flatten everything recursively, as XMLFile will contain reformatted data
+    # under Difference.details.
+    def fn(difference):
+        if difference.unified_diff:
+            yield difference.unified_diff
+        for x in difference.details:
+            yield from fn(x)
+
+    val = "\n".join("\n".join(fn(x)) for x in differences)
+
+    assert val == get_data("epub_expected_diffs")
 
 
 @skip_unless_tools_exist("zipinfo")

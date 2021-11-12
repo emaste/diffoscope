@@ -21,9 +21,10 @@
 +-rw----     0.0 fat      655 b- defX 15-Oct-27 11:33 nav.xhtml
 +-rw----     0.0 fat      615 b- defX 15-Oct-27 11:33 ch001.xhtml
 +9 files, 4535 bytes uncompressed, 2325 bytes compressed:  48.7%
+
 @@ -1,13 +1,13 @@
- <?xml version="1.0" encoding="UTF-8"?>
- <package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="epub-id-1">
+ <?xml version="1.0" encoding="utf-8"?>
+ <package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="epub-id-1">
    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
 -    <dc:identifier id="epub-id-1">urn:uuid:488fe0b5-29d9-4d64-a023-ca08947d78ae</dc:identifier>
 +    <dc:identifier id="epub-id-1">urn:uuid:c3082605-195c-4273-acad-528beceba843</dc:identifier>
@@ -33,34 +34,35 @@
      <dc:language>en-US</dc:language>
    </metadata>
    <manifest>
-     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
-     <item id="style" href="stylesheet.css" media-type="text/css" />
-     <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" />
-     <item id="title_page_xhtml" href="title_page.xhtml" media-type="application/xhtml+xml" />
+     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+     <item id="style" href="stylesheet.css" media-type="text/css"/>
+     <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml"/>
+     <item id="title_page_xhtml" href="title_page.xhtml" media-type="application/xhtml+xml"/>
+
 @@ -1,11 +1,11 @@
- <?xml version="1.0" encoding="UTF-8"?>
- <ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+ <?xml version="1.0" encoding="utf-8"?>
+ <ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
    <head>
--    <meta name="dtb:uid" content="urn:uuid:488fe0b5-29d9-4d64-a023-ca08947d78ae" />
-+    <meta name="dtb:uid" content="urn:uuid:c3082605-195c-4273-acad-528beceba843" />
-     <meta name="dtb:depth" content="1" />
-     <meta name="dtb:totalPageCount" content="0" />
-     <meta name="dtb:maxPageNumber" content="0" />
+-    <meta name="dtb:uid" content="urn:uuid:488fe0b5-29d9-4d64-a023-ca08947d78ae"/>
++    <meta name="dtb:uid" content="urn:uuid:c3082605-195c-4273-acad-528beceba843"/>
+     <meta name="dtb:depth" content="1"/>
+     <meta name="dtb:totalPageCount" content="0"/>
+     <meta name="dtb:maxPageNumber" content="0"/>
    </head>
    <docTitle>
      <text>Test Ebook</text>
    </docTitle>
-@@ -8,12 +8,12 @@
-   <title>Test Ebook</title>
-   <link rel="stylesheet" type="text/css" href="stylesheet.css" />
- </head>
- <body>
- <div id="test-ebook" class="section level1 unnumbered">
- <h1>Test Ebook</h1>
- <p>Hello World!</p>
--<p>Time: 12:32</p>
-+<p>Time: 12:33</p>
- </div>
- </body>
+
+@@ -10,11 +10,11 @@
+     <title>Test Ebook</title>
+     <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+   </head>
+   <body>
+     <div id="test-ebook" class="section level1 unnumbered">
+       <h1>Test Ebook</h1>
+       <p>Hello World!</p>
+-      <p>Time: 12:32</p>
++      <p>Time: 12:33</p>
+     </div>
+   </body>
  </html>
- 
