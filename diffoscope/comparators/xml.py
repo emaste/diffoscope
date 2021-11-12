@@ -99,6 +99,7 @@ class XMLFile(File):
             False if file is not a XML File, True otherwise
         """
 
+        # Emulate FALLBACK_FILE_EXTENSION_SUFFIX = {".xml"}
         if not super().recognizes(file) and not file.name.endswith(".xml"):
             return False
 
