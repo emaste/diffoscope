@@ -24,11 +24,11 @@ import errno
 import fcntl
 import hashlib
 import logging
+import itertools
 import threading
 import subprocess
 
 from difflib import Differ
-from itertools import zip_longest
 from multiprocessing.dummy import Queue
 
 from .tools import get_tool_name, tool_required
@@ -555,7 +555,7 @@ class SideBySideDiff:
             yield "C", "Diff chunk too large, falling back to line-by-line diff ({} lines added, {} lines removed)".format(
                 self.add_cpt, self.del_cpt
             )
-            for line0, line1 in zip_longest(l0, l1, fillvalue=""):
+            for line0, line1 in itertools.zip_longest(l0, l1, fillvalue=""):
                 yield from self.yield_line(line0, line1)
             return
 
