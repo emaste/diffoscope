@@ -158,7 +158,7 @@ class RedaelfVersionInfo(Readelf):
 
 class ReadelfDebugDump(Readelf):
     def readelf_options(self):
-        return ["--debug-dump=%s" % self._debug_section_group]
+        return [f"--debug-dump={self._debug_section_group}"]
 
 
 READELF_DEBUG_DUMP_COMMANDS = [

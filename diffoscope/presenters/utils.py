@@ -40,7 +40,7 @@ def sizeof_fmt(num, suffix="B", sigfig=3):
         num /= 1024.0
     else:
         unit = "Y"
-    return "%s %s%s" % (round_sigfig(num, sigfig), unit, suffix)
+    return "{} {}{}".format(round_sigfig(num, sigfig), unit, suffix)
 
 
 class Presenter:
@@ -150,13 +150,13 @@ class FormatPlaceholder:
         self.ident = str(ident)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.ident)
+        return f"{self.__class__.__name__}({self.ident!r})"
 
     def __format__(self, spec):
         result = self.ident
         if spec:
             result += ":" + spec
-        return "{" + result + "}"
+        return f"{{{result}}}"
 
     def __getitem__(self, key):
         return FormatPlaceholder(self.ident + "[" + str(key) + "]")
@@ -354,7 +354,7 @@ class PartialString:
             mapping = {}
         real_mapping, new_holes = self._pformat(mapping, False)
         if new_holes:
-            raise ValueError("not all holes filled: %r" % new_holes)
+            raise ValueError(f"not all holes filled: {new_holes!r}")
         return self._fmtstr.format(*real_mapping)
 
     def formatl(self, *args):

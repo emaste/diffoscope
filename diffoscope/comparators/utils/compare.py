@@ -171,5 +171,7 @@ def hexdump_fallback(path):
     hexdump = io.StringIO()
     with open(path, "rb") as f:
         for buf in iter(lambda: f.read(32), b""):
-            hexdump.write("%s\n" % binascii.hexlify(buf).decode("us-ascii"))
+            hexdump.write(
+                "{}\n".format(binascii.hexlify(buf).decode("us-ascii"))
+            )
     return hexdump.getvalue()

@@ -76,10 +76,8 @@ class Difference:
         self._size_cache = None
 
     def __repr__(self):
-        return "<Difference %s -- %s %s>" % (
-            self._source1,
-            self._source2,
-            self._details,
+        return (
+            f"<Difference {self._source1} -- {self._source2} {self._details}>"
         )
 
     def map_lines(self, f_diff, f_comment):

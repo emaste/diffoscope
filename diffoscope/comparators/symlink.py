@@ -41,7 +41,7 @@ class Symlink(File):
 
     def create_placeholder(self):
         with get_named_temporary_file("w+", delete=False) as f:
-            f.write("destination: %s\n" % self.symlink_destination)
+            f.write(f"destination: {self.symlink_destination}\n")
             f.flush()
             return f.name
 

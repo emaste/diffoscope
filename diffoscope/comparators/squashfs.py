@@ -187,22 +187,20 @@ class SquashfsDevice(Device, SquashfsMember):
             d["mode"] = SquashfsDevice.KIND_MAP[d["kind"]]
             del d["kind"]
         except KeyError:
-            raise SquashfsInvalidLineFormat(
-                "unknown device kind %s" % d["kind"]
-            )
+            raise SquashfsInvalidLineFormat(f"unknown device kind {d['kind']}")
 
         try:
             d["major"] = int(d["major"])
         except ValueError:
             raise SquashfsInvalidLineFormat(
-                "unable to parse major number %s" % d["major"]
+                f"unable to parse major number {d['major']}"
             )
 
         try:
             d["minor"] = int(d["minor"])
         except ValueError:
             raise SquashfsInvalidLineFormat(
-                "unable to parse minor number %s" % d["minor"]
+                f"unable to parse minor number {d['minor']}"
             )
         return d
 

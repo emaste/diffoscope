@@ -88,4 +88,4 @@ def format_device(mode, major, minor):
         kind = "block"
     else:
         kind = "weird"
-    return "device:%s\nmajor: %d\nminor: %d\n" % (kind, major, minor)
+    return f"device:{kind}\nmajor: {major}\nminor: {minor}\n"

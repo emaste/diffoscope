@@ -40,7 +40,7 @@ class MissingFile(File, AbstractMissingType):
     @classmethod
     def recognizes(cls, file):
         if isinstance(file, FilesystemFile) and not os.path.lexists(file.name):
-            assert Config().new_file, "%s does not exist" % file.name
+            assert Config().new_file, f"{file.name} does not exist"
             return True
         return False
 

@@ -85,7 +85,7 @@ class Archive(Container, metaclass=abc.ABCMeta):
         basename = os.path.basename(self.source.name)
 
         if not basename.endswith(expected_extension):
-            return "%s-content" % basename
+            return f"{basename}-content"
 
         return basename[: -len(expected_extension)]
 

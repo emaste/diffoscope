@@ -113,7 +113,7 @@ class File(metaclass=abc.ABCMeta):
         self._container = container
 
     def __repr__(self):
-        return "<%s %s>" % (self.__class__, self.name)
+        return f"<{self.__class__} {self.name}>"
 
     # This should return a path that allows to access the file content
     @property
@@ -567,8 +567,7 @@ class File(metaclass=abc.ABCMeta):
                 if difference is None:
                     return None
                 difference.add_comment(
-                    "Error parsing output of `%s` for %s"
-                    % (e.operation, e.object_class)
+                    f"Error parsing output of `{e.operation}` for {e.object_class}"
                 )
             except ContainerExtractionError as e:
                 difference = self.compare_bytes(other, source=source)

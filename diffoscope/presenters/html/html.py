@@ -134,9 +134,9 @@ def convert(s, ponct=0, tag=""):
     for c in s:
         # used by diffs
         if c == DIFFON:
-            t.write("<%s>" % tag)
+            t.write(f"<{tag}>")
         elif c == DIFFOFF:
-            t.write("</%s>" % tag)
+            t.write(f"</{tag}>")
 
         # special highlighted chars
         elif c == "\t" and ponct == 1:
@@ -150,7 +150,7 @@ def convert(s, ponct=0, tag=""):
             t.write('<br/><span class="dp">\\</span>')
         elif ord(c) < 32:
             conv = "\\x%x" % ord(c)
-            t.write("<em>%s</em>" % conv)
+            t.write(f"<em>{conv}</em>")
             i += len(conv)
         else:
             t.write(html.escape(c))
@@ -305,15 +305,12 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 def output_header(css_url, our_css_url=False, icon_url=None):
     if css_url:
         css_link = (
-            '  <link href="%s" type="text/css" rel="stylesheet" />\n' % css_url
+            f'  <link href="{css_url}" type="text/css" rel="stylesheet" />\n'
         )
     else:
         css_link = ""
     if our_css_url:
-        css_style = (
-            '  <link href="%s" type="text/css" rel="stylesheet" />\n'
-            % our_css_url
-        )
+        css_style = f'  <link href="{our_css_url}" type="text/css" rel="stylesheet" />\n'
     else:
         css_style = "<style>\n{}</style>\n".format(templates.STYLES)
     if icon_url:
@@ -414,7 +411,7 @@ class HTMLSideBySidePresenter:
     def output_line(
         self, has_internal_linenos, type_name, s1, line1, s2, line2
     ):
-        self.spl_print_func('<tr class="diff%s">' % type_name)
+        self.spl_print_func(f'<tr class="diff{type_name}">')
         try:
             if s1:
                 if has_internal_linenos:
@@ -499,7 +496,7 @@ class HTMLSideBySidePresenter:
         _, rotation_params = self.spl_print_ctrl
         ctx, mainname = rotation_params
         self.spl_current_page += 1
-        filename = "%s.html" % (mainname)
+        filename = f"{mainname}.html"
 
         # rotate to the next child page
         memory = self.write_memory
@@ -543,7 +540,7 @@ class HTMLSideBySidePresenter:
                 elif t == "H":
                     self.output_hunk_header(*args)
                 elif t == "C":
-                    self.spl_print_func('<td colspan="2">%s</td>\n' % args)
+                    self.spl_print_func(f'<td colspan="2">{args}</td>\n')
                 else:
                     raise AssertionError()
                 self.spl_rows += 1
@@ -634,7 +631,7 @@ class HTMLSideBySidePresenter:
             if truncated:
                 text += " (truncated)"
             parent_last_row = templates.UD_TABLE_FOOTER % {
-                "filename": html.escape("%s.html" % mainname),
+                "filename": html.escape(f"{mainname}.html"),
                 "text": text,
             }
         yield self.bytes_written, parent_last_row
@@ -803,7 +800,7 @@ class HTMLPresenter(Presenter):
                 printers[node] = (
                     (make_printer, ctx.target)
                     if ctx.single_page
-                    else (file_printer, ctx.target, "%s.html" % pagename)
+                    else (file_printer, ctx.target, f"{pagename}.html")
                 )
                 stored = node
 
@@ -893,7 +890,7 @@ class HTMLPresenter(Presenter):
             os.makedirs(directory)
 
         if not os.path.isdir(directory):
-            raise ValueError("%s is not a directory" % directory)
+            raise ValueError(f"{directory} is not a directory")
 
         jquery_url = self.ensure_jquery(jquery_url, directory, "jquery.js")
         with open(os.path.join(directory, "common.css"), "w") as fp:

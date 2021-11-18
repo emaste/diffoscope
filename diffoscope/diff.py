@@ -100,7 +100,7 @@ class DiffParser:
         found = DiffParser.RANGE_RE.match(line)
 
         if not found:
-            raise ValueError("Unable to parse diff headers: %r" % line)
+            raise ValueError(f"Unable to parse diff headers: {line!r}")
 
         self._diff.write(line + b"\n")
         if found.group("len1"):
@@ -137,7 +137,7 @@ class DiffParser:
         elif self._remaining_hunk_lines == 0:
             return self.read_headers(line)
         else:
-            raise ValueError("Unable to parse diff hunk: %r" % line)
+            raise ValueError(f"Unable to parse diff hunk: {line!r}")
 
         self._diff.write(line + b"\n")
 
