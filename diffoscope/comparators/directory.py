@@ -35,20 +35,6 @@ from .utils.container import Container
 logger = logging.getLogger(__name__)
 
 
-def list_files(path):
-    path = os.path.realpath(path)
-    all_files = []
-    for root, dirs, names in os.walk(path):
-        all_files.extend(
-            [os.path.join(root[len(path) + 1 :], dir) for dir in dirs]
-        )
-        all_files.extend(
-            [os.path.join(root[len(path) + 1 :], name) for name in names]
-        )
-    all_files.sort()
-    return all_files
-
-
 if os.uname()[0] == "FreeBSD":
 
     class Stat(Command):
@@ -266,6 +252,11 @@ class FilesystemDirectory(Directory):
 
     def compare(self, other, source=None):
         differences = []
+
+        # We don't need to recurse into subdirectories; DirectoryContainer will
+        # find them and do that for us.
+        def list_files(path):
+            return sorted(os.listdir(os.path.realpath(path)))
 
         listing_diff = Difference.from_text(
             "\n".join(list_files(self.path)),
