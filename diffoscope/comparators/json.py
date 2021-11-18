@@ -58,7 +58,11 @@ class JSONFile(File):
 
     def compare_details(self, other, source=None):
         difference = Difference.from_text(
-            self.dumps(self), self.dumps(other), self.path, other.path
+            self.dumps(self),
+            self.dumps(other),
+            self.path,
+            other.path,
+            source="Pretty-printed",
         )
 
         if difference:
@@ -71,6 +75,7 @@ class JSONFile(File):
             self.dumps(other, sort_keys=False),
             self.path,
             other.path,
+            source="Pretty-printed",
             comment="ordering differences only",
         )
 

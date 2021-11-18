@@ -32,4 +32,7 @@ def assert_non_existing(
 
     assert difference.source2 == "/nonexisting"
     assert not has_details or len(difference.details) > 0
-    assert not has_null_source or difference.details[-1].source2 == "/dev/null"
+    assert not has_null_source or (
+        difference.details[-1].source2 == "/dev/null"
+        or difference.source2 == "/nonexisting"
+    )
