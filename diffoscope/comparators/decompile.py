@@ -18,7 +18,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
-import sys
 import abc
 import logging
 
@@ -26,7 +25,6 @@ from .utils.file import File
 from .utils.operation import Operation
 from .utils.container import Container
 
-from diffoscope.config import Config
 from diffoscope.difference import Difference
 from diffoscope.excludes import operation_excluded
 from diffoscope.tools import (

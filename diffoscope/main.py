@@ -32,12 +32,10 @@ from . import VERSION
 from .path import set_path
 from .tools import (
     get_tools,
-    tool_check_installed,
     tool_prepend_prefix,
     python_module_missing,
     tool_required,
     OS_NAMES,
-    get_current_os,
 )
 from .config import Config
 from .environ import normalize_environment
