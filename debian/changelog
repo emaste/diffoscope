@@ -1,8 +1,29 @@
-diffoscope (193) UNRELEASED; urgency=medium
+diffoscope (193) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't duplicate file lists at each directory level.
+    (Closes: #989192, reproducible-builds/diffoscope#263)
+  * When pretty-printing JSON, mark the difference as such, additionally
+    avoiding including the full path.
+    (Closes: reproducible-builds/diffoscope#205)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 12 Nov 2021 08:17:55 -0800
+  * Codebase improvements:
+    - Update a bunch of %-style string interpolations into f-strings or
+      str.format.
+    - Import itertools top-level directly.
+    - Drop some unused imports.
+    - Use isinstance(...) over type(...) ==
+    - Avoid aliasing variables if we aren't going to use them.
+
+  [ Brandon Maier ]
+  * Fix missing diff output on large diffs.
+
+  [ Mattia Rizzolo ]
+  * Ignore a Python warning coming from a dependent library (triggered by
+    supporting Python 3.10)
+  * Document that support both Python 3.9 and 3.10.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 19 Nov 2021 07:35:10 -0800
 
 diffoscope (192) unstable; urgency=medium
 
