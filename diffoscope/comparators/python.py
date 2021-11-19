@@ -91,7 +91,7 @@ def show_code(code, indent=""):
 
     yield f"{indent}consts"
     for const in code.co_consts:
-        if type(const) == types.CodeType:
+        if isinstance(const, types.CodeType):
             yield from show_code(const, f"{indent}   ")
         else:
             yield f"   {indent}{const!r}"
