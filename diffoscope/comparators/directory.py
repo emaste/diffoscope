@@ -160,7 +160,7 @@ def compare_meta(path1, path2):
     try:
         stat1 = os.lstat(path1)
         stat2 = os.lstat(path2)
-    except Exception as e:
+    except Exception:
         return []
 
     differences = []

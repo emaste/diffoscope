@@ -81,7 +81,7 @@ class FitContainer(Archive):
             dest_path,
         )
 
-        output = command.our_check_output(cmd)
+        command.our_check_output(cmd)
 
         # Cannot rely on dumpimage returning a non-zero exit code on failure.
         if not os.path.exists(dest_path):
