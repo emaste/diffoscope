@@ -253,6 +253,9 @@ class FilesystemDirectory(Directory):
     def compare(self, other, source=None):
         differences = []
 
+        if not isinstance(other, FilesystemDirectory):
+            return differences
+
         # We don't need to recurse into subdirectories; DirectoryContainer will
         # find them and do that for us.
         def list_files(path):

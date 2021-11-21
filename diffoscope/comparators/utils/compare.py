@@ -118,8 +118,10 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         file1.other_file = file2
     elif isinstance(file2, MissingFile):
         file2.other_file = file1
-    elif (file1.__class__.__name__ != file2.__class__.__name__) and (
-        file1.as_container is None or file2.as_container is None
+    elif (
+        (file1.__class__.__name__ != file2.__class__.__name__)
+        and (file1.as_container is None or file2.as_container is None)
+        and (not file1.is_directory() and not file2.is_directory())
     ):
         return file1.compare_bytes(file2, source)
     with profile("compare_files (cumulative)", file1):
