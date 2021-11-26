@@ -1,8 +1,10 @@
-diffoscope (194) UNRELEASED; urgency=medium
+diffoscope (194) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't traceback when comparing nested directories with non-directories.
+    (Closes: reproducible-builds/diffoscope#288)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 19 Nov 2021 08:05:35 -0800
+ -- Chris Lamb <lamby@debian.org>  Fri, 26 Nov 2021 10:01:05 -0800
 
 diffoscope (193) unstable; urgency=medium
 
