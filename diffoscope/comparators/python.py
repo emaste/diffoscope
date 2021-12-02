@@ -64,11 +64,11 @@ def parse_pyc(f):
 
     f.seek(4, 1)
     moddate = f.read(4)
-    modtime = time.asctime(time.gmtime(struct.unpack("=L", moddate)[0]))
+    modtime = time.asctime(time.gmtime(struct.unpack("<L", moddate)[0]))
     yield "moddate:  {} ({} UTC)".format(hexlify(moddate), modtime)
 
     filesz = f.read(4)
-    filesz = struct.unpack("=L", filesz)
+    filesz = struct.unpack("<L", filesz)
     yield f"files sz: {filesz[0]}"
 
     code = marshal.load(f)
