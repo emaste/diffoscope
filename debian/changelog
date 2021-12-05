@@ -1,8 +1,10 @@
-diffoscope (195) UNRELEASED; urgency=medium
+diffoscope (195) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't use the runtime platform's native endianness when unpacking .pyc
+    files to fix test failures on big-endian machines.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 26 Nov 2021 10:46:46 -0800
+ -- Chris Lamb <lamby@debian.org>  Sun, 05 Dec 2021 09:30:08 -0800
 
 diffoscope (194) unstable; urgency=medium
 
