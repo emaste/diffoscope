@@ -24,6 +24,7 @@ import ctypes
 import logging
 import libarchive
 import collections
+import stat
 
 from diffoscope.exc import ContainerExtractionError
 from diffoscope.config import Config
@@ -34,6 +35,7 @@ from diffoscope.difference import Difference
 from ..device import Device
 from ..symlink import Symlink
 from ..directory import Directory
+from ..socket_or_fifo import SocketOrFIFO
 
 from .archive import Archive, ArchiveMember
 
@@ -187,6 +189,8 @@ class LibarchiveMember(ArchiveMember):
     def is_device(self):
         return False
 
+    def is_socketOrFIFO(self):
+        return False
 
 class LibarchiveDirectory(Directory, LibarchiveMember):
     def __init__(self, archive, entry):
@@ -241,6 +245,18 @@ class LibarchiveDevice(Device, LibarchiveMember):
         return True
 
 
+class LibarchiveFIFO(SocketOrFIFO, LibarchiveMember):
+    def __init__(self, container, entry):
+        LibarchiveMember.__init__(self, container, entry)
+        self._mode = entry.mode
+
+    def get_type(self):
+        return stat.S_IFMT(self._mode)
+
+    def is_socketOrFIFO(self):
+        return True
+
+
 class LibarchiveContainer(Archive):
     def open_archive(self):
         # libarchive is very very stream oriented an not for random access
@@ -283,6 +299,8 @@ class LibarchiveContainer(Archive):
             return LibarchiveSymlink(self, entry)
         if entry.isblk or entry.ischr:
             return LibarchiveDevice(self, entry)
+        if entry.isfifo:
+            return LibarchiveFIFO(self, entry)
 
         return LibarchiveMember(self, entry)
 

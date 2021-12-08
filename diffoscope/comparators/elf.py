@@ -329,6 +329,9 @@ class ElfSection(File):
     def is_device(self):
         return False
 
+    def is_socketOrFIFO(self):
+        return False
+
     def has_same_content_as(self, other):
         # Always force diff of the section
         return False

@@ -327,6 +327,7 @@ class File(metaclass=abc.ABCMeta):
             (self.is_device, "device"),
             (self.is_symlink, "symlink"),
             (self.is_directory, "directory"),
+            (self.is_socketOrFIFO, "socket or FIFO"),
         ):
             if x():
                 return y
@@ -372,6 +373,10 @@ class File(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def is_device():
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def is_socketOrFIFO():
         raise NotImplementedError()
 
     def compare_bytes(self, other, source=None):

@@ -73,6 +73,9 @@ class MissingFile(File, AbstractMissingType):
     def is_device(self):
         return False
 
+    def is_socketOrFIFO(self):
+        return False
+
     def compare(self, other, source=None):
         # So now that comparators are all object-oriented, we don't have any
         # clue on how to perform a meaningful comparison right here. So we are

@@ -183,6 +183,9 @@ class AsmFunction(File):
     def is_device(self):
         return False
 
+    def is_socketOrFIFO(self):
+        return False
+
     if tlsh:
 
         @property

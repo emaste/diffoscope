@@ -136,6 +136,9 @@ class ArchiveMember(File):
     def is_device(self):
         return False
 
+    def is_socketOrFIFO(self):
+        return False
+
 
 class MissingArchiveLikeObject(AbstractMissingType):
     def getnames(self):

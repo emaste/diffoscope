@@ -68,6 +68,9 @@ class DebControlMember(File):
     def is_device(self):
         return False
 
+    def is_socketOrFIFO(self):
+        return False
+
 
 class DebControlContainer(Container):
     def __init__(self, *args, **kwargs):

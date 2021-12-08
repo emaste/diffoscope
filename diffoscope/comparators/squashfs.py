@@ -33,6 +33,7 @@ from diffoscope.tempfiles import get_temporary_directory
 from .utils.file import File
 from .device import Device
 from .symlink import Symlink
+from .socket_or_fifo import SocketOrFIFO
 from .directory import Directory
 from .utils.archive import Archive, ArchiveMember
 from .utils.command import Command
@@ -70,6 +71,9 @@ class SquashfsMember(ArchiveMember):
         return False
 
     def is_device(self):
+        return False
+
+    def is_socketOrFIFO(self):
         return False
 
     @property
@@ -217,6 +221,40 @@ class SquashfsDevice(Device, SquashfsMember):
         return True
 
 
+class SquashfsFIFO(SocketOrFIFO, SquashfsMember):
+    # Example line:
+    # crw-r--r-- root/root  0 2021-08-18 13:37 run/initctl
+    LINE_RE = re.compile(
+        r"^(?P<kind>s|p)\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$"
+    )
+
+    KIND_MAP = {"s": stat.S_IFSOCK, "p": stat.S_IFIFO}
+
+    @staticmethod
+    def parse(line):
+        m = SquashfsFIFO.LINE_RE.match(line)
+        if not m:
+            raise SquashfsInvalidLineFormat("invalid line format")
+
+        d = m.groupdict()
+        try:
+            d["mode"] = SquashfsFIFO.KIND_MAP[d["kind"]]
+            del d["kind"]
+        except KeyError:
+            raise SquashfsInvalidLineFormat(f"unknown socket/FIFO kind {d['kind']}")
+        return d
+
+    def __init__(self, archive, member_name, mode):
+        SquashfsMember.__init__(self, archive, member_name)
+        self._mode = mode
+
+    def get_type(self):
+        return stat.S_IFMT(self._mode)
+
+    def is_socketOrFIFO(self):
+        return True
+
+
 class SquashfsContainer(Archive):
     auto_diff_metadata = False
 
@@ -225,6 +263,8 @@ class SquashfsContainer(Archive):
         "l": SquashfsSymlink,
         "c": SquashfsDevice,
         "b": SquashfsDevice,
+        "p": SquashfsFIFO,
+        "s": SquashfsFIFO,           # Although it's unlikely that squashfs will support embedded sockets
         "-": SquashfsRegularFile,
     }
 
