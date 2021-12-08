@@ -49,6 +49,7 @@ if os.uname()[0] == "FreeBSD":
                 self.path,
             ]
 
+
 else:
 
     class Stat(Command):

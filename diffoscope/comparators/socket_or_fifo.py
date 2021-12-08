@@ -1,8 +1,6 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
 # Copyright © 2021 Brent Spillner <s p i l l n e r @ a c m . o r g>
 #
 # diffoscope is free software: you can redistribute it and/or modify
