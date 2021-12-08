@@ -73,7 +73,7 @@ class MissingFile(File, AbstractMissingType):
     def is_device(self):
         return False
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         return False
 
     def compare(self, other, source=None):

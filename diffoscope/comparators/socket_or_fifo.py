@@ -36,7 +36,7 @@ class SocketOrFIFO(File):
 
     @classmethod
     def recognizes(cls, file):
-        return file.is_socketOrFIFO()
+        return file.is_socket_or_fifo()
 
     def get_type(self):
         assert isinstance(self, FilesystemFile)
@@ -101,7 +101,7 @@ def format_socket(mode, filename):
     elif stat.S_ISFIFO(mode):
         kind = "named pipe (FIFO)"
     else:
-        kind = "ERROR: problem with an is_socketOrFIFO() predicate"
+        kind = "ERROR: problem with an is_socket_or_fifo() predicate"
     return f"{kind}: {filename}\n"
 
 
@@ -143,7 +143,7 @@ class SocketOrFIFO(File):
 
     @classmethod
     def recognizes(cls, file):
-        return file.is_socketOrFIFO()
+        return file.is_socket_or_fifo()
 
     def get_type(self):
         assert isinstance(self, FilesystemFile)
@@ -208,5 +208,5 @@ def format_socket(mode, filename):
     elif stat.S_ISFIFO(mode):
         kind = "named pipe (FIFO)"
     else:
-        kind = "ERROR: problem with an is_socketOrFIFO() predicate"
+        kind = "ERROR: problem with an is_socket_or_fifo() predicate"
     return f"{kind}: {filename}\n"

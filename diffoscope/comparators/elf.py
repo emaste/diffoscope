@@ -329,7 +329,7 @@ class ElfSection(File):
     def is_device(self):
         return False
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         return False
 
     def has_same_content_as(self, other):

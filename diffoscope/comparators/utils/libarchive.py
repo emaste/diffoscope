@@ -189,7 +189,7 @@ class LibarchiveMember(ArchiveMember):
     def is_device(self):
         return False
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         return False
 
 
@@ -254,7 +254,7 @@ class LibarchiveFIFO(SocketOrFIFO, LibarchiveMember):
     def get_type(self):
         return stat.S_IFMT(self._mode)
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         return True
 
 

@@ -42,6 +42,6 @@ class FilesystemFile(File):
         mode = os.lstat(self._name).st_mode
         return stat.S_ISCHR(mode) or stat.S_ISBLK(mode)
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         mode = os.lstat(self._name).st_mode
         return stat.S_ISSOCK(mode) or stat.S_ISFIFO(mode)

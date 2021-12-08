@@ -73,7 +73,7 @@ class SquashfsMember(ArchiveMember):
     def is_device(self):
         return False
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         return False
 
     @property
@@ -253,7 +253,7 @@ class SquashfsFIFO(SocketOrFIFO, SquashfsMember):
     def get_type(self):
         return stat.S_IFMT(self._mode)
 
-    def is_socketOrFIFO(self):
+    def is_socket_or_fifo(self):
         return True
 
 
