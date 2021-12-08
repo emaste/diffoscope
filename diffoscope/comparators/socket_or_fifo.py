@@ -51,9 +51,8 @@ class SocketOrFIFO(File):
                 return False
             if os.path.exists(self.name) and os.path.exists(other.name):
                 return os.path.samefile(self.name, other.name)
-            else:
-                return os.path.realname(self.name) == os.path.realname(
-                    other.name
+            return os.path.realname(self.name) == os.path.realname(
+                other.name
                 )
         except (AttributeError, OSError):
             # 'other' is likely something odd that doesn't support stat() and/or can't supply an fs_uuid/inode pair for samefile()
