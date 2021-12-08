@@ -51,9 +51,7 @@ class SocketOrFIFO(File):
                 return False
             if os.path.exists(self.name) and os.path.exists(other.name):
                 return os.path.samefile(self.name, other.name)
-            return os.path.realname(self.name) == os.path.realname(
-                other.name
-                )
+            return os.path.realname(self.name) == os.path.realname(other.name)
         except (AttributeError, OSError):
             # 'other' is likely something odd that doesn't support stat() and/or can't supply an fs_uuid/inode pair for samefile()
             logger.debug(
@@ -100,4 +98,3 @@ def format_socket(mode, filename):
     else:
         kind = "ERROR: problem with an is_socket_or_fifo() predicate"
     return f"{kind}: {filename}\n"
-
