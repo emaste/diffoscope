@@ -38,6 +38,7 @@ def make_socket(path):
     sock.bind(path)
     return specialize(FilesystemFile(path))
 
+
 def make_pipe(path):
     if os.path.exists(path):
         os.remove(path)
@@ -50,33 +51,59 @@ def endpoints(tmpdir):
     def makename(tag):
         return os.path.join(tmpdir, "test_" + tag)
 
-    test_points = zip([make_socket, make_socket, make_pipe, make_pipe], ["socket1", "socket2", "pipe1", "pipe2"])
-    return [(name, f(name)) for (f, name) in [(f, makename(tag)) for (f, tag) in test_points]]
+    test_points = zip(
+        [make_socket, make_socket, make_pipe, make_pipe],
+        ["socket1", "socket2", "pipe1", "pipe2"],
+    )
+    return [
+        (name, f(name))
+        for (f, name) in [(f, makename(tag)) for (f, tag) in test_points]
+    ]
 
 
 @pytest.fixture
 def expected_results(endpoints):
-    descriptions = [format_socket(obj.get_type(), path) for (path, obj) in endpoints]
+    descriptions = [
+        format_socket(obj.get_type(), path) for (path, obj) in endpoints
+    ]
     [sock1_desc, sock2_desc, pipe1_desc, pipe2_desc] = descriptions
 
     # Prefix every line of the sample text file with '+' to predict RHS of the diff
     sampletext_contents = get_data(sample_textfile)
-    sample_lines = sampletext_contents.count('\n')
-    added_text = '+' + '\n+'.join(sampletext_contents.split('\n')[:-1]) + '\n'
+    sample_lines = sampletext_contents.count("\n")
+    added_text = "+" + "\n+".join(sampletext_contents.split("\n")[:-1]) + "\n"
 
-    sock_text_diff = "@@ -1 +1,{} @@\n".format(sample_lines) + "-" + sock1_desc + added_text
-    pipe_text_diff = "@@ -1 +1,{} @@\n".format(sample_lines) + "-" + pipe1_desc + added_text
+    sock_text_diff = (
+        "@@ -1 +1,{} @@\n".format(sample_lines) + "-" + sock1_desc + added_text
+    )
+    pipe_text_diff = (
+        "@@ -1 +1,{} @@\n".format(sample_lines) + "-" + pipe1_desc + added_text
+    )
     sock_sock_diff = "@@ -1 +1 @@\n" + "-" + sock1_desc + "+" + sock2_desc
     pipe_pipe_diff = "@@ -1 +1 @@\n" + "-" + pipe1_desc + "+" + pipe2_desc
     sock_pipe_diff = "@@ -1 +1 @@\n" + "-" + sock1_desc + "+" + pipe1_desc
     pipe_sock_diff = "@@ -1 +1 @@\n" + "-" + pipe1_desc + "+" + sock1_desc
-    return (sock_text_diff, pipe_text_diff, sock_sock_diff, pipe_pipe_diff, sock_pipe_diff, pipe_sock_diff)
+    return (
+        sock_text_diff,
+        pipe_text_diff,
+        sock_sock_diff,
+        pipe_pipe_diff,
+        sock_pipe_diff,
+        pipe_sock_diff,
+    )
 
 
 def test_sockets(endpoints, expected_results, sampletext):
     (names, objects) = zip(*endpoints)
     (sock1, sock2, pipe1, pipe2) = objects
-    (sock_text_diff, pipe_text_diff, sock_sock_diff, pipe_pipe_diff, sock_pipe_diff, pipe_sock_diff) = expected_results
+    (
+        sock_text_diff,
+        pipe_text_diff,
+        sock_sock_diff,
+        pipe_pipe_diff,
+        sock_pipe_diff,
+        pipe_sock_diff,
+    ) = expected_results
 
     assert isinstance(sock1, SocketOrFIFO)
     assert isinstance(pipe1, SocketOrFIFO)
@@ -90,4 +117,3 @@ def test_sockets(endpoints, expected_results, sampletext):
     assert pipe1.compare(pipe2).unified_diff == pipe_pipe_diff
     assert sock1.compare(pipe1).unified_diff == sock_pipe_diff
     assert pipe1.compare(sock1).unified_diff == pipe_sock_diff
-
