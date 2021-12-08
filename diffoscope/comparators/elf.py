@@ -662,9 +662,11 @@ class ElfContainer(DecompilableContainer):
         )
 
         if hashlib.sha1(blob_with_reset_build_id).hexdigest() != build_id:
+            self.source.add_comment(
+                f"The file ({self.source.path}) has been modified after NT_GNU_BUILD_ID has been applied"
+            )
             logger.warning(
-                "The file (%s) has been modified after NT_GNU_BUILD_ID has been applied",
-                self.source.path,
+                f"The file ({self.source.path}) has been modified after NT_GNU_BUILD_ID has been applied"
             )
             logger.debug(
                 "Expected value: %s Current value: %s",
