@@ -264,7 +264,7 @@ class SquashfsContainer(Archive):
         "c": SquashfsDevice,
         "b": SquashfsDevice,
         "p": SquashfsFIFO,
-        "s": SquashfsFIFO,           # Although it's unlikely that squashfs will support embedded sockets
+        "s": SquashfsFIFO,
         "-": SquashfsRegularFile,
     }
 
