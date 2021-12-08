@@ -192,6 +192,7 @@ class LibarchiveMember(ArchiveMember):
     def is_socketOrFIFO(self):
         return False
 
+
 class LibarchiveDirectory(Directory, LibarchiveMember):
     def __init__(self, archive, entry):
         LibarchiveMember.__init__(self, archive, entry)

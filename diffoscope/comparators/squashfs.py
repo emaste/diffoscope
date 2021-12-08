@@ -241,7 +241,9 @@ class SquashfsFIFO(SocketOrFIFO, SquashfsMember):
             d["mode"] = SquashfsFIFO.KIND_MAP[d["kind"]]
             del d["kind"]
         except KeyError:
-            raise SquashfsInvalidLineFormat(f"unknown socket/FIFO kind {d['kind']}")
+            raise SquashfsInvalidLineFormat(
+                f"unknown socket/FIFO kind {d['kind']}"
+            )
         return d
 
     def __init__(self, archive, member_name, mode):

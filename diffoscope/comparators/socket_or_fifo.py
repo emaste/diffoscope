@@ -54,10 +54,15 @@ class SocketOrFIFO(File):
             if os.path.exists(self.name) and os.path.exists(other.name):
                 return os.path.samefile(self.name, other.name)
             else:
-                return os.path.realname(self.name) == os.path.realname(other.name)
+                return os.path.realname(self.name) == os.path.realname(
+                    other.name
+                )
         except (AttributeError, OSError):
             # 'other' is likely something odd that doesn't support stat() and/or can't supply an fs_uuid/inode pair for samefile()
-            logger.debug("has_same_content: Not a socket, FIFO, or ordinary file: %s", other)
+            logger.debug(
+                "has_same_content: Not a socket, FIFO, or ordinary file: %s",
+                other,
+            )
             return False
 
     def create_placeholder(self):
@@ -98,6 +103,7 @@ def format_socket(mode, filename):
     else:
         kind = "ERROR: problem with an is_socketOrFIFO() predicate"
     return f"{kind}: {filename}\n"
+
 
 #
 # diffoscope: in-depth comparison of files, archives, and directories
@@ -155,10 +161,15 @@ class SocketOrFIFO(File):
             if os.path.exists(self.name) and os.path.exists(other.name):
                 return os.path.samefile(self.name, other.name)
             else:
-                return os.path.realname(self.name) == os.path.realname(other.name)
+                return os.path.realname(self.name) == os.path.realname(
+                    other.name
+                )
         except (AttributeError, OSError):
             # 'other' is likely something odd that doesn't support stat() and/or can't supply an fs_uuid/inode pair for samefile()
-            logger.debug("has_same_content: Not a socket, FIFO, or ordinary file: %s", other)
+            logger.debug(
+                "has_same_content: Not a socket, FIFO, or ordinary file: %s",
+                other,
+            )
             return False
 
     def create_placeholder(self):
@@ -199,4 +210,3 @@ def format_socket(mode, filename):
     else:
         kind = "ERROR: problem with an is_socketOrFIFO() predicate"
     return f"{kind}: {filename}\n"
-

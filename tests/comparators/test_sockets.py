@@ -53,12 +53,11 @@ def endpoints(tmpdir):
 
     test_points = zip(
         [make_socket, make_socket, make_pipe, make_pipe],
-        ["socket1", "socket2", "pipe1", "pipe2"],
+        map(makename, ["socket1", "socket2", "pipe1", "pipe2"]),
     )
-    return [
-        (name, f(name))
-        for (f, name) in [(f, makename(tag)) for (f, tag) in test_points]
-    ]
+    yield [(name, f(name)) for (f, name) in test_points]
+    for (_, name) in test_points:
+        os.remove(name)
 
 
 @pytest.fixture
@@ -83,7 +82,7 @@ def expected_results(endpoints):
     pipe_pipe_diff = "@@ -1 +1 @@\n" + "-" + pipe1_desc + "+" + pipe2_desc
     sock_pipe_diff = "@@ -1 +1 @@\n" + "-" + sock1_desc + "+" + pipe1_desc
     pipe_sock_diff = "@@ -1 +1 @@\n" + "-" + pipe1_desc + "+" + sock1_desc
-    return (
+    yield (
         sock_text_diff,
         pipe_text_diff,
         sock_sock_diff,
