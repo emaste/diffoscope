@@ -252,9 +252,7 @@ def black_version():
     # black --version format changed starting in 21.11b0. Returning the first
     # token starting with a decimal digit, since its ordinal position may vary.
     return [
-        token
-        for token in out.strip().decode("utf-8").split(" ")
-        if token[0].isdigit()
+        x for x in out.strip().decode("utf-8").split(" ") if x[0].isdigit()
     ]
 
 
