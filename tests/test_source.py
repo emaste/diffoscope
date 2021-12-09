@@ -248,7 +248,14 @@ def black_version():
         out = subprocess.check_output(("black", "--version"))
     except subprocess.CalledProcessError as e:
         out = e.output
-    return out.strip().decode("utf-8").rsplit(" ", 1)[-1]
+
+    # black --version format changed starting in 21.11b0. Returning the first
+    # token starting with a decimal digit, since its ordinal position may vary.
+    return [
+        token
+        for token in out.strip().decode("utf-8").split(" ")
+        if token[0].isdigit()
+    ]
 
 
 @skip_unless_tool_is_at_least("black", black_version, "21.4b2")
