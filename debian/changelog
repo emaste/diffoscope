@@ -1,8 +1,15 @@
-diffoscope (196) UNRELEASED; urgency=medium
+diffoscope (196) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Roland Clobus ]
+  * Add a comment/annotation when the GNU_BUILD_ID field has been modified.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 05 Dec 2021 09:31:28 -0800
+  [ Brent Spillner ]
+  * Fix the "Black" version detection.
+
+  [ Chris Lamb ]
+  * Replace "token" with anonymous variable "x" in order to remove extra lines.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 10 Dec 2021 08:05:10 -0800
 
 diffoscope (195) unstable; urgency=medium
 
