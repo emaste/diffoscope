@@ -201,7 +201,6 @@ class AsmFunction(File):
             return self._fuzzy_hash
 
     def has_same_content_as(self, other):
-        logger.debug("has_same_content: %s %s", self, other)
         try:
             return self.hex_dump == other.hex_dump
         except AttributeError:

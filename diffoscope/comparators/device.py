@@ -43,7 +43,6 @@ class Device(File):
         return st.st_mode, os.major(st.st_rdev), os.minor(st.st_rdev)
 
     def has_same_content_as(self, other):
-        logger.debug("has_same_content: %s %s", self, other)
         try:
             return self.get_device() == other.get_device()
         except (AttributeError, OSError):
