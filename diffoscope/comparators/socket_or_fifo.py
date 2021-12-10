@@ -42,18 +42,20 @@ class SocketOrFIFO(File):
         return stat.S_IFMT(st.st_mode)
 
     def has_same_content_as(self, other):
-        logger.debug("has_same_content: %s %s", self, other)
         try:
-            # A filesystem object (FS UUID & inode pair) uniquely identifies the socket or pipe
-            # Path comparison allows matching against pipes inside an archive (i.e. that would be created by extraction),
-            # while using .samefile() lets us match endpoints that might have more than one "canonical" pathname after a mount -o rebind
+            # (filesystem ID, inode) pair uniquely identifies the socket/pipe
+            # Path comparison allows matching against pipes inside an archive
+            # (i.e. that would be created by extraction), while using .samefile()
+            # lets us match endpoints that might have more than one "canonical"
+            # pathname after a mount -o rebind
             if self.get_type() != other.get_type():
                 return False
             if os.path.exists(self.name) and os.path.exists(other.name):
                 return os.path.samefile(self.name, other.name)
             return os.path.realname(self.name) == os.path.realname(other.name)
         except (AttributeError, OSError):
-            # 'other' is likely something odd that doesn't support stat() and/or can't supply an fs_uuid/inode pair for samefile()
+            # 'other' is likely something odd that doesn't support stat() and/or
+            # can't supply an fs_uuid/inode pair for samefile()
             logger.debug(
                 "has_same_content: Not a socket, FIFO, or ordinary file: %s",
                 other,
