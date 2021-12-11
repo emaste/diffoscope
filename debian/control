@@ -136,7 +136,7 @@ Recommends:
  ${diffoscope:Recommends},
  ${python3:Recommends},
 Enhances:
- diffoscope-core,
+ diffoscope-minimal,
 Description: in-depth visual diff tool for files, archives and directories
  diffoscope is a visual diff tool that attempts try to get to the bottom of
  what makes files or directories actually different.
