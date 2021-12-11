@@ -8,6 +8,10 @@ public-upstream-key-in-native-package
 # We are upstream but also quite integrated in Debian.
 upstream-metadata-in-native-source
 
+# tests are special
+binary-with-bad-dynamic-table [tests/data/test1.debug]
+binary-with-bad-dynamic-table [tests/data/test2.debug]
+
 # we are fully aware of this
 # https://salsa.debian.org/reproducible-builds/diffoscope/-/issues/66
 source-is-missing tests/data/test1.debug
