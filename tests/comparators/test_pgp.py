@@ -16,12 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import re
 import pytest
+import subprocess
 
 from diffoscope.comparators.pgp import PgpFile, PgpSignature
 
-from ..utils.data import load_fixture, assert_diff
+from ..utils.data import load_fixture, assert_diff, get_data
 from ..utils.tools import skip_unless_tools_exist
+from ..utils.versions import Version
 from ..utils.nonexisting import assert_non_existing
 
 pgp1 = load_fixture("test1.pgp")
@@ -39,6 +42,18 @@ def test_identification(pgp1):
 def test_no_differences(pgp1):
     difference = pgp1.compare(pgp1)
     assert difference is None
+
+
+def pgpdump_version():
+    out = subprocess.check_output(
+        ("pgpdump", "-v"), stderr=subprocess.STDOUT
+    ).decode("utf-8")
+    # pgpdump version 0.33, Copyright (C) 1998-2017 Kazu Yamamoto
+    m = re.search(r"^pgpdump version (?P<version>\d+\.\d+)", out)
+    if m is None:
+        raise ValueError(f"Error parsing `pgpdump -v` output: {out}")
+
+    return Version(m.group("version"))
 
 
 @pytest.fixture
@@ -81,4 +96,8 @@ def signed_differences(signed1, signed2):
 
 @skip_unless_tools_exist("pgpdump")
 def test_signed_diff(signed_differences):
-    assert_diff(signed_differences[0], "pgp_signed_expected_diff")
+    expected_diff = get_data("pgp_signed_expected_diff")
+    if pgpdump_version() > Version(0.33):
+        expected_diff = expected_diff.replace("Format - binary", "Packet data format - binary")
+        expected_diff = expected_diff.replace("File modified time", "Creation time")
+    assert signed_differences[0].unified_diff == expected_diff
