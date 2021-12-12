@@ -98,6 +98,10 @@ def signed_differences(signed1, signed2):
 def test_signed_diff(signed_differences):
     expected_diff = get_data("pgp_signed_expected_diff")
     if pgpdump_version() > Version(0.33):
-        expected_diff = expected_diff.replace("Format - binary", "Packet data format - binary")
-        expected_diff = expected_diff.replace("File modified time", "Creation time")
+        expected_diff = expected_diff.replace(
+            "Format - binary", "Packet data format - binary"
+        )
+        expected_diff = expected_diff.replace(
+            "File modified time", "Creation time"
+        )
     assert signed_differences[0].unified_diff == expected_diff
