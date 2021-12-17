@@ -1,8 +1,14 @@
-diffoscope (197) UNRELEASED; urgency=medium
+diffoscope (197) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Drop unnecessary has_same_content_as logging calls.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 10 Dec 2021 08:06:30 -0800
+  [ Mattia Rizzolo ]
+  * Ignore the new "binary-with-bad-dynamic-table" Lintian tag.
+  * Support pgpdump 0.34 in the tests. Thanks to Michael Weiss
+    <dev.primeos@gmail.com> for reporting and testing the fix.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 17 Dec 2021 09:56:04 +0000
 
 diffoscope (196) unstable; urgency=medium
 
