@@ -173,9 +173,20 @@ class DebControlFile(File):
             if field in other_deb822:
                 other_value = other_deb822.get_as_string(field).lstrip()
 
+            comment = None
+            if my_value != other_value and sorted(my_value.split()) == sorted(
+                other_value.split()
+            ):
+                comment = "Ordering differences only"
+
             differences.append(
                 Difference.from_text(
-                    my_value, other_value, self.path, other.path, source=field
+                    my_value,
+                    other_value,
+                    self.path,
+                    other.path,
+                    source=field,
+                    comment=comment,
                 )
             )
 
