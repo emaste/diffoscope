@@ -50,6 +50,7 @@ class ComparatorManager:
         ("javascript.JavaScriptFile",),
         ("json.JSONFile",),
         ("xml.XMLFile",),
+        ("xmlb.XMLBFile",),
         ("openssl.Pkcs7File",),
         ("openssl.MobileProvisionFile",),
         ("text.TextFile",),
