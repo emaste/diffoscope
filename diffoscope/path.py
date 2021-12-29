@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017, 2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2020, 2021 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,12 +17,23 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import sys
 
 
 def set_path():
+    to_add = ["/sbin", "/usr/sbin", "/usr/local/sbin"]
     pathlist = os.environ["PATH"].split(os.pathsep)
 
-    for x in ("/sbin", "/usr/sbin", "/usr/local/sbin"):
+    # Check the /usr/lib/<multiarch-triplet directory as well.
+    try:
+        arch_dir = os.path.join("/usr/lib", sys.implementation._multiarch)
+    except AttributeError:
+        pass
+    else:
+        if os.path.exists(arch_dir):
+            to_add.append(arch_dir)
+
+    for x in to_add:
         if x not in pathlist:
             pathlist.append(x)
 
