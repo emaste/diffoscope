@@ -1,8 +1,16 @@
-diffoscope (198) UNRELEASED; urgency=medium
+diffoscope (198) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Support showing "Ordering differences only" within .dsc field values.
+    (Closes: #1002002, reproducible-builds/diffoscope#297)
+  * Support OCaml versions 4.11, 4.12 and 4.13. (Closes: #1002678)
+  * Add support for XMLb files. (Closes: reproducible-builds/diffoscope#295)
+  * Also add, for example, /usr/lib/x86_64-linux-gnu to our internal PATH.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 17 Dec 2021 09:59:03 +0000
+  [ Mattia Rizzolo ]
+  * Also recognize "GnuCash file" files as XML.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 31 Dec 2021 08:52:04 +0000
 
 diffoscope (197) unstable; urgency=medium
 
