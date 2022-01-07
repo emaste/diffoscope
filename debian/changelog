@@ -1,8 +1,13 @@
-diffoscope (199) UNRELEASED; urgency=medium
+diffoscope (199) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Support both variants of "odt2txt", including the one provided by unoconv.
+    (Closes: reproducible-builds/diffoscope#298)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 31 Dec 2021 08:53:04 +0000
+  [ Jelle van der Waa ]
+  * Add external tool reference on Arch Linux for xb-tool.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 07 Jan 2022 08:46:42 +0000
 
 diffoscope (198) unstable; urgency=medium
 
