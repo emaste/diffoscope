@@ -55,6 +55,13 @@ def describe_inventory(filename):
                 tail += line
 
     result = head + b"\n" if head else b""
-    result += zlib.decompress(tail)
 
-    return result.decode("utf-8")
+    try:
+        result += zlib.decompress(tail)
+    except zlib.error:
+        # Even if the file is labelled "The remainder of this file is
+        # compressed using zlib.", it might not actually be. In this case,
+        # simply return the original content.
+        result += tail
+
+    return result.decode("utf-8", "ignore")
