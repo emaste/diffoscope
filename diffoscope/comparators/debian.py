@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,13 @@ import re
 import os.path
 import logging
 
-from debian.deb822 import Dsc, Deb822
+try:
+    from debian.deb822 import Dsc, Deb822
+except:
+    # Import can fail due to apt_pkg.Error (or similar) tracebacks, but let us
+    # re-raise them as ImportErrors so that the Comparator module class
+    # handling just works. (See reproducible-builds/diffoscope#300)
+    raise ImportError
 
 from diffoscope.changes import Changes
 from diffoscope.changes import ChangesFileException
