@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2021‒2022 Chris Lamb <lamby@debian.org>
 # Copyright © 2021 Sergei Trofimovich
 #
 # diffoscope is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import types
 
 from diffoscope.difference import Difference
 
+from .missing_file import MissingFile
 from .utils.file import File
 
 re_memory_address = re.compile(r" at 0x\w+(?=, )")
@@ -38,6 +39,9 @@ class PycFile(File):
     FILE_TYPE_RE = re.compile(r"^python .*byte-compiled$")
 
     def compare_details(self, other, source=None):
+        if isinstance(other, MissingFile):
+            return []
+
         try:
             return [
                 Difference.from_text(
