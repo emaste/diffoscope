@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2021—2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import sys
 from diffoscope.comparators.python import PycFile
 
 from ..utils.data import assert_diff_startswith, load_fixture
+from ..utils.nonexisting import assert_non_existing
 from ..utils.tools import (
     skipif,
     skip_unless_file_version_is_at_least,
@@ -59,4 +60,10 @@ def test_diff(differences):
     assert_diff_startswith(
         differences[0],
         "pyc_expected_diff",
+    )
+
+
+def test_compare_non_existing(monkeypatch, pyc1):
+    assert_non_existing(
+        monkeypatch, pyc1, has_details=False, has_null_source=False
     )
