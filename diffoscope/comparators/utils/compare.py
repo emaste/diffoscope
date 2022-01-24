@@ -76,6 +76,13 @@ def compare_root_paths(path1, path2):
             if difference is None:
                 difference = Difference(file1.name, file2.name)
             difference.add_details(meta)
+
+    if difference is None and type(file1) is not type(file2):
+        difference = Difference(file1.name, file2.name)
+        difference.add_comment(
+            "Types of files differ; human-readable metadata may match literal file contents."
+        )
+
     return difference
 
 
