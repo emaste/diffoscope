@@ -49,7 +49,7 @@ class PycFile(File):
                 )
             ]
         except ValueError as exc:
-            self.add_comment("Could not decombile bytecode: {}".format(exc))
+            self.add_comment("Could not decompile bytecode: {}".format(exc))
             return []
 
 
