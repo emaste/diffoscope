@@ -49,10 +49,6 @@ To compare two files in-depth and produce an HTML report, run something like::
 diffoscope will exit with 0 if there's no differences and 1 if there
 are.
 
-*diffoscope* can also compare non-existent files::
-
-    $ bin/diffoscope /nonexistent archive.zip
-
 To get all possible options, run::
 
     $ bin/diffoscope --help
