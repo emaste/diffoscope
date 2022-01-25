@@ -77,7 +77,11 @@ def compare_root_paths(path1, path2):
                 difference = Difference(file1.name, file2.name)
             difference.add_details(meta)
 
-    if difference is None and type(file1) is not type(file2):
+    # We cannot use isinstance() etc. because these instances are
+    # abc-instantiated abstract base classes. We cannot even compare
+    # DESCRIPTION attributes either, as the specialize() call above may not
+    # have returned a specific instance.
+    if difference is None and str(type(file1)) != str(type(file2)):
         difference = Difference(file1.name, file2.name)
         difference.add_comment(
             "Types of files differ; human-readable metadata may match literal file contents."
