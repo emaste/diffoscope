@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -434,6 +434,12 @@ class File(metaclass=abc.ABCMeta):
                 msg = "Reached max container depth ({})".format(depth)
                 logger.debug(msg)
                 difference.add_comment(msg)
+            elif Config().timeout_exceeded():
+                msg = "Timeout exceeded; details may be incomplete."
+                logger.debug(msg)
+                difference.add_comment(msg)
+                no_recurse = True
+
             details.extend(
                 self.as_container.compare(
                     other.as_container, no_recurse=no_recurse

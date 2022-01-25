@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Reiner Herrmann <reiner@reiner-h.de>
-# Copyright © 2016-2017, 2019-2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2017, 2019-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 
 import logging
+import time
 
 
 logger = logging.getLogger(__name__)
@@ -69,6 +70,9 @@ class Config:
         self.use_dbgsym = "auto"
         self.force_details = False
 
+        self.started = time.time()
+        self.timeout = float("inf")
+
     def __setattr__(self, k, v):
         super(Config, self).__setattr__(k, v)
 
@@ -96,3 +100,6 @@ class Config:
     def check_constraints(self):
         self.check_ge("max_diff_block_lines", "max_page_diff_block_lines")
         self.check_ge("max_report_size", "max_page_size")
+
+    def timeout_exceeded(self):
+        return (self.started + self.timeout) < time.time()

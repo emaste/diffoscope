@@ -4,7 +4,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2016-2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -367,6 +367,13 @@ def create_parser():
         default=Config().max_container_depth,
     )
     group3.add_argument(
+        "--timeout",
+        metavar="SECONDS",
+        type=int,
+        help="Best-effort attempt at a timeout in seconds. (default: no timeout) [experimental]",
+        default=float("inf"),
+    )
+    group3.add_argument(
         "--max-diff-block-lines-saved",
         metavar="LINES",
         type=int,
@@ -628,6 +635,7 @@ def configure(parsed_args):
     Config().use_dbgsym = parsed_args.use_dbgsym
     Config().force_details = parsed_args.force_details
     Config().fuzzy_threshold = parsed_args.fuzzy_threshold
+    Config().timeout = parsed_args.timeout
     Config().max_container_depth = parsed_args.max_container_depth
 
     Config().excludes = parsed_args.excludes
