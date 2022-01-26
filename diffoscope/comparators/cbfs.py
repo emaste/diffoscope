@@ -52,7 +52,7 @@ class CbfsListing(Command):
 class CbfsContainer(Archive):
     @tool_required("cbfstool")
     def entries(self, path):
-        cmd = ["cbfstool", path, "print"]
+        cmd = ["cbfstool", path, "print", "-k"]
         output = our_check_output(cmd).decode("utf-8")
         header = True
         for line in output.rstrip("\n").split("\n"):
@@ -60,7 +60,7 @@ class CbfsContainer(Archive):
                 if line.startswith("Name"):
                     header = False
                 continue
-            name = line.split()[0]
+            name = line.split("\t", 1)[0]
             if name == "(empty)":
                 continue
             yield name

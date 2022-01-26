@@ -51,7 +51,7 @@ def rom1(tmpdir):
             "-f",
             TEST_FILE1_PATH,
             "-n",
-            "text",
+            "test file",
             "-t",
             "raw",
         ),
@@ -77,7 +77,7 @@ def rom2(tmpdir):
             "-f",
             TEST_FILE2_PATH,
             "-n",
-            "text",
+            "test file",
             "-t",
             "raw",
         ),
@@ -128,13 +128,13 @@ def test_listing(differences):
     # and the git log of this file), perform only these basic coherence check.
 
     assert differences[0].source1.startswith("cbfstool")
-    assert re.search(r"\+text\s.*\sraw\s", differences[0].unified_diff)
+    assert re.search(r"\+test file\s.*\sraw\s", differences[0].unified_diff)
 
 
 @skip_unless_tools_exist("cbfstool")
 def test_content(differences):
-    assert differences[1].source1 == "text"
-    assert differences[1].source2 == "text"
+    assert differences[1].source1 == "test file"
+    assert differences[1].source2 == "test file"
     expected_diff = get_data("text_ascii_expected_diff")
     assert differences[1].unified_diff == expected_diff
 
