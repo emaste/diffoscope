@@ -188,6 +188,12 @@ class Container(metaclass=abc.ABCMeta):
         from ..directory import compare_meta
 
         def compare_pair(file1, file2, comment):
+            if Config().timeout_exceeded():
+                difference = Difference(file1.name, file2.name)
+                msg = "Timeout exceeded; details may be incomplete."
+                difference.add_comment(msg)
+                return difference
+
             difference = compare_files(
                 file1, file2, source=None, diff_content_only=no_recurse
             )
