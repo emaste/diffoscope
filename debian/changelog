@@ -1,8 +1,26 @@
-diffoscope (202) UNRELEASED; urgency=medium
+diffoscope (202) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't fail if comparing a nonexistent file with a .pyc file (and add test).
+    (Closes: #1004312)
+  * Drop a reference in the manual page which claims the ability to compare
+    non-existent files on the command-line. This has not been possible since
+    version 32 which was released in September 2015. (Closes: #1004182)
+  * Add experimental support for incremental output support with a timeout.
+    Passing, for example, --timeout=60 will mean that diffoscope will not
+    recurse into any sub-archives after 60 seconds total execution time has
+    elapsed and mark the diff as being incomplete. (Note that this is not a
+    fixed/strict timeout due to implementation issues.)
+    (Closes: reproducible-builds/diffoscope#301)
+  * Don't return with an exit code of 0 if we encounter device file such as
+    /dev/stdin with human-readable metadata that matches literal, non-device,
+    file contents. (Closes: #1004198)
+  * Correct a "recompile" typo.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 21 Jan 2022 08:36:32 -0800
+  [ Sergei Trofimovich ]
+  * Fix/update whitespace for Black 21.12.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 28 Jan 2022 08:17:21 -0800
 
 diffoscope (201) unstable; urgency=medium
 
