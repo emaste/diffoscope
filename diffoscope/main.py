@@ -370,7 +370,9 @@ def create_parser():
         "--timeout",
         metavar="SECONDS",
         type=int,
-        help="Best-effort attempt at a timeout in seconds. (default: no timeout) [experimental]",
+        help="Best-effort attempt at a global timeout in seconds. If enabled, "
+        "diffoscope will not recurse into any further sub-archives after X "
+        "seconds of total execution time. (default: no timeout) [experimental]",
         default=float("inf"),
     )
     group3.add_argument(
