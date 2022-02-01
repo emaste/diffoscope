@@ -111,3 +111,16 @@ def test_compare_to_dangling_symlink(tmpdir):
     b = specialize(FilesystemFile(path))
 
     assert a.compare(b).unified_diff == get_data("test_directory_symlink_diff")
+
+
+@pytest.mark.xfail(strict=False)
+def test_compare_both_ways(tmpdir):
+    """
+    Comparing a directory with a file shouldn't crash, but nor should as
+    comparing a file with a directory either. (Re: #292)
+    """
+
+    a = specialize(FilesystemFile(str(tmpdir)))
+    b = specialize(FilesystemFile(TEST_FILE1_PATH))
+    a.compare(b)
+    b.compare(a)
