@@ -34,7 +34,7 @@ except ImportError:
 
 try:
     import binwalk
-except ImportError:
+except Exception:
     python_module_missing("binwalk")
     binwalk = None
 else:
@@ -89,14 +89,17 @@ class BinwalkFile(File):
         unpacked = get_temporary_directory(prefix="binwalk")
         logger.debug("Extracting %s to %s", file.path, unpacked.name)
 
-        binwalk.scan(
-            file.path,
-            dd="cpio:cpio",
-            carve=True,
-            quiet=True,
-            signature=True,
-            directory=unpacked.name,
-        )
+        try:
+            binwalk.scan(
+                file.path,
+                dd="cpio:cpio",
+                carve=True,
+                quiet=True,
+                signature=True,
+                directory=unpacked.name,
+            )
+        except binwalk.core.exceptions.ModuleException:
+            return False
 
         members = {
             "{} file embedded at offset {}".format(
