@@ -35,7 +35,7 @@ except ImportError:
 try:
     import binwalk
 except ImportError:
-    python_module_missing("rpm")
+    python_module_missing("binwalk")
     binwalk = None
 else:
     # Disable binwalk's own user configuration for predictable results and to
