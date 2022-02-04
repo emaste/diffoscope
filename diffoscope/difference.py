@@ -116,11 +116,11 @@ class Difference:
             raise NotImplementedError(
                 "_reverse_self on VisualDifference is not yet implemented"
             )
-        unified_diff = (
-            reverse_unified_diff(self.unified_diff)
-            if self.unified_diff is not None
-            else None
-        )
+
+        unified_diff = None
+        if self.unified_diff is not None:
+            unified_diff = reverse_unified_diff(self.unified_diff)
+
         return self.__class__(
             self.source2,
             self.source1,
