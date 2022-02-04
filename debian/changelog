@@ -1,8 +1,14 @@
-diffoscope (203) UNRELEASED; urgency=medium
+diffoscope (203) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Improve documentation for --timeout due to a few misconceptions.
+    Add an allowed-to-fail test regarding a regression in directory handling.
+  * Tidy control flow in Difference._reverse_self a little.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 28 Jan 2022 08:19:44 -0800
+  [ Alyssa Ross ]
+  * Fix diffing CBFS names that contain spaces.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 04 Feb 2022 08:13:13 -0800
 
 diffoscope (202) unstable; urgency=medium
 
