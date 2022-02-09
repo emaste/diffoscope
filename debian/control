@@ -130,7 +130,7 @@ Architecture: all
 Suggests:
  libjs-jquery,
 Depends:
- diffoscope-minimal,
+ diffoscope-minimal (= ${source:Version}),
  ${misc:Depends},
 Recommends:
  ${diffoscope:Recommends},
