@@ -1,8 +1,19 @@
-diffoscope (204) UNRELEASED; urgency=medium
+diffoscope (204) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't run the binwalk comparator tests as root (or fakeroot) as the
+    latest version of binwalk has some security protection against doing
+    precisely this.
+  * If we fail to scan a file using binwalk, return 'False' from
+    BinwalkFile.recognizes rather than raise a traceback.
+  * If we fail to import the Python "binwalk" module, don't accidentally report
+    that we are missing the "rpm" module instead.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 04 Feb 2022 08:17:01 -0800
+  [ Mattia Rizzolo ]
+  * Use dependencies to ensure that "diffoscope" and "diffoscope-minimal"
+    packages always have the precise same version.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 11 Feb 2022 10:39:27 -0800
 
 diffoscope (203) unstable; urgency=medium
 
