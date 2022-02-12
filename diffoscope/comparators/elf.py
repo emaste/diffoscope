@@ -665,7 +665,7 @@ class ElfContainer(DecompilableContainer):
             self.source.add_comment(
                 f"File has been modified after NT_GNU_BUILD_ID has been applied."
             )
-            logger.warning(
+            logger.debug(
                 f"{self.source.path} has been modified after NT_GNU_BUILD_ID has been applied"
             )
             logger.debug(
