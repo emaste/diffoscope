@@ -237,7 +237,13 @@ class DotChangesFile(DebControlFile):
 
     # .changes files can be identified "data" if they contain non-printable
     # characters (Re: reproducible-builds/diffoscope#286)
-    FILE_TYPE_RE = re.compile(r"^(ASCII text|UTF-8 Unicode text|data)")
+    #
+    # In addition, different versions of file(1) can emit "UTF-8 Unicode text"
+    # or "UTF-8 Unicode text" for .changes files that use non-ASCII characters,
+    # so we have to look for both. (Re: reproducible-builds/diffoscope#291)
+    FILE_TYPE_RE = re.compile(
+        r"^(ASCII text|UTF-8 Unicode text|data|Unicode text, UTF-8 text)"
+    )
 
     @classmethod
     def recognizes(cls, file):
