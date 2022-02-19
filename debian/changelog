@@ -1,8 +1,16 @@
-diffoscope (205) UNRELEASED; urgency=medium
+diffoscope (205) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Fix a file(1)-related regression where .changes files that contained
+    non-ASCII text were not identified as being .changes files, resulting in
+    seemingly arbitrary packages on tests.reproducible-builds.org and elswhere
+    not comparing the package at all. The non-ASCII parts could have been in
+    the Maintainer or in the upload changelog, so we were effectively
+    penalising anyone outside of the Anglosphere.
+    (Closes: reproducible-builds/diffoscope#291)
+  * Don't print a warning to the console regarding NT_GNU_BUILD_ID changes in
+    ELF binaries.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 11 Feb 2022 10:43:35 -0800
+ -- Chris Lamb <lamby@debian.org>  Sat, 19 Feb 2022 14:58:57 -0800
 
 diffoscope (204) unstable; urgency=medium
 
