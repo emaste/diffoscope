@@ -26,7 +26,7 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, get_data
+from ..utils.data import data, get_data, load_fixture
 from ..utils.tools import skip_unless_module_exists
 
 from ..utils.nonexisting import assert_non_existing
@@ -52,6 +52,8 @@ TEST_DOT_BUILDINFO_FILE1 = data("test1.buildinfo")
 TEST_DOT_BUILDINFO_FILE2 = data("test2.buildinfo")
 TEST_DEB_FILE1 = data("test1.deb")
 TEST_DEB_FILE2 = data("test2.deb")
+
+changes5 = load_fixture("test5.changes")
 
 
 @pytest.fixture
@@ -351,3 +353,13 @@ def test_fallback_comparisons(monkeypatch):
         assert file1.compare(file1) is None
         assert file2.compare(file2) is None
         assert file1.compare(file2).unified_diff == get_data(expected_diff)
+
+
+def test_unicode_identification(changes5):
+    # .changes can be identified by file(1) as:
+    #
+    # * "ASCII text"
+    # * "UTF-8 Unicode text" (older versions of file)
+    # * "Unicode text, UTF-8 text"
+    # * "data" (files with broken Unicode: reproducible-builds/diffoscope#286)
+    assert isinstance(changes5, DotChangesFile)

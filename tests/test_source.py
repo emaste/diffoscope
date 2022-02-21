@@ -218,6 +218,7 @@ ALLOWED_TEST_FILES = {
     "test4.changes",
     "test4.gif",
     "test4.pdf",
+    "test5.changes",
     "test_comment1.zip",
     "test_comment2.zip",
     "test_invalid.json",
