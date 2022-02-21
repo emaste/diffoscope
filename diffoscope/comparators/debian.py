@@ -336,7 +336,7 @@ class DotBuildinfoFile(DebControlFile):
     CONTAINER_CLASSES = [DotBuildinfoContainer]
     FILE_EXTENSION_SUFFIX = {".buildinfo"}
     FILE_TYPE_RE = re.compile(
-        r"^(ASCII text|UTF-8 Unicode text|PGP signed message)"
+        r"^(ASCII text|UTF-8 Unicode text|Unicode text, UTF-8 text|PGP signed message)"
     )
 
     @classmethod
