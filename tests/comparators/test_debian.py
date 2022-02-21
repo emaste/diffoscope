@@ -44,24 +44,24 @@ except ImportError:
         DotBuildinfoFile,
     )
 
-TEST_DOT_CHANGES_FILE1_PATH = data("test1.changes")
-TEST_DOT_CHANGES_FILE2_PATH = data("test2.changes")
-TEST_DOT_CHANGES_FILE3_PATH = data("test3.changes")
-TEST_DOT_CHANGES_FILE4_PATH = data("test4.changes")
-TEST_DOT_BUILDINFO_FILE1_PATH = data("test1.buildinfo")
-TEST_DOT_BUILDINFO_FILE2_PATH = data("test2.buildinfo")
-TEST_DEB_FILE1_PATH = data("test1.deb")
-TEST_DEB_FILE2_PATH = data("test2.deb")
+TEST_DOT_CHANGES_FILE1 = data("test1.changes")
+TEST_DOT_CHANGES_FILE2 = data("test2.changes")
+TEST_DOT_CHANGES_FILE3 = data("test3.changes")
+TEST_DOT_CHANGES_FILE4 = data("test4.changes")
+TEST_DOT_BUILDINFO_FILE1 = data("test1.buildinfo")
+TEST_DOT_BUILDINFO_FILE2 = data("test2.buildinfo")
+TEST_DEB_FILE1 = data("test1.deb")
+TEST_DEB_FILE2 = data("test2.deb")
 
 
 @pytest.fixture
 def dot_changes1(tmpdir):
     tmpdir.mkdir("a")
     dot_changes_path = str(tmpdir.join("a/test_1.changes"))
-    shutil.copy(TEST_DOT_CHANGES_FILE1_PATH, dot_changes_path)
-    shutil.copy(TEST_DEB_FILE1_PATH, str(tmpdir.join("a/test_1_all.deb")))
+    shutil.copy(TEST_DOT_CHANGES_FILE1, dot_changes_path)
+    shutil.copy(TEST_DEB_FILE1, str(tmpdir.join("a/test_1_all.deb")))
     shutil.copy(
-        TEST_DOT_BUILDINFO_FILE1_PATH, str(tmpdir.join("a/test_1.buildinfo"))
+        TEST_DOT_BUILDINFO_FILE1, str(tmpdir.join("a/test_1.buildinfo"))
     )
     return specialize(FilesystemFile(dot_changes_path))
 
@@ -70,10 +70,10 @@ def dot_changes1(tmpdir):
 def dot_changes2(tmpdir):
     tmpdir.mkdir("b")
     dot_changes_path = str(tmpdir.join("b/test_1.changes"))
-    shutil.copy(TEST_DOT_CHANGES_FILE2_PATH, dot_changes_path)
-    shutil.copy(TEST_DEB_FILE2_PATH, str(tmpdir.join("b/test_1_all.deb")))
+    shutil.copy(TEST_DOT_CHANGES_FILE2, dot_changes_path)
+    shutil.copy(TEST_DEB_FILE2, str(tmpdir.join("b/test_1_all.deb")))
     shutil.copy(
-        TEST_DOT_BUILDINFO_FILE2_PATH, str(tmpdir.join("b/test_2.buildinfo"))
+        TEST_DOT_BUILDINFO_FILE2, str(tmpdir.join("b/test_2.buildinfo"))
     )
     return specialize(FilesystemFile(dot_changes_path))
 
@@ -82,10 +82,10 @@ def dot_changes2(tmpdir):
 def dot_changes3(tmpdir):
     tmpdir.mkdir("c")
     dot_changes_path = str(tmpdir.join("c/test_3.changes"))
-    shutil.copy(TEST_DOT_CHANGES_FILE3_PATH, dot_changes_path)
-    shutil.copy(TEST_DEB_FILE1_PATH, str(tmpdir.join("c/test_1_all.deb")))
+    shutil.copy(TEST_DOT_CHANGES_FILE3, dot_changes_path)
+    shutil.copy(TEST_DEB_FILE1, str(tmpdir.join("c/test_1_all.deb")))
     shutil.copy(
-        TEST_DOT_BUILDINFO_FILE2_PATH, str(tmpdir.join("c/test_2.buildinfo"))
+        TEST_DOT_BUILDINFO_FILE2, str(tmpdir.join("c/test_2.buildinfo"))
     )
     return specialize(FilesystemFile(dot_changes_path))
 
@@ -94,10 +94,10 @@ def dot_changes3(tmpdir):
 def dot_changes4(tmpdir):
     tmpdir.mkdir("d")
     dot_changes_path = str(tmpdir.join("d/test_4.changes"))
-    shutil.copy(TEST_DOT_CHANGES_FILE4_PATH, dot_changes_path)
-    shutil.copy(TEST_DEB_FILE2_PATH, str(tmpdir.join("d/test_1_all.deb")))
+    shutil.copy(TEST_DOT_CHANGES_FILE4, dot_changes_path)
+    shutil.copy(TEST_DEB_FILE2, str(tmpdir.join("d/test_1_all.deb")))
     shutil.copy(
-        TEST_DOT_BUILDINFO_FILE1_PATH, str(tmpdir.join("d/test_2.buildinfo"))
+        TEST_DOT_BUILDINFO_FILE1, str(tmpdir.join("d/test_2.buildinfo"))
     )
     return specialize(FilesystemFile(dot_changes_path))
 
@@ -110,7 +110,7 @@ def test_dot_changes_identification(dot_changes1):
 def test_dot_changes_invalid(tmpdir):
     tmpdir.mkdir("a")
     dot_changes_path = str(tmpdir.join("a/test_1.changes"))
-    shutil.copy(TEST_DOT_CHANGES_FILE1_PATH, dot_changes_path)
+    shutil.copy(TEST_DOT_CHANGES_FILE1, dot_changes_path)
     # we don't copy the referenced .deb
     identified = specialize(FilesystemFile(dot_changes_path))
     # ... but it is identified regardless
@@ -201,18 +201,18 @@ def test_dot_changes_different_contents_and_identical_files(
     )
 
 
-TEST_DOT_DSC_FILE1_PATH = data("test1.dsc")
-TEST_DOT_DSC_FILE2_PATH = data("test2.dsc")
-TEST_DEB_SRC1_PATH = data("test1.debsrc.tar.gz")
-TEST_DEB_SRC2_PATH = data("test2.debsrc.tar.gz")
+TEST_DOT_DSC_FILE1 = data("test1.dsc")
+TEST_DOT_DSC_FILE2 = data("test2.dsc")
+TEST_DEB_SRC1 = data("test1.debsrc.tar.gz")
+TEST_DEB_SRC2 = data("test2.debsrc.tar.gz")
 
 
 @pytest.fixture
 def dot_dsc1(tmpdir):
     tmpdir.mkdir("a")
     dot_dsc_path = str(tmpdir.join("a/test_1.dsc"))
-    shutil.copy(TEST_DOT_DSC_FILE1_PATH, dot_dsc_path)
-    shutil.copy(TEST_DEB_SRC1_PATH, str(tmpdir.join("a/test_1.tar.gz")))
+    shutil.copy(TEST_DOT_DSC_FILE1, dot_dsc_path)
+    shutil.copy(TEST_DEB_SRC1, str(tmpdir.join("a/test_1.tar.gz")))
     return specialize(FilesystemFile(dot_dsc_path))
 
 
@@ -220,8 +220,8 @@ def dot_dsc1(tmpdir):
 def dot_dsc2(tmpdir):
     tmpdir.mkdir("b")
     dot_dsc_path = str(tmpdir.join("b/test_1.dsc"))
-    shutil.copy(TEST_DOT_DSC_FILE2_PATH, dot_dsc_path)
-    shutil.copy(TEST_DEB_SRC2_PATH, str(tmpdir.join("b/test_1.tar.gz")))
+    shutil.copy(TEST_DOT_DSC_FILE2, dot_dsc_path)
+    shutil.copy(TEST_DEB_SRC2, str(tmpdir.join("b/test_1.tar.gz")))
     return specialize(FilesystemFile(dot_dsc_path))
 
 
@@ -233,7 +233,7 @@ def test_dot_dsc_identification(dot_dsc1):
 def test_dot_dsc_no_associated_tar_gz(tmpdir, dot_dsc2):
     tmpdir.mkdir("a")
     dot_dsc_path = str(tmpdir.join("a/test_1.dsc"))
-    shutil.copy(TEST_DOT_CHANGES_FILE1_PATH, dot_dsc_path)
+    shutil.copy(TEST_DOT_CHANGES_FILE1, dot_dsc_path)
     # we don't copy the referenced .tar.gz
     identified = specialize(FilesystemFile(dot_dsc_path))
     assert isinstance(identified, DotDscFile)
@@ -267,9 +267,9 @@ def test_dot_dsc_compare_non_existing(monkeypatch, dot_dsc1):
 def dot_buildinfo1(tmpdir):
     tmpdir.mkdir("a")
     dot_buildinfo_path = str(tmpdir.join("a/test_1.buildinfo"))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, dot_buildinfo_path)
-    shutil.copy(TEST_DOT_DSC_FILE1_PATH, str(tmpdir.join("a/test_1.dsc")))
-    shutil.copy(TEST_DEB_FILE1_PATH, str(tmpdir.join("a/test_1_all.deb")))
+    shutil.copy(TEST_DOT_BUILDINFO_FILE1, dot_buildinfo_path)
+    shutil.copy(TEST_DOT_DSC_FILE1, str(tmpdir.join("a/test_1.dsc")))
+    shutil.copy(TEST_DEB_FILE1, str(tmpdir.join("a/test_1_all.deb")))
     return specialize(FilesystemFile(dot_buildinfo_path))
 
 
@@ -277,9 +277,9 @@ def dot_buildinfo1(tmpdir):
 def dot_buildinfo2(tmpdir):
     tmpdir.mkdir("b")
     dot_buildinfo_path = str(tmpdir.join("b/test_1.buildinfo"))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE2_PATH, dot_buildinfo_path)
-    shutil.copy(TEST_DOT_DSC_FILE2_PATH, str(tmpdir.join("b/test_1.dsc")))
-    shutil.copy(TEST_DEB_FILE2_PATH, str(tmpdir.join("b/test_1_all.deb")))
+    shutil.copy(TEST_DOT_BUILDINFO_FILE2, dot_buildinfo_path)
+    shutil.copy(TEST_DOT_DSC_FILE2, str(tmpdir.join("b/test_1.dsc")))
+    shutil.copy(TEST_DEB_FILE2, str(tmpdir.join("b/test_1_all.deb")))
     return specialize(FilesystemFile(dot_buildinfo_path))
 
 
@@ -291,7 +291,7 @@ def test_dot_buildinfo_identification(dot_buildinfo1):
 def test_dot_buildinfo_no_deb(tmpdir):
     tmpdir.mkdir("a")
     dot_buildinfo_path = str(tmpdir.join("a/test_1.buildinfo"))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, dot_buildinfo_path)
+    shutil.copy(TEST_DOT_BUILDINFO_FILE1, dot_buildinfo_path)
     # we don't copy the referenced .deb
     identified = specialize(FilesystemFile(dot_buildinfo_path))
     assert isinstance(identified, DotBuildinfoFile)
