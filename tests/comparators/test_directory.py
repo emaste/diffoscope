@@ -25,7 +25,7 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.directory import compare_directories
 from diffoscope.comparators.utils.specialize import specialize
 
-from ..utils.data import data, get_data
+from ..utils.data import data, get_data, assert_diff
 
 
 TEST_FILE1_PATH = data("text_ascii1")
@@ -83,14 +83,14 @@ def test_compare_to_file(tmpdir):
     a = specialize(FilesystemFile(str(tmpdir.mkdir("dir"))))
     b = specialize(FilesystemFile(path))
 
-    assert a.compare(b).unified_diff == get_data("test_directory_file_diff")
+    assert_diff(a.compare(b), "test_directory_file_diff")
 
 
 def test_compare_to_device(tmpdir):
     a = specialize(FilesystemFile(str(tmpdir.mkdir("dir"))))
     b = specialize(FilesystemFile("/dev/null"))
 
-    assert a.compare(b).unified_diff == get_data("test_directory_device_diff")
+    assert_diff(a.compare(b), "test_directory_device_diff")
 
 
 def test_compare_to_symlink(tmpdir):
@@ -100,7 +100,7 @@ def test_compare_to_symlink(tmpdir):
     a = specialize(FilesystemFile(str(tmpdir.mkdir("dir"))))
     b = specialize(FilesystemFile(path))
 
-    assert a.compare(b).unified_diff == get_data("test_directory_symlink_diff")
+    assert_diff(a.compare(b), "test_directory_symlink_diff")
 
 
 def test_compare_to_dangling_symlink(tmpdir):
@@ -110,7 +110,7 @@ def test_compare_to_dangling_symlink(tmpdir):
     a = specialize(FilesystemFile(str(tmpdir.mkdir("dir"))))
     b = specialize(FilesystemFile(path))
 
-    assert a.compare(b).unified_diff == get_data("test_directory_symlink_diff")
+    assert_diff(a.compare(b), "test_directory_symlink_diff")
 
 
 @pytest.mark.xfail(strict=False)
