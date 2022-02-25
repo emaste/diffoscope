@@ -1,3 +1,9 @@
+diffoscope (207) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 25 Feb 2022 08:04:27 +0000
+
 diffoscope (206) unstable; urgency=medium
 
   * Also allow "Unicode text, UTF-8 text" as well as "UTF-8 Unicode text" to
