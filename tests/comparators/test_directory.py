@@ -23,6 +23,7 @@ import pytest
 
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.directory import compare_directories
+from diffoscope.comparators.utils.compare import compare_root_paths
 from diffoscope.comparators.utils.specialize import specialize
 
 from ..utils.data import data, get_data, assert_diff
@@ -113,14 +114,14 @@ def test_compare_to_dangling_symlink(tmpdir):
     assert_diff(a.compare(b), "test_directory_symlink_diff")
 
 
-@pytest.mark.xfail(strict=False)
 def test_compare_both_ways(tmpdir):
     """
     Comparing a directory with a file shouldn't crash, but nor should as
     comparing a file with a directory either. (Re: #292)
     """
 
-    a = specialize(FilesystemFile(str(tmpdir)))
-    b = specialize(FilesystemFile(TEST_FILE1_PATH))
-    a.compare(b)
-    b.compare(a)
+    a = str(tmpdir)
+    b = TEST_FILE1_PATH
+
+    assert_diff(compare_root_paths(a, b), "test_directory_a_b_diff")
+    assert_diff(compare_root_paths(b, a), "test_directory_b_a_diff")

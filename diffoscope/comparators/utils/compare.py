@@ -82,9 +82,11 @@ def compare_root_paths(path1, path2):
     # DESCRIPTION attributes either, as the specialize() call above may not
     # have returned a specific instance.
     if difference is None and str(type(file1)) != str(type(file2)):
-        difference = Difference(file1.name, file2.name)
-        difference.add_comment(
-            "Types of files differ; human-readable metadata may match literal file contents."
+        return Difference.from_text(
+            "type: {}".format(file1.file_type),
+            "type: {}".format(file2.file_type),
+            file1.name,
+            file2.name,
         )
 
     return difference
@@ -136,6 +138,11 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
     ):
         return file1.compare_bytes(file2, source)
     with profile("compare_files (cumulative)", file1):
+        if file2.is_directory():
+            difference = file2.compare(file1, source)
+            if difference is not None:
+                difference = difference.get_reverse()
+            return difference
         return file1.compare(file2, source)
 
 
