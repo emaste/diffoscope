@@ -1,3 +1,9 @@
+diffoscope (208) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 04 Mar 2022 12:57:36 +0000
+
 diffoscope (207) unstable; urgency=medium
 
   * Fix a gnarly regression when comparing directories against non-directories.
