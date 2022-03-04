@@ -1,8 +1,10 @@
-diffoscope (207) UNRELEASED; urgency=medium
+diffoscope (207) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Fix a gnarly regression when comparing directories against non-directories.
+    (Closes: reproducible-builds/diffoscope#292)
+  * Use our assert_diff utility where we can within test_directory.py
 
- -- Chris Lamb <lamby@debian.org>  Fri, 25 Feb 2022 08:04:27 +0000
+ -- Chris Lamb <lamby@debian.org>  Fri, 04 Mar 2022 12:55:26 +0000
 
 diffoscope (206) unstable; urgency=medium
 
