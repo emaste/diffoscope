@@ -43,16 +43,16 @@ class Config:
         self.diff_context = 7
 
         # GNU diff cannot process arbitrary large files :(
-        self.max_diff_input_lines = 2 ** 22
+        self.max_diff_input_lines = 2**22
         self.max_diff_block_lines_saved = float("inf")
 
         # hard limits, restricts single-file and multi-file formats
-        self.max_report_size = defaultint(40 * 2 ** 20)  # 40 MB
-        self.max_diff_block_lines = defaultint(2 ** 10)  # 1024 lines
+        self.max_report_size = defaultint(40 * 2**20)  # 40 MB
+        self.max_diff_block_lines = defaultint(2**10)  # 1024 lines
         # structural limits, restricts single-file formats
         # semi-restricts multi-file formats
-        self.max_page_size = defaultint(40 * 2 ** 20)  # 4 MB
-        self.max_page_diff_block_lines = defaultint(2 ** 7)  # 128 lines
+        self.max_page_size = defaultint(40 * 2**20)  # 4 MB
+        self.max_page_diff_block_lines = defaultint(2**7)  # 128 lines
 
         self.max_text_report_size = 0
 

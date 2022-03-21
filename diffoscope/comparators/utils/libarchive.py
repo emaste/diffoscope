@@ -342,7 +342,7 @@ class LibarchiveContainer(Archive):
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 try:
                     with open(dst, "wb") as f:
-                        for block in entry.get_blocks(block_size=2 ** 17):
+                        for block in entry.get_blocks(block_size=2**17):
                             f.write(block)
                 except Exception as e:
                     raise ContainerExtractionError(entry.pathname, e)

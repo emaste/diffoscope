@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 class TextPresenter(Presenter):
-    PREFIX = u"│ "
+    PREFIX = "│ "
     RE_PREFIX = re.compile(r"(^|\n)")
 
     def __init__(self, print_func, color):
@@ -76,13 +76,13 @@ class TextPresenter(Presenter):
             self.output("--- {}".format(difference.source1))
             self.output("+++ {}".format(difference.source2))
         elif difference.source1 == difference.source2:
-            self.output(u"├── {}".format(difference.source1))
+            self.output("├── {}".format(difference.source1))
         else:
-            self.output(u"│   --- {}".format(difference.source1))
-            self.output(u"├── +++ {}".format(difference.source2))
+            self.output("│   --- {}".format(difference.source1))
+            self.output("├── +++ {}".format(difference.source2))
 
         for x in difference.comments:
-            self.output(u"│┄ {}".format(x))
+            self.output("│┄ {}".format(x))
 
         diff = difference.unified_diff
 

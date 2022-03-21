@@ -39,10 +39,10 @@ logger = logging.getLogger(__name__)
 def convert_header_field(io, header):
     if isinstance(header, list):
         if len(header) == 0:
-            io.write(u"[]")
+            io.write("[]")
         else:
             for item in header:
-                io.write(u"\n - ")
+                io.write("\n - ")
                 convert_header_field(io, item)
         return
 
@@ -70,9 +70,9 @@ def get_rpm_header(path, ts):
         for rpmtag in sorted(rpm.tagnames):
             if rpmtag not in hdr:
                 continue
-            s.write(u"{}: ".format(rpm.tagnames[rpmtag]))
+            s.write("{}: ".format(rpm.tagnames[rpmtag]))
             convert_header_field(s, hdr[rpmtag])
-            s.write(u"\n")
+            s.write("\n")
     return s.getvalue()
 
 
