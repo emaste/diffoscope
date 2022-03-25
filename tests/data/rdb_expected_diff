@@ -137,7 +137,7 @@
  
  .__NAMESPACE__. (environment) = 
  {
-     "S3methods" = "structure(character(0), .Dim = c(0L, 4L))"
+     "S3methods" = "structure(character(0), dim = c(0L, 4L))"
      "dynlibs" = "NULL"
      "exports" = "<environment>"
 -    "imports" = "list(base = TRUE, utils = c(aspell_package_Rd_files = "aspell_package_Rd_files", "

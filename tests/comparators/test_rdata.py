@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2017 Ximin Luo <infinity0@debian.org>
-# Copyright © 2017, 2020-2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2020-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,19 +17,33 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import re
 import pytest
+import subprocess
 
 from diffoscope.comparators.gzip import GzipFile
 from diffoscope.comparators.rdata import RdbFile
 
 from ..utils.data import load_fixture, get_data, assert_diff
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 
 
 rdb1 = load_fixture("test1.rdb")
 rdb2 = load_fixture("test2.rdb")
 rdx1 = load_fixture("test1.rdx")
 rdx2 = load_fixture("test2.rdx")
+
+
+def rscript_version():
+    val = subprocess.check_output(
+        ("Rscript", "--version"), stderr=subprocess.STDOUT
+    )
+
+    m = re.search(r"version (?P<version>[^\(]+)\s", val.decode("utf-8"))
+    if not m:
+        return "~0unknown"
+
+    return m.group("version")
 
 
 def test_identification(rdb1, rdx1):
@@ -58,6 +72,7 @@ def test_num_items_rdb(differences_rdb):
 
 
 @skip_unless_tools_exist("Rscript")
+@skip_unless_tool_is_at_least("Rscript", rscript_version, "4.2.0")
 def test_item_rdb(differences_rdb):
     assert differences_rdb[0].source1.startswith("Rscript")
     assert_diff(differences_rdb[0], "rdb_expected_diff")
