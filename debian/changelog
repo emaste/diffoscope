@@ -1,8 +1,14 @@
-diffoscope (208) UNRELEASED; urgency=medium
+diffoscope (208) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Brent Spillner ]
+  * Add graceful handling for UNIX sockets and named pipes.
+    (Closes: reproducible-builds/diffoscope#292)
+  * Remove a superfluous log message and reformatt comment lines.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 04 Mar 2022 12:57:36 +0000
+  [ Chris Lamb ]
+  * Reformat various files to satisfy current version of Black.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 25 Mar 2022 08:24:33 +0000
 
 diffoscope (207) unstable; urgency=medium
 
