@@ -1,8 +1,9 @@
-diffoscope (209) UNRELEASED; urgency=medium
+diffoscope (209) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Update R test fixture for R 4.2.x series. (Closes: #1008446)
+  * Update minimum version of Black to prevent test failure on Ubuntu jammy.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 25 Mar 2022 08:46:02 +0000
+ -- Chris Lamb <lamby@debian.org>  Sun, 27 Mar 2022 09:23:02 +0100
 
 diffoscope (208) unstable; urgency=medium
 
