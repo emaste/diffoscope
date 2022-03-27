@@ -1,3 +1,9 @@
+diffoscope (210) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 27 Mar 2022 09:24:15 +0100
+
 diffoscope (209) unstable; urgency=medium
 
   * Update R test fixture for R 4.2.x series. (Closes: #1008446)
