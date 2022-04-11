@@ -686,7 +686,6 @@ def run_diffoscope(parsed_args):
         )
 
     configure(parsed_args)
-    set_path()
     normalize_environment()
 
     path1, path2 = parsed_args.path1, parsed_args.path2
@@ -748,6 +747,7 @@ def main(args=None):
         sys.exit(2)
 
     parsed_args = None
+    set_path()
 
     try:
         with profile("main", "parse_args"):
