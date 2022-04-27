@@ -9,7 +9,8 @@ fi
 
 export LIBGUESTFS_MEMSIZE=128
 if [ "$(basename "$0")" = "pytest-with-recommends" ]; then
-    export DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS="apktool zipinfo pedump oggDump ppudump cbfstool otool lipo radare2"
+    # ssconvert because gnumeric is not currently in testing (2022-04-27)
+    export DIFFOSCOPE_FAIL_TESTS_ON_MISSING_TOOLS="apktool zipinfo pedump oggDump ppudump cbfstool otool lipo radare2 ssconvert"
 fi
 
 for py in $(py3versions -s); do
