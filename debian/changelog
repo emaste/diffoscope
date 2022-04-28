@@ -1,8 +1,11 @@
-diffoscope (211) UNRELEASED; urgency=medium
+diffoscope (211) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Mattia Rizzolo ]
+  * Drop mplayer from the Build-Depends, it was add likely by accident and it's
+    not needed.
+  * Disable gnumeric tests in Debian because it's not currently available.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 15 Apr 2022 09:05:01 +0100
+ -- Chris Lamb <lamby@debian.org>  Thu, 28 Apr 2022 08:20:23 -0700
 
 diffoscope (210) unstable; urgency=medium
 
