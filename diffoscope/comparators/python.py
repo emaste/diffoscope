@@ -37,6 +37,7 @@ re_memory_address = re.compile(r" at 0x\w+(?=, )")
 class PycFile(File):
     DESCRIPTION = "Python .pyc files"
     FILE_TYPE_RE = re.compile(r"^python .*byte-compiled$")
+    FALLBACK_FILE_EXTENSION_SUFFIX = {".pyc"}
 
     def compare_details(self, other, source=None):
         if isinstance(other, MissingFile):
