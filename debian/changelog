@@ -1,8 +1,11 @@
-diffoscope (212) UNRELEASED; urgency=medium
+diffoscope (212) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Add support for extracting vmlinuz/vmlinux Linux kernel images.
+    (Closes: reproducible-builds/diffoscope#304)
+  * Some Python .pyc files report as "data", so support ".pyc" as a
+    fallback extension.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 28 Apr 2022 08:21:28 -0700
+ -- Chris Lamb <lamby@debian.org>  Fri, 13 May 2022 08:19:57 -0700
 
 diffoscope (211) unstable; urgency=medium
 
