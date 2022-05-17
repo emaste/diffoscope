@@ -120,23 +120,33 @@ class BsdtarVerbose(Command):
 def zipinfo_differences(file, other):
     """
     Run all our zipinfo variants.
-
-    We only return the first kind of metadata command that returns some output.
-    The compromise here is that "zipinfo -v" returns more info and, if the .zip
-    files contain both extended and simple kinds differences, then this logic
-    will only show the simpler differences.
-
-    In practice, this can mean that the values of .zip "extra fields" can be
-    hidden (see, for example, reproducible-builds/strip-nondeterminism#19).
-    This is considered less bad than the inverse (ie. prefering to show the
-    output of "zipinfo -v" over merely "zipinfo") as this will result in
-    virtually unreadable diffs in the case that differences when the
-    differences in the .zip are conventional/common/simple.
     """
-    for x in (Zipinfo, ZipinfoVerbose, BsdtarVerbose):
-        result = Difference.from_operation(x, file.path, other.path)
-        if result is not None:
-            return [result]
+
+    # We need to run both "zipinfo" and "zipinfo -v" in all code paths, so just
+    # run them both first.
+    zipinfo = Difference.from_operation(Zipinfo, file.path, other.path)
+    verbose = Difference.from_operation(ZipinfoVerbose, file.path, other.path)
+
+    # First try and prefer "zipinfo"...
+    if zipinfo is not None:
+        # ... but if "zipinfo -v" indicates we have differences in .zip
+        # directory "extra fields", add a comment and prefer that output.
+        if re.search(r"[-+]  The central-directory extra field contains:", verbose.unified_diff):
+            verbose.add_comment(
+                "Differences in extra fields detected; using output from zipinfo -v"
+            )
+            return [verbose]
+
+        return [zipinfo]
+
+    # If none of this was detected, fallback to "zipinfo -v"...
+    if verbose is not None:
+        return [verbose]
+
+    # ... and, finally, "bsdtar -tvz"
+    bsdtar = Difference.from_operation(BsdtarVerbose, file.path, other.path)
+    if bsdtar is not None:
+        return [bsdtar]
 
     return []
 
