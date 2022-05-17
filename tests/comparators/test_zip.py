@@ -99,7 +99,6 @@ def test_mozzip_metadata(mozzip_differences, mozzip1, mozzip2):
     assert_diff(mozzip_differences[0], "mozzip_zipinfo_expected_diff")
 
 
-
 @skip_unless_tools_exist("zipinfo")
 def test_mozzip_compressed_files(mozzip_differences):
     assert mozzip_differences[-1].source1 == "dir/text"
