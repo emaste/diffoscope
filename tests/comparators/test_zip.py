@@ -21,7 +21,7 @@ import pytest
 
 from diffoscope.comparators.zip import ZipFile, MozillaZipFile, JmodJavaModule
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
 
@@ -60,22 +60,19 @@ def differences2(zip1, zip3):
 
 @skip_unless_tools_exist("zipinfo")
 def test_metadata(differences):
-    expected_diff = get_data("zip_zipinfo_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "zip_zipinfo_expected_diff")
 
 
 @skip_unless_tools_exist("zipinfo")
 def test_compressed_files(differences):
     assert differences[1].source1 == "dir/text"
     assert differences[1].source2 == "dir/text"
-    expected_diff = get_data("text_ascii_expected_diff")
-    assert differences[1].unified_diff == expected_diff
+    assert_diff(differences[1], "text_ascii_expected_diff")
 
 
 @skip_unless_tools_exist("zipinfo", "bsdtar")
 def test_extra_fields(differences2):
-    expected_diff = get_data("zip_bsdtar_expected_diff")
-    assert differences2[0].unified_diff == expected_diff
+    assert_diff(differences2[0], "zip_bsdtar_expected_diff")
 
 
 @skip_unless_tools_exist("zipinfo")
@@ -99,16 +96,15 @@ def mozzip_differences(mozzip1, mozzip2):
 
 @skip_unless_tools_exist("zipinfo")
 def test_mozzip_metadata(mozzip_differences, mozzip1, mozzip2):
-    expected_diff = get_data("mozzip_zipinfo_expected_diff")
-    assert mozzip_differences[0].unified_diff == expected_diff
+    assert_diff(mozzip_differences[0], "mozzip_zipinfo_expected_diff")
+
 
 
 @skip_unless_tools_exist("zipinfo")
 def test_mozzip_compressed_files(mozzip_differences):
     assert mozzip_differences[-1].source1 == "dir/text"
     assert mozzip_differences[-1].source2 == "dir/text"
-    expected_diff = get_data("text_ascii_expected_diff")
-    assert mozzip_differences[-1].unified_diff == expected_diff
+    assert_diff(mozzip_differences[-1], "text_ascii_expected_diff")
 
 
 @skip_unless_tools_exist("zipinfo")
@@ -132,8 +128,7 @@ def jmod_differences(jmod1, jmod2):
 
 @skip_unless_tools_exist("zipinfo")
 def test_jmod_metadata(jmod_differences, jmod1, jmod2):
-    expected_diff = get_data("jmod_zipinfo_expected_diff")
-    assert jmod_differences[0].unified_diff == expected_diff
+    assert_diff(jmod_differences[0], "jmod_zipinfo_expected_diff")
 
 
 def test_encrypted(encrypted_zip1, encrypted_zip2):
@@ -148,5 +143,4 @@ def comment_differences(test_comment1, test_comment2):
 
 @skip_unless_tools_exist("zipnote")
 def test_commented(comment_differences):
-    expected_diff = get_data("comment_zipinfo_expected_diff")
-    assert comment_differences[1].unified_diff == expected_diff
+    assert_diff(comment_differences[1], "comment_zipinfo_expected_diff")
