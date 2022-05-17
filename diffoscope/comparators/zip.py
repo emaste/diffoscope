@@ -120,11 +120,21 @@ class BsdtarVerbose(Command):
 def zipinfo_differences(file, other):
     """
     Run all our zipinfo variants.
-    """
 
+    We only return the first kind of metadata command that returns some output.
+    The compromise here is that "zipinfo -v" returns more info and, if the .zip
+    files contain both extended and simple kinds differences, then this logic
+    will only show the simpler differences.
+
+    In practice, this can mean that the values of .zip "extra fields" can be
+    hidden (see, for example, reproducible-builds/strip-nondeterminism#19).
+    This is considered less bad than the inverse (ie. prefering to show the
+    output of "zipinfo -v" over merely "zipinfo") as this will result in
+    virtually unreadable diffs in the case that differences when the
+    differences in the .zip are conventional/common/simple.
+    """
     for x in (Zipinfo, ZipinfoVerbose, BsdtarVerbose):
         result = Difference.from_operation(x, file.path, other.path)
-        # We only return the 'best' one
         if result is not None:
             return [result]
 
