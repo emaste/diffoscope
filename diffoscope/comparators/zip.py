@@ -196,11 +196,11 @@ class ZipFileBase(File):
         if x is None:
             return None
 
-        # If we have two or more differences, then we have observed differences
-        # within a nested file. If not, there is likely some difference in
-        # the metadata that zipinfo cannot discover, so we manually fallback to
-        # a binary diff.
-        if len(x.details) >= 2:
+        # If we have at least one differences, then we have observed
+        # differences within a nested file. If not, there is likely some
+        # difference in the metadata that zipinfo cannot discover, so we
+        # manually fallback to a binary diff.
+        if len(x.details) >= 1:
             return x
 
         x.add_comment(
