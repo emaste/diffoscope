@@ -131,7 +131,10 @@ def zipinfo_differences(file, other):
     if zipinfo is not None:
         # ... but if "zipinfo -v" indicates we have differences in .zip
         # directory "extra fields", add a comment and prefer that output.
-        if re.search(r"[-+]  The central-directory extra field contains:", verbose.unified_diff):
+        if re.search(
+            r"[-+]  The central-directory extra field contains:",
+            verbose.unified_diff,
+        ):
             verbose.add_comment(
                 "Differences in extra fields detected; using output from zipinfo -v"
             )
