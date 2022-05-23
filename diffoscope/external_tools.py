@@ -238,7 +238,7 @@ EXTERNAL_TOOLS = {
     "zipnote": {"debian": "zip", "guix": "zip"},
     "procyon": {"debian": "procyon-decompiler"},
     "dumpxsb": {"debian": "xmlbeans"},
-    "xb-tool": {"debian": "libxmlb-dev", "arch": "libxmlb"},
+    "xb-tool": {"debian": "libxmlb-dev", "arch": "libxmlb", "guix": "libxmlb"},
     "zstd": {"debian": "zstd", "guix": "zstd"},
 }
 
