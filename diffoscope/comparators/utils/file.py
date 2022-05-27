@@ -400,9 +400,7 @@ class File(metaclass=abc.ABCMeta):
         # gzip compressed data as this is just a symptom of the contents itself
         # changing that will be reflected elsewhere.
         if val.startswith("gzip compressed data"):
-            val = re.compile(r", original size modulo 2\^\d+ \d+$").sub(
-                "", val
-            )
+            val = re.sub(r", original size modulo 2\^\d+ \d+$", "", val)
 
         return val
 
