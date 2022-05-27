@@ -1,8 +1,12 @@
-diffoscope (214) UNRELEASED; urgency=medium
+diffoscope (214) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Support both python-argcomplete 1.x and 2.x.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 20 May 2022 08:16:58 -0700
+  [ Vagrant Cascadian ]
+  * Add external tool on GNU Guix for xb-tool.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 27 May 2022 06:53:04 +0100
 
 diffoscope (213) unstable; urgency=medium
 
