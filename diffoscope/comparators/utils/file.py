@@ -402,6 +402,10 @@ class File(metaclass=abc.ABCMeta):
         if val.startswith("gzip compressed data"):
             val = re.sub(r", original size modulo 2\^\d+ \d+$", "", val)
 
+        # Strip "sticky" etc. from "x.deb: sticky Debian binary package […]"
+        # See (#1011635)
+        val = re.sub(r"^(sticky|setuid|setgid)\s", "", val)
+
         return val
 
     def _compare_using_details(self, other, source):
