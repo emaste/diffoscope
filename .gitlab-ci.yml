@@ -14,10 +14,10 @@ stages:
         -o Debug::pkgProblemResolver=yes build-dep .
     - apt-get -q -y install --no-install-recommends radare2 || true
     - py.test-3 -vv -l -r a --cov=diffoscope --cov-report=term-missing --cov-report xml --cov-report html
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     paths:
       - htmlcov/*
-    coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
     reports:
       coverage_report:
         coverage_format: cobertura
