@@ -173,3 +173,17 @@ def test_non_unicode_filename(capsys, tmpdir):
 
     assert ret == 0
     assert out == err == ""
+
+
+def test_help(capsys):
+    ret, out, err = run(capsys, "--help")
+
+    assert err == ""
+    assert "options:" in out
+
+
+def test_usage(capsys):
+    ret, out, err = run(capsys, "--usage")
+
+    assert out == ""
+    assert "usage:" in err
