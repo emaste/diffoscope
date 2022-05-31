@@ -19,8 +19,6 @@ sed -i "s#%PYRECOMMENDS%#$(python3 -c "import distutils.core; \
 
 # Don't test-depend on radare2; not in bullseye for security reasons. (#950372)
 sed -i "s#radare2, ##" debian/tests/control.tmp
-# Drop gnumeric as it's not in testing currently (2022-04-27)
-sed -i "s#gnumeric, ##" debian/tests/control.tmp
 
 sed -i "s,python3-python-debian,python3-debian," debian/tests/control.tmp
 sed -i "s,python3-rpm-python,python3-rpm," debian/tests/control.tmp

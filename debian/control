@@ -32,8 +32,7 @@ Build-Depends:
  ghc <!nocheck>,
  ghostscript <!nocheck>,
  giflib-tools <!nocheck>,
-# drop gnumeric because it's not in testing currently (2022-04-27)
-# gnumeric <!nocheck>,
+ gnumeric <!nocheck>,
  gnupg-utils <!nocheck>,
  hdf5-tools <!nocheck>,
  help2man,
