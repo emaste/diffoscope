@@ -487,7 +487,8 @@ class HelpFormatter(argparse.HelpFormatter):
     def format_help(self, *args, **kwargs):
         val = super().format_help(*args, **kwargs)
 
-        # Only append the file formats if --help is passed.
+        # Only append the file formats (etc.) if --help is passed; otherwise we
+        # are being called via --usage
         if not set(sys.argv) & {"--help", "-h"}:
             return val
 
