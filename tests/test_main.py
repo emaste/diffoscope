@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2016-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import sys
 import pytest
 import signal
 import tempfile
@@ -175,11 +176,14 @@ def test_non_unicode_filename(capsys, tmpdir):
     assert out == err == ""
 
 
-def test_help(capsys):
+def test_help(capsys, monkeypatch):
+    # Fake --help in sys.argv so that we include out file formats in the output
+    monkeypatch.setattr(sys, "argv", ["diffoscope", "--help"])
+
     ret, out, err = run(capsys, "--help")
 
     assert err == ""
-    assert "options:" in out
+    assert "file formats supported:" in out
 
 
 def test_usage(capsys):
