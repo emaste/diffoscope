@@ -90,7 +90,7 @@ Build-Depends:
  zstd <!nocheck>,
 Build-Conflicts:
  graphicsmagick-imagemagick-compat,
-Standards-Version: 4.6.0
+Standards-Version: 4.6.1
 Rules-Requires-Root: no
 Homepage: https://diffoscope.org
 Vcs-Git: https://salsa.debian.org/reproducible-builds/diffoscope.git
