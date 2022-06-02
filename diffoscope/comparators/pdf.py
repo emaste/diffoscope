@@ -27,6 +27,14 @@ from .utils.command import Command
 
 try:
     import PyPDF2
+
+    try:
+        # PyPDF 2.x
+        from PyPDF2.errors import PdfReadError
+    except ImportError:
+        # PyPDF 1.x
+        from PyPDF2.utils import PdfReadError
+
 except ImportError:  # noqa
     python_module_missing("PyPDF2")
     PyPDF2 = None
@@ -92,7 +100,7 @@ class PdfFile(File):
         try:
             pdf = PyPDF2.PdfFileReader(file.path)
             document_info = pdf.getDocumentInfo()
-        except PyPDF2.utils.PdfReadError as e:
+        except PdfReadError as e:
             return f"(Could not extract metadata: {e})"
 
         if document_info is None:
@@ -108,7 +116,7 @@ class PdfFile(File):
     def dump_pypdf2_annotations(file):
         try:
             pdf = PyPDF2.PdfFileReader(file.path)
-        except PyPDF2.utils.PdfReadError as e:
+        except PdfReadError as e:
             return f"(Could not open file: {e})"
 
         xs = []
