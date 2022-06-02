@@ -38,7 +38,7 @@ doc/%.1:
 	$(MAKE) -C doc $*.1
 
 debian/diffoscope-minimal.bash-completion:
-	register-python-argcomplete diffoscope || register-python-argcomplete3 diffoscope > $@
+	(register-python-argcomplete diffoscope || register-python-argcomplete3 diffoscope) > $@
 
 execute_after_dh_auto_build: debian/diffoscope-minimal.bash-completion
 	dh_auto_build -O--buildsystem=makefile -Ddoc
