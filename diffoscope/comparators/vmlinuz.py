@@ -46,7 +46,7 @@ class VmlinuzContainer(Archive):
         logger.debug("extracting vmlinuz to %s", dest_path)
 
         # Locate extract-vmlinux script
-        script = pathlib.Path(__file__).parent.parent.parent.joinpath(
+        script = pathlib.Path(__file__).parent.parent.joinpath(
             "scripts", "extract-vmlinux"
         )
         with open(dest_path, "wb") as f:
