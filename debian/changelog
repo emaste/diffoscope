@@ -1,8 +1,34 @@
-diffoscope (215) UNRELEASED; urgency=medium
+diffoscope (215) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Bug fixes:
+    - Also catch IndexError (in addition to ValueError) when parsing .pyc
+      files. (Closes: #1012258)
+    - Strip "sticky" etc. from "x.deb: sticky Debian binary package […]".
+      Thanks to David Prévot for the report. (Closes: #1011635)
+    - Correctly package diffoscope's scripts/ directory, fixing the extraction
+      of vmlinuz kernel images. (Closes: reproducible-builds/diffoscope#305)
+    - Correct the logic for supporting different versions of argcomplete in
+      debian/rules.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 27 May 2022 06:54:59 +0100
+  * New features:
+    - Support both PyPDF 1.x and 2.x.
+
+  * Codebase improvements:
+    - Don't call re.compile and then call .sub on the result; just call
+      re.sub directly.
+    - Clarify the logic around the difference between --usage and --help.
+
+  * Testsuite improvements:
+    - Integrate test coverage with GitLab's concept of artifacts.
+    - Re-enable Gnumeric tests as its now available again.
+    - Test --help and --usage, and additionally test that --help includes
+      the programmatically-generated file format list as well.
+
+  [ Holger Levsen ]
+  * Bump Standards Version field in debian/control to 4.6.1.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 03 Jun 2022 06:54:48 +0100
 
 diffoscope (214) unstable; urgency=medium
 
