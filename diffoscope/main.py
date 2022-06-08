@@ -781,6 +781,9 @@ def main(args=None):
             pdb.post_mortem()
         sys.exit(2)
     finally:
+        # Note that this is block is not called if the sigterm_handler method
+        # is a) called, and b) executes successfully.
+
         # Helps our tests run more predictably - some of them call main()
         # which sets Config() values.
         Config().reset()
