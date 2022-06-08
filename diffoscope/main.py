@@ -728,6 +728,7 @@ def run_diffoscope(parsed_args):
 def sigterm_handler(signo, stack_frame):
     logger.warning("Received TERM signal; cleaning up temp files...")
     clean_all_temp_files()
+    ProfileManager().finish()
     logger.warning("Exiting...")
     os._exit(2)
 

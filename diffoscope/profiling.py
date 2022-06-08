@@ -60,8 +60,16 @@ class ProfileManager:
         self.data[namespace][key]["time"] += time.time() - start
         self.data[namespace][key]["count"] += 1
 
-    def finish(self, parsed_args):
+    def finish(self, parsed_args=None):
         from .presenters.utils import make_printer
+
+        # We are being called in the TERM handler so we don't have access to
+        # parsed_args. Print the profiling output to stderr if we have been
+        # collecting it.
+        if parsed_args is None:
+            if _ENABLED:
+                self.output(lambda x: print(x, file=sys.stderr))
+            return
 
         # Include profiling in --debug output if --profile is not set.
         if parsed_args.profile_output is None:
