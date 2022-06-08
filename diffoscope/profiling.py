@@ -67,9 +67,10 @@ class ProfileManager:
         if parsed_args.profile_output is None:
             with setup_logging(parsed_args.debug, None) as logger:
                 self.output(lambda x: logger.debug(x.strip("\n")))
-        else:
-            with make_printer(parsed_args.profile_output) as fn:
-                self.output(fn)
+            return
+
+        with make_printer(parsed_args.profile_output) as fn:
+            self.output(fn)
 
     def output(self, print_fn):
         title = "# Profiling output for: {}".format(" ".join(sys.argv))
