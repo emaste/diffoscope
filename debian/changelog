@@ -1,8 +1,13 @@
-diffoscope (216) UNRELEASED; urgency=medium
+diffoscope (216) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Print profile output if we were called with --profile and we receive a
+    TERM signal.
+  * Emit a warning if/when we are handling a TERM signal.
+  * Clarify in the code in what situations the main "finally" block gets
+    called, especially in relation to handling TERM signals.
+  * Clarify and tidy some unconditional control flow in diffoscope.profiling.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 03 Jun 2022 06:56:25 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 10 Jun 2022 07:00:54 +0100
 
 diffoscope (215) unstable; urgency=medium
 
