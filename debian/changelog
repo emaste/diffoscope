@@ -1,3 +1,9 @@
+diffoscope (217) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 10 Jun 2022 07:05:22 +0100
+
 diffoscope (216) unstable; urgency=medium
 
   * Print profile output if we were called with --profile and we receive a
