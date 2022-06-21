@@ -67,8 +67,8 @@ class PdfFile(File):
             difference = Difference.from_text(
                 self.dump_pypdf2_metadata(self),
                 self.dump_pypdf2_metadata(other),
-                self.path,
-                other.path,
+                self.name,
+                other.name,
             )
             if difference:
                 difference.add_comment("Document info")
@@ -77,8 +77,8 @@ class PdfFile(File):
             difference = Difference.from_text(
                 self.dump_pypdf2_annotations(self),
                 self.dump_pypdf2_annotations(other),
-                self.path,
-                other.path,
+                self.name,
+                other.name,
             )
             if difference:
                 difference.add_comment("Annotations")
