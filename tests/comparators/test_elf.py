@@ -172,7 +172,7 @@ def libmix_differences(libmix1, libmix2):
 @skip_unless_tools_exist("xxd")
 @skip_unless_tools_exist("llvm-readobj", "llvm-objdump")
 @skip_unless_tools_exist("readelf", "objdump")
-@skip_if_tool_version_is("readelf", readelf_version, "2.29")
+@skip_if_tool_version_is("readelf", readelf_version, "2.38")
 @skip_if_binutils_does_not_support_x86()
 def test_libmix_differences(libmix_differences):
     assert len(libmix_differences) == 5
