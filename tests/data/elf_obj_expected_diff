@@ -9,4 +9,4 @@
 -	mov    $0x2a,%eax
 +	mov    $0xffffffff,%eax
  	pop    %rbp
- 	retq   
+ 	ret

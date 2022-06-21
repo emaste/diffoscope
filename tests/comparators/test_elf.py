@@ -94,7 +94,7 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 
 
 @skip_unless_tools_exist("readelf")
-@skip_if_tool_version_is("readelf", readelf_version, "2.29")
+@skip_if_tool_version_is("readelf", readelf_version, "2.38")
 @skip_if_binutils_does_not_support_x86()
 def test_diff(obj_differences):
     assert len(obj_differences) == 1
@@ -130,7 +130,7 @@ def lib_differences(lib1, lib2):
 
 
 @skip_unless_tools_exist("readelf", "objdump")
-@skip_if_tool_version_is("readelf", readelf_version, "2.29")
+@skip_if_tool_version_is("readelf", readelf_version, "2.38")
 @skip_if_binutils_does_not_support_x86()
 def test_lib_differences(lib_differences):
     assert len(lib_differences) == 2
