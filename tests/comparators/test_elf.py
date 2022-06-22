@@ -95,7 +95,7 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 
 
 @skip_unless_tools_exist("readelf")
-@skip_unless_tool_is_at_least("readelf", readelf_version, "2.38")
+@skip_unless_tool_is_at_least("readelf", readelf_version, "2.38.50")
 @skip_if_binutils_does_not_support_x86()
 def test_diff(obj_differences):
     assert len(obj_differences) == 1
@@ -131,7 +131,7 @@ def lib_differences(lib1, lib2):
 
 
 @skip_unless_tools_exist("readelf", "objdump")
-@skip_unless_tool_is_at_least("readelf", readelf_version, "2.38")
+@skip_unless_tool_is_at_least("readelf", readelf_version, "2.38.50")
 @skip_if_binutils_does_not_support_x86()
 def test_lib_differences(lib_differences):
     assert len(lib_differences) == 2
@@ -173,7 +173,7 @@ def libmix_differences(libmix1, libmix2):
 @skip_unless_tools_exist("xxd")
 @skip_unless_tools_exist("llvm-readobj", "llvm-objdump")
 @skip_unless_tools_exist("readelf", "objdump")
-@skip_unless_tool_is_at_least("readelf", readelf_version, "2.38")
+@skip_unless_tool_is_at_least("readelf", readelf_version, "2.38.50")
 @skip_if_binutils_does_not_support_x86()
 def test_libmix_differences(libmix_differences):
     assert len(libmix_differences) == 5
