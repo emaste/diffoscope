@@ -1,8 +1,12 @@
-diffoscope (217) UNRELEASED; urgency=medium
+diffoscope (217) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Update test fixtures for GNU readelf 2.38 (now in Debian unstable).
+  * Be more specific about the minimum required version of readelf (ie.
+    binutils) as it appears that this "patch" level version change resulted in
+    a change of output, not the "minor" version. (Closes: #1013348)
+  * Don't leak the (likely-temporary) pathname when comparing PDF documents.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 10 Jun 2022 07:05:22 +0100
+ -- Chris Lamb <lamby@debian.org>  Thu, 23 Jun 2022 07:43:21 +0100
 
 diffoscope (216) unstable; urgency=medium
 
