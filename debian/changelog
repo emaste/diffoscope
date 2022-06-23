@@ -1,3 +1,9 @@
+diffoscope (218) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 23 Jun 2022 07:45:27 +0100
+
 diffoscope (217) unstable; urgency=medium
 
   * Update test fixtures for GNU readelf 2.38 (now in Debian unstable).
