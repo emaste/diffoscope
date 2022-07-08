@@ -1,8 +1,9 @@
-diffoscope (218) UNRELEASED; urgency=medium
+diffoscope (218) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Improve output of Markdown and reStructuredText to use code blocks with
+    syntax highlighting. (Closes: reproducible-builds/diffoscope#306)
 
- -- Chris Lamb <lamby@debian.org>  Thu, 23 Jun 2022 07:45:27 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 08 Jul 2022 08:45:11 +0100
 
 diffoscope (217) unstable; urgency=medium
 
