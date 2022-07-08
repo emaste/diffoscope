@@ -6,7 +6,7 @@ Comparing test1.tar & test2.tar
 file list
 ---------
 
-::
+.. code-block:: diff
 
     @@ -1,4 +1,4 @@
     -drwxr-xr-x   0 lunar     (1000) lunar     (1000)        0 2015-06-29 15:49:09.000000 dir/
@@ -22,7 +22,7 @@ file list
 dir/text
 --------
 
-::
+.. code-block:: diff
 
     @@ -1,6 +1,12 @@
     +A common form of lorem ipsum reads:
@@ -42,9 +42,9 @@ dir/text
 dir/link
 --------
 
-
 symlink
-::
+
+.. code-block:: diff
 
     @@ -1 +1 @@
     -destination: broken

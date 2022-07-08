@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2017, 2019-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2017, 2019-2020, 2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,17 +29,19 @@ class MarkdownTextPresenter(Presenter):
             self.title(difference.source1)
         else:
             self.title(
-                "Comparing {} & {}".format(
+                "Comparing `{}` & `{}`".format(
                     difference.source1, difference.source2
                 )
             )
 
         for x in difference.comments:
-            self.print_func(x)
+            self.print_func(f" * *{x}*")
             self.print_func()
 
         if difference.unified_diff:
-            self.print_func(self.indent(difference.unified_diff, "    "))
+            self.print_func("```diff")
+            self.print_func(difference.unified_diff.rstrip())
+            self.print_func("```")
             self.print_func()
 
     def title(self, val):
