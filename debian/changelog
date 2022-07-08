@@ -1,3 +1,9 @@
+diffoscope (219) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 08 Jul 2022 08:46:57 +0100
+
 diffoscope (218) unstable; urgency=medium
 
   * Improve output of Markdown and reStructuredText to use code blocks with
