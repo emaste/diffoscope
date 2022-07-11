@@ -2,7 +2,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
-# Copyright © 2015-2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2015-2020, 2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -127,9 +127,13 @@ class HiFile(File):
                 length = buf[0]
 
             # Now read characters; each is 32-bit big-endian.
-            version_found = "".join(
-                chr(struct.unpack(">I", fp.read(4))[0]) for _ in range(length)
-            )
+            try:
+                version_found = "".join(
+                    chr(struct.unpack(">I", fp.read(4))[0]) for _ in range(length)
+                )
+            except ValueError:
+                # Don't traceback if we encounter and invalid Unicode character.
+                version_found = "(unknown)"
 
             if version_found != HiFile.hi_version:
                 logger.debug(
