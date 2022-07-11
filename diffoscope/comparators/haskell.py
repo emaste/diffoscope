@@ -129,7 +129,8 @@ class HiFile(File):
             # Now read characters; each is 32-bit big-endian.
             try:
                 version_found = "".join(
-                    chr(struct.unpack(">I", fp.read(4))[0]) for _ in range(length)
+                    chr(struct.unpack(">I", fp.read(4))[0])
+                    for _ in range(length)
                 )
             except ValueError:
                 # Don't traceback if we encounter and invalid Unicode character.
