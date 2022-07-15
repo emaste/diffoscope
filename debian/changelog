@@ -1,3 +1,9 @@
+diffoscope (220) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 15 Jul 2022 06:47:02 +0100
+
 diffoscope (219) unstable; urgency=medium
 
   * Don't traceback if we encounter an invalid Unicode character in Haskell
