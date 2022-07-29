@@ -108,33 +108,41 @@ class HiFile(File):
                 )
                 return False
 
-            # Skip some old descriptor thingy that has varying size
-            if buf == HI_MAGIC_32:
-                fp.read(4)
-            elif buf == HI_MAGIC_64:
-                fp.read(8)
-
-            # Read version, which is [Char]
             buf = fp.read(1)
 
-            # Small list optimisation - anything less than 0xff has its length
-            # in a single byte; everything else is 0xff followed by the 32-bit
-            # length (big-endian).
-            if buf[0] == 0xFF:
-                buf = fp.read(4)
-                length = struct.unpack(">I", buf)[0]
+            if buf != b"\x00":
+                # Support Haskell 9.x
+                version_found = fp.read(4).decode("utf-8")
             else:
-                length = buf[0]
+                # Skip some old descriptor thingy that has varying size. We
+                # only skip one less than we should as we just peeked at a byte
+                # (currently in `buf`)
+                if buf == HI_MAGIC_32:
+                    fp.read(4 - 1)
+                elif buf == HI_MAGIC_64:
+                    fp.read(8 - 1)
 
-            # Now read characters; each is 32-bit big-endian.
-            try:
-                version_found = "".join(
-                    chr(struct.unpack(">I", fp.read(4))[0])
-                    for _ in range(length)
-                )
-            except ValueError:
-                # Don't traceback if we encounter and invalid Unicode character.
-                version_found = "(unknown)"
+                # Read version, which is [Char]
+                buf = fp.read(1)
+
+                # Small list optimisation - anything less than 0xff has its length
+                # in a single byte; everything else is 0xff followed by the 32-bit
+                # length (big-endian).
+                if buf[0] == 0xFF:
+                    buf = fp.read(4)
+                    length = struct.unpack(">I", buf)[0]
+                else:
+                    length = buf[0]
+
+                # Now read characters; each is 32-bit big-endian.
+                try:
+                    version_found = "".join(
+                        chr(struct.unpack(">I", fp.read(4))[0])
+                        for _ in range(length)
+                    )
+                except ValueError:
+                    # Don't traceback if we encounter and invalid Unicode character.
+                    version_found = "(unknown)"
 
             if version_found != HiFile.hi_version:
                 logger.debug(

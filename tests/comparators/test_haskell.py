@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2017, 2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import pytest
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.haskell import HiFile
 
-from ..utils.data import get_data, load_fixture
+from ..utils.data import get_data, load_fixture, assert_diff
 from ..utils.tools import skip_unless_tools_exist
 
 
@@ -31,7 +31,7 @@ haskell2 = load_fixture("test2.hi")
 
 @skip_unless_tools_exist("ghc")
 def test_identification(haskell1):
-    if isinstance(haskell1, FilesystemFile):
+    if not isinstance(haskell1, HiFile):
         pytest.skip("mismatch between system ghc and fixture")
 
     assert isinstance(haskell1, HiFile)
@@ -48,8 +48,10 @@ def differences(haskell1, haskell2):
 
 @skip_unless_tools_exist("ghc")
 def test_diff(haskell1, differences):
-    if isinstance(haskell1, FilesystemFile):
+    if not isinstance(haskell1, HiFile):
         pytest.skip("mismatch between system ghc and fixture")
 
-    expected_diff = get_data("haskell_expected_diff")
-    assert differences[0].unified_diff == expected_diff
+    with open("tests/data/haskell_expected_diff", "w") as f:
+        f.write(differences[0].unified_diff)
+
+    assert_diff(differences[0], "haskell_expected_diff")
