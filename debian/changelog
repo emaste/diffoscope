@@ -1,3 +1,9 @@
+diffoscope (221) UNRELEASED; urgency=medium
+
+  * WIP (generated upon release).
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 29 Jul 2022 11:08:57 -0700
+
 diffoscope (220) unstable; urgency=medium
 
   * Support Haskell 9.x series files and update the test files to match. Thanks
