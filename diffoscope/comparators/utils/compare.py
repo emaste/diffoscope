@@ -143,7 +143,7 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
     with profile("compare_files (cumulative)", file1):
         if file2.is_directory():
             difference = file2.compare(file1, source)
-            if difference is not None:
+            if isinstance(difference, Difference):
                 difference = difference.get_reverse()
             return difference
         return file1.compare(file2, source)
