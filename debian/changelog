@@ -1,8 +1,14 @@
-diffoscope (220) UNRELEASED; urgency=medium
+diffoscope (220) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Support Haskell 9.x series files and update the test files to match. Thanks
+    to Scott Talbert for the relevant info about the new format.
+    (Closes: reproducible-builds/diffoscope#309)
+  * Fix a regression introduced in diffoscope version 207 where diffoscope
+    would crash if one directory contained a directory that wasn't in the
+    other. Thanks to Alderico Gallo for the report and the testcase.
+    (Closes: reproducible-builds/diffoscope#310)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 15 Jul 2022 06:47:02 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 29 Jul 2022 11:03:24 -0700
 
 diffoscope (219) unstable; urgency=medium
 
