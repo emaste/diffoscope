@@ -120,8 +120,10 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
                 "has_same_content_as returned True; skipping further comparisons"
             )
             return None
+
         if diff_content_only:
             return None
+
     elif diff_content_only:
         return Difference(file1.name, file2.name, comment="Files differ")
 
@@ -137,6 +139,7 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         and (not file1.is_directory() and not file2.is_directory())
     ):
         return file1.compare_bytes(file2, source)
+
     with profile("compare_files (cumulative)", file1):
         if file2.is_directory():
             difference = file2.compare(file1, source)
@@ -169,6 +172,7 @@ def compare_binary_files(file1, file2, source=None):
     try:
         if source is None:
             source = [file1.name, file2.name]
+
         return Difference.from_operation(
             Xxd,
             file1.path,
@@ -189,9 +193,11 @@ def compare_binary_files(file1, file2, source=None):
 
 def hexdump_fallback(path):
     hexdump = io.StringIO()
+
     with open(path, "rb") as f:
         for buf in iter(lambda: f.read(32), b""):
             hexdump.write(
                 "{}\n".format(binascii.hexlify(buf).decode("us-ascii"))
             )
+
     return hexdump.getvalue()
