@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
+import os
 import re
 
 from diffoscope.tools import python_module_missing, tool_required
@@ -24,6 +26,8 @@ from diffoscope.difference import Difference
 
 from .utils.file import File
 from .utils.command import Command
+
+logger = logging.getLogger(__name__)
 
 try:
     import PyPDF2
@@ -95,40 +99,44 @@ class PdfFile(File):
 
         return xs
 
-    @staticmethod
-    def dump_pypdf2_metadata(file):
+    def dump_pypdf2_metadata(self, file):
         try:
             pdf = PyPDF2.PdfFileReader(file.path)
             document_info = pdf.getDocumentInfo()
-        except PdfReadError as e:
-            return f"(Could not extract metadata: {e})"
 
-        if document_info is None:
+            if document_info is None:
+                return ""
+
+            xs = []
+            for k, v in sorted(document_info.items()):
+                xs.append("{}: {!r}".format(k.lstrip("/"), v))
+
+            return "\n".join(xs)
+        except PdfReadError as e:
+            msg = f"Could not extract PyPDF2 metadata from {os.path.basename(file.name)}: {e}"
+            self.add_comment(msg)
+            logger.error(msg)
             return ""
 
-        xs = []
-        for k, v in sorted(document_info.items()):
-            xs.append("{}: {!r}".format(k.lstrip("/"), v))
-
-        return "\n".join(xs)
-
-    @staticmethod
-    def dump_pypdf2_annotations(file):
+    def dump_pypdf2_annotations(self, file):
         try:
             pdf = PyPDF2.PdfFileReader(file.path)
+
+            xs = []
+            for x in range(pdf.getNumPages()):
+                page = pdf.getPage(x)
+
+                try:
+                    for annot in page["/Annots"]:
+                        subtype = annot.getObject()["/Subtype"]
+                        if subtype == "/Text":
+                            xs.append(annot.getObject()["/Contents"])
+                except:
+                    pass
+
+            return "\n".join(xs)
         except PdfReadError as e:
-            return f"(Could not open file: {e})"
-
-        xs = []
-        for x in range(pdf.getNumPages()):
-            page = pdf.getPage(x)
-
-            try:
-                for annot in page["/Annots"]:
-                    subtype = annot.getObject()["/Subtype"]
-                    if subtype == "/Text":
-                        xs.append(annot.getObject()["/Contents"])
-            except:
-                pass
-
-        return "\n".join(xs)
+            msg = f"Could not extract PyPDF2 annotations from {os.path.basename(file.name)}: {e}"
+            file.add_comment(msg)
+            logger.error(msg)
+            return ""
