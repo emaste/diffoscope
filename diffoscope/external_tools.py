@@ -223,7 +223,7 @@ EXTERNAL_TOOLS = {
         "guix": "squashfs-tools",
     },
     "xxd": {
-        "debian": "xxd | vim-common",
+        "debian": "xxd",
         "arch": "vim",
         "FreeBSD": "vim | vim-lite",
         "guix": "xxd",
