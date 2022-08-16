@@ -86,7 +86,7 @@ Build-Depends:
  unzip <!nocheck>,
  wabt <!nocheck>,
  xmlbeans <!nocheck>,
- xxd <!nocheck> | vim-common <!nocheck>,
+ xxd <!nocheck>,
  zstd <!nocheck>,
 Build-Conflicts:
  graphicsmagick-imagemagick-compat,
