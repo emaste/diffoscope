@@ -1,8 +1,11 @@
-diffoscope (221) UNRELEASED; urgency=medium
+diffoscope (221) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Don't crash if we can open a PDF file with PyPDF but cannot parse the
+    annotations within. (Closes: reproducible-builds/diffoscope#311)
+  * Depend on the dedicated xxd package, not vim-common.
+  * Update external_tools.py to reflect xxd/vim-common change.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 29 Jul 2022 11:08:57 -0700
+ -- Chris Lamb <lamby@debian.org>  Fri, 19 Aug 2022 07:32:23 -0700
 
 diffoscope (220) unstable; urgency=medium
 
