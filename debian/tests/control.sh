@@ -12,9 +12,10 @@ cat debian/tests/control.in >> debian/tests/control.tmp
 
 sed -i "s#%RECOMMENDS%#$(bin/diffoscope --list-debian-substvars | awk -F= '/diffoscope:Recommends/ { print $2 }')#" debian/tests/control.tmp
 
-sed -i "s#%PYRECOMMENDS%#$(python3 -c "import distutils.core; \
-	setup = distutils.core.run_setup('setup.py'); \
-	print(', '.join(sorted(['python3-{}'.format(x) for y in setup.extras_require.values() for x in y])))" \
+sed -i "s#%PYRECOMMENDS%#$(python3 -c "from pep517 import meta; \
+	from pip._internal.req.constructors import install_req_from_req_string; \
+	dist = meta.load('.'); \
+	print(', '.join([f'python3-{install_req_from_req_string(req).name}' for req in sorted(dist.requires) if install_req_from_req_string(req).markers]))" \
 )#" debian/tests/control.tmp
 
 # Don't test-depend on radare2; not in bullseye for security reasons. (#950372)
