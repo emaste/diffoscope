@@ -1,8 +1,11 @@
-diffoscope (222) UNRELEASED; urgency=medium
+diffoscope (222) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Mattia Rizzolo ]
+  * Use pep517 and pip to load the requirements. (Closes: #1020091)
+  * Remove old Breaks/Replaces in debian/control that have been obsoleted since
+    bullseye
 
- -- Chris Lamb <lamby@debian.org>  Fri, 19 Aug 2022 07:35:02 -0700
+ -- Chris Lamb <lamby@debian.org>  Fri, 23 Sep 2022 09:05:12 +0100
 
 diffoscope (221) unstable; urgency=medium
 
