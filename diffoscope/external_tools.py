@@ -37,7 +37,7 @@ EXTERNAL_TOOLS = {
     },
     "dumppdf": {"debian": "python3-pdfminer", "guix": "python-pdfminer-six"},
     "bzip2": {"debian": "bzip2", "arch": "bzip2", "guix": "bzip2"},
-    "cbfstool": {},
+    "cbfstool": {"debian": "coreboot-utils"},
     "cd-iccdump": {
         "debian": "colord",
         "arch": "colord",
