@@ -16,6 +16,7 @@ Build-Depends:
  black <!nocheck>,
  caca-utils <!nocheck>,
  colord <!nocheck>,
+ coreboot-utils <!nocheck>,
  db-util <!nocheck>,
  debhelper-compat (= 13),
  default-jdk-headless <!nocheck> | default-jdk <!nocheck>,
