@@ -1,8 +1,18 @@
-diffoscope (223) UNRELEASED; urgency=medium
+diffoscope (223) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * The cbfstools utility is now provided in Debian via the coreboot-utils
+    Debian package, so we can enable that functionality within Debian.
+    (Closes: #1020630)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 23 Sep 2022 09:07:28 +0100
+  [ Mattia Rizzolo ]
+  * Also include coreboot-utils in Build-Depends and Test-Depends so it is
+    available for the tests.
+
+  [ Jelle van der Waa ]
+  * Add support for file 5.43.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 30 Sep 2022 08:25:31 -0700
 
 diffoscope (222) unstable; urgency=medium
 
