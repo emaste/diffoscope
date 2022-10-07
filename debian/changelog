@@ -1,8 +1,10 @@
-diffoscope (224) UNRELEASED; urgency=medium
+diffoscope (224) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Mattia Rizzolo ]
+  * Fix rlib test failure with LLVM 15. Thanks to Gianfranco Costamagna
+    (locutusofborg) for the patch.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 30 Sep 2022 08:26:25 -0700
+ -- Chris Lamb <lamby@debian.org>  Fri, 07 Oct 2022 09:35:04 -0700
 
 diffoscope (223) unstable; urgency=medium
 
