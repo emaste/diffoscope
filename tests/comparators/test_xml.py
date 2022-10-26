@@ -27,6 +27,8 @@ from ..utils.data import load_fixture, assert_diff
 
 xml_a = load_fixture("test1.xml")
 xml_b = load_fixture("test2.xml")
+xml_c = load_fixture("test3.xml")
+xml_d = load_fixture("test4.xml")
 invalid_xml = load_fixture("test_invalid.xml")
 
 
@@ -52,3 +54,12 @@ def differences(xml_a, xml_b):
 )
 def test_diff(differences):
     assert_diff(differences[0], "test_xml_expected_diff")
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 8), reason="requires Python 3.8 or higher"
+)
+def test_ordering_differences(xml_c, xml_d):
+    diff = xml_c.compare(xml_d)
+    assert diff.details[0].comments == ["Ordering differences only"]
+    assert_diff(diff.details[0], "test_xml_ordering_differences_diff")

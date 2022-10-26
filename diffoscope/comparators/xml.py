@@ -131,11 +131,14 @@ class XMLFile(File):
                 )
             ]
 
-        return [
-            Difference.from_text(
-                self.dumps(self), self.dumps(other), self.name, other.name
-            )
-        ]
+        difference = Difference.from_text(
+            self.dumps(self), self.dumps(other), self.name, other.name
+        )
+
+        if difference:
+            difference.check_for_ordering_differences()
+
+        return [difference]
 
     def dumps(self, file):
         """
