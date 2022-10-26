@@ -1,7 +1,7 @@
 #
 # diffoscope: in-depth comparison of files, archives, and directories
 #
-# Copyright © 2016-2017, 2020 Chris Lamb <lamby@debian.org>
+# Copyright © 2016-2017, 2020, 2022 Chris Lamb <lamby@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ import pytest
 
 from diffoscope.comparators.json import JSONFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, assert_diff
 from ..utils.nonexisting import assert_non_existing
 
 
@@ -49,9 +49,7 @@ def differences(json1, json2):
 
 
 def test_diff(differences):
-    expected_diff = get_data("json_expected_diff")
-
-    assert differences[0].unified_diff == expected_diff
+    assert_diff(differences[0], "json_expected_diff")
 
 
 def test_compare_non_existing(monkeypatch, json1):
@@ -60,5 +58,5 @@ def test_compare_non_existing(monkeypatch, json1):
 
 def test_ordering_differences(json3a, json3b):
     diff = json3a.compare(json3b)
-    assert diff.details[0]._comments == ["Ordering differences only"]
-    assert diff.details[0].unified_diff == get_data("order1.diff")
+    assert diff.details[0].comments == ["Ordering differences only"]
+    assert_diff(diff.details[0], "order1.diff")
