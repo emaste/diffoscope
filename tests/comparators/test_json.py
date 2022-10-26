@@ -60,5 +60,5 @@ def test_compare_non_existing(monkeypatch, json1):
 
 def test_ordering_differences(json3a, json3b):
     diff = json3a.compare(json3b)
-    assert diff.details[0]._comments == ["ordering differences only"]
+    assert diff.details[0]._comments == ["Ordering differences only"]
     assert diff.details[0].unified_diff == get_data("order1.diff")

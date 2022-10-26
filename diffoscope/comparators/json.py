@@ -76,7 +76,7 @@ class JSONFile(File):
             self.path,
             other.path,
             source="Pretty-printed",
-            comment="ordering differences only",
+            comment="Ordering differences only",
         )
 
         return [difference]
