@@ -216,6 +216,7 @@ EXTERNAL_TOOLS = {
     "wasm2wat": {"debian": "wabt", "arch": "wabt", "guix": "wabt"},
     "tar": {"debian": "tar", "arch": "tar", "guix": "tar"},
     "tcpdump": {"debian": "tcpdump", "arch": "tcpdump", "guix": "tcpdump"},
+    "ttx": {"debian": "fonttools"},
     "unsquashfs": {
         "debian": "squashfs-tools",
         "arch": "squashfs-tools",

@@ -46,11 +46,14 @@ def differences(ttf1, ttf2):
 
 
 @skip_unless_tools_exist("showttf")
+@skip_unless_tools_exist("ttx")
 def test_diff(differences):
     assert_diff(differences[0], "ttf_expected_diff")
+    assert_diff(differences[1], "ttf_ttx_expected_diff")
 
 
 @skip_unless_tools_exist("showttf")
+@skip_unless_tools_exist("ttx")
 def test_compare_non_existing(monkeypatch, ttf1):
     monkeypatch.setattr(Config(), "new_file", True)
     difference = ttf1.compare(MissingFile("/nonexisting", ttf1))

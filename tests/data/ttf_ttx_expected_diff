@@ -1,0 +1,51 @@
+@@ -216,15 +216,15 @@
+     <GlyphID id="210" name="uni0D41_uni0D4D"/>
+   </GlyphOrder>
+ 
+   <head>
+     <!-- Most of this table will be recalculated by the compiler -->
+     <tableVersion value="1.0"/>
+     <fontRevision value="1.2"/>
+-    <checkSumAdjustment value="0x2d668113"/>
++    <checkSumAdjustment value="0x2966810f"/>
+     <magicNumber value="0x5f0f3cf5"/>
+     <flags value="00000000 00011111"/>
+     <unitsPerEm value="1024"/>
+     <created value="Fri Jan  6 19:21:03 2006"/>
+     <modified value="Tue May 11 11:54:49 2010"/>
+     <xMin value="-335"/>
+     <yMin value="-472"/>
+@@ -12752,15 +12752,15 @@
+     <namerecord nameID="1" platformID="1" platEncID="0" langID="0x0" unicode="True">
+       Samyak Malayalam
+     </namerecord>
+     <namerecord nameID="2" platformID="1" platEncID="0" langID="0x0" unicode="True">
+       Medium
+     </namerecord>
+     <namerecord nameID="3" platformID="1" platEncID="0" langID="0x0" unicode="True">
+-      FontForge 2.0 : Samyak Malayalam : 23-6-2015
++      FontForge 2.0 : Samyak Malayalam : 25-6-2015
+     </namerecord>
+     <namerecord nameID="4" platformID="1" platEncID="0" langID="0x0" unicode="True">
+       Samyak Malayalam
+     </namerecord>
+     <namerecord nameID="5" platformID="1" platEncID="0" langID="0x0" unicode="True">
+       Original Version 1.00 (2005)
+     </namerecord>
+@@ -12810,15 +12810,15 @@
+     <namerecord nameID="1" platformID="3" platEncID="1" langID="0x409">
+       Samyak Malayalam
+     </namerecord>
+     <namerecord nameID="2" platformID="3" platEncID="1" langID="0x409">
+       Medium
+     </namerecord>
+     <namerecord nameID="3" platformID="3" platEncID="1" langID="0x409">
+-      FontForge 2.0 : Samyak Malayalam : 23-6-2015
++      FontForge 2.0 : Samyak Malayalam : 25-6-2015
+     </namerecord>
+     <namerecord nameID="4" platformID="3" platEncID="1" langID="0x409">
+       Samyak Malayalam
+     </namerecord>
+     <namerecord nameID="5" platformID="3" platEncID="1" langID="0x409">
+       Original Version 1.00 (2005)
+     </namerecord>
