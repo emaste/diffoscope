@@ -423,7 +423,7 @@ class Difference:
             return False
 
         if added_lines == removed_lines:
-            return False
+            return True
 
         return sorted(added_lines) == sorted(removed_lines)
 
