@@ -1,8 +1,20 @@
-diffoscope (225) UNRELEASED; urgency=medium
+diffoscope (225) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Add support for detecting ordering-only differences in XML files.
+    (Closes: #1022146)
+  * Fix an issue with detecting ordering differences. (Closes: #1022145)
+  * Add support for ttx(1) from fonttools.
+    (Re: reproducible-builds/diffoscope#315)
+  * Test improvements:
+    - Tidy up the JSON tests and use assert_diff over get_data and manual
+      assert in XML tests.
+    - Rename order1.diff to json_expected_ordering_diff for consistency.
+    - Temporarily allow the stable-po pipeline to fail in the CI.
+  * Use consistently capitalised "Ordering" everywhere we use the word in
+    diffoscope's output.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 07 Oct 2022 09:39:43 -0700
+ -- Chris Lamb <lamby@debian.org>  Fri, 28 Oct 2022 08:29:53 -0700
 
 diffoscope (224) unstable; urgency=medium
 
