@@ -24,8 +24,8 @@ from .utils.tools import skip_unless_tool_is_at_least
 def black_version():
     try:
         out = subprocess.check_output(("black", "--version"))
-    except subprocess.CalledProcessError as e:
-        out = e.output
+    except subprocess.CalledProcessError as exc:
+        out = exc.output
 
     # black --version format changed starting in 21.11b0. Returning the first
     # token starting with a decimal digit, since its ordinal position may vary.
