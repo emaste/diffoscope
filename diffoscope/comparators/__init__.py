@@ -54,6 +54,7 @@ class ComparatorManager:
         ("xmlb.XMLBFile",),
         ("openssl.Pkcs7File",),
         ("openssl.MobileProvisionFile",),
+        ("html.HtmlFile",),
         ("text.TextFile",),
         ("bzip2.Bzip2File",),
         ("cpio.CpioFile",),

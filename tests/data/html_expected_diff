@@ -1,0 +1,22 @@
+@@ -1,17 +1,17 @@
+ <html>
+ <head>
+-<title>foo</title>
++<title>bar</title>
+ <style>
+ <!--
+ BODY {
+-BACKGROUND: #000000;
+-COLOR: #FFFFFF;
++BACKGROUND: #FFFFFF;
++COLOR: #000000;
+ -->
+ </style>
+ </head>
+ <body>
+ <p>
+-foo
++bar
+ </p>
+ </body>
+ </html>

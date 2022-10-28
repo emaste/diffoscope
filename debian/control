@@ -38,6 +38,7 @@ Build-Depends:
  gnupg-utils <!nocheck>,
  hdf5-tools <!nocheck>,
  help2man,
+ html2text <!nocheck>,
  imagemagick <!nocheck>,
  jsbeautifier <!nocheck>,
  libarchive-tools <!nocheck>,
