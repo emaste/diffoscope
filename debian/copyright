@@ -28,6 +28,7 @@ Copyright:
  © 2019 Jelle van der Waa <jelle@archlinux.org>
  © 2020 Conrad Ratschan <ratschance@gmail.com>
  © 2020-2021 Jean-Romain Garnier <salsa@jean-romain.com>
+ © 2022 Christopher Baines <mail@cbaines.net>
 License: GPL-3+
 
 Files: diffoscope/changes.py

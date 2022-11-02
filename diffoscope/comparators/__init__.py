@@ -80,6 +80,7 @@ class ComparatorManager:
         ("iso9660.Iso9660File",),
         ("java.ClassFile",),
         ("lz4.Lz4File",),
+        ("lzip.LzipFile",),
         ("mono.MonoExeFile",),
         ("pdf.PdfFile",),
         ("png.PngFile",),
