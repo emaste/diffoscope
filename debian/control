@@ -50,6 +50,7 @@ Build-Depends:
  linux-image-amd64 [amd64] <!nocheck> | linux-image-generic [amd64] <!nocheck>,
  llvm <!nocheck>,
  lz4 <!nocheck> | liblz4-tool <!nocheck>,
+ lzip <!nocheck>,
  mono-utils <!nocheck>,
  ocaml-nox <!nocheck>,
  odt2txt <!nocheck>,
