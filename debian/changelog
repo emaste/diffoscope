@@ -1,8 +1,21 @@
-diffoscope (226) UNRELEASED; urgency=medium
+diffoscope (226) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Christopher Baines ]
+  * Add an lzip comparator with tests.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 28 Oct 2022 08:35:48 -0700
+  [ Chris Lamb ]
+  * Add support for comparing the "text" content of HTML files using html2text.
+    (Closes: #1022209, reproducible-builds/diffoscope#318)
+  * Misc/test improvements:
+    * Drop the ALLOWED_TEST_FILES test; it's mostly just annoying.
+    * Drop other copyright notices from lzip.py and test_lzip.py.
+    * Use assert_diff helper in test_lzip.py.
+    * Pylint tests/test_source.py.
+
+  [ Mattia Rizzolo ]
+  * Add lzip to debian dependencies.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 04 Nov 2022 06:51:43 +0000
 
 diffoscope (225) unstable; urgency=medium
 
