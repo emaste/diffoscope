@@ -3,6 +3,7 @@
 #
 # Copyright © 2016 Reiner Herrmann <reiner@reiner-h.de>
 # Copyright © 2016-2021 Chris Lamb <lamby@debian.org>
+# Copyright © 2022 FC Stegerman <flx@obfusk.net>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -230,7 +231,20 @@ class ApkFile(ZipFileBase):
     FILE_EXTENSION_SUFFIX = {".apk"}
     CONTAINER_CLASSES = [ApkContainer, ZipContainer]
 
+    @property
+    def as_container(self):
+        # If we found no differences before the APK Signing Block we return None
+        # here to prevent apktool from being run needlessly (which can take up a
+        # significant amount of extra time) via ApkContainer (since there's no
+        # API that allows us to selectively disable use of container classes in
+        # cases like these).
+        if getattr(self, "_disable_container_compare", False):
+            return None  # don't run apktool
+        return super().as_container
+
     def compare_details(self, other, source=None):
+        self.only_run_apktool_with_differences_before_signing_block(other)
+
         differences = zipinfo_differences(self, other)
 
         try:
@@ -257,6 +271,38 @@ class ApkFile(ZipFileBase):
                 differences.insert(0, x)
 
         return differences
+
+    def only_run_apktool_with_differences_before_signing_block(self, other):
+        try:
+            import apksigcopier
+        except ImportError:
+            self.add_comment(
+                "'apksigcopier' Python package not installed; unconditionally running 'apktool'."
+            )
+            return
+
+        try:
+            offset_self, _ = apksigcopier.extract_v2_sig(self.path)
+            offset_other, _ = apksigcopier.extract_v2_sig(other.path)
+        except Exception:
+            return
+
+        if offset_self != offset_other:
+            return
+
+        with open(self.path, "rb") as fh_self:
+            with open(other.path, "rb") as fh_other:
+                while fh_self.tell() < offset_self:
+                    size = min(offset_self - fh_self.tell(), 4096)
+                    if fh_self.read(size) != fh_other.read(size):
+                        return
+
+        self.add_comment(
+            "No differences before APK Signing Block; not running 'apktool'."
+        )
+
+        self._disable_container_compare = True
+        other._disable_container_compare = True
 
 
 def get_v2_signing_keys(path):
