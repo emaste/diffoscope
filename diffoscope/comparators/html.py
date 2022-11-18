@@ -39,6 +39,9 @@ class HtmlFile(TextFile):
     def compare(self, other, source=None):
         difference = super().compare(other, source)
 
+        if difference is None:
+            return difference
+
         # Show text-only differences as a sub-diff.
         try:
             text = Difference.from_operation(Htmltotext, self.path, other.path)
