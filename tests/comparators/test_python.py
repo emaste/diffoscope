@@ -53,8 +53,8 @@ def differences(pyc1, pyc2):
 
 @skip_unless_file_version_is_at_least("5.39")
 @skipif(
-    sys.version_info < (3, 8),
-    reason="Python 3.7 cannot de-marshal test1.pyc-renamed",
+    sys.version_info[:2] not in {(3, 9), (3, 10)},
+    reason="Only Python 3.9 and 3.10 can de-marshal test1.pyc-renamed",
 )
 def test_diff(differences):
     assert_diff_startswith(
