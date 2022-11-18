@@ -1,8 +1,12 @@
-diffoscope (227) UNRELEASED; urgency=medium
+diffoscope (227) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Don't attempt to attach text-only differences notice if there are no
+    differences to begin with. (Closes: #1024171, #1024349)
+  * Don't run Python decompiling tests on Python bytecode that both file(1)
+    cannot yet detect and Python 3.11 cannot demarshall. (Closes: #1024335)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 04 Nov 2022 06:59:43 +0000
+ -- Chris Lamb <lamby@debian.org>  Fri, 18 Nov 2022 09:38:34 +0000
 
 diffoscope (226) unstable; urgency=medium
 
