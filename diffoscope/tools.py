@@ -70,7 +70,8 @@ def get_tools(only_missing=False):
     d["External-Tools-Required"] = tuple(external_tools)
 
     current_os = get_current_os()
-    os_list = [current_os] if (current_os in OS_NAMES) else iter(OS_NAMES)
+    os_list = [current_os] if current_os in OS_NAMES else OS_NAMES
+
     for os_ in os_list:
         tools = set()
         for x in external_tools:
