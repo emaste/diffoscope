@@ -267,7 +267,7 @@ class ProgressBar:
         self.msg = msg
 
         self.bar.maxval = total
-        self.bar.currval = current
+        self.bar.value = current
         self.bar.update()
 
     def finish(self):
