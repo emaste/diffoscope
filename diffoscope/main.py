@@ -566,18 +566,19 @@ class ListMissingToolsAction(ListToolsAction):
 
 class ListDebianSubstvarsAction(argparse._StoreTrueAction):
     def __call__(self, *args, **kwargs):
+        tools = set()
+
         # Attempt to import all comparators so tool_required.all is as
         # populated as possible...
         ComparatorManager().reload()
+        tools.update(tool_required.all)
 
         # ... however for the generated substvar to be effective/deterministic
         # regardless of the currently installed packages, we special-case some
         # tools (NB. not package names) as their modules may not have been
         # imported by the `ComparatorManager().reload()` call above. (#908072)
-        tools = set(
-            ("gpg", "rpm2cpio")  # comparators/debian.py  # comparators/rpm.py
-        )
-        tools.update(tool_required.all)
+        tools.add("gpg")  # comparators/debian.py
+        tools.add("rpm2cpio")  # comparators/rpm.py
 
         packages = set()
         packages_minimal = set()
