@@ -25,6 +25,7 @@ that might resolve to, for example, `/usr/bin/abootimg`.
 EXTERNAL_TOOLS = {
     "abootimg": {"debian": "abootimg", "guix": "abootimg"},
     "androguard": {"debian": "androguard"},
+    "apksigcopier": {"debian": "apksigcopier"},
     "apktool": {"debian": "apktool"},
     "apksigner": {"debian": "apksigner"},
     "db_dump": {"debian": "db-util", "guix": "bdb"},

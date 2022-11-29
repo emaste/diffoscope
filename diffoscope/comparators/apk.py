@@ -243,7 +243,7 @@ class ApkFile(ZipFileBase):
         return super().as_container
 
     def compare_details(self, other, source=None):
-        self.only_run_apktool_with_differences_before_signing_block(other)
+        self.check_differences_before_signing_block(other)
 
         differences = zipinfo_differences(self, other)
 
@@ -272,14 +272,18 @@ class ApkFile(ZipFileBase):
 
         return differences
 
-    def only_run_apktool_with_differences_before_signing_block(self, other):
+    def check_differences_before_signing_block(self, other):
         try:
-            import apksigcopier
-        except ImportError:
+            self._check_differences_before_signing_block(other)
+        except (RequiredToolNotFound, ImportError):
             self.add_comment(
                 "'apksigcopier' Python package not installed; unconditionally running 'apktool'."
             )
             return
+
+    @tool_required("apksigcopier")
+    def _check_differences_before_signing_block(self, other):
+        import apksigcopier
 
         try:
             offset_self, _ = apksigcopier.extract_v2_sig(self.path)
