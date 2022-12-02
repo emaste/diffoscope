@@ -1,8 +1,19 @@
-diffoscope (228) UNRELEASED; urgency=medium
+diffoscope (228) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ FC Stegerman ]
+  * As an optimisation, don't run apktool if no differences are detected before
+    the signing block. (Closes: reproducible-builds/diffoscope!105)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 18 Nov 2022 10:02:21 +0000
+  [ Chris Lamb ]
+  * Support both the python3-progressbar and python3-progressbar2 Debian
+    packages, two modules providing the "progressbar" Python module.
+    (Closes: reproducible-builds/diffoscope#323)
+  * Ensure we recommend apksigcopier. (Re: reproducible-builds/diffoscope!105)
+  * Make the code clearer around generating the Debian substvars and tidy
+    generation of os_list.
+  * Update copyright years.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 02 Dec 2022 08:10:44 +0000
 
 diffoscope (227) unstable; urgency=medium
 
