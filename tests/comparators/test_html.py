@@ -21,6 +21,7 @@ import pytest
 from diffoscope.comparators.html import HtmlFile
 
 from ..utils.data import assert_diff, load_fixture
+from ..utils.tools import skip_unless_tools_exist
 
 
 html1 = load_fixture("test1.html")
@@ -41,6 +42,7 @@ def differences(html1, html2):
     return html1.compare(html2)
 
 
+@skip_unless_tools_exist("html2text")
 def test_diff(differences):
     assert_diff(differences, "html_expected_diff")
     assert_diff(differences.details[0], "html_text_expected_diff")
