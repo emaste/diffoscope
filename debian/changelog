@@ -1,8 +1,13 @@
-diffoscope (229) UNRELEASED; urgency=medium
+diffoscope (229) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Skip test_html.py::test_diff if html2text is not installed.
+    (Closes: #1026034)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 02 Dec 2022 08:16:30 +0000
+  [ Holger Levsen ]
+  * Bump standards version to 4.6.2, no changes needed.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 20 Dec 2022 23:12:16 +0000
 
 diffoscope (228) unstable; urgency=medium
 
