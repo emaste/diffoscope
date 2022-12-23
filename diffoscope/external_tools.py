@@ -52,6 +52,7 @@ EXTERNAL_TOOLS = {
         "guix": "imagemagick",
     },
     "cpio": {"debian": "cpio", "arch": "cpio", "guix": "cpio"},
+    "dexdump": {"debian": "dexdump"},
     "diff": {"debian": "diffutils", "arch": "diffutils", "guix": "diffutils"},
     "docx2txt": {"debian": "docx2txt", "arch": "docx2txt", "guix": "docx2txt"},
     "dumpimage": {

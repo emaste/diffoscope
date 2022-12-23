@@ -1,3 +1,35 @@
+@@ -1,12 +1,12 @@
+ DEX version '035'
+ DEX file header:
+ magic               : 'dex\n035\0'
+-checksum            : f9ec2d16
+-signature           : dd2a...febb
++checksum            : 15e82cf9
++signature           : 4c3c...b46d
+ file_size           : 2116
+ header_size         : 112
+ link_size           : 0
+ link_off            : 0 (0x000000)
+ string_ids_size     : 40
+ string_ids_off      : 112 (0x000070)
+ type_ids_size       : 17
+@@ -112,15 +112,15 @@
+       ins           : 2
+       outs          : 2
+       insns size    : 11 16-bit code units
+ 000340:                                        |[000340] com.example.MainActivity.onCreate:(Landroid/os/Bundle;)V
+ 000350: 6f20 0100 3200                         |0000: invoke-super {v2, v3}, Landroid/app/Activity;.onCreate:(Landroid/os/Bundle;)V // method@0001
+ 000356: 1501 037f                              |0003: const/high16 v1, #int 2130903040 // #7f03
+ 00035a: 6e20 0500 1200                         |0005: invoke-virtual {v2, v1}, Lcom/example/MainActivity;.setContentView:(I)V // method@0005
+-000360: 1a00 1400                              |0008: const-string v0, "Sat Nov 21 14:20:33 CET 2015" // string@0014
++000360: 1a00 1400                              |0008: const-string v0, "Thu Mar 17 11:54:42 CET 2016" // string@0014
+ 000364: 0e00                                   |000a: return-void
+       catches       : (none)
+       positions     : 
+         0x0000 line=12
+         0x0003 line=13
+         0x0008 line=14
+         0x000a line=15
 @@ -54,15 +54,15 @@
    version of encoding software:                   2.0
    minimum file system compatibility required:     MS-DOS, OS/2 or NT FAT

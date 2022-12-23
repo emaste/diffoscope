@@ -68,19 +68,25 @@ def differences(dex1, dex2):
 
 
 def check_dex_differences(differences, expected_diff):
-    assert differences[0].source1 == "test1.jar"
-    assert differences[0].source2 == "test2.jar"
-    zipinfo = differences[0].details[0]
-    classdiff = differences[0].details[1]
+    assert differences[0].source1 == "dexdump -a -d -f -h {}"
+    assert differences[0].source2 == "dexdump -a -d -f -h {}"
+    assert differences[1].source1 == "test1.jar"
+    assert differences[1].source2 == "test2.jar"
+    zipinfo = differences[1].details[0]
+    classdiff = differences[1].details[1]
     assert zipinfo.source1 == "zipinfo -v {}"
     assert zipinfo.source2 == "zipinfo -v {}"
     assert classdiff.source1 == "com/example/MainActivity.class"
     assert classdiff.source2 == "com/example/MainActivity.class"
-    found_diff = zipinfo.unified_diff + classdiff.details[0].unified_diff
+    found_diff = (
+        differences[0].unified_diff
+        + zipinfo.unified_diff
+        + classdiff.details[0].unified_diff
+    )
     assert expected_diff == found_diff
 
 
-@skip_unless_tools_exist("enjarify", "zipinfo", "javap", "procyon")
+@skip_unless_tools_exist("enjarify", "zipinfo", "javap", "procyon", "dexdump")
 @skip_unless_tool_is_between("javap", javap_version, "9.0.4", "14.0")
 @skip_unless_tool_is_at_least("enjarify", enjarify_version, "1.0.3")
 def test_differences(differences):
@@ -88,7 +94,7 @@ def test_differences(differences):
     check_dex_differences(differences, expected_diff)
 
 
-@skip_unless_tools_exist("enjarify", "zipinfo", "javap")
+@skip_unless_tools_exist("enjarify", "zipinfo", "javap", "dexdump")
 @skip_unless_tool_is_at_least("javap", javap_version, "14.0")
 @skip_unless_tool_is_at_least("enjarify", enjarify_version, "1.0.3")
 def test_javap_14_differences(differences):

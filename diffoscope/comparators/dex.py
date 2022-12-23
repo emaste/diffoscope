@@ -22,10 +22,12 @@ import os.path
 import logging
 import subprocess
 
-from diffoscope.tools import tool_required
+from diffoscope.difference import Difference
+from diffoscope.tools import tool_required, tool_check_installed
 
 from .utils.file import File
 from .utils.archive import Archive
+from .utils.command import Command
 
 logger = logging.getLogger(__name__)
 
@@ -61,3 +63,43 @@ class DexFile(File):
     FILE_TYPE_RE = re.compile(r"^Dalvik dex file .*\b")
     FILE_EXTENSION_SUFFIX = {".dex"}
     CONTAINER_CLASSES = [DexContainer]
+
+    def compare_details(self, other, source=None):
+        if tool_check_installed("dexdump"):
+            dexdump = Difference.from_operation(Dexdump, self.path, other.path)
+            if dexdump is not None:
+                dexdump.add_comment(
+                    "Ignoring differences in offsets to keep diff size reasonable."
+                )
+                return [dexdump]
+        else:
+            self.add_comment(
+                "'dexdump' command not installed; cannot compare format-specific details."
+            )
+        return []
+
+
+class Dexdump(Command):
+    @tool_required("dexdump")
+    def cmdline(self):
+        # -a : display annotations
+        # -d : disassemble code sections
+        # -f : display summary information from file header
+        # -h : display file header details
+        return ["dexdump", "-a", "-d", "-f", "-h", self.path]
+
+    def filter(self, line):
+        # Processing 'classes.dex'...
+        if line.startswith(b"Processing "):
+            return b""
+
+        # Opened 'classes.dex', DEX version '037'
+        if line.startswith(b"Opened "):
+            return line.split(b", ", 1)[-1]
+
+        # ignore differences in offsets
+        offsets = (b"annotations", b"class_data", b"interfaces")
+        if any(line.startswith(o + b"_off") for o in offsets):
+            return b""
+
+        return line
