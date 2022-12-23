@@ -85,7 +85,7 @@ def test_text_option_is_default(capsys):
     assert out == get_data("output.txt")
 
 
-@skip_unless_file_version_is_at_least("5.39")
+@skip_unless_file_version_is_at_least("5.43")
 def test_text_proper_indentation(capsys):
     out = run(capsys, pair=("archive1.tar", "archive2.tar"))
 
