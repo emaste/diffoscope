@@ -21,7 +21,11 @@ import logging
 import os
 import re
 
-from diffoscope.tools import python_module_missing, tool_required, get_package_provider
+from diffoscope.tools import (
+    python_module_missing,
+    tool_required,
+    get_package_provider,
+)
 from diffoscope.difference import Difference
 
 from .utils.file import File
