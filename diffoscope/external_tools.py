@@ -81,6 +81,7 @@ EXTERNAL_TOOLS = {
         "FreeBSD": "gnupg",
         "guix": "gnupg",
     },
+    "guestfs": {"debian": "python3-guestfs"},
     "gzip": {"debian": "gzip", "arch": "gzip", "guix": "gzip"},
     "h5dump": {"debian": "hdf5-tools", "arch": "hdf5", "guix": "hdf5"},
     "html2text": {"debian": "html2text"},
@@ -183,6 +184,7 @@ EXTERNAL_TOOLS = {
         "FreeBSD": "ghostscript9-base",
         "guix": "ghostscript",
     },
+    "pypdf2": {"debian": "python3-pypdf2"},
     "radare2": {"debian": "radare2", "arch": "radare2", "guix": "radare2"},
     "readelf": {
         "debian": "binutils-multiarch",

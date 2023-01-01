@@ -41,7 +41,7 @@ class RequiredToolNotFound(Exception):
         x = get_package_provider(self.operation)
         if x:
             xs.append(
-                "Installing the '{}' package may produce a better output.".format(
+                "Installing the '{}' package may produce better output.".format(
                     x
                 )
             )

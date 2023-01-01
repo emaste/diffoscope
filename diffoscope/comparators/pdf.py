@@ -21,7 +21,7 @@ import logging
 import os
 import re
 
-from diffoscope.tools import python_module_missing, tool_required
+from diffoscope.tools import python_module_missing, tool_required, get_package_provider
 from diffoscope.difference import Difference
 
 from .utils.file import File
@@ -64,8 +64,10 @@ class PdfFile(File):
         xs = []
 
         if PyPDF2 is None:
+            pkg = get_package_provider("pypdf2")
+            infix = f" from the '{pkg}' package " if pkg else " "
             self.add_comment(
-                "Installing the 'PyPDF2' package may produce a better output."
+                f"Installing the 'PyPDF2' Python module{infix}may produce a better output."
             )
         else:
             difference = Difference.from_text(
