@@ -1,8 +1,9 @@
-diffoscope (231) UNRELEASED; urgency=medium
+diffoscope (231) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * Improve "[X] may produce better output" messages. Based on a patch by
+    Helmut Grohne. (Closes: #1026982)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 30 Dec 2022 06:36:34 +0000
+ -- Chris Lamb <lamby@debian.org>  Fri, 06 Jan 2023 09:02:57 +0000
 
 diffoscope (230) unstable; urgency=medium
 
