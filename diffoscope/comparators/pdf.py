@@ -34,18 +34,26 @@ from .utils.command import Command
 logger = logging.getLogger(__name__)
 
 try:
-    import PyPDF2
+    try:
+        import pypdf
+    except ImportError:
+        import PyPDF2
+
+        pypdf = PyPDF2
 
     try:
-        # PyPDF 2.x
-        from PyPDF2.errors import PdfReadError
+        from pypdf.errors import PdfReadError
     except ImportError:
-        # PyPDF 1.x
-        from PyPDF2.utils import PdfReadError
+        try:
+            # PyPDF 2.x
+            from PyPDF2.errors import PdfReadError
+        except ImportError:
+            # PyPDF 1.x
+            from PyPDF2.utils import PdfReadError
 
 except ImportError:  # noqa
-    python_module_missing("PyPDF2")
-    PyPDF2 = None
+    python_module_missing("pypdf")
+    pypdf = None
 
 
 class Pdftotext(Command):
@@ -67,11 +75,11 @@ class PdfFile(File):
     def compare_details(self, other, source=None):
         xs = []
 
-        if PyPDF2 is None:
-            pkg = get_package_provider("pypdf2")
+        if pypdf is None:
+            pkg = get_package_provider("pypdf")
             infix = f" from the '{pkg}' package " if pkg else " "
             self.add_comment(
-                f"Installing the 'PyPDF2' Python module{infix}may produce a better output."
+                f"Installing the 'pypdf' Python module{infix}may produce a better output."
             )
         else:
             difference = Difference.from_text(
@@ -107,8 +115,8 @@ class PdfFile(File):
 
     def dump_pypdf2_metadata(self, file):
         try:
-            pdf = PyPDF2.PdfFileReader(file.path)
-            document_info = pdf.getDocumentInfo()
+            pdf = pypdf.PdfReader(file.path)
+            document_info = pdf.metadata
 
             if document_info is None:
                 return ""
@@ -119,18 +127,18 @@ class PdfFile(File):
 
             return "\n".join(xs)
         except PdfReadError as e:
-            msg = f"Could not extract PyPDF2 metadata from {os.path.basename(file.name)}: {e}"
+            msg = f"Could not extract pypdf metadata from {os.path.basename(file.name)}: {e}"
             self.add_comment(msg)
             logger.error(msg)
             return ""
 
     def dump_pypdf2_annotations(self, file):
         try:
-            pdf = PyPDF2.PdfFileReader(file.path)
+            pdf = pypdf.PdfReader(file.path)
 
             xs = []
-            for x in range(pdf.getNumPages()):
-                page = pdf.getPage(x)
+            for x in range(len(pdf.pages)):
+                page = pdf.pages[x]
 
                 try:
                     for annot in page["/Annots"]:
@@ -142,7 +150,7 @@ class PdfFile(File):
 
             return "\n".join(xs)
         except PdfReadError as e:
-            msg = f"Could not extract PyPDF2 annotations from {os.path.basename(file.name)}: {e}"
+            msg = f"Could not extract pypdf annotations from {os.path.basename(file.name)}: {e}"
             file.add_comment(msg)
             logger.error(msg)
             return ""

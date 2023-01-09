@@ -66,7 +66,7 @@ setup(
             "guestfs",
             "jsondiff",
             "python-debian",
-            "pypdf2",
+            "pypdf",
             "pyxattr",
             "rpm-python",
             "tlsh",

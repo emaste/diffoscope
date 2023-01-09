@@ -70,7 +70,7 @@ def differences_metadata(pdf1, pdf1a):
 
 
 @skip_unless_tools_exist("pdftotext")
-@skip_unless_module_exists("PyPDF2")
+@skip_unless_module_exists("pypdf")
 def test_metadata(differences_metadata):
     assert_diff(differences_metadata[0], "pdf_metadata_expected_diff")
 
@@ -81,7 +81,7 @@ def differences_annotations(pdf3, pdf4):
 
 
 @skip_unless_tools_exist("pdftotext")
-@skip_unless_module_exists("PyPDF2")
+@skip_unless_module_exists("pypdf")
 def test_annotations(differences_annotations):
     with open("tests/data/pdf_annotations_expected_diff", "w") as f:
         f.write(differences_annotations[0].unified_diff)
