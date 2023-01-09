@@ -18,6 +18,7 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
+import signal
 import subprocess
 
 from diffoscope.config import Config
@@ -55,12 +56,11 @@ def cd_iccdump_version():
             ("cd-iccdump", data("test1.icc"))
         ).decode("utf-8")
     except subprocess.CalledProcessError as exc:
-        if exc.returncode != 0:
-            raise
-        pytest.skip(
-            "Skipping all ICC tests as cd-iccdump killed with signal",
-            allow_module_level=True,
-        )
+        if exc.returncode == -signal.SIGSEGV:
+            pytest.skip(
+                "Skipping all ICC tests as cd-iccdump killed with signal",
+                allow_module_level=True,
+            )
 
     for x in val.splitlines():
         if x.startswith("  Profile ID") and len(x) == 47:
