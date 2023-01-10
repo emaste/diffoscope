@@ -227,7 +227,9 @@ class Apksigner(Command):
 class ApkFile(ZipFileBase):
     DESCRIPTION = "Android APK files"
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
-    FILE_TYPE_RE = re.compile(r"^((Java|Zip) archive data|Dalvik dex file)\b")
+    FILE_TYPE_RE = re.compile(
+        r"^(Android package|(Java|Zip) archive data|Dalvik dex file)\b"
+    )
     FILE_EXTENSION_SUFFIX = {".apk"}
     CONTAINER_CLASSES = [ApkContainer, ZipContainer]
 
