@@ -121,6 +121,7 @@ class ComparatorManager:
         ("berkeley_db.BerkeleyDBFile",),
         ("zst.ZstFile",),
         ("vmlinuz.VmlinuzFile",),
+        ("arsc.ArscFile",),
     )
 
     _singleton = {}
