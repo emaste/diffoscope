@@ -1,8 +1,16 @@
-diffoscope (232) UNRELEASED; urgency=medium
+diffoscope (232) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Allow ICC tests to (temporarily) fail.
+  * Update debian/tests/control after the addition of PyPDF 3 support.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 06 Jan 2023 09:05:23 +0000
+  [ FC Stegerman ]
+  * Update regular expression for Android .APK files.
+
+  [ Sam James ]
+  * Support PyPDF version 3.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 13 Jan 2023 07:05:01 +0000
 
 diffoscope (231) unstable; urgency=medium
 
