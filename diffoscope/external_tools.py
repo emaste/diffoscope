@@ -170,7 +170,6 @@ EXTERNAL_TOOLS = {
         "debian": "mono-utils",
         "arch": "mono",
         "FreeBSD": "mono",
-        "guix": "mono",
     },
     "ppudump": {
         "debian": "fp-utils",
