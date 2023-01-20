@@ -2,9 +2,9 @@
 
 from __future__ import print_function
 
+import diffoscope
 import json
 import sys
-import diffoscope
 
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
@@ -35,6 +35,11 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
+# Load extras_require dict from external JSON file. This allows it to be easily
+# shared by the debian/tests/generate-recommends.py script.
+with open("extras_require.json") as f:
+    extras_require = json.load(f)
+
 setup(
     name="diffoscope",
     version=diffoscope.VERSION,
@@ -57,7 +62,7 @@ setup(
         "python-magic",
         "libarchive-c",
     ],
-    extras_require=json.load(open("extras_require.json")),
+    extras_require=extras_require,
     python_requires=">=3.7",
     classifiers=[
         "Development Status :: 3 - Alpha",
