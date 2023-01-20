@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import json
 import sys
 import diffoscope
 
@@ -56,22 +57,7 @@ setup(
         "python-magic",
         "libarchive-c",
     ],
-    extras_require={
-        "distro_detection": ["distro"],
-        "cmdline": ["argcomplete", "progressbar"],
-        "comparators": [
-            "androguard",
-            "binwalk",
-            "defusedxml",
-            "guestfs",
-            "jsondiff",
-            "python-debian",
-            "pypdf",
-            "pyxattr",
-            "rpm-python",
-            "tlsh",
-        ],
-    },
+    extras_require=json.load(open("extras_require.json")),
     python_requires=">=3.7",
     classifiers=[
         "Development Status :: 3 - Alpha",

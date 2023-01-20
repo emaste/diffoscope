@@ -1,0 +1,21 @@
+{
+  "distro_detection": [
+    "distro"
+  ],
+  "cmdline": [
+    "argcomplete",
+    "progressbar"
+  ],
+  "comparators": [
+    "androguard",
+    "binwalk",
+    "defusedxml",
+    "guestfs",
+    "jsondiff",
+    "python-debian",
+    "pypdf",
+    "pyxattr",
+    "rpm-python",
+    "tlsh"
+  ]
+}

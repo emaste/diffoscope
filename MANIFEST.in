@@ -1,5 +1,6 @@
 include COPYING
 include README.rst
 include CONTRIBUTING.md
+include extras_require.json
 include pyproject.toml
 graft tests

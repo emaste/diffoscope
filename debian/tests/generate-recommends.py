@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 
-from pep517 import meta
+import json
 
-from pip._internal.req.constructors import install_req_from_req_string
-
-dist = meta.load(".")
-
-xs = set(
-    f"python3-{install_req_from_req_string(x).name}"
-    for x in dist.requires
-    if install_req_from_req_string(x).markers
-)
+with open("extras_require.json") as fh:
+    xs = set(f"python3-{x}" for reqs in json.load(fh).values() for x in reqs)
 
 print(", ".join(sorted(xs)))
