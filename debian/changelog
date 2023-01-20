@@ -1,8 +1,23 @@
-diffoscope (233) UNRELEASED; urgency=medium
+diffoscope (233) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ FC Stegerman ]
+  * Split packaging metadata into an extras_require.json file instead of using
+    the pep517 and the pip modules directly. This was causing build failures if
+    not using a virtualenv and/or building without internet access.
+    (Closes: #1029066, reproducible-builds/diffoscope#325)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 13 Jan 2023 07:06:45 +0000
+  [ Vagrant Cascadian ]
+  * Add an external tool reference for GNU Guix (lzip).
+  * Drop an external tool reference for GNU Guix (pedump).
+
+  [ Chris Lamb ]
+  * Split inline Python code in shell script to generate test dependencies to a
+    separate Python script.
+  * No need for "from __future__ import print_function" import in setup.py
+    anymore.
+  * Comment and tidy the new extras_require.json handling.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 20 Jan 2023 08:56:22 -0800
 
 diffoscope (232) unstable; urgency=medium
 
