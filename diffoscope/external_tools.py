@@ -102,7 +102,7 @@ EXTERNAL_TOOLS = {
         "debian": "genisoimage",
         "arch": "cdrtools",
         "FreeBSD": "cdrtools",
-        "guix": "cdrtools",
+        "guix": "cdrkit-libre",
     },
     "javap": {
         "debian": "default-jdk-headless | default-jdk | java-sdk",
