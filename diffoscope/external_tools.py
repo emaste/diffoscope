@@ -183,7 +183,7 @@ EXTERNAL_TOOLS = {
         "FreeBSD": "ghostscript9-base",
         "guix": "ghostscript",
     },
-    "pypdf2": {"debian": "python3-pypdf2"},
+    "pypdf": {"debian": "python3-pypdf"},
     "radare2": {"debian": "radare2", "arch": "radare2", "guix": "radare2"},
     "readelf": {
         "debian": "binutils-multiarch",

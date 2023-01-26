@@ -83,8 +83,8 @@ class PdfFile(File):
             )
         else:
             difference = Difference.from_text(
-                self.dump_pypdf2_metadata(self),
-                self.dump_pypdf2_metadata(other),
+                self.dump_pypdf_metadata(self),
+                self.dump_pypdf_metadata(other),
                 self.name,
                 other.name,
             )
@@ -93,8 +93,8 @@ class PdfFile(File):
             xs.append(difference)
 
             difference = Difference.from_text(
-                self.dump_pypdf2_annotations(self),
-                self.dump_pypdf2_annotations(other),
+                self.dump_pypdf_annotations(self),
+                self.dump_pypdf_annotations(other),
                 self.name,
                 other.name,
             )
@@ -113,7 +113,7 @@ class PdfFile(File):
 
         return xs
 
-    def dump_pypdf2_metadata(self, file):
+    def dump_pypdf_metadata(self, file):
         try:
             pdf = pypdf.PdfReader(file.path)
             document_info = pdf.metadata
@@ -132,7 +132,10 @@ class PdfFile(File):
             logger.error(msg)
             return ""
 
-    def dump_pypdf2_annotations(self, file):
+    # for backward compatibility:
+    dump_pypdf2_metadata = dump_pypdf_metadata
+
+    def dump_pypdf_annotations(self, file):
         try:
             pdf = pypdf.PdfReader(file.path)
 
@@ -154,3 +157,6 @@ class PdfFile(File):
             file.add_comment(msg)
             logger.error(msg)
             return ""
+
+    # for backward compatibility:
+    dump_pypdf2_annotations = dump_pypdf_annotations
