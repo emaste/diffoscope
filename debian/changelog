@@ -1,8 +1,10 @@
-diffoscope (234) UNRELEASED; urgency=medium
+diffoscope (234) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ FC Stegerman ]
+  * test_text_proper_indentation requires at least file version 5.44.
+    (Closes: reproducible-builds/diffoscope#329)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 20 Jan 2023 09:01:31 -0800
+ -- Chris Lamb <lamby@debian.org>  Mon, 30 Jan 2023 09:29:37 -0800
 
 diffoscope (233) unstable; urgency=medium
 
