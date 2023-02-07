@@ -39,6 +39,10 @@ try:
     except ImportError:
         import PyPDF2 as pypdf
 
+    try:
+        import pypdf.PdfReader as PdfReader
+    except ImportError:
+        import pypdf.PdfFileReader as PdfReader
 
     try:
         from pypdf.errors import PdfReadError
