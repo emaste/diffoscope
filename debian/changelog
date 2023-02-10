@@ -1,8 +1,29 @@
-diffoscope (235) UNRELEASED; urgency=medium
+diffoscope (235) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Akihiro Suda ]
+  * Update .gitlab-ci.yml to push versioned tags to the container registry.
+    (Closes: reproducible-builds/diffoscope!119)
 
- -- Chris Lamb <lamby@debian.org>  Mon, 30 Jan 2023 09:32:19 -0800
+  [ Chris Lamb ]
+  * Fix compatibility with PyPDF2. (Closes: reproducible-builds/diffoscope#331)
+  * Fix compatibility with ImageMagick 7.1.
+    (Closes: reproducible-builds/diffoscope#330)
+
+  [ Daniel Kahn Gillmor ]
+  * Update from PyPDF2 to pypdf. (Closes: #1029741, #1029742)
+
+  [ FC Stegerman ]
+  * Add support for Android resources.arsc files.
+    (Closes: reproducible-builds/diffoscope!116)
+  * Add support for dexdump. (Closes: reproducible-builds/diffoscope#134)
+  * Improve DexFile's FILE_TYPE_RE and add FILE_TYPE_HEADER_PREFIX, and remove
+    "Dalvik dex file" from ApkFile's FILE_TYPE_RE as well.
+
+  [ Efraim Flashner ]
+  * Update external tool for isoinfo on guix.
+    (Closes: reproducible-builds/diffoscope!124)
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 10 Feb 2023 10:31:52 -0800
 
 diffoscope (234) unstable; urgency=medium
 
