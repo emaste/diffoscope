@@ -1,8 +1,13 @@
-diffoscope (236) UNRELEASED; urgency=medium
+diffoscope (236) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ FC Stegerman ]
+  * Update code to match latest version of Black. (Closes: #1031433)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 10 Feb 2023 10:53:59 -0800
+  [ Chris Lamb ]
+  * Require at least Black version 23.1.0 to run the internal Black tests.
+  * Update copyright years.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 17 Feb 2023 08:48:41 -0800
 
 diffoscope (235) unstable; urgency=medium
 
