@@ -26,7 +26,6 @@ import sys
 def line_eraser(fd=sys.stderr) -> bytes:
     eraser = b""  # avoid None to avoid 'NoneType + str/bytes' failures
     if fd.isatty():
-
         curses.setupterm(fd=fd.fileno())
         eraser = curses.tigetstr("el")
 

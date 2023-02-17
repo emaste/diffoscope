@@ -56,7 +56,7 @@ def endpoints(tmpdir):
         map(makename, ["socket1", "socket2", "pipe1", "pipe2"]),
     )
     yield [(name, f(name)) for (f, name) in test_points]
-    for (_, name) in test_points:
+    for _, name in test_points:
         os.remove(name)
 
 
