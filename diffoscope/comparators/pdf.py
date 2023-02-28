@@ -135,9 +135,6 @@ class PdfFile(File):
             logger.error(msg)
             return ""
 
-    # for backward compatibility:
-    dump_pypdf2_metadata = dump_pypdf_metadata
-
     def dump_pypdf_annotations(self, file):
         try:
             pdf = pypdf.PdfReader(file.path)
@@ -160,6 +157,3 @@ class PdfFile(File):
             file.add_comment(msg)
             logger.error(msg)
             return ""
-
-    # for backward compatibility:
-    dump_pypdf2_annotations = dump_pypdf_annotations
