@@ -3,6 +3,7 @@
 #
 # Copyright © 2014-2015 Jérémy Bobbio <lunar@debian.org>
 # Copyright © 2015-2016, 2018-2023 Chris Lamb <lamby@debian.org>
+# Copyright © 2023 Mattia Rizzolo <mattia@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,16 +36,21 @@ logger = logging.getLogger(__name__)
 
 try:
     try:
+        # PyPDF 3.x
         import pypdf
     except ImportError:
+        # PyPDF2 1.x-2.x
         import PyPDF2 as pypdf
 
     try:
+        # pyPDF 2.x-3.x
         import pypdf.PdfReader as PdfReader
     except ImportError:
+        # PyPDF2 1.x
         import pypdf.PdfFileReader as PdfReader
 
     try:
+        # PyPDF 3.x
         from pypdf.errors import PdfReadError
     except ImportError:
         try:
@@ -82,7 +88,8 @@ class PdfFile(File):
             pkg = get_package_provider("pypdf")
             infix = f" from the '{pkg}' package " if pkg else " "
             self.add_comment(
-                f"Installing the 'pypdf' Python module{infix}may produce a better output."
+                f"Installing the 'pypdf' Python module{infix}"
+                "may produce a better output."
             )
         else:
             difference = Difference.from_text(
@@ -118,7 +125,7 @@ class PdfFile(File):
 
     def dump_pypdf_metadata(self, file):
         try:
-            pdf = pypdf.PdfReader(file.path)
+            pdf = PdfReader(file.path)
             document_info = pdf.metadata
 
             if document_info is None:
@@ -130,14 +137,16 @@ class PdfFile(File):
 
             return "\n".join(xs)
         except PdfReadError as e:
-            msg = f"Could not extract pypdf metadata from {os.path.basename(file.name)}: {e}"
+            msg = "Could not extract pypdf metadata from {}: {}".format(
+                os.path.basename(file.name), e
+            )
             self.add_comment(msg)
             logger.error(msg)
             return ""
 
     def dump_pypdf_annotations(self, file):
         try:
-            pdf = pypdf.PdfReader(file.path)
+            pdf = PdfReader(file.path)
 
             xs = []
             for x in range(len(pdf.pages)):
@@ -148,12 +157,14 @@ class PdfFile(File):
                         subtype = annot.getObject()["/Subtype"]
                         if subtype == "/Text":
                             xs.append(annot.getObject()["/Contents"])
-                except:
+                except KeyError:
                     pass
 
             return "\n".join(xs)
         except PdfReadError as e:
-            msg = f"Could not extract pypdf annotations from {os.path.basename(file.name)}: {e}"
+            msg = "Could not extract pypdf annotations from {}: {}".format(
+                os.path.basename(file.name), e
+            )
             file.add_comment(msg)
             logger.error(msg)
             return ""
