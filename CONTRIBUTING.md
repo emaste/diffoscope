@@ -101,14 +101,16 @@ And commit them to our LFS repository at:
 
 You can update the version on PyPI using:
 
-    $ python3 setup.py sdist upload --sign
+    $ python3 setup.py sdist
+    $ twine upload --sign dist/*
 
 ### Docker image
 
-Update the Docker image using:
+The docker image is automatically updated by gitlab-ci.
 
-    $ docker build --force-rm --no-cache --pull -t registry.salsa.debian.org/reproducible-builds/diffoscope .
-    $ docker push registry.salsa.debian.org/reproducible-builds/diffoscope
+When doing a new release, please verify that the gitlab-ci job is successful
+and that the correct tag is available on
+https://salsa.debian.org/reproducible-builds/diffoscope/container_registry/218
 
 ### Publicity
 
