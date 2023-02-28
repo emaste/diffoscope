@@ -1,8 +1,12 @@
-diffoscope (237) UNRELEASED; urgency=medium
+diffoscope (237) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * autopkgtest: only install appt and dexdump on architectures where they are
+    available. (Closes: #1031297)
+  * compartors/pdf:
+    + Drop backward compatibility assignment.
+    + Fix flake warnings, potentially reinstating PyPDF 1.x support (untested).
 
- -- Chris Lamb <lamby@debian.org>  Fri, 17 Feb 2023 08:49:40 -0800
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 28 Feb 2023 18:16:09 +0100
 
 diffoscope (236) unstable; urgency=medium
 
