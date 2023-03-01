@@ -3,11 +3,11 @@ diffoscope (238) UNRELEASED; urgency=medium
   * WIP (Generated on release).
   * Please target 238 to experimental!
 
- -- Mattia Rizzolo <mattia@debian.org>  Tue, 28 Feb 2023 18:37:09 +0100
+ -- Mattia Rizzolo <mattia@debian.org>  Wed, 01 Mar 2023 10:33:02 +0100
 
 diffoscope (237) unstable; urgency=medium
 
-  * autopkgtest: only install appt and dexdump on architectures where they are
+  * autopkgtest: only install aapt and dexdump on architectures where they are
     available. (Closes: #1031297)
   * compartors/pdf:
     + Drop backward compatibility assignment.
