@@ -30,7 +30,10 @@ testing:
 stable-bpo:
   <<: *test
   image: debian:stable-backports
-  allow_failure: true
+  before_script:
+    - set -e; for pkg in coreboot-utils python3-pypdf; do
+        sed -i "/$pkg/d" debian/control ;
+      done
 
 ubuntu-devel:
   <<: *test
