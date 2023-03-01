@@ -1,3 +1,10 @@
+diffoscope (239) UNRELEASED; urgency=medium
+
+  * WIP (Generated on release).
+  * Target experimental.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Wed, 01 Mar 2023 20:21:13 +0100
+
 diffoscope (238) unstable; urgency=medium
 
   * autopkgtest: fix tool name in the skippable list.
