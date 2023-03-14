@@ -22,7 +22,11 @@ import pytest
 from diffoscope.comparators.pdf import PdfFile
 
 from ..utils.data import load_fixture, assert_diff
-from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_module_exists,
+    skipif,
+)
 from ..utils.nonexisting import assert_non_existing
 
 
@@ -32,6 +36,18 @@ pdf3 = load_fixture("test3.pdf")
 pdf4 = load_fixture("test4.pdf")
 pdf1a = load_fixture("test_weird_non_unicode_chars1.pdf")
 pdf2a = load_fixture("test_weird_non_unicode_chars2.pdf")
+
+
+def skip_unless_pypdf3():
+    def fn():
+        try:
+            import pypdf
+        except ImportError:
+            return True
+
+        return not pypdf.__version__.startswith("3.")
+
+    return skipif(fn(), reason="pypdf not installed or not version 3.x+")
 
 
 def test_identification(pdf1):
@@ -69,9 +85,11 @@ def differences_metadata(pdf1, pdf1a):
     return pdf1.compare(pdf1a).details
 
 
+@skip_unless_pypdf3()
 @skip_unless_tools_exist("pdftotext")
-@skip_unless_module_exists("pypdf")
 def test_metadata(differences_metadata):
+    assert len(differences_metadata) == 2
+
     assert_diff(differences_metadata[0], "pdf_metadata_expected_diff")
 
 
@@ -80,7 +98,7 @@ def differences_annotations(pdf3, pdf4):
     return pdf3.compare(pdf4).details
 
 
+@skip_unless_pypdf3()
 @skip_unless_tools_exist("pdftotext")
-@skip_unless_module_exists("pypdf")
 def test_annotations(differences_annotations):
     assert_diff(differences_annotations[0], "pdf_annotations_expected_diff")

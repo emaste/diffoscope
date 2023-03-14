@@ -34,6 +34,8 @@ from .utils.command import Command
 
 logger = logging.getLogger(__name__)
 
+PYPDF_MAJOR_VERSION = None
+
 try:
     try:
         # PyPDF 3.x
@@ -43,11 +45,21 @@ try:
         import PyPDF2 as pypdf
 
     try:
-        # pyPDF 2.x-3.x
-        import pypdf.PdfReader as PdfReader
+        try:
+            # pyPDF 3.x
+            from pypdf import PdfReader
+
+            PYPDF_MAJOR_VERSION = 3
+        except ImportError:
+            # pyPDF 2.x
+            import pypdf.PdfReader as PdfReader
+
+            PYPDF_MAJOR_VERSION = 2
     except ImportError:
         # PyPDF2 1.x
         import pypdf.PdfFileReader as PdfReader
+
+        PYPDF_MAJOR_VERSION = 1
 
     try:
         # PyPDF 3.x
@@ -84,7 +96,7 @@ class PdfFile(File):
     def compare_details(self, other, source=None):
         xs = []
 
-        if pypdf is None:
+        if PYPDF_MAJOR_VERSION is None:
             pkg = get_package_provider("pypdf")
             infix = f" from the '{pkg}' package " if pkg else " "
             self.add_comment(
@@ -154,9 +166,14 @@ class PdfFile(File):
 
                 try:
                     for annot in page["/Annots"]:
-                        subtype = annot.getObject()["/Subtype"]
-                        if subtype == "/Text":
-                            xs.append(annot.getObject()["/Contents"])
+                        if PYPDF_MAJOR_VERSION == 3:
+                            subtype = annot.get_object()["/Subtype"]
+                            if subtype == "/Text":
+                                xs.append(annot.get_object()["/Contents"])
+                        else:
+                            subtype = annot.getObject()["/Subtype"]
+                            if subtype == "/Text":
+                                xs.append(annot.getObject()["/Contents"])
                 except KeyError:
                     pass
 
