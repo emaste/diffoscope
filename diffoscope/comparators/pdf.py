@@ -96,37 +96,10 @@ class PdfFile(File):
     def compare_details(self, other, source=None):
         xs = []
 
-        if PYPDF_MAJOR_VERSION is None:
-            pkg = get_package_provider("pypdf")
-            infix = f" from the '{pkg}' package " if pkg else " "
-            self.add_comment(
-                f"Installing the 'pypdf' Python module{infix}"
-                "may produce a better output."
-            )
-        else:
-            difference = Difference.from_text(
-                self.dump_pypdf_metadata(self),
-                self.dump_pypdf_metadata(other),
-                self.name,
-                other.name,
-            )
-            if difference:
-                difference.add_comment("Document info")
-            xs.append(difference)
-
-            difference = Difference.from_text(
-                self.dump_pypdf_annotations(self),
-                self.dump_pypdf_annotations(other),
-                self.name,
-                other.name,
-            )
-            if difference:
-                difference.add_comment("Annotations")
-            xs.append(difference)
-
+        xs.extend(self.gen_metadata_differences(other))
         xs.append(Difference.from_operation(Pdftotext, self.path, other.path))
 
-        # Don't include verbose dumppdf output unless we won't see any any
+        # Don't include verbose dumppdf output unless we won't see any
         # differences without it.
         if not any(xs):
             xs.append(
@@ -134,6 +107,38 @@ class PdfFile(File):
             )
 
         return xs
+
+    def gen_metadata_differences(self, other):
+        if PYPDF_MAJOR_VERSION is None:
+            pkg = get_package_provider("pypdf")
+            infix = f" from the '{pkg}' package " if pkg else " "
+            self.add_comment(
+                f"Installing the 'pypdf' Python module{infix}"
+                "may produce a better output."
+            )
+
+            return
+
+        difference = Difference.from_text(
+            self.dump_pypdf_metadata(self),
+            self.dump_pypdf_metadata(other),
+            self.name,
+            other.name,
+        )
+        if difference:
+            difference.add_comment("Document info")
+        yield difference
+
+        difference = Difference.from_text(
+            self.dump_pypdf_annotations(self),
+            self.dump_pypdf_annotations(other),
+            self.name,
+            other.name,
+        )
+        if difference:
+            difference.add_comment("Annotations")
+        yield difference
+
 
     def dump_pypdf_metadata(self, file):
         try:
