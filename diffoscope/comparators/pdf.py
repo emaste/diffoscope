@@ -139,7 +139,6 @@ class PdfFile(File):
             difference.add_comment("Annotations")
         yield difference
 
-
     def dump_pypdf_metadata(self, file):
         try:
             pdf = PdfReader(file.path)
