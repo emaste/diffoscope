@@ -1,9 +1,11 @@
-diffoscope (239) UNRELEASED; urgency=medium
+diffoscope (239) unstable; urgency=medium
 
-  * WIP (Generated on release).
-  * Target experimental.
+  [ Chris Lamb ]
+  * Fix compatibility with pypdf 3.x, and correctly restore test data.
+    (Closes: reproducible-builds/diffoscope#335)
+  * Rework PDF annotations processing into a separate method.
 
- -- Mattia Rizzolo <mattia@debian.org>  Wed, 01 Mar 2023 20:21:13 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 17 Mar 2023 08:31:17 +0000
 
 diffoscope (238) unstable; urgency=medium
 
