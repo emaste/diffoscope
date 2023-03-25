@@ -11,6 +11,7 @@ upstream-metadata-in-native-source
 # tests are special
 binary-with-bad-dynamic-table [tests/data/test1.debug]
 binary-with-bad-dynamic-table [tests/data/test2.debug]
+very-long-line-length-in-source-file * > 512 [tests/data/*]
 
 # we are fully aware of this
 # https://salsa.debian.org/reproducible-builds/diffoscope/-/issues/66
