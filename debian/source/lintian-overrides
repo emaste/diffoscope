@@ -16,10 +16,18 @@ very-long-line-length-in-source-file * > 512 [tests/data/*]
 # we are fully aware of this
 # https://salsa.debian.org/reproducible-builds/diffoscope/-/issues/66
 source-is-missing [tests/data/test1.debug]
-source-is-missing [tests/data/test1.o]
 source-is-missing [tests/data/test2.debug]
-source-is-missing [tests/data/test2.o]
-source-is-missing [tests/data/test1.pyc-renamed]
-source-is-missing [tests/data/test2.pyc-renamed]
+source-contains-prebuilt-binary [tests/data/test1.debug]
+source-contains-prebuilt-binary [tests/data/test2.debug]
 source-contains-prebuilt-windows-binary [tests/data/test1.exe]
 source-contains-prebuilt-windows-binary [tests/data/test2.exe]
+source-contains-prebuilt-wasm-binary [tests/data/hello1.wasm]
+source-contains-prebuilt-wasm-binary [tests/data/hello2.wasm]
+
+# not detected anymore by current lintian
+# left here for convinience when reenabling them again
+#source-is-missing [tests/data/test1.o]
+#source-is-missing [tests/data/test2.o]
+#source-is-missing [tests/data/test1.pyc-renamed]
+#source-is-missing [tests/data/test2.pyc-renamed]
+
