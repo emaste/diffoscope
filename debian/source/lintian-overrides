@@ -31,3 +31,9 @@ source-contains-prebuilt-wasm-binary [tests/data/hello2.wasm]
 #source-is-missing [tests/data/test1.pyc-renamed]
 #source-is-missing [tests/data/test2.pyc-renamed]
 
+# override warning we can fix nicely with python-debian from bookworm or later.
+# (= so once we don't maintain diffoscope in bullseye-backports anymore)
+# we can fix this in debian/tests/control.sh by running
+# wrap-and-sort -n --experimental-rts-parser -f debian/tests/control.tmp
+very-long-line-length-in-source-file * > 512 [debian/tests/control:*]
+
