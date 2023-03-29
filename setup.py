@@ -50,7 +50,6 @@ setup(
     url="https://diffoscope.org/",
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"diffoscope": ["scripts/*"]},
-    include_package_data=True,
     tests_require=["pytest"],
     cmdclass={"test": PyTest},
     entry_points={
