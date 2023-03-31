@@ -117,5 +117,9 @@ https://salsa.debian.org/reproducible-builds/diffoscope/container_registry/218
 To announce the package on the `diffoscope.org` homepage, use the `update`
 script in that repository.
 
+Send an email to diffoscope@lists.reproducible-builds.org, rb-general@lists.reproducible-builds.org,
+you can use [this post](https://lists.reproducible-builds.org/pipermail/diffoscope/2023-March/002737.html)
+as a template.
+
 Once live entry appears, consider tweeting the release using the release from
 the `@reprobuilds` Twitter account.
