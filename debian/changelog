@@ -1,8 +1,18 @@
-diffoscope (240) UNRELEASED; urgency=medium
+diffoscope (240) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Holger Levsen ]
+  * Update Lintian override info format in debian/source/lintian-overrides.
+  * Add Lintian overrides for some "very long lines" in test cases.
+  * Update Lintian overrides for tests being tagged source-is-missing or
+    prebuilt.
+  * Add Lintian override for very long lines for debian/tests/control.
+  * Re-add two Lintian overrides about (well-known) source-is-missing
+    instances.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 17 Mar 2023 08:36:18 +0000
+  [ Mattia Rizzolo ]
+  * Drop the use of include_package_data=True in setup.py.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 31 Mar 2023 09:05:24 +0100
 
 diffoscope (239) unstable; urgency=medium
 
