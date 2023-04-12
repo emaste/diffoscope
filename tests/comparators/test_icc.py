@@ -61,6 +61,7 @@ def cd_iccdump_version():
                 "Skipping all ICC tests as cd-iccdump killed with signal",
                 allow_module_level=True,
             )
+        raise
 
     for x in val.splitlines():
         if x.startswith("  Profile ID") and len(x) == 47:
