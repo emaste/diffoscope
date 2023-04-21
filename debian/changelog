@@ -1,8 +1,12 @@
-diffoscope (241) UNRELEASED; urgency=medium
+diffoscope (241) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  [ Chris Lamb ]
+  * Add a missing 'raise' statement dropped in 2d95ae41e. Thanks, Mattia!
 
- -- Chris Lamb <lamby@debian.org>  Fri, 31 Mar 2023 09:09:50 +0100
+  [ Mattia Rizzolo ]
+  * document sending out an email upon release
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 21 Apr 2023 09:26:15 +0100
 
 diffoscope (240) unstable; urgency=medium
 
