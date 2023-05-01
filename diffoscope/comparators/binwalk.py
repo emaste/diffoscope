@@ -21,7 +21,10 @@ import re
 import glob
 import logging
 
-from diffoscope.tools import python_module_missing
+from diffoscope.tools import (
+    python_module_missing,
+    get_comment_for_missing_python_module,
+)
 from diffoscope.tempfiles import get_temporary_directory
 
 from .utils.file import File
@@ -70,10 +73,11 @@ class BinwalkFile(File):
 
     @classmethod
     def recognizes(cls, file):
-        if binwalk is None:
+        if not super().recognizes(file):
             return False
 
-        if not super().recognizes(file):
+        if binwalk is None:
+            file.add_comment(get_comment_for_missing_python_module("binwalk"))
             return False
 
         # RPM files are .cpio, but let's always leave it to the RPM comparator.
