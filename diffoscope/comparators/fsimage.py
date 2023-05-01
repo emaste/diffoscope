@@ -24,7 +24,7 @@ import os.path
 from diffoscope.difference import Difference
 from diffoscope.tools import python_module_missing
 from diffoscope.profiling import profile
-from diffoscope.tools import get_package_provider
+from diffoscope.tools import get_comment_for_missing_python_module
 
 from .utils.file import File
 from .utils.archive import Archive
@@ -129,9 +129,5 @@ class FsImageFile(File):
                 )
             )
         if not guestfs:
-            pkg = get_package_provider("guestfs")
-            infix = f" from the '{pkg}' package " if pkg else " "
-            self.add_comment(
-                f"Installing the 'guestfs' Python module{infix}may produce a better output."
-            )
+            self.add_comment(get_comment_for_missing_python_module("guestfs"))
         return differences

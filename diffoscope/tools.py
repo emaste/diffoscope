@@ -191,4 +191,11 @@ def python_module_missing(name):
     python_module_missing.modules.add(name)
 
 
+def get_comment_for_missing_python_module(name):
+    pkg = get_package_provider(name)
+    infix = f" from the '{pkg}' package " if pkg else " "
+
+    return f"Installing the '{name}' Python module{infix}may produce a better output."
+
+
 python_module_missing.modules = set()
