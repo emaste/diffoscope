@@ -1,8 +1,12 @@
-diffoscope (242) UNRELEASED; urgency=medium
+diffoscope (242) unstable; urgency=medium
 
-  * WIP (generated upon release).
+  * If the binwalk Python module is not available, ensure the user knows they
+    may be missing more differences in, for example, concatenated .cpio
+    archives.
+  * Factor out routine to generate a human-readable comments when
+    Python modules are missing.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 21 Apr 2023 09:28:12 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 05 May 2023 12:05:28 -0700
 
 diffoscope (241) unstable; urgency=medium
 
