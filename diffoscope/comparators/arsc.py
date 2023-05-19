@@ -33,6 +33,13 @@ from .utils.file import File
 # <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1" android:compileSdkVersion="29" android:compileSdkVersionCodename="10.0.0" package="com.example" platformBuildVersionCode="29" platformBuildVersionName="10.0.0">
 #   <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
 # </manifest>
+#
+# This is created by running:
+#   $ aapt2 link -o output.apk -I /usr/share/android-framework-res/framework-res.apk --manifest AndroidManifest-in.xml
+#   $ unzip output.apk AndroidManifest.xml
+# The framework-res.apk needed by aapt2 here is provided by the Debian package
+# `android-framework-res`.
+# See https://salsa.debian.org/reproducible-builds/diffoscope/-/issues/340
 AXML = (
     b"\x03\x00\x08\x00\xf0\x03\x00\x00\x01\x00\x1c\x00l\x02\x00\x00"
     b"\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\\\x00\x00\x00"
