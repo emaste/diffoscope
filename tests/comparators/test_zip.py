@@ -140,6 +140,7 @@ def comment_differences(test_comment1, test_comment2):
     return test_comment1.compare(test_comment2).details
 
 
+@skip_unless_tools_exist("zipinfo")
 @skip_unless_tools_exist("zipnote")
 def test_commented(comment_differences):
     assert_diff(comment_differences[1], "comment_zipinfo_expected_diff")
