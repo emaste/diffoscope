@@ -182,7 +182,7 @@ EXTERNAL_TOOLS = {
     "ps2ascii": {
         "debian": "ghostscript",
         "arch": "ghostscript",
-        "FreeBSD": "ghostscript9-base",
+        "FreeBSD": "ghostscript",
         "guix": "ghostscript",
     },
     "pypdf": {"debian": "python3-pypdf"},
@@ -232,7 +232,7 @@ EXTERNAL_TOOLS = {
     "xxd": {
         "debian": "xxd",
         "arch": "vim",
-        "FreeBSD": "vim | vim-lite",
+        "FreeBSD": "vim",
         "guix": "xxd",
     },
     "xz": {"debian": "xz-utils", "arch": "xz", "guix": "xz"},
